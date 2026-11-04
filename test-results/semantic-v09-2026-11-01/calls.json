@@ -1,0 +1,1143 @@
+[
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 661,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 21,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 62,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 29,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 686,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 39,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 1465,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 64,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 136,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 1638,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 26,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 1430,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 12,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 19,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 1394,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 20,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 616,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 29,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 409,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 664,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 46,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 620,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 43,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 491,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 758,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 36,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 1414,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 23,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 52,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 1340,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 21,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 1054,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 36,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 351,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 935,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 26,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 609,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 12,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 189,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 586,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 44,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 1004,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 28,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 123,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 974,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 36,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 1298,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 23,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 1351,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 32,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 1521,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 66,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 118,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 1502,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 102,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 51,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 11,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 51,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 164,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 31,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 1427,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 42,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 233,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 1540,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 36,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 222,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 12,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 52,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 367,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 61,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 61,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 21,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 268,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 61,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 18,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 1101,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 85,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 133,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 915,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 45,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 760,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 33,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 517,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 575,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 16,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 746,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 33,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 443,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 663,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 26,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 613,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 14,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 709,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 667,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 21,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 792,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 24,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 493,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 988,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 26,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 860,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 42,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 374,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 846,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 15,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 635,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 17,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 570,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 659,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 35,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 707,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 45,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 174,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 801,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 29,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 747,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 29,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 359,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 476,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 17,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 671,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 30,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 513,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 538,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 22,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 725,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 13,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 336,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 658,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 22,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 886,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 21,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 637,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 585,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 24,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 963,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 29,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 1147,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 750,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 32,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 1069,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 32,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 121,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 998,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 14,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 1025,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 31,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 932,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 17,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 1476,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 27,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 1324,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 25,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 1562,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 33,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 1525,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 33,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 1543,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 31,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 1639,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 108,
+    "error": ""
+  },
+  {
+    "kind": "reranking",
+    "model": "BAAI/bge-reranker-v2-m3",
+    "status": "success",
+    "latency_ms": 5158,
+    "error": ""
+  },
+  {
+    "kind": "embedding",
+    "model": "BAAI/bge-m3",
+    "status": "success",
+    "latency_ms": 15877,
+    "error": ""
+  }
+]

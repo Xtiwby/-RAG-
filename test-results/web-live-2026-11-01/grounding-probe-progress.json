@@ -1,0 +1,158 @@
+[
+  {
+    "expected": "supported",
+    "claim": "pypdf 本身不是 OCR 软件 [4]。",
+    "evidence": "pypdf不是OCR软件。只有扫描图像而没有文字层的PDF，直接抽取可能几乎没有文字，应考虑OCR。",
+    "job": {
+      "id": 48,
+      "kind": "report_section",
+      "user_id": 1,
+      "status": "completed",
+      "progress": 100,
+      "attempts": 1,
+      "max_attempts": 3,
+      "result": {
+        "report_id": 13,
+        "section_id": 34,
+        "status": "completed"
+      },
+      "error": "",
+      "cancel_requested": 0,
+      "created_at": "2026-10-31T16:11:38+00:00",
+      "started_at": "2026-10-31T16:11:38+00:00",
+      "finished_at": "2026-10-31T16:11:41+00:00",
+      "configuration": {
+        "chat": {
+          "base_url": "https://api.moonshot.cn/v1",
+          "model": "kimi-k2.6",
+          "timeout_seconds": 120,
+          "max_tokens": 4096
+        },
+        "embedding": {
+          "provider": "tfidf",
+          "base_url": "",
+          "model": "",
+          "timeout_seconds": 90
+        },
+        "chunk": {
+          "size": 800,
+          "overlap": 150
+        },
+        "retrieval": {
+          "mode": "hybrid",
+          "top_k": 6,
+          "min_similarity": 0.3,
+          "min_coverage": 0.12,
+          "rerank": true
+        },
+        "queue": {
+          "concurrency": 2,
+          "max_attempts": 3
+        }
+      }
+    },
+    "verification": {
+      "policy": "sentence-evidence-v1",
+      "state": "verified",
+      "content_sha256": "9e5ce4caaa5dda4456617a71aa730a8408b9f8e3cd383d3f89a2e1360313e8f0",
+      "checked_at": "2026-10-31T16:11:41+00:00",
+      "evidence_sha256": "a38e8d707ac1aa1e4dfd2e617ce8fe3d3194f9243691fb1e9c994e6ba087879b",
+      "accepted_count": 1,
+      "rejected_count": 0,
+      "checks": [
+        {
+          "claim_id": 1,
+          "sha256": "9e5ce4caaa5dda4456617a71aa730a8408b9f8e3cd383d3f89a2e1360313e8f0",
+          "references": [
+            4
+          ],
+          "status": "supported",
+          "reason": "逐句引用、证据判断、原文引文及数字检查通过",
+          "text": "pypdf 本身不是 OCR 软件 [4]。",
+          "quotes": [
+            {
+              "reference": 4,
+              "quote": "pypdf不是OCR软件"
+            }
+          ],
+          "model": "kimi-k2.6"
+        }
+      ],
+      "publishable": true
+    }
+  },
+  {
+    "expected": "contradicted",
+    "claim": "pypdf 本身是 OCR 软件，可以识别扫描图像中的文字 [4]。",
+    "evidence": "pypdf不是OCR软件。只有扫描图像而没有文字层的PDF，直接抽取可能几乎没有文字，应考虑OCR。",
+    "job": {
+      "id": 49,
+      "kind": "report_section",
+      "user_id": 1,
+      "status": "needs_review",
+      "progress": 100,
+      "attempts": 1,
+      "max_attempts": 3,
+      "result": {
+        "report_id": 13,
+        "section_id": 34,
+        "status": "needs_review"
+      },
+      "error": "",
+      "cancel_requested": 0,
+      "created_at": "2026-10-31T16:11:41+00:00",
+      "started_at": "2026-10-31T16:11:41+00:00",
+      "finished_at": "2026-10-31T16:11:44+00:00",
+      "configuration": {
+        "chat": {
+          "base_url": "https://api.moonshot.cn/v1",
+          "model": "kimi-k2.6",
+          "timeout_seconds": 120,
+          "max_tokens": 4096
+        },
+        "embedding": {
+          "provider": "tfidf",
+          "base_url": "",
+          "model": "",
+          "timeout_seconds": 90
+        },
+        "chunk": {
+          "size": 800,
+          "overlap": 150
+        },
+        "retrieval": {
+          "mode": "hybrid",
+          "top_k": 6,
+          "min_similarity": 0.3,
+          "min_coverage": 0.12,
+          "rerank": true
+        },
+        "queue": {
+          "concurrency": 2,
+          "max_attempts": 3
+        }
+      }
+    },
+    "verification": {
+      "policy": "sentence-evidence-v1",
+      "state": "insufficient",
+      "content_sha256": "9a7e363e082e9715017d3d5343417e112fc58cbd5ca4965ec46bb3be48e04e23",
+      "checked_at": "2026-10-31T16:11:44+00:00",
+      "evidence_sha256": "a38e8d707ac1aa1e4dfd2e617ce8fe3d3194f9243691fb1e9c994e6ba087879b",
+      "accepted_count": 0,
+      "rejected_count": 1,
+      "checks": [
+        {
+          "claim_id": 1,
+          "sha256": "9a7e363e082e9715017d3d5343417e112fc58cbd5ca4965ec46bb3be48e04e23",
+          "references": [
+            4
+          ],
+          "status": "rejected",
+          "reason": "陈述与引用证据矛盾"
+        }
+      ],
+      "publishable": false
+    }
+  }
+]

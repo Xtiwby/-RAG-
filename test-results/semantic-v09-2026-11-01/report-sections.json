@@ -1,0 +1,678 @@
+[
+  {
+    "title": "UploadFile文件接收",
+    "sources": [
+      "S03"
+    ],
+    "evidence": [
+      {
+        "id": 1183,
+        "document_id": 13,
+        "ordinal": 22,
+        "page": null,
+        "section": "含 `UploadFile` 的文件参数",
+        "text": "* 无需在参数的默认值中使用 `File()`。\r\n* 它使用“spooled”文件：\r\n    * 文件会先存储在内存中，直到达到最大上限，超过该上限后会写入磁盘。\r\n* 因此，非常适合处理图像、视频、大型二进制等大文件，而不会占用所有内存。\r\n* 你可以获取上传文件的元数据。\r\n* 它提供 [file-like](https://docs.python.org/3/glossary.html#term-file-like-object) 的 `async` 接口。\r\n* 它暴露了一个实际的 Python [`SpooledTemporaryFile`](https://docs.python.org/3/library/tempfile.html#tempfile.SpooledTemporaryFile) 对象，你可以直接传给期望「file-like」对象的其他库。",
+        "char_start": 829,
+        "char_end": 1220,
+        "sha256": "a54abd4e99345efebadadec1e2c7b2ebc13283347745a388f551bb7e40922950",
+        "name": "S03_FastAPI_请求文件.md",
+        "version": "v1.0",
+        "modality": "text",
+        "knowledge_base_id": 12,
+        "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+        "chunk_id": 1183,
+        "snippet": "* 无需在参数的默认值中使用 `File()`。\r\n* 它使用“spooled”文件：\r\n    * 文件会先存储在内存中，直到达到最大上限，超过该上限后会写入磁盘。\r\n* 因此，非常适合处理图像、视频、大型二进制等大文件，而不会占用所有内存。\r\n* 你可以获取上传文件的元数据。\r\n* 它提供 [file-like](https://docs.python.org/3/glossary.html#term-file-like-object) 的 `async` 接口。\r\n* 它暴露了一个实际的 Python [`SpooledTemporaryFile`](https://docs.python.org/3/library/tempfile.html#tempfile.SpooledTemporaryFile) 对象，你可以直接传给期望「file-like」对象的其他库。",
+        "score": 0.016129,
+        "relevance": 0.3851,
+        "rerank_score": 0.385143,
+        "matched_queries": [
+          {
+            "query": "UploadFile文件接收 仅两句说明UploadFile的spooled内存磁盘机制，每句引用。",
+            "group": "question",
+            "rank": 2,
+            "coverage": 0.3714,
+            "raw_score": 0.030679,
+            "vector_score": 0.6152
+          }
+        ],
+        "source": "S03_FastAPI_请求文件.md · 含 `UploadFile` 的文件参数 · v1.0"
+      },
+      {
+        "id": 1185,
+        "document_id": 13,
+        "ordinal": 24,
+        "page": null,
+        "section": "`UploadFile`",
+        "text": "`UploadFile` 的属性如下：",
+        "char_start": 1240,
+        "char_end": 1259,
+        "sha256": "3287c99132c5d8ddf586ef7b0422c3c14b7606ad82c7b75d5097e253a966439a",
+        "name": "S03_FastAPI_请求文件.md",
+        "version": "v1.0",
+        "modality": "text",
+        "knowledge_base_id": 12,
+        "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+        "chunk_id": 1185,
+        "snippet": "`UploadFile` 的属性如下：",
+        "score": 0.014286,
+        "relevance": 0.2946,
+        "rerank_score": 0.294621,
+        "matched_queries": [
+          {
+            "query": "UploadFile文件接收 仅两句说明UploadFile的spooled内存磁盘机制，每句引用。",
+            "group": "question",
+            "rank": 10,
+            "coverage": 0.0286,
+            "raw_score": 0.028373,
+            "vector_score": 0.649
+          }
+        ],
+        "source": "S03_FastAPI_请求文件.md · `UploadFile` · v1.0"
+      },
+      {
+        "id": 1181,
+        "document_id": 13,
+        "ordinal": 20,
+        "page": null,
+        "section": "含 `UploadFile` 的文件参数",
+        "text": "将文件参数的类型声明为 `UploadFile`：",
+        "char_start": 765,
+        "char_end": 790,
+        "sha256": "51ab7044d891a6178c439dc15f65ab2789404b5756298d24b0621638aa8aedd6",
+        "name": "S03_FastAPI_请求文件.md",
+        "version": "v1.0",
+        "modality": "text",
+        "knowledge_base_id": 12,
+        "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+        "chunk_id": 1181,
+        "snippet": "将文件参数的类型声明为 `UploadFile`：",
+        "score": 0.014493,
+        "relevance": 0.2818,
+        "rerank_score": 0.281801,
+        "matched_queries": [
+          {
+            "query": "UploadFile文件接收 仅两句说明UploadFile的spooled内存磁盘机制，每句引用。",
+            "group": "question",
+            "rank": 9,
+            "coverage": 0.1429,
+            "raw_score": 0.028595,
+            "vector_score": 0.5989
+          }
+        ],
+        "source": "S03_FastAPI_请求文件.md · 含 `UploadFile` 的文件参数 · v1.0"
+      },
+      {
+        "id": 1166,
+        "document_id": 13,
+        "ordinal": 5,
+        "page": null,
+        "section": "请求文件",
+        "text": "要接收上传的文件，请先安装 [`python-multipart`](https://github.com/Kludex/python-multipart)。",
+        "char_start": 240,
+        "char_end": 319,
+        "sha256": "cc405391e85d0bc6d99758fefda1aaf8d04f8653b92a3017d568379ff04aa26e",
+        "name": "S03_FastAPI_请求文件.md",
+        "version": "v1.0",
+        "modality": "text",
+        "knowledge_base_id": 12,
+        "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+        "chunk_id": 1166,
+        "snippet": "要接收上传的文件，请先安装 [`python-multipart`](https://github.com/Kludex/python-multipart)。",
+        "score": 0.015152,
+        "relevance": 0.2154,
+        "rerank_score": 0.215351,
+        "matched_queries": [
+          {
+            "query": "UploadFile文件接收 仅两句说明UploadFile的spooled内存磁盘机制，每句引用。",
+            "group": "question",
+            "rank": 6,
+            "coverage": 0.1714,
+            "raw_score": 0.028718,
+            "vector_score": 0.5921
+          }
+        ],
+        "source": "S03_FastAPI_请求文件.md · 请求文件 · v1.0"
+      },
+      {
+        "id": 1187,
+        "document_id": 13,
+        "ordinal": 26,
+        "page": null,
+        "section": "`UploadFile`",
+        "text": "`UploadFile` 具有以下 `async` 方法。它们都会在底层调用对应的文件方法（使用内部的 `SpooledTemporaryFile`）。",
+        "char_start": 1625,
+        "char_end": 1701,
+        "sha256": "643122c39e65a9b930121eba11ff522939b46d4460d3bc964bf33813ac96943d",
+        "name": "S03_FastAPI_请求文件.md",
+        "version": "v1.0",
+        "modality": "text",
+        "knowledge_base_id": 12,
+        "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+        "chunk_id": 1187,
+        "snippet": "`UploadFile` 具有以下 `async` 方法。它们都会在底层调用对应的文件方法（使用内部的 `SpooledTemporaryFile`）。",
+        "score": 0.015625,
+        "relevance": 0.2144,
+        "rerank_score": 0.214362,
+        "matched_queries": [
+          {
+            "query": "UploadFile文件接收 仅两句说明UploadFile的spooled内存磁盘机制，每句引用。",
+            "group": "question",
+            "rank": 4,
+            "coverage": 0.1714,
+            "raw_score": 0.030092,
+            "vector_score": 0.6978
+          }
+        ],
+        "source": "S03_FastAPI_请求文件.md · `UploadFile` · v1.0"
+      },
+      {
+        "id": 1168,
+        "document_id": 13,
+        "ordinal": 7,
+        "page": null,
+        "section": "请求文件",
+        "text": "这是因为上传文件是以「表单数据」发送的。",
+        "char_start": 334,
+        "char_end": 354,
+        "sha256": "19eb39fe97fe86bdeb8add8a2cee780460866dcbce47d2cba0be60e2a8364633",
+        "name": "S03_FastAPI_请求文件.md",
+        "version": "v1.0",
+        "modality": "text",
+        "knowledge_base_id": 12,
+        "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+        "chunk_id": 1168,
+        "snippet": "这是因为上传文件是以「表单数据」发送的。",
+        "score": 0.012821,
+        "relevance": 0.1938,
+        "rerank_score": 0.193757,
+        "matched_queries": [
+          {
+            "query": "UploadFile文件接收 仅两句说明UploadFile的spooled内存磁盘机制，每句引用。",
+            "group": "question",
+            "rank": 18,
+            "coverage": 0.0857,
+            "raw_score": 0.024826,
+            "vector_score": 0.6316
+          }
+        ],
+        "source": "S03_FastAPI_请求文件.md · 请求文件 · v1.0"
+      }
+    ],
+    "pipeline": {
+      "policy": "section-focus-v2",
+      "section_title": "UploadFile文件接收",
+      "attempts": [
+        {
+          "query": "UploadFile文件接收 仅两句说明UploadFile的spooled内存磁盘机制，每句引用。",
+          "reason": "section-focus",
+          "retrieval": {
+            "embedding": "local-bge-m3",
+            "embedding_model": "BAAI/bge-m3",
+            "rerank": "local-cross-encoder",
+            "reranking": {
+              "model": "BAAI/bge-reranker-v2-m3",
+              "candidate_count": 40,
+              "device": "cuda",
+              "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+              "max_length": 1024,
+              "at_length_limit": 0
+            },
+            "policy": "multi-query-neural-v3",
+            "mode": "hybrid",
+            "top_k": 6,
+            "min_similarity": 0.3,
+            "min_coverage": 0.12,
+            "knowledge_base_ids": [
+              12
+            ],
+            "query_expansion": {
+              "policy": "bilingual-query-v1",
+              "status": "disabled",
+              "corpus_languages": [
+                "zh"
+              ],
+              "queries": [
+                {
+                  "query": "UploadFile文件接收 仅两句说明UploadFile的spooled内存磁盘机制，每句引用。",
+                  "group": "question",
+                  "weight": 1.0,
+                  "language": "original"
+                }
+              ],
+              "warnings": []
+            },
+            "topic_anchors": [
+              "spooled",
+              "uploadfile"
+            ],
+            "covered_topic_anchors": [
+              "spooled",
+              "uploadfile"
+            ],
+            "part_coverage": {}
+          }
+        }
+      ],
+      "period_start": "",
+      "period_end": "",
+      "note": "业务日期约束由生成和核验执行；不是按文件上传日期过滤。写作总要求仅用于生成，不与章节主题等权拼接。"
+    }
+  },
+  {
+    "title": "pypdf与OCR边界",
+    "sources": [
+      "S10"
+    ],
+    "evidence": [
+      {
+        "id": 1520,
+        "document_id": 20,
+        "ordinal": 3,
+        "page": null,
+        "section": "工具边界",
+        "text": "pypdf不是OCR软件。只有扫描图像而没有文字层的PDF，直接抽取可能几乎没有文字，应考虑OCR。",
+        "char_start": 187,
+        "char_end": 237,
+        "sha256": "f33f9826f8292754817fc612c877efce6662105a51d92df7bdff34b47e0e6d00",
+        "name": "S10_PDF与OCR_中文摘编.md",
+        "version": "v1.0",
+        "modality": "text",
+        "knowledge_base_id": 12,
+        "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+        "chunk_id": 1520,
+        "snippet": "pypdf不是OCR软件。只有扫描图像而没有文字层的PDF，直接抽取可能几乎没有文字，应考虑OCR。",
+        "score": 0.016393,
+        "relevance": 0.9822,
+        "rerank_score": 0.98222,
+        "matched_queries": [
+          {
+            "query": "pypdf与OCR边界 仅两句说明pypdf是否执行OCR及扫描文件的处理边界，每句引用。",
+            "group": "question",
+            "rank": 1,
+            "coverage": 0.1795,
+            "raw_score": 0.032522,
+            "vector_score": 0.7466
+          }
+        ],
+        "source": "S10_PDF与OCR_中文摘编.md · 工具边界 · v1.0"
+      },
+      {
+        "id": 1518,
+        "document_id": 20,
+        "ordinal": 1,
+        "page": null,
+        "section": "S10：PDF文本提取与OCR（中文摘编）",
+        "text": "来源：pypdf官方文档《Extract Text from a PDF》\n原文：https://pypdf.readthedocs.io/en/stable/user/extract-text.html\n整理日期：2026-10-31\n性质：简短事实摘编，非官方全文；不描述本系统已完成的OCR能力。",
+        "char_start": 25,
+        "char_end": 176,
+        "sha256": "83bb85182fb590c86951d4f2b3a3db8aebc7934478cabc2bd17988ed0b2b175e",
+        "name": "S10_PDF与OCR_中文摘编.md",
+        "version": "v1.0",
+        "modality": "text",
+        "knowledge_base_id": 12,
+        "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+        "chunk_id": 1518,
+        "snippet": "来源：pypdf官方文档《Extract Text from a PDF》\n原文：https://pypdf.readthedocs.io/en/stable/user/extract-text.html\n整理日期：2026-10-31\n性质：简短事实摘编，非官方全文；不描述本系统已完成的OCR能力。",
+        "score": 0.015873,
+        "relevance": 0.5437,
+        "rerank_score": 0.543742,
+        "matched_queries": [
+          {
+            "query": "pypdf与OCR边界 仅两句说明pypdf是否执行OCR及扫描文件的处理边界，每句引用。",
+            "group": "question",
+            "rank": 3,
+            "coverage": 0.1282,
+            "raw_score": 0.031746,
+            "vector_score": 0.7311
+          }
+        ],
+        "source": "S10_PDF与OCR_中文摘编.md · S10：PDF文本提取与OCR（中文摘编） · v1.0"
+      },
+      {
+        "id": 1522,
+        "document_id": 20,
+        "ordinal": 5,
+        "page": null,
+        "section": "区分文件情况",
+        "text": "带有OCR文字层的扫描件可能被提取出文字，但这不等于pypdf识别了图像；识别文字与解析文字层是不同步骤。",
+        "char_start": 250,
+        "char_end": 303,
+        "sha256": "59ac15fb3df7e963534c6d0adc23fe99429ed568c23b480c40f54e6fb29eba7a",
+        "name": "S10_PDF与OCR_中文摘编.md",
+        "version": "v1.0",
+        "modality": "text",
+        "knowledge_base_id": 12,
+        "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+        "chunk_id": 1522,
+        "snippet": "带有OCR文字层的扫描件可能被提取出文字，但这不等于pypdf识别了图像；识别文字与解析文字层是不同步骤。",
+        "score": 0.016129,
+        "relevance": 0.5068,
+        "rerank_score": 0.506752,
+        "matched_queries": [
+          {
+            "query": "pypdf与OCR边界 仅两句说明pypdf是否执行OCR及扫描文件的处理边界，每句引用。",
+            "group": "question",
+            "rank": 2,
+            "coverage": 0.1795,
+            "raw_score": 0.032522,
+            "vector_score": 0.753
+          }
+        ],
+        "source": "S10_PDF与OCR_中文摘编.md · 区分文件情况 · v1.0"
+      }
+    ],
+    "pipeline": {
+      "policy": "section-focus-v2",
+      "section_title": "pypdf与OCR边界",
+      "attempts": [
+        {
+          "query": "pypdf与OCR边界 仅两句说明pypdf是否执行OCR及扫描文件的处理边界，每句引用。",
+          "reason": "section-focus",
+          "retrieval": {
+            "embedding": "local-bge-m3",
+            "embedding_model": "BAAI/bge-m3",
+            "rerank": "local-cross-encoder",
+            "reranking": {
+              "model": "BAAI/bge-reranker-v2-m3",
+              "candidate_count": 3,
+              "device": "cuda",
+              "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+              "max_length": 1024,
+              "at_length_limit": 0
+            },
+            "policy": "multi-query-neural-v3",
+            "mode": "hybrid",
+            "top_k": 6,
+            "min_similarity": 0.3,
+            "min_coverage": 0.12,
+            "knowledge_base_ids": [
+              12
+            ],
+            "query_expansion": {
+              "policy": "bilingual-query-v1",
+              "status": "disabled",
+              "corpus_languages": [
+                "zh"
+              ],
+              "queries": [
+                {
+                  "query": "pypdf与OCR边界 仅两句说明pypdf是否执行OCR及扫描文件的处理边界，每句引用。",
+                  "group": "question",
+                  "weight": 1.0,
+                  "language": "original"
+                }
+              ],
+              "warnings": []
+            },
+            "topic_anchors": [
+              "ocr",
+              "pypdf"
+            ],
+            "covered_topic_anchors": [
+              "ocr",
+              "pypdf"
+            ],
+            "part_coverage": {}
+          }
+        }
+      ],
+      "period_start": "",
+      "period_end": "",
+      "note": "业务日期约束由生成和核验执行；不是按文件上传日期过滤。写作总要求仅用于生成，不与章节主题等权拼接。"
+    }
+  },
+  {
+    "title": "本项目本次压测吞吐量",
+    "sources": [
+      "S03",
+      "S04"
+    ],
+    "evidence": [
+      {
+        "id": 1163,
+        "document_id": 13,
+        "ordinal": 2,
+        "page": null,
+        "section": "S03: FastAPI 请求文件",
+        "text": "外部技术资料，不代表本项目实际实现、配置或性能。",
+        "char_start": 179,
+        "char_end": 203,
+        "sha256": "5500b1eca9b34f2a1b114f7bfee259a1d75561be25b45653b8b27ae67b5909ca",
+        "name": "S03_FastAPI_请求文件.md",
+        "version": "v1.0",
+        "modality": "text",
+        "knowledge_base_id": 12,
+        "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+        "chunk_id": 1163,
+        "snippet": "外部技术资料，不代表本项目实际实现、配置或性能。",
+        "score": 0.016393,
+        "relevance": 0.0249,
+        "rerank_score": 0.02494,
+        "matched_queries": [
+          {
+            "query": "本项目本次压测吞吐量 本节仅说明本项目实测QPS，没有项目实测数据则标记待补充；严禁引用外部文档编造。",
+            "group": "question",
+            "rank": 1,
+            "coverage": 0.1471,
+            "raw_score": 0.032522,
+            "vector_score": 0.6152
+          }
+        ],
+        "source": "S03_FastAPI_请求文件.md · S03: FastAPI 请求文件 · v1.0"
+      },
+      {
+        "id": 1219,
+        "document_id": 14,
+        "ordinal": 2,
+        "page": null,
+        "section": "S04: FastAPI OAuth2、密码哈希与JWT",
+        "text": "外部技术资料，不代表本项目实际实现、配置或性能。",
+        "char_start": 196,
+        "char_end": 220,
+        "sha256": "5500b1eca9b34f2a1b114f7bfee259a1d75561be25b45653b8b27ae67b5909ca",
+        "name": "S04_FastAPI_JWT.md",
+        "version": "v1.0",
+        "modality": "text",
+        "knowledge_base_id": 12,
+        "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+        "chunk_id": 1219,
+        "snippet": "外部技术资料，不代表本项目实际实现、配置或性能。",
+        "score": 0.016129,
+        "relevance": 0.0249,
+        "rerank_score": 0.02494,
+        "matched_queries": [
+          {
+            "query": "本项目本次压测吞吐量 本节仅说明本项目实测QPS，没有项目实测数据则标记待补充；严禁引用外部文档编造。",
+            "group": "question",
+            "rank": 2,
+            "coverage": 0.1471,
+            "raw_score": 0.032522,
+            "vector_score": 0.6152
+          }
+        ],
+        "source": "S04_FastAPI_JWT.md · S04: FastAPI OAuth2、密码哈希与JWT · v1.0"
+      },
+      {
+        "id": 1297,
+        "document_id": 14,
+        "ordinal": 80,
+        "page": null,
+        "section": "检查",
+        "text": "注意，代码中的任何地方都没有明文密码 “`secret`”，我们只有它的哈希版本。",
+        "char_start": 3149,
+        "char_end": 3190,
+        "sha256": "91b3d8b69ccc26f460aeb2cda71936558c035ea007f864f8e4263e5fe8b33c98",
+        "name": "S04_FastAPI_JWT.md",
+        "version": "v1.0",
+        "modality": "text",
+        "knowledge_base_id": 12,
+        "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+        "chunk_id": 1297,
+        "snippet": "注意，代码中的任何地方都没有明文密码 “`secret`”，我们只有它的哈希版本。",
+        "score": 0.015625,
+        "relevance": 0.0017,
+        "rerank_score": 0.001655,
+        "matched_queries": [
+          {
+            "query": "本项目本次压测吞吐量 本节仅说明本项目实测QPS，没有项目实测数据则标记待补充；严禁引用外部文档编造。",
+            "group": "question",
+            "rank": 4,
+            "coverage": 0.0735,
+            "raw_score": 0.029572,
+            "vector_score": 0.506
+          }
+        ],
+        "source": "S04_FastAPI_JWT.md · 检查 · v1.0"
+      },
+      {
+        "id": 1292,
+        "document_id": 14,
+        "ordinal": 75,
+        "page": null,
+        "section": "检查",
+        "text": "运行服务器并打开文档：[http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)。",
+        "char_start": 3014,
+        "char_end": 3082,
+        "sha256": "7a97a7233abfff729b929ccd90caef87134a015c925e47203ec1444e82590e1d",
+        "name": "S04_FastAPI_JWT.md",
+        "version": "v1.0",
+        "modality": "text",
+        "knowledge_base_id": 12,
+        "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+        "chunk_id": 1292,
+        "snippet": "运行服务器并打开文档：[http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)。",
+        "score": 0.011236,
+        "relevance": 0.0011,
+        "rerank_score": 0.00109,
+        "matched_queries": [
+          {
+            "query": "本项目本次压测吞吐量 本节仅说明本项目实测QPS，没有项目实测数据则标记待补充；严禁引用外部文档编造。",
+            "group": "question",
+            "rank": 29,
+            "coverage": 0.0441,
+            "raw_score": 0.020679,
+            "vector_score": 0.4463
+          }
+        ],
+        "source": "S04_FastAPI_JWT.md · 检查 · v1.0"
+      },
+      {
+        "id": 1201,
+        "document_id": 13,
+        "ordinal": 40,
+        "page": null,
+        "section": "什么是「表单数据」",
+        "text": "这不是 **FastAPI** 的限制，而是 HTTP 协议的一部分。",
+        "char_start": 2773,
+        "char_end": 2808,
+        "sha256": "387253326ee789feae6d9088554a70cddb73dab6be2f104da30d0d4b1eec0a2e",
+        "name": "S03_FastAPI_请求文件.md",
+        "version": "v1.0",
+        "modality": "text",
+        "knowledge_base_id": 12,
+        "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+        "chunk_id": 1201,
+        "snippet": "这不是 **FastAPI** 的限制，而是 HTTP 协议的一部分。",
+        "score": 0.014085,
+        "relevance": 0.0009,
+        "rerank_score": 0.000944,
+        "matched_queries": [
+          {
+            "query": "本项目本次压测吞吐量 本节仅说明本项目实测QPS，没有项目实测数据则标记待补充；严禁引用外部文档编造。",
+            "group": "question",
+            "rank": 11,
+            "coverage": 0.0147,
+            "raw_score": 0.024559,
+            "vector_score": 0.5289
+          }
+        ],
+        "source": "S03_FastAPI_请求文件.md · 什么是「表单数据」 · v1.0"
+      },
+      {
+        "id": 1176,
+        "document_id": 13,
+        "ordinal": 15,
+        "page": null,
+        "section": "定义 `File` 参数",
+        "text": "文件将作为「表单数据」上传。",
+        "char_start": 590,
+        "char_end": 604,
+        "sha256": "c2b9ef0ad4753986bd8dbcc68a98ff29e41fb0b50b61fa050960b5f5de7dde9a",
+        "name": "S03_FastAPI_请求文件.md",
+        "version": "v1.0",
+        "modality": "text",
+        "knowledge_base_id": 12,
+        "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+        "chunk_id": 1176,
+        "snippet": "文件将作为「表单数据」上传。",
+        "score": 0.013333,
+        "relevance": 0.0009,
+        "rerank_score": 0.000911,
+        "matched_queries": [
+          {
+            "query": "本项目本次压测吞吐量 本节仅说明本项目实测QPS，没有项目实测数据则标记待补充；严禁引用外部文档编造。",
+            "group": "question",
+            "rank": 15,
+            "coverage": 0.0441,
+            "raw_score": 0.023796,
+            "vector_score": 0.5018
+          }
+        ],
+        "source": "S03_FastAPI_请求文件.md · 定义 `File` 参数 · v1.0"
+      }
+    ],
+    "pipeline": {
+      "policy": "section-focus-v2",
+      "section_title": "本项目本次压测吞吐量",
+      "attempts": [
+        {
+          "query": "本项目本次压测吞吐量 本节仅说明本项目实测QPS，没有项目实测数据则标记待补充；严禁引用外部文档编造。",
+          "reason": "section-focus",
+          "retrieval": {
+            "embedding": "local-bge-m3",
+            "embedding_model": "BAAI/bge-m3",
+            "rerank": "local-cross-encoder",
+            "reranking": {
+              "model": "BAAI/bge-reranker-v2-m3",
+              "candidate_count": 40,
+              "device": "cuda",
+              "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+              "max_length": 1024,
+              "at_length_limit": 0
+            },
+            "policy": "multi-query-neural-v3",
+            "mode": "hybrid",
+            "top_k": 6,
+            "min_similarity": 0.3,
+            "min_coverage": 0.12,
+            "knowledge_base_ids": [
+              12
+            ],
+            "query_expansion": {
+              "policy": "bilingual-query-v1",
+              "status": "disabled",
+              "corpus_languages": [
+                "zh"
+              ],
+              "queries": [
+                {
+                  "query": "本项目本次压测吞吐量 本节仅说明本项目实测QPS，没有项目实测数据则标记待补充；严禁引用外部文档编造。",
+                  "group": "question",
+                  "weight": 1.0,
+                  "language": "original"
+                }
+              ],
+              "warnings": []
+            },
+            "topic_anchors": [],
+            "covered_topic_anchors": [],
+            "part_coverage": {}
+          }
+        }
+      ],
+      "period_start": "",
+      "period_end": "",
+      "note": "业务日期约束由生成和核验执行；不是按文件上传日期过滤。写作总要求仅用于生成，不与章节主题等权拼接。"
+    }
+  }
+]

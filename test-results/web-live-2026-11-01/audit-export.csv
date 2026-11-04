@@ -1,0 +1,481 @@
+﻿ID,时间（UTC）,用户ID,账号,操作者,对象类型,对象ID,动作,结果,HTTP状态,来源,详情
+988,2026-10-31T16:08:32+00:00,1,admin,系统管理员,审计日志,,导出审计日志,success,,business,json；479条；导出前快照；筛选条件已应用
+977,2026-10-31T16:08:32+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+976,2026-10-31T16:08:32+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+975,2026-10-31T16:08:32+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+974,2026-10-31T16:08:32+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+973,2026-10-31T16:08:32+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+972,2026-10-31T16:08:32+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+971,2026-10-31T16:08:32+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+970,2026-10-31T16:08:32+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+969,2026-10-31T16:08:32+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+968,2026-10-31T16:08:32+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+967,2026-10-31T16:08:32+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+966,2026-10-31T16:08:32+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+965,2026-10-31T16:08:32+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+964,2026-10-31T16:08:32+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+963,2026-10-31T16:08:31+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+962,2026-10-31T16:08:31+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+961,2026-10-31T16:08:31+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+960,2026-10-31T16:08:31+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+959,2026-10-31T16:08:31+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+958,2026-10-31T16:08:31+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+957,2026-10-31T16:08:31+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+956,2026-10-31T16:08:31+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+955,2026-10-31T16:08:31+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+954,2026-10-31T16:08:31+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+953,2026-10-31T16:08:31+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+952,2026-10-31T16:08:31+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+951,2026-10-31T16:08:31+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+950,2026-10-31T16:08:31+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+949,2026-10-31T16:08:31+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+948,2026-10-31T16:08:31+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+947,2026-10-31T16:08:31+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+946,2026-10-31T16:08:31+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+945,2026-10-31T16:08:31+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+944,2026-10-31T16:08:31+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+943,2026-10-31T16:08:30+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+942,2026-10-31T16:08:30+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+941,2026-10-31T16:08:30+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+940,2026-10-31T16:08:30+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+939,2026-10-31T16:08:30+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+938,2026-10-31T16:08:30+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+937,2026-10-31T16:08:30+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+936,2026-10-31T16:08:30+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+935,2026-10-31T16:08:30+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+934,2026-10-31T16:08:30+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+933,2026-10-31T16:08:30+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+932,2026-10-31T16:08:30+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+931,2026-10-31T16:08:30+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+930,2026-10-31T16:08:30+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+929,2026-10-31T16:08:30+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+928,2026-10-31T16:08:30+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+927,2026-10-31T16:08:30+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+926,2026-10-31T16:08:30+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+925,2026-10-31T16:08:30+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+924,2026-10-31T16:08:30+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+923,2026-10-31T16:08:30+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+922,2026-10-31T16:08:30+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+921,2026-10-31T16:08:29+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+920,2026-10-31T16:08:29+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+919,2026-10-31T16:08:29+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+918,2026-10-31T16:08:29+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+917,2026-10-31T16:08:29+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+916,2026-10-31T16:08:29+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+915,2026-10-31T16:08:29+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+914,2026-10-31T16:08:29+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+913,2026-10-31T16:08:29+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+912,2026-10-31T16:08:29+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+911,2026-10-31T16:08:29+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+910,2026-10-31T16:08:29+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+909,2026-10-31T16:08:29+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+908,2026-10-31T16:08:29+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+907,2026-10-31T16:08:28+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+906,2026-10-31T16:08:28+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+905,2026-10-31T16:08:28+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+904,2026-10-31T16:08:28+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+903,2026-10-31T16:08:28+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+902,2026-10-31T16:08:28+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+901,2026-10-31T16:08:28+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+900,2026-10-31T16:08:28+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+899,2026-10-31T16:08:28+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+898,2026-10-31T16:08:28+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+897,2026-10-31T16:08:28+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+896,2026-10-31T16:08:28+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+895,2026-10-31T16:08:28+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+894,2026-10-31T16:08:28+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+893,2026-10-31T16:08:28+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+892,2026-10-31T16:08:28+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+891,2026-10-31T16:08:28+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+890,2026-10-31T16:08:28+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+889,2026-10-31T16:08:28+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+888,2026-10-31T16:08:28+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+887,2026-10-31T16:08:27+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+886,2026-10-31T16:08:27+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+885,2026-10-31T16:08:27+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+884,2026-10-31T16:08:27+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+883,2026-10-31T16:08:27+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+882,2026-10-31T16:08:27+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+881,2026-10-31T16:08:27+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+880,2026-10-31T16:08:27+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+879,2026-10-31T16:08:27+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+878,2026-10-31T16:08:27+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+877,2026-10-31T16:08:27+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+876,2026-10-31T16:08:27+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+875,2026-10-31T16:08:27+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+874,2026-10-31T16:08:27+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+873,2026-10-31T16:08:27+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+872,2026-10-31T16:08:27+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+871,2026-10-31T16:08:27+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+870,2026-10-31T16:08:27+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+869,2026-10-31T16:08:26+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+868,2026-10-31T16:08:26+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+867,2026-10-31T16:08:26+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+866,2026-10-31T16:08:26+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+865,2026-10-31T16:08:26+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+864,2026-10-31T16:08:26+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+863,2026-10-31T16:08:26+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+862,2026-10-31T16:08:26+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+861,2026-10-31T16:08:26+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+860,2026-10-31T16:08:26+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+859,2026-10-31T16:08:26+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+858,2026-10-31T16:08:26+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+857,2026-10-31T16:08:26+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+856,2026-10-31T16:08:26+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+855,2026-10-31T16:08:26+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+854,2026-10-31T16:08:26+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+853,2026-10-31T16:08:26+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+852,2026-10-31T16:08:26+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+851,2026-10-31T16:08:25+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+850,2026-10-31T16:08:25+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+849,2026-10-31T16:08:25+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+848,2026-10-31T16:08:25+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+847,2026-10-31T16:08:25+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+846,2026-10-31T16:08:25+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+845,2026-10-31T16:08:25+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+844,2026-10-31T16:08:24+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+843,2026-10-31T16:08:24+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+842,2026-10-31T16:08:24+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+841,2026-10-31T16:08:24+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+840,2026-10-31T16:08:24+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+839,2026-10-31T16:08:24+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+838,2026-10-31T16:08:24+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+837,2026-10-31T16:08:24+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+836,2026-10-31T16:08:24+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+835,2026-10-31T16:08:24+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+834,2026-10-31T16:08:24+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+833,2026-10-31T16:08:23+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+832,2026-10-31T16:08:23+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+831,2026-10-31T16:08:23+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+830,2026-10-31T16:08:23+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+829,2026-10-31T16:08:23+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+828,2026-10-31T16:08:23+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+827,2026-10-31T16:08:23+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+826,2026-10-31T16:08:23+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+825,2026-10-31T16:08:23+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+824,2026-10-31T16:08:23+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+823,2026-10-31T16:08:23+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+822,2026-10-31T16:08:23+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+821,2026-10-31T16:08:23+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+820,2026-10-31T16:08:23+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+819,2026-10-31T16:08:23+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+818,2026-10-31T16:08:23+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+817,2026-10-31T16:08:23+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+816,2026-10-31T16:08:22+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+815,2026-10-31T16:08:22+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+814,2026-10-31T16:08:22+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+813,2026-10-31T16:08:22+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+812,2026-10-31T16:08:22+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+811,2026-10-31T16:08:22+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+810,2026-10-31T16:08:22+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+809,2026-10-31T16:08:22+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+808,2026-10-31T16:08:22+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+807,2026-10-31T16:08:22+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+806,2026-10-31T16:08:22+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+805,2026-10-31T16:08:22+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+804,2026-10-31T16:08:22+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+803,2026-10-31T16:08:22+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+802,2026-10-31T16:08:22+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+801,2026-10-31T16:08:22+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+800,2026-10-31T16:08:22+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+799,2026-10-31T16:08:22+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+798,2026-10-31T16:08:22+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+797,2026-10-31T16:08:22+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+796,2026-10-31T16:08:22+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+795,2026-10-31T16:08:21+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+794,2026-10-31T16:08:21+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+793,2026-10-31T16:08:21+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+792,2026-10-31T16:08:21+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+791,2026-10-31T16:08:21+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+790,2026-10-31T16:08:21+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+789,2026-10-31T16:08:21+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+788,2026-10-31T16:08:21+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+787,2026-10-31T16:08:21+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+786,2026-10-31T16:08:21+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+785,2026-10-31T16:08:21+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+784,2026-10-31T16:08:21+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+783,2026-10-31T16:08:21+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+782,2026-10-31T16:08:21+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+781,2026-10-31T16:08:21+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+780,2026-10-31T16:08:21+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+779,2026-10-31T16:08:21+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+778,2026-10-31T16:08:21+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+776,2026-10-31T16:08:20+00:00,1,admin,系统管理员,账户,,登录,success,,business,
+775,2026-10-31T16:07:13+00:00,1,admin,系统管理员,账户,,执行,success,200,request,POST /api/auth/logout
+774,2026-10-31T16:07:13+00:00,1,admin,系统管理员,系统,13,修改,success,200,request,PATCH /api/conversations/13
+773,2026-10-31T16:07:13+00:00,1,admin,系统管理员,会话,,流式问答,success,,business,13
+772,2026-10-31T16:06:50+00:00,1,admin,系统管理员,问答,,执行,success,200,request,POST /api/qa/stream
+771,2026-10-31T16:06:50+00:00,1,admin,系统管理员,系统,12,修改,success,200,request,PATCH /api/conversations/12
+770,2026-10-31T16:06:50+00:00,1,admin,系统管理员,会话,,流式问答,success,,business,12
+769,2026-10-31T16:06:45+00:00,1,admin,系统管理员,问答,,执行,success,200,request,POST /api/qa/stream
+768,2026-10-31T16:06:45+00:00,1,admin,系统管理员,系统,11,修改,success,200,request,PATCH /api/conversations/11
+767,2026-10-31T16:06:45+00:00,1,admin,系统管理员,会话,,流式问答,success,,business,11
+766,2026-10-31T16:06:33+00:00,1,admin,系统管理员,问答,,执行,success,200,request,POST /api/qa/stream
+765,2026-10-31T16:06:33+00:00,1,admin,系统管理员,系统,10,修改,success,200,request,PATCH /api/conversations/10
+764,2026-10-31T16:06:33+00:00,1,admin,系统管理员,会话,,流式问答,success,,business,10
+763,2026-10-31T16:06:24+00:00,1,admin,系统管理员,问答,,执行,success,200,request,POST /api/qa/stream
+762,2026-10-31T16:06:24+00:00,1,admin,系统管理员,系统,9,修改,success,200,request,PATCH /api/conversations/9
+761,2026-10-31T16:06:24+00:00,1,admin,系统管理员,会话,,流式问答,success,,business,9
+760,2026-10-31T16:05:59+00:00,1,admin,系统管理员,问答,,执行,success,200,request,POST /api/qa/stream
+759,2026-10-31T16:05:59+00:00,1,admin,系统管理员,系统,8,修改,success,200,request,PATCH /api/conversations/8
+758,2026-10-31T16:05:59+00:00,1,admin,系统管理员,会话,,流式问答,success,,business,8
+757,2026-10-31T16:05:50+00:00,1,admin,系统管理员,问答,,执行,success,200,request,POST /api/qa/stream
+756,2026-10-31T16:05:49+00:00,1,admin,系统管理员,系统,7,修改,success,200,request,PATCH /api/conversations/7
+755,2026-10-31T16:05:49+00:00,1,admin,系统管理员,会话,,流式问答,success,,business,7
+754,2026-10-31T16:05:44+00:00,1,admin,系统管理员,问答,,执行,success,200,request,POST /api/qa/stream
+753,2026-10-31T16:05:44+00:00,1,admin,系统管理员,系统,6,修改,success,200,request,PATCH /api/conversations/6
+752,2026-10-31T16:05:44+00:00,1,admin,系统管理员,会话,,流式问答,success,,business,6
+751,2026-10-31T16:05:27+00:00,1,admin,系统管理员,问答,,执行,success,200,request,POST /api/qa/stream
+750,2026-10-31T16:05:27+00:00,1,admin,系统管理员,系统,5,修改,success,200,request,PATCH /api/conversations/5
+749,2026-10-31T16:05:27+00:00,1,admin,系统管理员,会话,,流式问答,success,,business,5
+748,2026-10-31T16:05:14+00:00,1,admin,系统管理员,问答,,执行,success,200,request,POST /api/qa/stream
+746,2026-10-31T16:05:14+00:00,1,admin,系统管理员,账户,,登录,success,,business,
+745,2026-10-31T16:05:06+00:00,1,admin,系统管理员,账户,,执行,success,200,request,POST /api/auth/logout
+744,2026-10-31T16:05:05+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+743,2026-10-31T16:05:05+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+742,2026-10-31T16:05:05+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+741,2026-10-31T16:05:05+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+740,2026-10-31T16:05:05+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+739,2026-10-31T16:05:05+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+738,2026-10-31T16:05:05+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+737,2026-10-31T16:05:05+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+736,2026-10-31T16:05:05+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+735,2026-10-31T16:05:05+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+734,2026-10-31T16:05:05+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+733,2026-10-31T16:05:05+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+732,2026-10-31T16:05:05+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+731,2026-10-31T16:05:05+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+730,2026-10-31T16:05:05+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+729,2026-10-31T16:05:05+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+728,2026-10-31T16:05:05+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+727,2026-10-31T16:05:05+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+726,2026-10-31T16:05:05+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+725,2026-10-31T16:05:05+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+724,2026-10-31T16:05:04+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+723,2026-10-31T16:05:04+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+722,2026-10-31T16:05:04+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+721,2026-10-31T16:05:04+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+720,2026-10-31T16:05:04+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+719,2026-10-31T16:05:04+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+718,2026-10-31T16:05:04+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+717,2026-10-31T16:05:04+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+716,2026-10-31T16:05:04+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+715,2026-10-31T16:05:04+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+714,2026-10-31T16:05:04+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+713,2026-10-31T16:05:04+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+712,2026-10-31T16:05:04+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+711,2026-10-31T16:05:04+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+710,2026-10-31T16:05:03+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+709,2026-10-31T16:05:03+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+708,2026-10-31T16:05:03+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+707,2026-10-31T16:05:03+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+706,2026-10-31T16:05:03+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+705,2026-10-31T16:05:03+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+704,2026-10-31T16:05:03+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+703,2026-10-31T16:05:03+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+702,2026-10-31T16:05:03+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+701,2026-10-31T16:05:03+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+700,2026-10-31T16:05:03+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+699,2026-10-31T16:05:03+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+698,2026-10-31T16:05:03+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+697,2026-10-31T16:05:03+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+696,2026-10-31T16:05:03+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+695,2026-10-31T16:05:03+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+694,2026-10-31T16:05:03+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+693,2026-10-31T16:05:03+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+692,2026-10-31T16:05:03+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+691,2026-10-31T16:05:03+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+690,2026-10-31T16:05:02+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+689,2026-10-31T16:05:02+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+688,2026-10-31T16:05:02+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+687,2026-10-31T16:05:02+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+686,2026-10-31T16:05:02+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+685,2026-10-31T16:05:02+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+684,2026-10-31T16:05:02+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+683,2026-10-31T16:05:02+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+682,2026-10-31T16:05:02+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+681,2026-10-31T16:05:02+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+680,2026-10-31T16:05:02+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+679,2026-10-31T16:05:02+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+678,2026-10-31T16:05:02+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+677,2026-10-31T16:05:02+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+676,2026-10-31T16:05:02+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+675,2026-10-31T16:05:02+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+674,2026-10-31T16:05:02+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+673,2026-10-31T16:05:02+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+672,2026-10-31T16:05:02+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+671,2026-10-31T16:05:02+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+670,2026-10-31T16:05:01+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+669,2026-10-31T16:05:01+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+668,2026-10-31T16:05:01+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+667,2026-10-31T16:05:01+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+666,2026-10-31T16:05:01+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+665,2026-10-31T16:05:01+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+664,2026-10-31T16:05:01+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+663,2026-10-31T16:05:01+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+662,2026-10-31T16:05:01+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+661,2026-10-31T16:05:01+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+660,2026-10-31T16:05:01+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+659,2026-10-31T16:05:01+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+658,2026-10-31T16:05:01+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+657,2026-10-31T16:05:01+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+656,2026-10-31T16:05:01+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+655,2026-10-31T16:05:01+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+654,2026-10-31T16:05:01+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+653,2026-10-31T16:05:01+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+652,2026-10-31T16:05:01+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+651,2026-10-31T16:05:01+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+650,2026-10-31T16:05:00+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+649,2026-10-31T16:05:00+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+648,2026-10-31T16:05:00+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+647,2026-10-31T16:05:00+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+646,2026-10-31T16:05:00+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+645,2026-10-31T16:05:00+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+644,2026-10-31T16:05:00+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+643,2026-10-31T16:05:00+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+642,2026-10-31T16:05:00+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+641,2026-10-31T16:05:00+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+640,2026-10-31T16:05:00+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+639,2026-10-31T16:05:00+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+638,2026-10-31T16:05:00+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+637,2026-10-31T16:05:00+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+636,2026-10-31T16:05:00+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+635,2026-10-31T16:05:00+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+634,2026-10-31T16:05:00+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+633,2026-10-31T16:04:59+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+632,2026-10-31T16:04:59+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+631,2026-10-31T16:04:59+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+630,2026-10-31T16:04:59+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+629,2026-10-31T16:04:59+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+628,2026-10-31T16:04:59+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+627,2026-10-31T16:04:59+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+626,2026-10-31T16:04:59+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+625,2026-10-31T16:04:59+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+624,2026-10-31T16:04:59+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+623,2026-10-31T16:04:59+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+622,2026-10-31T16:04:58+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+621,2026-10-31T16:04:58+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+620,2026-10-31T16:04:58+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+619,2026-10-31T16:04:58+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+618,2026-10-31T16:04:58+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+617,2026-10-31T16:04:58+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+616,2026-10-31T16:04:58+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+615,2026-10-31T16:04:58+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+614,2026-10-31T16:04:58+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+613,2026-10-31T16:04:58+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+612,2026-10-31T16:04:58+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+611,2026-10-31T16:04:58+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+610,2026-10-31T16:04:58+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+609,2026-10-31T16:04:58+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+608,2026-10-31T16:04:58+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+607,2026-10-31T16:04:58+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+606,2026-10-31T16:04:58+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+605,2026-10-31T16:04:58+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+604,2026-10-31T16:04:58+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+603,2026-10-31T16:04:58+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+602,2026-10-31T16:04:58+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+601,2026-10-31T16:04:58+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+600,2026-10-31T16:04:57+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+599,2026-10-31T16:04:57+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+598,2026-10-31T16:04:57+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+597,2026-10-31T16:04:57+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+596,2026-10-31T16:04:57+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+595,2026-10-31T16:04:57+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+594,2026-10-31T16:04:57+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+593,2026-10-31T16:04:57+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+592,2026-10-31T16:04:57+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+591,2026-10-31T16:04:57+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+590,2026-10-31T16:04:57+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+589,2026-10-31T16:04:57+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+588,2026-10-31T16:04:57+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+587,2026-10-31T16:04:57+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+586,2026-10-31T16:04:57+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+585,2026-10-31T16:04:57+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+584,2026-10-31T16:04:57+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+583,2026-10-31T16:04:57+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+582,2026-10-31T16:04:57+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+581,2026-10-31T16:04:57+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+580,2026-10-31T16:04:56+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+579,2026-10-31T16:04:56+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+578,2026-10-31T16:04:56+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+577,2026-10-31T16:04:56+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+576,2026-10-31T16:04:56+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+575,2026-10-31T16:04:56+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+574,2026-10-31T16:04:56+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+573,2026-10-31T16:04:56+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+572,2026-10-31T16:04:56+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+571,2026-10-31T16:04:56+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+570,2026-10-31T16:04:56+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+569,2026-10-31T16:04:56+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+568,2026-10-31T16:04:56+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+567,2026-10-31T16:04:56+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+566,2026-10-31T16:04:56+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+565,2026-10-31T16:04:56+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+564,2026-10-31T16:04:56+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+563,2026-10-31T16:04:56+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+562,2026-10-31T16:04:56+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+561,2026-10-31T16:04:56+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+560,2026-10-31T16:04:56+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+559,2026-10-31T16:04:56+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+558,2026-10-31T16:04:55+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+557,2026-10-31T16:04:55+00:00,1,admin,系统管理员,知识库,,检索,success,,business,hybrid
+556,2026-10-31T16:04:55+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+555,2026-10-31T16:04:55+00:00,1,admin,系统管理员,知识库,,检索,success,,business,keyword
+554,2026-10-31T16:04:55+00:00,1,admin,系统管理员,检索,,执行,success,200,request,POST /api/search
+553,2026-10-31T16:04:55+00:00,1,admin,系统管理员,知识库,,检索,success,,business,vector
+551,2026-10-31T16:04:55+00:00,1,admin,系统管理员,账户,,登录,success,,business,
+550,2026-10-31T16:04:54+00:00,1,admin,系统管理员,账户,,执行,success,200,request,POST /api/auth/logout
+549,2026-10-31T16:04:54+00:00,1,admin,系统管理员,任务,42,任务完成,success,,business,ingest
+548,2026-10-31T16:04:54+00:00,1,admin,系统管理员,文档,20,文档索引完成,success,,business,
+547,2026-10-31T16:04:53+00:00,1,admin,系统管理员,文档,,执行,success,201,request,POST /api/documents
+546,2026-10-31T16:04:53+00:00,1,admin,系统管理员,文档,20,上传文档,success,,business,S10_PDF与OCR_中文摘编.md
+545,2026-10-31T16:04:53+00:00,1,admin,系统管理员,任务,41,任务完成,success,,business,ingest
+544,2026-10-31T16:04:53+00:00,1,admin,系统管理员,文档,19,文档索引完成,success,,business,
+543,2026-10-31T16:04:53+00:00,1,admin,系统管理员,文档,,执行,success,201,request,POST /api/documents
+542,2026-10-31T16:04:53+00:00,1,admin,系统管理员,文档,19,上传文档,success,,business,S09_TFIDF_中文摘编.txt
+541,2026-10-31T16:04:52+00:00,1,admin,系统管理员,任务,40,任务完成,success,,business,ingest
+540,2026-10-31T16:04:52+00:00,1,admin,系统管理员,文档,18,文档索引完成,success,,business,
+539,2026-10-31T16:04:51+00:00,1,admin,系统管理员,文档,,执行,success,201,request,POST /api/documents
+538,2026-10-31T16:04:51+00:00,1,admin,系统管理员,文档,18,上传文档,success,,business,S08_RAG_中文摘编.md
+537,2026-10-31T16:04:51+00:00,1,admin,系统管理员,任务,39,任务完成,success,,business,ingest
+536,2026-10-31T16:04:51+00:00,1,admin,系统管理员,文档,17,文档索引完成,success,,business,
+535,2026-10-31T16:04:51+00:00,1,admin,系统管理员,文档,,执行,success,201,request,POST /api/documents
+534,2026-10-31T16:04:51+00:00,1,admin,系统管理员,文档,17,上传文档,success,,business,S07_RRF_中文摘编.md
+533,2026-10-31T16:04:50+00:00,1,admin,系统管理员,任务,38,任务完成,success,,business,ingest
+532,2026-10-31T16:04:50+00:00,1,admin,系统管理员,文档,16,文档索引完成,success,,business,
+531,2026-10-31T16:04:45+00:00,1,admin,系统管理员,文档,,执行,success,201,request,POST /api/documents
+530,2026-10-31T16:04:45+00:00,1,admin,系统管理员,文档,16,上传文档,success,,business,S06_Vue3_响应式基础.md
+529,2026-10-31T16:04:45+00:00,1,admin,系统管理员,任务,37,任务完成,success,,business,ingest
+528,2026-10-31T16:04:45+00:00,1,admin,系统管理员,文档,15,文档索引完成,success,,business,
+527,2026-10-31T16:04:41+00:00,1,admin,系统管理员,文档,,执行,success,201,request,POST /api/documents
+526,2026-10-31T16:04:41+00:00,1,admin,系统管理员,文档,15,上传文档,success,,business,S05_Vue3_简介.md
+525,2026-10-31T16:04:40+00:00,1,admin,系统管理员,任务,36,任务完成,success,,business,ingest
+524,2026-10-31T16:04:40+00:00,1,admin,系统管理员,文档,14,文档索引完成,success,,business,
+523,2026-10-31T16:04:32+00:00,1,admin,系统管理员,文档,,执行,success,201,request,POST /api/documents
+522,2026-10-31T16:04:32+00:00,1,admin,系统管理员,文档,14,上传文档,success,,business,S04_FastAPI_JWT.md
+521,2026-10-31T16:04:31+00:00,1,admin,系统管理员,任务,35,任务完成,success,,business,ingest
+520,2026-10-31T16:04:31+00:00,1,admin,系统管理员,文档,13,文档索引完成,success,,business,
+519,2026-10-31T16:04:28+00:00,1,admin,系统管理员,文档,,执行,success,201,request,POST /api/documents
+518,2026-10-31T16:04:28+00:00,1,admin,系统管理员,文档,13,上传文档,success,,business,S03_FastAPI_请求文件.md
+517,2026-10-31T16:04:28+00:00,1,admin,系统管理员,任务,34,任务完成,success,,business,ingest
+516,2026-10-31T16:04:28+00:00,1,admin,系统管理员,文档,12,文档索引完成,success,,business,
+515,2026-10-31T16:04:23+00:00,1,admin,系统管理员,文档,,执行,success,201,request,POST /api/documents
+514,2026-10-31T16:04:23+00:00,1,admin,系统管理员,文档,12,上传文档,success,,business,S02_SQLite_FTS5_BM25.html
+513,2026-10-31T16:04:22+00:00,1,admin,系统管理员,任务,33,任务完成,success,,business,ingest
+512,2026-10-31T16:04:22+00:00,1,admin,系统管理员,文档,11,文档索引完成,success,,business,
+511,2026-10-31T16:04:21+00:00,1,admin,系统管理员,文档,,执行,success,201,request,POST /api/documents
+510,2026-10-31T16:04:21+00:00,1,admin,系统管理员,文档,11,上传文档,success,,business,S01_DPR_2020.pdf
+509,2026-10-31T16:04:21+00:00,1,admin,系统管理员,知识库,,执行,success,200,request,POST /api/knowledge-bases
+508,2026-10-31T16:04:21+00:00,1,admin,系统管理员,知识库,,创建,success,,business,网络资料测试 2026-11-01 · Vue前端
+507,2026-10-31T16:04:21+00:00,1,admin,系统管理员,知识库,,执行,success,200,request,POST /api/knowledge-bases
+506,2026-10-31T16:04:21+00:00,1,admin,系统管理员,知识库,,创建,success,,business,网络资料测试 2026-11-01 · 后端与接入
+505,2026-10-31T16:04:21+00:00,1,admin,系统管理员,知识库,,执行,success,200,request,POST /api/knowledge-bases
+504,2026-10-31T16:04:21+00:00,1,admin,系统管理员,知识库,,创建,success,,business,网络资料测试 2026-11-01 · 检索技术
+503,2026-10-31T16:04:21+00:00,1,admin,系统管理员,系统,7,删除,success,200,request,DELETE /api/report-templates/7
+502,2026-10-31T16:04:21+00:00,1,admin,系统管理员,报告模板,7,删除报告模板版本,success,,business,V0.5 双章节合成验收 · v1.0；移入回收站，保留历史引用
+501,2026-10-31T16:04:21+00:00,1,admin,系统管理员,知识库,10,删除,success,200,request,DELETE /api/knowledge-bases/10
+500,2026-10-31T16:04:21+00:00,1,admin,系统管理员,知识库,,删除,success,,business,10
+499,2026-10-31T16:04:21+00:00,1,admin,系统管理员,知识库,9,删除,success,200,request,DELETE /api/knowledge-bases/9
+498,2026-10-31T16:04:21+00:00,1,admin,系统管理员,知识库,,删除,success,,business,9
+497,2026-10-31T16:04:21+00:00,1,admin,系统管理员,知识库,8,删除,success,200,request,DELETE /api/knowledge-bases/8
+496,2026-10-31T16:04:21+00:00,1,admin,系统管理员,知识库,,删除,success,,business,8

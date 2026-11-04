@@ -1,0 +1,12 @@
+{
+  "filters": {
+    "start": "2026-10-31T16:04:21+00:00",
+    "user_id": 1,
+    "result": "success"
+  },
+  "query_total": 479,
+  "json_count": 479,
+  "json_matches_query": true,
+  "csv_rows": "480",
+  "note": "Each export itself creates an audit entry; later CSV count may increase."
+}

@@ -1,0 +1,1206 @@
+{
+  "question_id": "Q025",
+  "question": "收到UploadFile后是否就等于完成了扫描PDF的OCR？请结合两份资料说明。",
+  "expected_for_human_review": "不是。UploadFile负责接收和提供类文件接口；扫描图像文字识别属于OCR，pypdf本身不是OCR软件。",
+  "answerable": true,
+  "elapsed_ms": 19950,
+  "conversation": {
+    "id": 42,
+    "user_id": 1,
+    "title": "v0.10 质量复测 Q025 · 收到UploadFile后是否就等于完成了扫描PDF的OCR？请结合两份资料说明。",
+    "knowledge_base_ids": [
+      11,
+      12,
+      13
+    ],
+    "created_at": "2026-11-01T13:11:38+00:00",
+    "updated_at": "2026-11-01T13:11:51+00:00",
+    "messages": [
+      {
+        "id": 87,
+        "conversation_id": 42,
+        "role": "user",
+        "content": "收到UploadFile后是否就等于完成了扫描PDF的OCR?请结合两份资料说明。",
+        "citations": [],
+        "status": "complete",
+        "feedback": null,
+        "created_at": "2026-11-01T13:11:38+00:00",
+        "verification": [],
+        "retrieval": {},
+        "coverage": {}
+      },
+      {
+        "id": 88,
+        "conversation_id": 42,
+        "role": "assistant",
+        "content": "若PDF只有扫描图像而没有文字层，直接抽取可能几乎没有文字，应考虑OCR[2]。\n识别文字与解析文字层是不同步骤[1]。\n\n部分候选句未通过引用或证据支撑校验，已过滤；上述仅展示通过校验的内容。",
+        "citations": [
+          {
+            "id": 1522,
+            "document_id": 20,
+            "ordinal": 5,
+            "page": null,
+            "section": "区分文件情况",
+            "text": "带有OCR文字层的扫描件可能被提取出文字，但这不等于pypdf识别了图像；识别文字与解析文字层是不同步骤。",
+            "char_start": 250,
+            "char_end": 303,
+            "sha256": "59ac15fb3df7e963534c6d0adc23fe99429ed568c23b480c40f54e6fb29eba7a",
+            "name": "S10_PDF与OCR_中文摘编.md",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 12,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+            "chunk_id": 1522,
+            "snippet": "带有OCR文字层的扫描件可能被提取出文字，但这不等于pypdf识别了图像；识别文字与解析文字层是不同步骤。",
+            "score": 0.031099,
+            "relevance": 0.4554,
+            "rerank_score": 0.455411,
+            "matched_queries": [
+              {
+                "query": "收到UploadFile后是否就等于完成了扫描PDF的OCR?请结合两份资料说明。",
+                "group": "question",
+                "rank": 1,
+                "coverage": 0.175,
+                "raw_score": 0.032787,
+                "vector_score": 0.6651
+              },
+              {
+                "query": "Does receiving UploadFile mean the OCR of scanned PDF is complete? Please explain with reference to two documents.",
+                "group": "question",
+                "rank": 8,
+                "coverage": 0.0833,
+                "raw_score": 0.024797,
+                "vector_score": 0.641
+              }
+            ],
+            "source": "S10_PDF与OCR_中文摘编.md · 区分文件情况 · v1.0"
+          },
+          {
+            "id": 1520,
+            "document_id": 20,
+            "ordinal": 3,
+            "page": null,
+            "section": "工具边界",
+            "text": "pypdf不是OCR软件。只有扫描图像而没有文字层的PDF，直接抽取可能几乎没有文字，应考虑OCR。",
+            "char_start": 187,
+            "char_end": 237,
+            "sha256": "f33f9826f8292754817fc612c877efce6662105a51d92df7bdff34b47e0e6d00",
+            "name": "S10_PDF与OCR_中文摘编.md",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 12,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+            "chunk_id": 1520,
+            "snippet": "pypdf不是OCR软件。只有扫描图像而没有文字层的PDF，直接抽取可能几乎没有文字，应考虑OCR。",
+            "score": 0.032522,
+            "relevance": 0.4221,
+            "rerank_score": 0.422088,
+            "matched_queries": [
+              {
+                "query": "收到UploadFile后是否就等于完成了扫描PDF的OCR?请结合两份资料说明。",
+                "group": "question",
+                "rank": 2,
+                "coverage": 0.125,
+                "raw_score": 0.032258,
+                "vector_score": 0.6359
+              },
+              {
+                "query": "Does receiving UploadFile mean the OCR of scanned PDF is complete? Please explain with reference to two documents.",
+                "group": "question",
+                "rank": 1,
+                "coverage": 0.1667,
+                "raw_score": 0.031498,
+                "vector_score": 0.5875
+              }
+            ],
+            "source": "S10_PDF与OCR_中文摘编.md · 工具边界 · v1.0"
+          },
+          {
+            "id": 1168,
+            "document_id": 13,
+            "ordinal": 7,
+            "page": null,
+            "section": "请求文件",
+            "text": "这是因为上传文件是以「表单数据」发送的。",
+            "char_start": 334,
+            "char_end": 354,
+            "sha256": "19eb39fe97fe86bdeb8add8a2cee780460866dcbce47d2cba0be60e2a8364633",
+            "name": "S03_FastAPI_请求文件.md",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 12,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+            "chunk_id": 1168,
+            "snippet": "这是因为上传文件是以「表单数据」发送的。",
+            "score": 0.023953,
+            "relevance": 0.264,
+            "rerank_score": 0.263979,
+            "matched_queries": [
+              {
+                "query": "收到UploadFile后是否就等于完成了扫描PDF的OCR?请结合两份资料说明。",
+                "group": "question",
+                "rank": 24,
+                "coverage": 0.0,
+                "raw_score": 0.016416,
+                "vector_score": 0.6149
+              },
+              {
+                "query": "Does receiving UploadFile mean the OCR of scanned PDF is complete? Please explain with reference to two documents.",
+                "group": "question",
+                "rank": 23,
+                "coverage": 0.0,
+                "raw_score": 0.016494,
+                "vector_score": 0.586
+              }
+            ],
+            "source": "S03_FastAPI_请求文件.md · 请求文件 · v1.0"
+          },
+          {
+            "id": 1179,
+            "document_id": 13,
+            "ordinal": 18,
+            "page": null,
+            "section": "定义 `File` 参数",
+            "text": "不过，在很多情况下，使用 `UploadFile` 会更有优势。",
+            "char_start": 706,
+            "char_end": 738,
+            "sha256": "a9e261d4780ee86dc4359b129f3d88913c68123ad629f4e5ae0e47bf5761195b",
+            "name": "S03_FastAPI_请求文件.md",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 12,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+            "chunk_id": 1179,
+            "snippet": "不过，在很多情况下，使用 `UploadFile` 会更有优势。",
+            "score": 0.029437,
+            "relevance": 0.1312,
+            "rerank_score": 0.131173,
+            "matched_queries": [
+              {
+                "query": "收到UploadFile后是否就等于完成了扫描PDF的OCR?请结合两份资料说明。",
+                "group": "question",
+                "rank": 10,
+                "coverage": 0.025,
+                "raw_score": 0.021897,
+                "vector_score": 0.5649
+              },
+              {
+                "query": "Does receiving UploadFile mean the OCR of scanned PDF is complete? Please explain with reference to two documents.",
+                "group": "question",
+                "rank": 6,
+                "coverage": 0.0833,
+                "raw_score": 0.025452,
+                "vector_score": 0.5593
+              }
+            ],
+            "source": "S03_FastAPI_请求文件.md · 定义 `File` 参数 · v1.0"
+          },
+          {
+            "id": 1210,
+            "document_id": 13,
+            "ordinal": 49,
+            "page": null,
+            "section": "多文件上传",
+            "text": "接收的也是含 `bytes` 或 `UploadFile` 的列表（`list`）。",
+            "char_start": 3038,
+            "char_end": 3080,
+            "sha256": "6e62164f95b9268da1035be1b193d609afe138c261a79137761410fd0bbfac22",
+            "name": "S03_FastAPI_请求文件.md",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 12,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+            "chunk_id": 1210,
+            "snippet": "接收的也是含 `bytes` 或 `UploadFile` 的列表（`list`）。",
+            "score": 0.031498,
+            "relevance": 0.0988,
+            "rerank_score": 0.098773,
+            "matched_queries": [
+              {
+                "query": "收到UploadFile后是否就等于完成了扫描PDF的OCR?请结合两份资料说明。",
+                "group": "question",
+                "rank": 4,
+                "coverage": 0.05,
+                "raw_score": 0.028543,
+                "vector_score": 0.6047
+              },
+              {
+                "query": "Does receiving UploadFile mean the OCR of scanned PDF is complete? Please explain with reference to two documents.",
+                "group": "question",
+                "rank": 3,
+                "coverage": 0.0833,
+                "raw_score": 0.028485,
+                "vector_score": 0.5607
+              }
+            ],
+            "source": "S03_FastAPI_请求文件.md · 多文件上传 · v1.0"
+          },
+          {
+            "id": 1167,
+            "document_id": 13,
+            "ordinal": 6,
+            "page": null,
+            "section": "请求文件",
+            "text": "将它添加到你的项目中：",
+            "char_start": 321,
+            "char_end": 332,
+            "sha256": "7de28596c148aaf8b186170ce943f4381c4c0fc9c06c87763d0db46a46141a7e",
+            "name": "S03_FastAPI_请求文件.md",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 12,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+            "chunk_id": 1167,
+            "snippet": "将它添加到你的项目中：",
+            "score": 0,
+            "relevance": 0,
+            "rerank_score": 0,
+            "kind": "adjacent-context",
+            "context_for": 1168,
+            "matched_queries": [],
+            "source": "S03_FastAPI_请求文件.md · 请求文件 · v1.0 · 相邻原文（未独立评分）"
+          },
+          {
+            "id": 1178,
+            "document_id": 13,
+            "ordinal": 17,
+            "page": null,
+            "section": "定义 `File` 参数",
+            "text": "请注意，这意味着整个内容会存储在内存中，适用于小型文件。",
+            "char_start": 676,
+            "char_end": 704,
+            "sha256": "d83c45f545db9fd76904eb5cdf559996f7785e9873e858c54de17efb6d9e789e",
+            "name": "S03_FastAPI_请求文件.md",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 12,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+            "chunk_id": 1178,
+            "snippet": "请注意，这意味着整个内容会存储在内存中，适用于小型文件。",
+            "score": 0,
+            "relevance": 0,
+            "rerank_score": 0,
+            "kind": "adjacent-context",
+            "context_for": 1179,
+            "matched_queries": [],
+            "source": "S03_FastAPI_请求文件.md · 定义 `File` 参数 · v1.0 · 相邻原文（未独立评分）"
+          },
+          {
+            "id": 1209,
+            "document_id": 13,
+            "ordinal": 48,
+            "page": null,
+            "section": "多文件上传",
+            "text": "要实现这一点，声明一个由 `bytes` 或 `UploadFile` 组成的列表：",
+            "char_start": 2994,
+            "char_end": 3036,
+            "sha256": "a2b15f64a1778c3c40420312b2a1d3db1c47b3d47854d29752d5c9b393e27b79",
+            "name": "S03_FastAPI_请求文件.md",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 12,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+            "chunk_id": 1209,
+            "snippet": "要实现这一点，声明一个由 `bytes` 或 `UploadFile` 组成的列表：",
+            "score": 0,
+            "relevance": 0,
+            "rerank_score": 0,
+            "kind": "adjacent-context",
+            "context_for": 1210,
+            "matched_queries": [],
+            "source": "S03_FastAPI_请求文件.md · 多文件上传 · v1.0 · 相邻原文（未独立评分）"
+          },
+          {
+            "id": 1211,
+            "document_id": 13,
+            "ordinal": 50,
+            "page": null,
+            "section": "多文件上传",
+            "text": "也可以使用 `from starlette.responses import HTMLResponse`。",
+            "char_start": 3082,
+            "char_end": 3135,
+            "sha256": "f562505c0865745297a075251ecb17b639a2c11bfe5111ab456a0bc920bf1c74",
+            "name": "S03_FastAPI_请求文件.md",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 12,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+            "chunk_id": 1211,
+            "snippet": "也可以使用 `from starlette.responses import HTMLResponse`。",
+            "score": 0,
+            "relevance": 0,
+            "rerank_score": 0,
+            "kind": "adjacent-context",
+            "context_for": 1210,
+            "matched_queries": [],
+            "source": "S03_FastAPI_请求文件.md · 多文件上传 · v1.0 · 相邻原文（未独立评分）"
+          }
+        ],
+        "status": "complete",
+        "feedback": null,
+        "created_at": "2026-11-01T13:11:38+00:00",
+        "verification": [
+          {
+            "claim_id": 1,
+            "sha256": "634ebe2683bc36b458084aaf97d186e5018643d026c4233db3d62762d2b17afc",
+            "references": [],
+            "status": "rejected",
+            "reason_code": "invalid_citation",
+            "reason": "引用缺失、越界或不在句末"
+          },
+          {
+            "claim_id": 2,
+            "sha256": "f39c728e685a9e83436f604d962800e9a85ef9198ec147c6b3f8faa3804058c8",
+            "references": [
+              4,
+              5
+            ],
+            "status": "rejected",
+            "reason_code": "insufficient",
+            "reason": "引用证据不足以支持整句",
+            "verdict": "insufficient"
+          },
+          {
+            "claim_id": 3,
+            "sha256": "5679a6cb4b2d9fe2ad8f7149098430db51360f501d7fffa31f5c546383af90f0",
+            "references": [],
+            "status": "rejected",
+            "reason_code": "invalid_citation",
+            "reason": "引用缺失、越界或不在句末"
+          },
+          {
+            "claim_id": 4,
+            "sha256": "08fce57c98cd051db2de3f861233920cc256785a029a8dc0a60421e52bf3a4fc",
+            "references": [],
+            "status": "rejected",
+            "reason_code": "invalid_citation",
+            "reason": "引用缺失、越界或不在句末"
+          },
+          {
+            "claim_id": 5,
+            "sha256": "9bb66d478a096ab1d1388e2ec0067873457c751b40770f16d9c5650d9e7e8b1d",
+            "references": [
+              2
+            ],
+            "status": "supported",
+            "reason_code": "supported",
+            "reason": "逐句引用、证据判断、原文定位及数字检查通过",
+            "verdict": "supported",
+            "text": "若PDF只有扫描图像而没有文字层，直接抽取可能几乎没有文字，应考虑OCR[2]。",
+            "quotes": [
+              {
+                "reference": 2,
+                "quote": "只有扫描图像而没有文字层的PDF，直接抽取可能几乎没有文字，应考虑OCR",
+                "char_start": 13,
+                "char_end": 49,
+                "match": "exact",
+                "source_sha256": "f33f9826f8292754817fc612c877efce6662105a51d92df7bdff34b47e0e6d00"
+              }
+            ],
+            "model": "kimi-k2.6"
+          },
+          {
+            "claim_id": 6,
+            "sha256": "b94e0bfb1bddb2192ba9464030e56ef9805849b199a858d090a1932d926a8e6f",
+            "references": [],
+            "status": "rejected",
+            "reason_code": "invalid_citation",
+            "reason": "引用缺失、越界或不在句末"
+          },
+          {
+            "claim_id": 7,
+            "sha256": "436da56db5a6c7e9628bcef0c36aa7dacade545080022ad0c5be9dade6bab096",
+            "references": [
+              1
+            ],
+            "status": "supported",
+            "reason_code": "supported",
+            "reason": "逐句引用、证据判断、原文定位及数字检查通过",
+            "verdict": "supported",
+            "text": "识别文字与解析文字层是不同步骤[1]。",
+            "quotes": [
+              {
+                "reference": 1,
+                "quote": "识别文字与解析文字层是不同步骤",
+                "char_start": 37,
+                "char_end": 52,
+                "match": "exact",
+                "source_sha256": "59ac15fb3df7e963534c6d0adc23fe99429ed568c23b480c40f54e6fb29eba7a"
+              }
+            ],
+            "model": "kimi-k2.6"
+          },
+          {
+            "claim_id": 8,
+            "sha256": "ae4a2ed8cdbc3b76aba32f68527597e8e35d159627b905316e286a58a1de123a",
+            "references": [],
+            "status": "rejected",
+            "reason_code": "invalid_citation",
+            "reason": "引用缺失、越界或不在句末"
+          }
+        ],
+        "retrieval": {
+          "embedding": "local-bge-m3",
+          "embedding_model": "BAAI/bge-m3",
+          "rerank": "local-cross-encoder",
+          "reranking": {
+            "model": "BAAI/bge-reranker-v2-m3",
+            "candidate_count": 40,
+            "device": "cuda",
+            "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+            "max_length": 1024,
+            "at_length_limit": 0
+          },
+          "policy": "multi-query-neural-v3",
+          "mode": "hybrid",
+          "top_k": 5,
+          "min_similarity": 0.3,
+          "min_coverage": 0.12,
+          "main_result_count": 5,
+          "context_result_count": 4,
+          "knowledge_base_ids": [
+            11,
+            12,
+            13
+          ],
+          "query_expansion": {
+            "policy": "bilingual-query-v1",
+            "status": "expanded",
+            "corpus_languages": [
+              "en",
+              "zh"
+            ],
+            "queries": [
+              {
+                "query": "收到UploadFile后是否就等于完成了扫描PDF的OCR?请结合两份资料说明。",
+                "group": "question",
+                "weight": 1.0,
+                "language": "original"
+              },
+              {
+                "query": "Does receiving UploadFile mean the OCR of scanned PDF is complete? Please explain with reference to two documents.",
+                "group": "question",
+                "weight": 1.0,
+                "language": "en"
+              }
+            ],
+            "warnings": [],
+            "cache": "miss",
+            "model": "kimi-k2.6"
+          },
+          "topic_anchors": [
+            "ocr",
+            "pdf",
+            "uploadfile"
+          ],
+          "covered_topic_anchors": [
+            "ocr",
+            "pdf",
+            "uploadfile"
+          ],
+          "part_coverage": {}
+        },
+        "coverage": {
+          "policy": "question-coverage-v1",
+          "status": "assessed",
+          "items": [
+            {
+              "requirement": "收到UploadFile后是否等于完成扫描PDF的OCR",
+              "status": "covered",
+              "references": [
+                2
+              ]
+            },
+            {
+              "requirement": "识别文字与解析文字层是不同步骤",
+              "status": "covered",
+              "references": [
+                1
+              ]
+            },
+            {
+              "requirement": "PDF只有扫描图像无文字层时应考虑OCR",
+              "status": "covered",
+              "references": [
+                2
+              ]
+            }
+          ],
+          "model": "kimi-k2.6",
+          "repair_attempted": false,
+          "complete": true
+        }
+      }
+    ]
+  },
+  "events": [
+    {
+      "type": "meta",
+      "conversation_id": 42,
+      "message_id": 88,
+      "citations": [
+        {
+          "id": 1522,
+          "document_id": 20,
+          "ordinal": 5,
+          "page": null,
+          "section": "区分文件情况",
+          "text": "带有OCR文字层的扫描件可能被提取出文字，但这不等于pypdf识别了图像；识别文字与解析文字层是不同步骤。",
+          "char_start": 250,
+          "char_end": 303,
+          "sha256": "59ac15fb3df7e963534c6d0adc23fe99429ed568c23b480c40f54e6fb29eba7a",
+          "name": "S10_PDF与OCR_中文摘编.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1522,
+          "snippet": "带有OCR文字层的扫描件可能被提取出文字，但这不等于pypdf识别了图像；识别文字与解析文字层是不同步骤。",
+          "score": 0.031099,
+          "relevance": 0.4554,
+          "rerank_score": 0.455411,
+          "matched_queries": [
+            {
+              "query": "收到UploadFile后是否就等于完成了扫描PDF的OCR?请结合两份资料说明。",
+              "group": "question",
+              "rank": 1,
+              "coverage": 0.175,
+              "raw_score": 0.032787,
+              "vector_score": 0.6651
+            },
+            {
+              "query": "Does receiving UploadFile mean the OCR of scanned PDF is complete? Please explain with reference to two documents.",
+              "group": "question",
+              "rank": 8,
+              "coverage": 0.0833,
+              "raw_score": 0.024797,
+              "vector_score": 0.641
+            }
+          ],
+          "source": "S10_PDF与OCR_中文摘编.md · 区分文件情况 · v1.0"
+        },
+        {
+          "id": 1520,
+          "document_id": 20,
+          "ordinal": 3,
+          "page": null,
+          "section": "工具边界",
+          "text": "pypdf不是OCR软件。只有扫描图像而没有文字层的PDF，直接抽取可能几乎没有文字，应考虑OCR。",
+          "char_start": 187,
+          "char_end": 237,
+          "sha256": "f33f9826f8292754817fc612c877efce6662105a51d92df7bdff34b47e0e6d00",
+          "name": "S10_PDF与OCR_中文摘编.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1520,
+          "snippet": "pypdf不是OCR软件。只有扫描图像而没有文字层的PDF，直接抽取可能几乎没有文字，应考虑OCR。",
+          "score": 0.032522,
+          "relevance": 0.4221,
+          "rerank_score": 0.422088,
+          "matched_queries": [
+            {
+              "query": "收到UploadFile后是否就等于完成了扫描PDF的OCR?请结合两份资料说明。",
+              "group": "question",
+              "rank": 2,
+              "coverage": 0.125,
+              "raw_score": 0.032258,
+              "vector_score": 0.6359
+            },
+            {
+              "query": "Does receiving UploadFile mean the OCR of scanned PDF is complete? Please explain with reference to two documents.",
+              "group": "question",
+              "rank": 1,
+              "coverage": 0.1667,
+              "raw_score": 0.031498,
+              "vector_score": 0.5875
+            }
+          ],
+          "source": "S10_PDF与OCR_中文摘编.md · 工具边界 · v1.0"
+        },
+        {
+          "id": 1168,
+          "document_id": 13,
+          "ordinal": 7,
+          "page": null,
+          "section": "请求文件",
+          "text": "这是因为上传文件是以「表单数据」发送的。",
+          "char_start": 334,
+          "char_end": 354,
+          "sha256": "19eb39fe97fe86bdeb8add8a2cee780460866dcbce47d2cba0be60e2a8364633",
+          "name": "S03_FastAPI_请求文件.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1168,
+          "snippet": "这是因为上传文件是以「表单数据」发送的。",
+          "score": 0.023953,
+          "relevance": 0.264,
+          "rerank_score": 0.263979,
+          "matched_queries": [
+            {
+              "query": "收到UploadFile后是否就等于完成了扫描PDF的OCR?请结合两份资料说明。",
+              "group": "question",
+              "rank": 24,
+              "coverage": 0.0,
+              "raw_score": 0.016416,
+              "vector_score": 0.6149
+            },
+            {
+              "query": "Does receiving UploadFile mean the OCR of scanned PDF is complete? Please explain with reference to two documents.",
+              "group": "question",
+              "rank": 23,
+              "coverage": 0.0,
+              "raw_score": 0.016494,
+              "vector_score": 0.586
+            }
+          ],
+          "source": "S03_FastAPI_请求文件.md · 请求文件 · v1.0"
+        },
+        {
+          "id": 1179,
+          "document_id": 13,
+          "ordinal": 18,
+          "page": null,
+          "section": "定义 `File` 参数",
+          "text": "不过，在很多情况下，使用 `UploadFile` 会更有优势。",
+          "char_start": 706,
+          "char_end": 738,
+          "sha256": "a9e261d4780ee86dc4359b129f3d88913c68123ad629f4e5ae0e47bf5761195b",
+          "name": "S03_FastAPI_请求文件.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1179,
+          "snippet": "不过，在很多情况下，使用 `UploadFile` 会更有优势。",
+          "score": 0.029437,
+          "relevance": 0.1312,
+          "rerank_score": 0.131173,
+          "matched_queries": [
+            {
+              "query": "收到UploadFile后是否就等于完成了扫描PDF的OCR?请结合两份资料说明。",
+              "group": "question",
+              "rank": 10,
+              "coverage": 0.025,
+              "raw_score": 0.021897,
+              "vector_score": 0.5649
+            },
+            {
+              "query": "Does receiving UploadFile mean the OCR of scanned PDF is complete? Please explain with reference to two documents.",
+              "group": "question",
+              "rank": 6,
+              "coverage": 0.0833,
+              "raw_score": 0.025452,
+              "vector_score": 0.5593
+            }
+          ],
+          "source": "S03_FastAPI_请求文件.md · 定义 `File` 参数 · v1.0"
+        },
+        {
+          "id": 1210,
+          "document_id": 13,
+          "ordinal": 49,
+          "page": null,
+          "section": "多文件上传",
+          "text": "接收的也是含 `bytes` 或 `UploadFile` 的列表（`list`）。",
+          "char_start": 3038,
+          "char_end": 3080,
+          "sha256": "6e62164f95b9268da1035be1b193d609afe138c261a79137761410fd0bbfac22",
+          "name": "S03_FastAPI_请求文件.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1210,
+          "snippet": "接收的也是含 `bytes` 或 `UploadFile` 的列表（`list`）。",
+          "score": 0.031498,
+          "relevance": 0.0988,
+          "rerank_score": 0.098773,
+          "matched_queries": [
+            {
+              "query": "收到UploadFile后是否就等于完成了扫描PDF的OCR?请结合两份资料说明。",
+              "group": "question",
+              "rank": 4,
+              "coverage": 0.05,
+              "raw_score": 0.028543,
+              "vector_score": 0.6047
+            },
+            {
+              "query": "Does receiving UploadFile mean the OCR of scanned PDF is complete? Please explain with reference to two documents.",
+              "group": "question",
+              "rank": 3,
+              "coverage": 0.0833,
+              "raw_score": 0.028485,
+              "vector_score": 0.5607
+            }
+          ],
+          "source": "S03_FastAPI_请求文件.md · 多文件上传 · v1.0"
+        },
+        {
+          "id": 1167,
+          "document_id": 13,
+          "ordinal": 6,
+          "page": null,
+          "section": "请求文件",
+          "text": "将它添加到你的项目中：",
+          "char_start": 321,
+          "char_end": 332,
+          "sha256": "7de28596c148aaf8b186170ce943f4381c4c0fc9c06c87763d0db46a46141a7e",
+          "name": "S03_FastAPI_请求文件.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1167,
+          "snippet": "将它添加到你的项目中：",
+          "score": 0,
+          "relevance": 0,
+          "rerank_score": 0,
+          "kind": "adjacent-context",
+          "context_for": 1168,
+          "matched_queries": [],
+          "source": "S03_FastAPI_请求文件.md · 请求文件 · v1.0 · 相邻原文（未独立评分）"
+        },
+        {
+          "id": 1178,
+          "document_id": 13,
+          "ordinal": 17,
+          "page": null,
+          "section": "定义 `File` 参数",
+          "text": "请注意，这意味着整个内容会存储在内存中，适用于小型文件。",
+          "char_start": 676,
+          "char_end": 704,
+          "sha256": "d83c45f545db9fd76904eb5cdf559996f7785e9873e858c54de17efb6d9e789e",
+          "name": "S03_FastAPI_请求文件.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1178,
+          "snippet": "请注意，这意味着整个内容会存储在内存中，适用于小型文件。",
+          "score": 0,
+          "relevance": 0,
+          "rerank_score": 0,
+          "kind": "adjacent-context",
+          "context_for": 1179,
+          "matched_queries": [],
+          "source": "S03_FastAPI_请求文件.md · 定义 `File` 参数 · v1.0 · 相邻原文（未独立评分）"
+        },
+        {
+          "id": 1209,
+          "document_id": 13,
+          "ordinal": 48,
+          "page": null,
+          "section": "多文件上传",
+          "text": "要实现这一点，声明一个由 `bytes` 或 `UploadFile` 组成的列表：",
+          "char_start": 2994,
+          "char_end": 3036,
+          "sha256": "a2b15f64a1778c3c40420312b2a1d3db1c47b3d47854d29752d5c9b393e27b79",
+          "name": "S03_FastAPI_请求文件.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1209,
+          "snippet": "要实现这一点，声明一个由 `bytes` 或 `UploadFile` 组成的列表：",
+          "score": 0,
+          "relevance": 0,
+          "rerank_score": 0,
+          "kind": "adjacent-context",
+          "context_for": 1210,
+          "matched_queries": [],
+          "source": "S03_FastAPI_请求文件.md · 多文件上传 · v1.0 · 相邻原文（未独立评分）"
+        },
+        {
+          "id": 1211,
+          "document_id": 13,
+          "ordinal": 50,
+          "page": null,
+          "section": "多文件上传",
+          "text": "也可以使用 `from starlette.responses import HTMLResponse`。",
+          "char_start": 3082,
+          "char_end": 3135,
+          "sha256": "f562505c0865745297a075251ecb17b639a2c11bfe5111ab456a0bc920bf1c74",
+          "name": "S03_FastAPI_请求文件.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1211,
+          "snippet": "也可以使用 `from starlette.responses import HTMLResponse`。",
+          "score": 0,
+          "relevance": 0,
+          "rerank_score": 0,
+          "kind": "adjacent-context",
+          "context_for": 1210,
+          "matched_queries": [],
+          "source": "S03_FastAPI_请求文件.md · 多文件上传 · v1.0 · 相邻原文（未独立评分）"
+        }
+      ],
+      "pipeline": {
+        "embedding": "local-bge-m3",
+        "embedding_model": "BAAI/bge-m3",
+        "rerank": "local-cross-encoder",
+        "reranking": {
+          "model": "BAAI/bge-reranker-v2-m3",
+          "candidate_count": 40,
+          "device": "cuda",
+          "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+          "max_length": 1024,
+          "at_length_limit": 0
+        },
+        "policy": "multi-query-neural-v3",
+        "mode": "hybrid",
+        "top_k": 5,
+        "min_similarity": 0.3,
+        "min_coverage": 0.12,
+        "main_result_count": 5,
+        "context_result_count": 4,
+        "knowledge_base_ids": [
+          11,
+          12,
+          13
+        ],
+        "query_expansion": {
+          "policy": "bilingual-query-v1",
+          "status": "expanded",
+          "corpus_languages": [
+            "en",
+            "zh"
+          ],
+          "queries": [
+            {
+              "query": "收到UploadFile后是否就等于完成了扫描PDF的OCR?请结合两份资料说明。",
+              "group": "question",
+              "weight": 1.0,
+              "language": "original"
+            },
+            {
+              "query": "Does receiving UploadFile mean the OCR of scanned PDF is complete? Please explain with reference to two documents.",
+              "group": "question",
+              "weight": 1.0,
+              "language": "en"
+            }
+          ],
+          "warnings": [],
+          "cache": "miss",
+          "model": "kimi-k2.6"
+        },
+        "topic_anchors": [
+          "ocr",
+          "pdf",
+          "uploadfile"
+        ],
+        "covered_topic_anchors": [
+          "ocr",
+          "pdf",
+          "uploadfile"
+        ],
+        "part_coverage": {}
+      }
+    },
+    {
+      "type": "verification",
+      "checks": [
+        {
+          "claim_id": 1,
+          "sha256": "634ebe2683bc36b458084aaf97d186e5018643d026c4233db3d62762d2b17afc",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        }
+      ]
+    },
+    {
+      "type": "verification",
+      "checks": [
+        {
+          "claim_id": 1,
+          "sha256": "634ebe2683bc36b458084aaf97d186e5018643d026c4233db3d62762d2b17afc",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        },
+        {
+          "claim_id": 2,
+          "sha256": "f39c728e685a9e83436f604d962800e9a85ef9198ec147c6b3f8faa3804058c8",
+          "references": [
+            4,
+            5
+          ],
+          "status": "rejected",
+          "reason_code": "insufficient",
+          "reason": "引用证据不足以支持整句",
+          "verdict": "insufficient"
+        },
+        {
+          "claim_id": 3,
+          "sha256": "5679a6cb4b2d9fe2ad8f7149098430db51360f501d7fffa31f5c546383af90f0",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        }
+      ]
+    },
+    {
+      "type": "verification",
+      "checks": [
+        {
+          "claim_id": 1,
+          "sha256": "634ebe2683bc36b458084aaf97d186e5018643d026c4233db3d62762d2b17afc",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        },
+        {
+          "claim_id": 2,
+          "sha256": "f39c728e685a9e83436f604d962800e9a85ef9198ec147c6b3f8faa3804058c8",
+          "references": [
+            4,
+            5
+          ],
+          "status": "rejected",
+          "reason_code": "insufficient",
+          "reason": "引用证据不足以支持整句",
+          "verdict": "insufficient"
+        },
+        {
+          "claim_id": 3,
+          "sha256": "5679a6cb4b2d9fe2ad8f7149098430db51360f501d7fffa31f5c546383af90f0",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        },
+        {
+          "claim_id": 4,
+          "sha256": "08fce57c98cd051db2de3f861233920cc256785a029a8dc0a60421e52bf3a4fc",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        },
+        {
+          "claim_id": 5,
+          "sha256": "9bb66d478a096ab1d1388e2ec0067873457c751b40770f16d9c5650d9e7e8b1d",
+          "references": [
+            2
+          ],
+          "status": "supported",
+          "reason_code": "supported",
+          "reason": "逐句引用、证据判断、原文定位及数字检查通过",
+          "verdict": "supported",
+          "text": "若PDF只有扫描图像而没有文字层，直接抽取可能几乎没有文字，应考虑OCR[2]。",
+          "quotes": [
+            {
+              "reference": 2,
+              "quote": "只有扫描图像而没有文字层的PDF，直接抽取可能几乎没有文字，应考虑OCR",
+              "char_start": 13,
+              "char_end": 49,
+              "match": "exact",
+              "source_sha256": "f33f9826f8292754817fc612c877efce6662105a51d92df7bdff34b47e0e6d00"
+            }
+          ],
+          "model": "kimi-k2.6"
+        },
+        {
+          "claim_id": 6,
+          "sha256": "b94e0bfb1bddb2192ba9464030e56ef9805849b199a858d090a1932d926a8e6f",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        },
+        {
+          "claim_id": 7,
+          "sha256": "436da56db5a6c7e9628bcef0c36aa7dacade545080022ad0c5be9dade6bab096",
+          "references": [
+            1
+          ],
+          "status": "supported",
+          "reason_code": "supported",
+          "reason": "逐句引用、证据判断、原文定位及数字检查通过",
+          "verdict": "supported",
+          "text": "识别文字与解析文字层是不同步骤[1]。",
+          "quotes": [
+            {
+              "reference": 1,
+              "quote": "识别文字与解析文字层是不同步骤",
+              "char_start": 37,
+              "char_end": 52,
+              "match": "exact",
+              "source_sha256": "59ac15fb3df7e963534c6d0adc23fe99429ed568c23b480c40f54e6fb29eba7a"
+            }
+          ],
+          "model": "kimi-k2.6"
+        }
+      ]
+    },
+    {
+      "type": "token",
+      "content": "若PDF只有扫描图像而没有文字层，直接抽取可能几乎没有文字，应考虑OCR[2]。\n"
+    },
+    {
+      "type": "token",
+      "content": "识别文字与解析文字层是不同步骤[1]。\n"
+    },
+    {
+      "type": "verification",
+      "checks": [
+        {
+          "claim_id": 1,
+          "sha256": "634ebe2683bc36b458084aaf97d186e5018643d026c4233db3d62762d2b17afc",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        },
+        {
+          "claim_id": 2,
+          "sha256": "f39c728e685a9e83436f604d962800e9a85ef9198ec147c6b3f8faa3804058c8",
+          "references": [
+            4,
+            5
+          ],
+          "status": "rejected",
+          "reason_code": "insufficient",
+          "reason": "引用证据不足以支持整句",
+          "verdict": "insufficient"
+        },
+        {
+          "claim_id": 3,
+          "sha256": "5679a6cb4b2d9fe2ad8f7149098430db51360f501d7fffa31f5c546383af90f0",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        },
+        {
+          "claim_id": 4,
+          "sha256": "08fce57c98cd051db2de3f861233920cc256785a029a8dc0a60421e52bf3a4fc",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        },
+        {
+          "claim_id": 5,
+          "sha256": "9bb66d478a096ab1d1388e2ec0067873457c751b40770f16d9c5650d9e7e8b1d",
+          "references": [
+            2
+          ],
+          "status": "supported",
+          "reason_code": "supported",
+          "reason": "逐句引用、证据判断、原文定位及数字检查通过",
+          "verdict": "supported",
+          "text": "若PDF只有扫描图像而没有文字层，直接抽取可能几乎没有文字，应考虑OCR[2]。",
+          "quotes": [
+            {
+              "reference": 2,
+              "quote": "只有扫描图像而没有文字层的PDF，直接抽取可能几乎没有文字，应考虑OCR",
+              "char_start": 13,
+              "char_end": 49,
+              "match": "exact",
+              "source_sha256": "f33f9826f8292754817fc612c877efce6662105a51d92df7bdff34b47e0e6d00"
+            }
+          ],
+          "model": "kimi-k2.6"
+        },
+        {
+          "claim_id": 6,
+          "sha256": "b94e0bfb1bddb2192ba9464030e56ef9805849b199a858d090a1932d926a8e6f",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        },
+        {
+          "claim_id": 7,
+          "sha256": "436da56db5a6c7e9628bcef0c36aa7dacade545080022ad0c5be9dade6bab096",
+          "references": [
+            1
+          ],
+          "status": "supported",
+          "reason_code": "supported",
+          "reason": "逐句引用、证据判断、原文定位及数字检查通过",
+          "verdict": "supported",
+          "text": "识别文字与解析文字层是不同步骤[1]。",
+          "quotes": [
+            {
+              "reference": 1,
+              "quote": "识别文字与解析文字层是不同步骤",
+              "char_start": 37,
+              "char_end": 52,
+              "match": "exact",
+              "source_sha256": "59ac15fb3df7e963534c6d0adc23fe99429ed568c23b480c40f54e6fb29eba7a"
+            }
+          ],
+          "model": "kimi-k2.6"
+        },
+        {
+          "claim_id": 8,
+          "sha256": "ae4a2ed8cdbc3b76aba32f68527597e8e35d159627b905316e286a58a1de123a",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        }
+      ]
+    },
+    {
+      "type": "stage",
+      "stage": "coverage",
+      "message": "正在检查问题关键点，必要的补充仍须通过事实核验"
+    },
+    {
+      "type": "coverage",
+      "assessment": {
+        "policy": "question-coverage-v1",
+        "status": "assessed",
+        "items": [
+          {
+            "requirement": "收到UploadFile后是否等于完成扫描PDF的OCR",
+            "status": "covered",
+            "references": [
+              2
+            ]
+          },
+          {
+            "requirement": "识别文字与解析文字层是不同步骤",
+            "status": "covered",
+            "references": [
+              1
+            ]
+          },
+          {
+            "requirement": "PDF只有扫描图像无文字层时应考虑OCR",
+            "status": "covered",
+            "references": [
+              2
+            ]
+          }
+        ],
+        "model": "kimi-k2.6",
+        "repair_attempted": false,
+        "complete": true
+      }
+    },
+    {
+      "type": "token",
+      "content": "\n部分候选句未通过引用或证据支撑校验，已过滤；上述仅展示通过校验的内容。"
+    },
+    {
+      "type": "done",
+      "conversation_id": 42,
+      "message_id": 88
+    }
+  ],
+  "grading": "人工复核，不以模型自评或词项命中自动判正确"
+}

@@ -1,0 +1,11 @@
+﻿id,title,path,page_url,license,kind,language,group,bytes,sha256
+S01,Dense Passage Retrieval for Open-Domain Question Answering,corpus/S01_DPR_2020.pdf,https://aclanthology.org/2020.emnlp-main.550/,CC-BY-4.0,original_pdf,en,retrieval,403775,2abfc7991519be2b8ce30215905516fdb593218b7bf59e50ece0d8a088a7c4d5
+S02,SQLite FTS5 Extension,corpus/S02_SQLite_FTS5_BM25.html,https://www.sqlite.org/fts5.html,Public-Domain,cleaned_html,en,retrieval,182103,eb52f39b33324147d90869d6c040df728709b4fbe4ffab76d82fd8463a4f75e9
+S03,FastAPI 请求文件,corpus/S03_FastAPI_请求文件.md,https://fastapi.tiangolo.com/zh/tutorial/request-files/,MIT,cleaned_markdown,zh,backend,6065,b5def09425bf23d5349a69d5065b97bd6213118e34513ff6fba7c025133c822b
+S04,FastAPI OAuth2、密码哈希与JWT,corpus/S04_FastAPI_JWT.md,https://fastapi.tiangolo.com/zh/tutorial/security/oauth2-jwt/,MIT,cleaned_markdown,zh,backend,9078,3725992f3c0d4b2335dd68022aaea686505c43b9a28c0f8813dc916c27e780d7
+S05,Vue 3 简介,corpus/S05_Vue3_简介.md,https://cn.vuejs.org/guide/introduction,CC-BY-4.0,cleaned_markdown,zh,frontend,9163,9b88d63c7051a3f38d0c529497f0ec65d5114b5210d98e498c9d183fe91b0e4c
+S06,Vue 3 响应式基础,corpus/S06_Vue3_响应式基础.md,https://cn.vuejs.org/guide/essentials/reactivity-fundamentals,CC-BY-4.0,cleaned_markdown,zh,frontend,11729,42fcc6d6e1713041c75fea0d4c956ff2509726ea8381f810152b267b0d35ff62
+S07,RRF排名融合（中文摘编）,corpus/S07_RRF_中文摘编.md,https://www.elastic.co/docs/reference/elasticsearch/rest-apis/reciprocal-rank-fusion,short_paraphrase_only,curated_summary,zh,retrieval,613,a215341bf5600631ad740bf7995bfb45597385433c402a02fbaa0bdaecf9dc31
+S08,RAG论文摘要（中文摘编）,corpus/S08_RAG_中文摘编.md,https://arxiv.org/abs/2005.11401,short_paraphrase_only,curated_summary,zh,retrieval,688,b4ff6139f6dca3b1369a2c62b2fe4b1c13131643dcbbd35ca2d256868f71e081
+S09,TF-IDF特征表示（中文摘编）,corpus/S09_TFIDF_中文摘编.txt,https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html,short_paraphrase_only,curated_summary,zh,retrieval,635,96ea509b650866b36c4eb6f37c1a8e4ac56ac69a93101be93e5ec162668e451f
+S10,PDF文本提取与OCR（中文摘编）,corpus/S10_PDF与OCR_中文摘编.md,https://pypdf.readthedocs.io/en/stable/user/extract-text.html,short_paraphrase_only,curated_summary,zh,backend,602,8930888f80f24c9dd0c200730c9a46bc95a48bbd1a765b65d7f0fe7b35c9b6eb

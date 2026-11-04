@@ -1,0 +1,27 @@
+{
+  "query": "空气中的水分如何去除？",
+  "texts": [
+    "The dehumidifier removes excess moisture from ambient air using a condensation coil.",
+    "The network router forwards packets between subnets using its routing table.",
+    "The warehouse has a printed shipping label on every cardboard carton."
+  ],
+  "dimensions": 1024,
+  "cosine": [
+    0.6135073505442982,
+    0.2777717959782759,
+    0.3281665009706387
+  ],
+  "rerank_scores": [
+    0.8910549879074097,
+    1.67014204635052e-05,
+    1.657145367062185e-05
+  ],
+  "inference": {
+    "device": "cuda",
+    "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+    "max_length": 1024,
+    "at_length_limit": 0
+  },
+  "embedding_pass": true,
+  "reranking_pass": true
+}

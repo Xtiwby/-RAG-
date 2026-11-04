@@ -1,0 +1,747 @@
+{
+  "question_id": "Q016",
+  "question": "Vue响应式状态修改后，若代码需要等待DOM更新完成，应使用哪个API？",
+  "expected_for_human_review": "使用nextTick()；DOM更新并非同步完成。",
+  "answerable": true,
+  "elapsed_ms": 13885,
+  "conversation": {
+    "id": 46,
+    "user_id": 1,
+    "title": "v0.10 质量复测 Q016 · Vue响应式状态修改后，若代码需要等待DOM更新完成，应使用哪个API？",
+    "knowledge_base_ids": [
+      11,
+      12,
+      13
+    ],
+    "created_at": "2026-11-01T13:12:52+00:00",
+    "updated_at": "2026-11-01T13:12:59+00:00",
+    "messages": [
+      {
+        "id": 95,
+        "conversation_id": 46,
+        "role": "user",
+        "content": "Vue响应式状态修改后,若代码需要等待DOM更新完成,应使用哪个API?",
+        "citations": [],
+        "status": "complete",
+        "feedback": null,
+        "created_at": "2026-11-01T13:12:52+00:00",
+        "verification": [],
+        "retrieval": {},
+        "coverage": {}
+      },
+      {
+        "id": 96,
+        "conversation_id": 46,
+        "role": "assistant",
+        "content": "应使用 `nextTick()` 全局 API 来等待 DOM 更新完成后再执行额外的代码。[1]\n",
+        "citations": [
+          {
+            "id": 1443,
+            "document_id": 16,
+            "ordinal": 74,
+            "page": null,
+            "section": "DOM 更新时机 ​",
+            "text": "要等待 DOM 更新完成后再执行额外的代码，可以使用 nextTick() 全局 API：",
+            "char_start": 3235,
+            "char_end": 3280,
+            "sha256": "440a20bbcbd791ef80a4d588276ac84706ccdc0888c509033c1fd2a14edd94e7",
+            "name": "S06_Vue3_响应式基础.md",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 13,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · Vue前端",
+            "chunk_id": 1443,
+            "snippet": "要等待 DOM 更新完成后再执行额外的代码，可以使用 nextTick() 全局 API：",
+            "score": 0.032258,
+            "relevance": 0.9966,
+            "rerank_score": 0.99661,
+            "matched_queries": [
+              {
+                "query": "Vue响应式状态修改后,若代码需要等待DOM更新完成,应使用哪个API?",
+                "group": "question",
+                "rank": 2,
+                "coverage": 0.4762,
+                "raw_score": 0.032522,
+                "vector_score": 0.7239
+              },
+              {
+                "query": "After modifying Vue reactive state, which API should be used if the code needs to wait for the DOM update to complete?",
+                "group": "question",
+                "rank": 2,
+                "coverage": 0.1429,
+                "raw_score": 0.027146,
+                "vector_score": 0.723
+              }
+            ],
+            "source": "S06_Vue3_响应式基础.md · DOM 更新时机 ​ · v1.0"
+          },
+          {
+            "id": 1469,
+            "document_id": 16,
+            "ordinal": 100,
+            "page": null,
+            "section": "reactive() 的局限性 ​",
+            "text": "由于这些限制，我们建议使用 ref() 作为声明响应式状态的主要 API。",
+            "char_start": 4227,
+            "char_end": 4264,
+            "sha256": "29a601379a729a41ae1c1a1b0e47d4e4dd88d5c81fd4cfa20f2662419d76cad7",
+            "name": "S06_Vue3_响应式基础.md",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 13,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · Vue前端",
+            "chunk_id": 1469,
+            "snippet": "由于这些限制，我们建议使用 ref() 作为声明响应式状态的主要 API。",
+            "score": 0.026374,
+            "relevance": 0.8982,
+            "rerank_score": 0.898232,
+            "matched_queries": [
+              {
+                "query": "Vue响应式状态修改后,若代码需要等待DOM更新完成,应使用哪个API?",
+                "group": "question",
+                "rank": 5,
+                "coverage": 0.3095,
+                "raw_score": 0.030769,
+                "vector_score": 0.6466
+              },
+              {
+                "query": "After modifying Vue reactive state, which API should be used if the code needs to wait for the DOM update to complete?",
+                "group": "question",
+                "rank": 31,
+                "coverage": 0.0714,
+                "raw_score": 0.017372,
+                "vector_score": 0.5842
+              }
+            ],
+            "source": "S06_Vue3_响应式基础.md · reactive() 的局限性 ​ · v1.0"
+          },
+          {
+            "id": 1442,
+            "document_id": 16,
+            "ordinal": 73,
+            "page": null,
+            "section": "DOM 更新时机 ​",
+            "text": "当你修改了响应式状态时，DOM 会被自动更新。但是需要注意的是，DOM 更新不是同步的。Vue 会在“next tick”更新周期中缓冲所有状态的修改，以确保不管你进行了多少次状态修改，每个组件都只会被更新一次。",
+            "char_start": 3127,
+            "char_end": 3233,
+            "sha256": "ea5c43b0e49580fd7f9393c574746329e31d93522485499285fad53a01480edd",
+            "name": "S06_Vue3_响应式基础.md",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 13,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · Vue前端",
+            "chunk_id": 1442,
+            "snippet": "当你修改了响应式状态时，DOM 会被自动更新。但是需要注意的是，DOM 更新不是同步的。Vue 会在“next tick”更新周期中缓冲所有状态的修改，以确保不管你进行了多少次状态修改，每个组件都只会被更新一次。",
+            "score": 0.031778,
+            "relevance": 0.7868,
+            "rerank_score": 0.786787,
+            "matched_queries": [
+              {
+                "query": "Vue响应式状态修改后,若代码需要等待DOM更新完成,应使用哪个API?",
+                "group": "question",
+                "rank": 1,
+                "coverage": 0.4286,
+                "raw_score": 0.032522,
+                "vector_score": 0.7629
+              },
+              {
+                "query": "After modifying Vue reactive state, which API should be used if the code needs to wait for the DOM update to complete?",
+                "group": "question",
+                "rank": 5,
+                "coverage": 0.1429,
+                "raw_score": 0.024676,
+                "vector_score": 0.669
+              }
+            ],
+            "source": "S06_Vue3_响应式基础.md · DOM 更新时机 ​ · v1.0"
+          },
+          {
+            "id": 1354,
+            "document_id": 15,
+            "ordinal": 37,
+            "page": null,
+            "section": "该选哪一个？",
+            "text": "组合式 API 的核心思想是直接在函数作用域内定义响应式状态变量，并将从多个函数中得到的状态组合起来处理复杂问题。这种形式更加自由，也需要你对 Vue 的响应式系统有更深的理解才能高效使用。相应的，它的灵活性也使得组织和重用逻辑的模式变得更加强大。",
+            "char_start": 3830,
+            "char_end": 3954,
+            "sha256": "64fe1f0e319a5081ee302da392fb8bd83e32170ca481804ffb81237dceb93260",
+            "name": "S05_Vue3_简介.md",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 13,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · Vue前端",
+            "chunk_id": 1354,
+            "snippet": "组合式 API 的核心思想是直接在函数作用域内定义响应式状态变量，并将从多个函数中得到的状态组合起来处理复杂问题。这种形式更加自由，也需要你对 Vue 的响应式系统有更深的理解才能高效使用。相应的，它的灵活性也使得组织和重用逻辑的模式变得更加强大。",
+            "score": 0.013699,
+            "relevance": 0.6377,
+            "rerank_score": 0.637708,
+            "matched_queries": [
+              {
+                "query": "Vue响应式状态修改后,若代码需要等待DOM更新完成,应使用哪个API?",
+                "group": "question",
+                "rank": 13,
+                "coverage": 0.3571,
+                "raw_score": 0.027032,
+                "vector_score": 0.6115
+              }
+            ],
+            "source": "S05_Vue3_简介.md · 该选哪一个？ · v1.0"
+          },
+          {
+            "id": 1389,
+            "document_id": 16,
+            "ordinal": 20,
+            "page": null,
+            "section": "ref() ​",
+            "text": "在组合式 API 中，推荐使用 ref() 函数来声明响应式状态：",
+            "char_start": 1159,
+            "char_end": 1192,
+            "sha256": "2b617e58ce975acc3a11573e2e031587fd72521092c4f6dad6f454da03dbd361",
+            "name": "S06_Vue3_响应式基础.md",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 13,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · Vue前端",
+            "chunk_id": 1389,
+            "snippet": "在组合式 API 中，推荐使用 ref() 函数来声明响应式状态：",
+            "score": 0.015152,
+            "relevance": 0.5958,
+            "rerank_score": 0.595845,
+            "matched_queries": [
+              {
+                "query": "Vue响应式状态修改后,若代码需要等待DOM更新完成,应使用哪个API?",
+                "group": "question",
+                "rank": 6,
+                "coverage": 0.3095,
+                "raw_score": 0.029572,
+                "vector_score": 0.6154
+              }
+            ],
+            "source": "S06_Vue3_响应式基础.md · ref() ​ · v1.0"
+          },
+          {
+            "id": 1353,
+            "document_id": 15,
+            "ordinal": 36,
+            "page": null,
+            "section": "该选哪一个？",
+            "text": "选项式 API 以“组件实例”的概念为中心 (即上述例子中的 `this`)，对于有面向对象语言背景的用户来说，这通常与基于类的心智模型更为一致。同时，它将响应性相关的细节抽象出来，并强制按照选项来组织代码，从而对初学者而言更为友好。",
+            "char_start": 3711,
+            "char_end": 3828,
+            "sha256": "97380c73dc4a138351fdc543a9d615a8743d54074df352fe7384ae36f650ee22",
+            "name": "S05_Vue3_简介.md",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 13,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · Vue前端",
+            "chunk_id": 1353,
+            "snippet": "选项式 API 以“组件实例”的概念为中心 (即上述例子中的 `this`)，对于有面向对象语言背景的用户来说，这通常与基于类的心智模型更为一致。同时，它将响应性相关的细节抽象出来，并强制按照选项来组织代码，从而对初学者而言更为友好。",
+            "score": 0,
+            "relevance": 0,
+            "rerank_score": 0,
+            "kind": "adjacent-context",
+            "context_for": 1354,
+            "matched_queries": [],
+            "source": "S05_Vue3_简介.md · 该选哪一个？ · v1.0 · 相邻原文（未独立评分）"
+          },
+          {
+            "id": 1355,
+            "document_id": 15,
+            "ordinal": 38,
+            "page": null,
+            "section": "该选哪一个？",
+            "text": "在[组合式 API FAQ](/guide/extras/composition-api-faq) 章节中，你可以了解更多关于这两种 API 风格的对比以及组合式 API 所带来的潜在收益。",
+            "char_start": 3956,
+            "char_end": 4051,
+            "sha256": "644c3ce3ec72d138e16dc0f1d580461c650ef72edf72e884ef931ae8e1889f8d",
+            "name": "S05_Vue3_简介.md",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 13,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · Vue前端",
+            "chunk_id": 1355,
+            "snippet": "在[组合式 API FAQ](/guide/extras/composition-api-faq) 章节中，你可以了解更多关于这两种 API 风格的对比以及组合式 API 所带来的潜在收益。",
+            "score": 0,
+            "relevance": 0,
+            "rerank_score": 0,
+            "kind": "adjacent-context",
+            "context_for": 1354,
+            "matched_queries": [],
+            "source": "S05_Vue3_简介.md · 该选哪一个？ · v1.0 · 相邻原文（未独立评分）"
+          }
+        ],
+        "status": "complete",
+        "feedback": null,
+        "created_at": "2026-11-01T13:12:52+00:00",
+        "verification": [
+          {
+            "claim_id": 1,
+            "sha256": "959bab6c63d307a80d3c2f9b625de6dd6cce0a98fbc8a1b8db239b199dbb7f00",
+            "references": [
+              1
+            ],
+            "status": "supported",
+            "reason_code": "supported",
+            "reason": "逐句引用、证据判断、原文定位及数字检查通过",
+            "verdict": "supported",
+            "text": "应使用 `nextTick()` 全局 API 来等待 DOM 更新完成后再执行额外的代码。[1]",
+            "quotes": [
+              {
+                "reference": 1,
+                "quote": "要等待 DOM 更新完成后再执行额外的代码，可以使用 nextTick() 全局 API：",
+                "char_start": 0,
+                "char_end": 45,
+                "match": "exact",
+                "source_sha256": "440a20bbcbd791ef80a4d588276ac84706ccdc0888c509033c1fd2a14edd94e7"
+              }
+            ],
+            "model": "kimi-k2.6"
+          }
+        ],
+        "retrieval": {
+          "embedding": "local-bge-m3",
+          "embedding_model": "BAAI/bge-m3",
+          "rerank": "local-cross-encoder",
+          "reranking": {
+            "model": "BAAI/bge-reranker-v2-m3",
+            "candidate_count": 40,
+            "device": "cuda",
+            "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+            "max_length": 1024,
+            "at_length_limit": 0
+          },
+          "policy": "multi-query-neural-v3",
+          "mode": "hybrid",
+          "top_k": 5,
+          "min_similarity": 0.3,
+          "min_coverage": 0.12,
+          "main_result_count": 5,
+          "context_result_count": 2,
+          "knowledge_base_ids": [
+            11,
+            12,
+            13
+          ],
+          "query_expansion": {
+            "policy": "bilingual-query-v1",
+            "status": "expanded",
+            "corpus_languages": [
+              "en",
+              "zh"
+            ],
+            "queries": [
+              {
+                "query": "Vue响应式状态修改后,若代码需要等待DOM更新完成,应使用哪个API?",
+                "group": "question",
+                "weight": 1.0,
+                "language": "original"
+              },
+              {
+                "query": "After modifying Vue reactive state, which API should be used if the code needs to wait for the DOM update to complete?",
+                "group": "question",
+                "weight": 1.0,
+                "language": "en"
+              }
+            ],
+            "warnings": [],
+            "cache": "miss",
+            "model": "kimi-k2.6"
+          },
+          "topic_anchors": [
+            "api",
+            "dom",
+            "vue"
+          ],
+          "covered_topic_anchors": [
+            "api",
+            "dom",
+            "vue"
+          ],
+          "part_coverage": {}
+        },
+        "coverage": {
+          "policy": "question-coverage-v1",
+          "status": "assessed",
+          "items": [
+            {
+              "requirement": "Vue响应式状态修改后等待DOM更新完成应使用的API名称",
+              "status": "covered",
+              "references": [
+                1
+              ]
+            }
+          ],
+          "model": "kimi-k2.6",
+          "repair_attempted": false,
+          "complete": true
+        }
+      }
+    ]
+  },
+  "events": [
+    {
+      "type": "meta",
+      "conversation_id": 46,
+      "message_id": 96,
+      "citations": [
+        {
+          "id": 1443,
+          "document_id": 16,
+          "ordinal": 74,
+          "page": null,
+          "section": "DOM 更新时机 ​",
+          "text": "要等待 DOM 更新完成后再执行额外的代码，可以使用 nextTick() 全局 API：",
+          "char_start": 3235,
+          "char_end": 3280,
+          "sha256": "440a20bbcbd791ef80a4d588276ac84706ccdc0888c509033c1fd2a14edd94e7",
+          "name": "S06_Vue3_响应式基础.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 13,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · Vue前端",
+          "chunk_id": 1443,
+          "snippet": "要等待 DOM 更新完成后再执行额外的代码，可以使用 nextTick() 全局 API：",
+          "score": 0.032258,
+          "relevance": 0.9966,
+          "rerank_score": 0.99661,
+          "matched_queries": [
+            {
+              "query": "Vue响应式状态修改后,若代码需要等待DOM更新完成,应使用哪个API?",
+              "group": "question",
+              "rank": 2,
+              "coverage": 0.4762,
+              "raw_score": 0.032522,
+              "vector_score": 0.7239
+            },
+            {
+              "query": "After modifying Vue reactive state, which API should be used if the code needs to wait for the DOM update to complete?",
+              "group": "question",
+              "rank": 2,
+              "coverage": 0.1429,
+              "raw_score": 0.027146,
+              "vector_score": 0.723
+            }
+          ],
+          "source": "S06_Vue3_响应式基础.md · DOM 更新时机 ​ · v1.0"
+        },
+        {
+          "id": 1469,
+          "document_id": 16,
+          "ordinal": 100,
+          "page": null,
+          "section": "reactive() 的局限性 ​",
+          "text": "由于这些限制，我们建议使用 ref() 作为声明响应式状态的主要 API。",
+          "char_start": 4227,
+          "char_end": 4264,
+          "sha256": "29a601379a729a41ae1c1a1b0e47d4e4dd88d5c81fd4cfa20f2662419d76cad7",
+          "name": "S06_Vue3_响应式基础.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 13,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · Vue前端",
+          "chunk_id": 1469,
+          "snippet": "由于这些限制，我们建议使用 ref() 作为声明响应式状态的主要 API。",
+          "score": 0.026374,
+          "relevance": 0.8982,
+          "rerank_score": 0.898232,
+          "matched_queries": [
+            {
+              "query": "Vue响应式状态修改后,若代码需要等待DOM更新完成,应使用哪个API?",
+              "group": "question",
+              "rank": 5,
+              "coverage": 0.3095,
+              "raw_score": 0.030769,
+              "vector_score": 0.6466
+            },
+            {
+              "query": "After modifying Vue reactive state, which API should be used if the code needs to wait for the DOM update to complete?",
+              "group": "question",
+              "rank": 31,
+              "coverage": 0.0714,
+              "raw_score": 0.017372,
+              "vector_score": 0.5842
+            }
+          ],
+          "source": "S06_Vue3_响应式基础.md · reactive() 的局限性 ​ · v1.0"
+        },
+        {
+          "id": 1442,
+          "document_id": 16,
+          "ordinal": 73,
+          "page": null,
+          "section": "DOM 更新时机 ​",
+          "text": "当你修改了响应式状态时，DOM 会被自动更新。但是需要注意的是，DOM 更新不是同步的。Vue 会在“next tick”更新周期中缓冲所有状态的修改，以确保不管你进行了多少次状态修改，每个组件都只会被更新一次。",
+          "char_start": 3127,
+          "char_end": 3233,
+          "sha256": "ea5c43b0e49580fd7f9393c574746329e31d93522485499285fad53a01480edd",
+          "name": "S06_Vue3_响应式基础.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 13,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · Vue前端",
+          "chunk_id": 1442,
+          "snippet": "当你修改了响应式状态时，DOM 会被自动更新。但是需要注意的是，DOM 更新不是同步的。Vue 会在“next tick”更新周期中缓冲所有状态的修改，以确保不管你进行了多少次状态修改，每个组件都只会被更新一次。",
+          "score": 0.031778,
+          "relevance": 0.7868,
+          "rerank_score": 0.786787,
+          "matched_queries": [
+            {
+              "query": "Vue响应式状态修改后,若代码需要等待DOM更新完成,应使用哪个API?",
+              "group": "question",
+              "rank": 1,
+              "coverage": 0.4286,
+              "raw_score": 0.032522,
+              "vector_score": 0.7629
+            },
+            {
+              "query": "After modifying Vue reactive state, which API should be used if the code needs to wait for the DOM update to complete?",
+              "group": "question",
+              "rank": 5,
+              "coverage": 0.1429,
+              "raw_score": 0.024676,
+              "vector_score": 0.669
+            }
+          ],
+          "source": "S06_Vue3_响应式基础.md · DOM 更新时机 ​ · v1.0"
+        },
+        {
+          "id": 1354,
+          "document_id": 15,
+          "ordinal": 37,
+          "page": null,
+          "section": "该选哪一个？",
+          "text": "组合式 API 的核心思想是直接在函数作用域内定义响应式状态变量，并将从多个函数中得到的状态组合起来处理复杂问题。这种形式更加自由，也需要你对 Vue 的响应式系统有更深的理解才能高效使用。相应的，它的灵活性也使得组织和重用逻辑的模式变得更加强大。",
+          "char_start": 3830,
+          "char_end": 3954,
+          "sha256": "64fe1f0e319a5081ee302da392fb8bd83e32170ca481804ffb81237dceb93260",
+          "name": "S05_Vue3_简介.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 13,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · Vue前端",
+          "chunk_id": 1354,
+          "snippet": "组合式 API 的核心思想是直接在函数作用域内定义响应式状态变量，并将从多个函数中得到的状态组合起来处理复杂问题。这种形式更加自由，也需要你对 Vue 的响应式系统有更深的理解才能高效使用。相应的，它的灵活性也使得组织和重用逻辑的模式变得更加强大。",
+          "score": 0.013699,
+          "relevance": 0.6377,
+          "rerank_score": 0.637708,
+          "matched_queries": [
+            {
+              "query": "Vue响应式状态修改后,若代码需要等待DOM更新完成,应使用哪个API?",
+              "group": "question",
+              "rank": 13,
+              "coverage": 0.3571,
+              "raw_score": 0.027032,
+              "vector_score": 0.6115
+            }
+          ],
+          "source": "S05_Vue3_简介.md · 该选哪一个？ · v1.0"
+        },
+        {
+          "id": 1389,
+          "document_id": 16,
+          "ordinal": 20,
+          "page": null,
+          "section": "ref() ​",
+          "text": "在组合式 API 中，推荐使用 ref() 函数来声明响应式状态：",
+          "char_start": 1159,
+          "char_end": 1192,
+          "sha256": "2b617e58ce975acc3a11573e2e031587fd72521092c4f6dad6f454da03dbd361",
+          "name": "S06_Vue3_响应式基础.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 13,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · Vue前端",
+          "chunk_id": 1389,
+          "snippet": "在组合式 API 中，推荐使用 ref() 函数来声明响应式状态：",
+          "score": 0.015152,
+          "relevance": 0.5958,
+          "rerank_score": 0.595845,
+          "matched_queries": [
+            {
+              "query": "Vue响应式状态修改后,若代码需要等待DOM更新完成,应使用哪个API?",
+              "group": "question",
+              "rank": 6,
+              "coverage": 0.3095,
+              "raw_score": 0.029572,
+              "vector_score": 0.6154
+            }
+          ],
+          "source": "S06_Vue3_响应式基础.md · ref() ​ · v1.0"
+        },
+        {
+          "id": 1353,
+          "document_id": 15,
+          "ordinal": 36,
+          "page": null,
+          "section": "该选哪一个？",
+          "text": "选项式 API 以“组件实例”的概念为中心 (即上述例子中的 `this`)，对于有面向对象语言背景的用户来说，这通常与基于类的心智模型更为一致。同时，它将响应性相关的细节抽象出来，并强制按照选项来组织代码，从而对初学者而言更为友好。",
+          "char_start": 3711,
+          "char_end": 3828,
+          "sha256": "97380c73dc4a138351fdc543a9d615a8743d54074df352fe7384ae36f650ee22",
+          "name": "S05_Vue3_简介.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 13,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · Vue前端",
+          "chunk_id": 1353,
+          "snippet": "选项式 API 以“组件实例”的概念为中心 (即上述例子中的 `this`)，对于有面向对象语言背景的用户来说，这通常与基于类的心智模型更为一致。同时，它将响应性相关的细节抽象出来，并强制按照选项来组织代码，从而对初学者而言更为友好。",
+          "score": 0,
+          "relevance": 0,
+          "rerank_score": 0,
+          "kind": "adjacent-context",
+          "context_for": 1354,
+          "matched_queries": [],
+          "source": "S05_Vue3_简介.md · 该选哪一个？ · v1.0 · 相邻原文（未独立评分）"
+        },
+        {
+          "id": 1355,
+          "document_id": 15,
+          "ordinal": 38,
+          "page": null,
+          "section": "该选哪一个？",
+          "text": "在[组合式 API FAQ](/guide/extras/composition-api-faq) 章节中，你可以了解更多关于这两种 API 风格的对比以及组合式 API 所带来的潜在收益。",
+          "char_start": 3956,
+          "char_end": 4051,
+          "sha256": "644c3ce3ec72d138e16dc0f1d580461c650ef72edf72e884ef931ae8e1889f8d",
+          "name": "S05_Vue3_简介.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 13,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · Vue前端",
+          "chunk_id": 1355,
+          "snippet": "在[组合式 API FAQ](/guide/extras/composition-api-faq) 章节中，你可以了解更多关于这两种 API 风格的对比以及组合式 API 所带来的潜在收益。",
+          "score": 0,
+          "relevance": 0,
+          "rerank_score": 0,
+          "kind": "adjacent-context",
+          "context_for": 1354,
+          "matched_queries": [],
+          "source": "S05_Vue3_简介.md · 该选哪一个？ · v1.0 · 相邻原文（未独立评分）"
+        }
+      ],
+      "pipeline": {
+        "embedding": "local-bge-m3",
+        "embedding_model": "BAAI/bge-m3",
+        "rerank": "local-cross-encoder",
+        "reranking": {
+          "model": "BAAI/bge-reranker-v2-m3",
+          "candidate_count": 40,
+          "device": "cuda",
+          "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+          "max_length": 1024,
+          "at_length_limit": 0
+        },
+        "policy": "multi-query-neural-v3",
+        "mode": "hybrid",
+        "top_k": 5,
+        "min_similarity": 0.3,
+        "min_coverage": 0.12,
+        "main_result_count": 5,
+        "context_result_count": 2,
+        "knowledge_base_ids": [
+          11,
+          12,
+          13
+        ],
+        "query_expansion": {
+          "policy": "bilingual-query-v1",
+          "status": "expanded",
+          "corpus_languages": [
+            "en",
+            "zh"
+          ],
+          "queries": [
+            {
+              "query": "Vue响应式状态修改后,若代码需要等待DOM更新完成,应使用哪个API?",
+              "group": "question",
+              "weight": 1.0,
+              "language": "original"
+            },
+            {
+              "query": "After modifying Vue reactive state, which API should be used if the code needs to wait for the DOM update to complete?",
+              "group": "question",
+              "weight": 1.0,
+              "language": "en"
+            }
+          ],
+          "warnings": [],
+          "cache": "miss",
+          "model": "kimi-k2.6"
+        },
+        "topic_anchors": [
+          "api",
+          "dom",
+          "vue"
+        ],
+        "covered_topic_anchors": [
+          "api",
+          "dom",
+          "vue"
+        ],
+        "part_coverage": {}
+      }
+    },
+    {
+      "type": "verification",
+      "checks": [
+        {
+          "claim_id": 1,
+          "sha256": "959bab6c63d307a80d3c2f9b625de6dd6cce0a98fbc8a1b8db239b199dbb7f00",
+          "references": [
+            1
+          ],
+          "status": "supported",
+          "reason_code": "supported",
+          "reason": "逐句引用、证据判断、原文定位及数字检查通过",
+          "verdict": "supported",
+          "text": "应使用 `nextTick()` 全局 API 来等待 DOM 更新完成后再执行额外的代码。[1]",
+          "quotes": [
+            {
+              "reference": 1,
+              "quote": "要等待 DOM 更新完成后再执行额外的代码，可以使用 nextTick() 全局 API：",
+              "char_start": 0,
+              "char_end": 45,
+              "match": "exact",
+              "source_sha256": "440a20bbcbd791ef80a4d588276ac84706ccdc0888c509033c1fd2a14edd94e7"
+            }
+          ],
+          "model": "kimi-k2.6"
+        }
+      ]
+    },
+    {
+      "type": "token",
+      "content": "应使用 `nextTick()` 全局 API 来等待 DOM 更新完成后再执行额外的代码。[1]\n"
+    },
+    {
+      "type": "stage",
+      "stage": "coverage",
+      "message": "正在检查问题关键点，必要的补充仍须通过事实核验"
+    },
+    {
+      "type": "coverage",
+      "assessment": {
+        "policy": "question-coverage-v1",
+        "status": "assessed",
+        "items": [
+          {
+            "requirement": "Vue响应式状态修改后等待DOM更新完成应使用的API名称",
+            "status": "covered",
+            "references": [
+              1
+            ]
+          }
+        ],
+        "model": "kimi-k2.6",
+        "repair_attempted": false,
+        "complete": true
+      }
+    },
+    {
+      "type": "done",
+      "conversation_id": 46,
+      "message_id": 96
+    }
+  ],
+  "grading": "人工复核，不以模型自评或词项命中自动判正确"
+}

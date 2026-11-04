@@ -1,0 +1,54 @@
+{
+  "test_kind": "controlled incomplete answer; not end-to-end QA accuracy",
+  "question": "DPR论文采用哪类编码器框架学习问题和文段的稠密表示？",
+  "initial_controlled_answer": [
+    "问题与文段之间的相似度通过它们向量的点积计算。[3]"
+  ],
+  "assessment": {
+    "policy": "question-coverage-v1",
+    "status": "assessed",
+    "items": [
+      {
+        "requirement": "DPR论文采用哪类编码器框架学习问题和文段的稠密表示",
+        "status": "supplemented",
+        "references": [
+          6
+        ],
+        "claim_id": 2
+      }
+    ],
+    "model": "kimi-k2.6",
+    "repair_attempted": true,
+    "complete": true
+  },
+  "verified_supplements": [
+    "DPR采用双编码器架构（dual-encoder architecture）学习问题和文段的稠密表示[6]。"
+  ],
+  "checks": [
+    {
+      "claim_id": 2,
+      "sha256": "64dad872bce7271ab27d9b8da206743f546a659916c8f602c2644549e3f219a7",
+      "references": [
+        6
+      ],
+      "status": "supported",
+      "reason_code": "supported",
+      "reason": "逐句引用、证据判断、原文定位及数字检查通过",
+      "verdict": "supported",
+      "text": "DPR采用双编码器架构（dual-encoder architecture）学习问题和文段的稠密表示[6]。",
+      "quotes": [
+        {
+          "reference": 6,
+          "quote": "By leveraging the now\nstandard BERT pretrained model (Devlin et al.,\n2019) and a dual-encoder architecture (Bromley\net al., 1994), we focus on developing the right\ntraining scheme using a relatively small number\nof question and passage pairs.",
+          "char_start": 544,
+          "char_end": 786,
+          "match": "exact",
+          "source_sha256": "59110e7f3ef8a7d42c212ecf2005d8a032a563d88b0fed1a82a6996c5b663878"
+        }
+      ],
+      "model": "kimi-k2.6",
+      "origin": "coverage_supplement",
+      "requirement_index": 0
+    }
+  ]
+}

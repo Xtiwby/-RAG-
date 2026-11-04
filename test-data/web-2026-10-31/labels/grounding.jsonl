@@ -1,0 +1,8 @@
+{"id":"G01","source_ids":["S02"],"claim":"SQLite FTS5的bm25()分数越小，匹配越好。","expected_verdict":"supported","related_question":"Q004","note":"此为核验器测试陈述与人工参考标签，不可导入知识库；判定应查看对应证据而非仅看引用编号。"}
+{"id":"G02","source_ids":["S02"],"claim":"SQLite FTS5的bm25()分数越大，匹配越好。","expected_verdict":"contradicted","related_question":"Q004","note":"此为核验器测试陈述与人工参考标签，不可导入知识库；判定应查看对应证据而非仅看引用编号。"}
+{"id":"G03","source_ids":["S04"],"claim":"FastAPI教程中的JWT不是加密的，而是签名的。","expected_verdict":"supported","related_question":"Q010","note":"此为核验器测试陈述与人工参考标签，不可导入知识库；判定应查看对应证据而非仅看引用编号。"}
+{"id":"G04","source_ids":["S04"],"claim":"本项目使用JWT，令牌有效期固定为一周。","expected_verdict":"insufficient","related_question":"Q026","note":"此为核验器测试陈述与人工参考标签，不可导入知识库；判定应查看对应证据而非仅看引用编号。"}
+{"id":"G05","source_ids":["S06"],"claim":"Vue修改响应式状态后DOM会立即同步完成更新。","expected_verdict":"contradicted","related_question":"Q016","note":"此为核验器测试陈述与人工参考标签，不可导入知识库；判定应查看对应证据而非仅看引用编号。"}
+{"id":"G06","source_ids":["S10"],"claim":"pypdf本身就是OCR软件。","expected_verdict":"contradicted","related_question":"Q022","note":"此为核验器测试陈述与人工参考标签，不可导入知识库；判定应查看对应证据而非仅看引用编号。"}
+{"id":"G07","source_ids":["S01"],"claim":"本项目稠密检索已经比BM25提高19个百分点。","expected_verdict":"insufficient","related_question":"Q031","note":"此为核验器测试陈述与人工参考标签，不可导入知识库；判定应查看对应证据而非仅看引用编号。"}
+{"id":"G08","source_ids":["S07"],"claim":"Elastic文档中的rank_constant默认值为60。","expected_verdict":"supported","related_question":"Q019","note":"此为核验器测试陈述与人工参考标签，不可导入知识库；判定应查看对应证据而非仅看引用编号。"}

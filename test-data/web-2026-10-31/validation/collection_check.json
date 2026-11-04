@@ -1,0 +1,67 @@
+{
+  "source_count": 10,
+  "qa_count": 32,
+  "answerable": 25,
+  "unanswerable": 7,
+  "grounding_cases": 8,
+  "ocr_cases": 2,
+  "report_cases": 3,
+  "evidence_quotes": 36,
+  "verified_quotes": 36,
+  "project_parser": [
+    {
+      "source": "S01",
+      "units": 13,
+      "text_chars": 56122
+    },
+    {
+      "source": "S02",
+      "units": 1013,
+      "text_chars": 162526
+    },
+    {
+      "source": "S03",
+      "units": 56,
+      "text_chars": 3262
+    },
+    {
+      "source": "S04",
+      "units": 100,
+      "text_chars": 3826
+    },
+    {
+      "source": "S05",
+      "units": 52,
+      "text_chars": 4457
+    },
+    {
+      "source": "S06",
+      "units": 132,
+      "text_chars": 4899
+    },
+    {
+      "source": "S07",
+      "units": 6,
+      "text_chars": 324
+    },
+    {
+      "source": "S08",
+      "units": 6,
+      "text_chars": 329
+    },
+    {
+      "source": "S09",
+      "units": 4,
+      "text_chars": 384
+    },
+    {
+      "source": "S10",
+      "units": 6,
+      "text_chars": 293
+    }
+  ],
+  "errors": [],
+  "llm_calls": 0,
+  "live_database_modified": false,
+  "notes": "Quote presence and parser validation only; gold answer semantics are curator annotations, not a measured model score. Raster images visually reviewed separately."
+}

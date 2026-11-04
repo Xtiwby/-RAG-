@@ -1,0 +1,18 @@
+{
+  "embedding": {
+    "status": "success",
+    "message": "本地语义模型真实推理成功，向量维度 1024",
+    "checked_at": "2026-11-01T07:10:01+00:00"
+  },
+  "reranking": {
+    "status": "success",
+    "message": "重排模型真实推理成功（cuda），返回 2 个得分",
+    "details": {
+      "device": "cuda",
+      "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+      "max_length": 1024,
+      "at_length_limit": 0
+    },
+    "checked_at": "2026-11-01T07:10:06+00:00"
+  }
+}

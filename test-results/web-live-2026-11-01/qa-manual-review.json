@@ -1,0 +1,14 @@
+{
+  "review_method": "对照外置标准答案、实际发布正文、引用片段及逐句核验记录人工复核；只评价本次9题，不推算32题整体准确率。",
+  "cases": [
+    {"question_id":"Q004","verdict":"fail","reason":"语料存在答案，但未召回S02，最终错误拒答。"},
+    {"question_id":"Q007","verdict":"pass","reason":"正确区分bytes全量内存和UploadFile的spooled内存/磁盘机制，引用原文支持。"},
+    {"question_id":"Q010","verdict":"pass","reason":"纠正JWT加密误解，说明内容可以读取，引用教程原文。"},
+    {"question_id":"Q016","verdict":"pass","reason":"指出nextTick并解释DOM异步更新，引用对应原文。"},
+    {"question_id":"Q018","verdict":"pass","reason":"给出1/(k+rank)，说明rank从1开始，引用摘编原文。"},
+    {"question_id":"Q022","verdict":"pass","reason":"正确说明pypdf不是OCR软件、扫描件需额外OCR，引用对应原文。"},
+    {"question_id":"Q025","verdict":"partial_fail","reason":"仅说明PDF文字层/OCR边界，未完整说明UploadFile职责，且未引用S03；跨文档答案不完整。"},
+    {"question_id":"Q027","verdict":"pass","reason":"资料不含本项目生产压测QPS，明确证据不足，没有编造数值。"},
+    {"question_id":"Q031","verdict":"pass","reason":"未将DPR论文成绩当成本项目指标，明确拒答。"}
+  ]
+}

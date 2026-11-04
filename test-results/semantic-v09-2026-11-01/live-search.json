@@ -1,0 +1,520 @@
+{
+  "mode": "hybrid",
+  "query": "DOM更新是否同步,如何等待更新完成?",
+  "total": 6,
+  "results": [
+    {
+      "id": 1443,
+      "document_id": 16,
+      "ordinal": 74,
+      "page": null,
+      "section": "DOM 更新时机 ​",
+      "text": "要等待 DOM 更新完成后再执行额外的代码，可以使用 nextTick() 全局 API：",
+      "char_start": 3235,
+      "char_end": 3280,
+      "sha256": "440a20bbcbd791ef80a4d588276ac84706ccdc0888c509033c1fd2a14edd94e7",
+      "name": "S06_Vue3_响应式基础.md",
+      "version": "v1.0",
+      "modality": "text",
+      "knowledge_base_id": 13,
+      "knowledge_base_name": "网络资料测试 2026-11-01 · Vue前端",
+      "chunk_id": 1443,
+      "snippet": "要等待 DOM 更新完成后再执行额外的代码，可以使用 nextTick() 全局 API：",
+      "score": 0.085034,
+      "relevance": 0.9654,
+      "rerank_score": 0.965446,
+      "matched_queries": [
+        {
+          "query": "DOM更新是否同步,如何等待更新完成?",
+          "group": "question",
+          "rank": 1,
+          "coverage": 0.55,
+          "raw_score": 0.032787,
+          "vector_score": 0.7552
+        },
+        {
+          "query": "Is DOM update synchronous, and how to wait for the update to complete?",
+          "group": "question",
+          "rank": 1,
+          "coverage": 0.2,
+          "raw_score": 0.032522,
+          "vector_score": 0.7099
+        },
+        {
+          "query": "DOM更新是否同步执行?",
+          "group": "part-1",
+          "rank": 2,
+          "coverage": 0.4286,
+          "raw_score": 0.032258,
+          "vector_score": 0.6952
+        },
+        {
+          "query": "Is DOM update synchronous?",
+          "group": "part-1",
+          "rank": 1,
+          "coverage": 0.3333,
+          "raw_score": 0.032522,
+          "vector_score": 0.6297
+        },
+        {
+          "query": "如何等待DOM更新完成?",
+          "group": "part-2",
+          "rank": 1,
+          "coverage": 0.9167,
+          "raw_score": 0.032787,
+          "vector_score": 0.7439
+        },
+        {
+          "query": "How to wait for DOM update to complete?",
+          "group": "part-2",
+          "rank": 1,
+          "coverage": 0.25,
+          "raw_score": 0.032787,
+          "vector_score": 0.7585
+        }
+      ],
+      "source": "S06_Vue3_响应式基础.md · DOM 更新时机 ​ · v1.0"
+    },
+    {
+      "id": 1442,
+      "document_id": 16,
+      "ordinal": 73,
+      "page": null,
+      "section": "DOM 更新时机 ​",
+      "text": "当你修改了响应式状态时，DOM 会被自动更新。但是需要注意的是，DOM 更新不是同步的。Vue 会在“next tick”更新周期中缓冲所有状态的修改，以确保不管你进行了多少次状态修改，每个组件都只会被更新一次。",
+      "char_start": 3127,
+      "char_end": 3233,
+      "sha256": "ea5c43b0e49580fd7f9393c574746329e31d93522485499285fad53a01480edd",
+      "name": "S06_Vue3_响应式基础.md",
+      "version": "v1.0",
+      "modality": "text",
+      "knowledge_base_id": 13,
+      "knowledge_base_name": "网络资料测试 2026-11-01 · Vue前端",
+      "chunk_id": 1442,
+      "snippet": "当你修改了响应式状态时，DOM 会被自动更新。但是需要注意的是，DOM 更新不是同步的。Vue 会在“next tick”更新周期中缓冲所有状态的修改，以确保不管你进行了多少次状态修改，每个组件都只会被更新一次。",
+      "score": 0.083878,
+      "relevance": 0.9183,
+      "rerank_score": 0.918334,
+      "matched_queries": [
+        {
+          "query": "DOM更新是否同步,如何等待更新完成?",
+          "group": "question",
+          "rank": 2,
+          "coverage": 0.35,
+          "raw_score": 0.032258,
+          "vector_score": 0.7264
+        },
+        {
+          "query": "Is DOM update synchronous, and how to wait for the update to complete?",
+          "group": "question",
+          "rank": 2,
+          "coverage": 0.2,
+          "raw_score": 0.032266,
+          "vector_score": 0.7169
+        },
+        {
+          "query": "DOM更新是否同步执行?",
+          "group": "part-1",
+          "rank": 1,
+          "coverage": 0.5,
+          "raw_score": 0.032787,
+          "vector_score": 0.7245
+        },
+        {
+          "query": "Is DOM update synchronous?",
+          "group": "part-1",
+          "rank": 2,
+          "coverage": 0.3333,
+          "raw_score": 0.032266,
+          "vector_score": 0.7103
+        },
+        {
+          "query": "如何等待DOM更新完成?",
+          "group": "part-2",
+          "rank": 2,
+          "coverage": 0.3333,
+          "raw_score": 0.032258,
+          "vector_score": 0.6851
+        },
+        {
+          "query": "How to wait for DOM update to complete?",
+          "group": "part-2",
+          "rank": 3,
+          "coverage": 0.25,
+          "raw_score": 0.032002,
+          "vector_score": 0.6603
+        }
+      ],
+      "source": "S06_Vue3_响应式基础.md · DOM 更新时机 ​ · v1.0"
+    },
+    {
+      "id": 1330,
+      "document_id": 15,
+      "ordinal": 13,
+      "page": null,
+      "section": "什么是 Vue？",
+      "text": "- **响应性**：Vue 会自动跟踪 JavaScript 状态并在其发生变化时响应式地更新 DOM。",
+      "char_start": 726,
+      "char_end": 778,
+      "sha256": "d2e2f5af2ecb8dbb11ea2d2c7c90a3f164e246dd4b4d5905c6219fa47e3a6e28",
+      "name": "S05_Vue3_简介.md",
+      "version": "v1.0",
+      "modality": "text",
+      "knowledge_base_id": 13,
+      "knowledge_base_name": "网络资料测试 2026-11-01 · Vue前端",
+      "chunk_id": 1330,
+      "snippet": "- **响应性**：Vue 会自动跟踪 JavaScript 状态并在其发生变化时响应式地更新 DOM。",
+      "score": 0.082744,
+      "relevance": 0.1166,
+      "rerank_score": 0.116563,
+      "matched_queries": [
+        {
+          "query": "DOM更新是否同步,如何等待更新完成?",
+          "group": "question",
+          "rank": 3,
+          "coverage": 0.2,
+          "raw_score": 0.031746,
+          "vector_score": 0.6193
+        },
+        {
+          "query": "Is DOM update synchronous, and how to wait for the update to complete?",
+          "group": "question",
+          "rank": 3,
+          "coverage": 0.2,
+          "raw_score": 0.032002,
+          "vector_score": 0.5971
+        },
+        {
+          "query": "DOM更新是否同步执行?",
+          "group": "part-1",
+          "rank": 3,
+          "coverage": 0.2857,
+          "raw_score": 0.031746,
+          "vector_score": 0.6105
+        },
+        {
+          "query": "Is DOM update synchronous?",
+          "group": "part-1",
+          "rank": 3,
+          "coverage": 0.3333,
+          "raw_score": 0.032002,
+          "vector_score": 0.6029
+        },
+        {
+          "query": "如何等待DOM更新完成?",
+          "group": "part-2",
+          "rank": 3,
+          "coverage": 0.3333,
+          "raw_score": 0.031746,
+          "vector_score": 0.5396
+        },
+        {
+          "query": "How to wait for DOM update to complete?",
+          "group": "part-2",
+          "rank": 2,
+          "coverage": 0.25,
+          "raw_score": 0.032002,
+          "vector_score": 0.5685
+        }
+      ],
+      "source": "S05_Vue3_简介.md · 什么是 Vue？ · v1.0"
+    },
+    {
+      "id": 1415,
+      "document_id": 16,
+      "ordinal": 46,
+      "page": null,
+      "section": "为什么要使用 ref？ ​",
+      "text": "当你在模板中使用了一个 ref，然后改变了这个 ref 的值时，Vue 会自动检测到这个变化，并且相应地更新 DOM。这是通过一个基于依赖追踪的响应式系统实现的。当一个组件首次渲染时，Vue 会追踪在渲染过程中使用的每一个 ref。然后，当一个 ref 被修改时，它会触发追踪它的组件的一次重新渲染。",
+      "char_start": 2003,
+      "char_end": 2153,
+      "sha256": "7e618e1e5a03e46a2668f0118034eb796f5fe58a063184104edd4afe0d015c45",
+      "name": "S06_Vue3_响应式基础.md",
+      "version": "v1.0",
+      "modality": "text",
+      "knowledge_base_id": 13,
+      "knowledge_base_name": "网络资料测试 2026-11-01 · Vue前端",
+      "chunk_id": 1415,
+      "snippet": "当你在模板中使用了一个 ref，然后改变了这个 ref 的值时，Vue 会自动检测到这个变化，并且相应地更新 DOM。这是通过一个基于依赖追踪的响应式系统实现的。当一个组件首次渲染时，Vue 会追踪在渲染过程中使用的每一个 ref。然后，当一个 ref 被修改时，它会触发追踪它的组件的一次重新渲染。",
+      "score": 0.08125,
+      "relevance": 0.1012,
+      "rerank_score": 0.101233,
+      "matched_queries": [
+        {
+          "query": "DOM更新是否同步,如何等待更新完成?",
+          "group": "question",
+          "rank": 4,
+          "coverage": 0.2,
+          "raw_score": 0.030777,
+          "vector_score": 0.5592
+        },
+        {
+          "query": "Is DOM update synchronous, and how to wait for the update to complete?",
+          "group": "question",
+          "rank": 4,
+          "coverage": 0.2,
+          "raw_score": 0.03125,
+          "vector_score": 0.5352
+        },
+        {
+          "query": "DOM更新是否同步执行?",
+          "group": "part-1",
+          "rank": 4,
+          "coverage": 0.2857,
+          "raw_score": 0.03055,
+          "vector_score": 0.5556
+        },
+        {
+          "query": "Is DOM update synchronous?",
+          "group": "part-1",
+          "rank": 4,
+          "coverage": 0.3333,
+          "raw_score": 0.03125,
+          "vector_score": 0.5387
+        },
+        {
+          "query": "如何等待DOM更新完成?",
+          "group": "part-2",
+          "rank": 4,
+          "coverage": 0.3333,
+          "raw_score": 0.030769,
+          "vector_score": 0.5109
+        },
+        {
+          "query": "How to wait for DOM update to complete?",
+          "group": "part-2",
+          "rank": 4,
+          "coverage": 0.25,
+          "raw_score": 0.03101,
+          "vector_score": 0.5165
+        }
+      ],
+      "source": "S06_Vue3_响应式基础.md · 为什么要使用 ref？ ​ · v1.0"
+    },
+    {
+      "id": 1457,
+      "document_id": 16,
+      "ordinal": 88,
+      "page": null,
+      "section": "Reactive Proxy vs. Original ​",
+      "text": "只有代理对象是响应式的，更改原始对象不会触发更新。因此，使用 Vue 的响应式系统的最佳实践是仅使用你声明对象的代理版本。",
+      "char_start": 3735,
+      "char_end": 3796,
+      "sha256": "77568fd9be9cf72710b92295f121e2c5f00cb2e8bbb78b63d2410168ac5abf43",
+      "name": "S06_Vue3_响应式基础.md",
+      "version": "v1.0",
+      "modality": "text",
+      "knowledge_base_id": 13,
+      "knowledge_base_name": "网络资料测试 2026-11-01 · Vue前端",
+      "chunk_id": 1457,
+      "snippet": "只有代理对象是响应式的，更改原始对象不会触发更新。因此，使用 Vue 的响应式系统的最佳实践是仅使用你声明对象的代理版本。",
+      "score": 0.070937,
+      "relevance": 0.0022,
+      "rerank_score": 0.002191,
+      "matched_queries": [
+        {
+          "query": "DOM更新是否同步,如何等待更新完成?",
+          "group": "question",
+          "rank": 6,
+          "coverage": 0.15,
+          "raw_score": 0.030077,
+          "vector_score": 0.54
+        },
+        {
+          "query": "Is DOM update synchronous, and how to wait for the update to complete?",
+          "group": "question",
+          "rank": 24,
+          "coverage": 0.0,
+          "raw_score": 0.021603,
+          "vector_score": 0.5131
+        },
+        {
+          "query": "DOM更新是否同步执行?",
+          "group": "part-1",
+          "rank": 6,
+          "coverage": 0.2143,
+          "raw_score": 0.029857,
+          "vector_score": 0.5358
+        },
+        {
+          "query": "Is DOM update synchronous?",
+          "group": "part-1",
+          "rank": 18,
+          "coverage": 0.0,
+          "raw_score": 0.021836,
+          "vector_score": 0.5066
+        },
+        {
+          "query": "如何等待DOM更新完成?",
+          "group": "part-2",
+          "rank": 5,
+          "coverage": 0.25,
+          "raw_score": 0.030077,
+          "vector_score": 0.5044
+        },
+        {
+          "query": "How to wait for DOM update to complete?",
+          "group": "part-2",
+          "rank": 27,
+          "coverage": 0.0,
+          "raw_score": 0.021603,
+          "vector_score": 0.5054
+        }
+      ],
+      "source": "S06_Vue3_响应式基础.md · Reactive Proxy vs. Original ​ · v1.0"
+    },
+    {
+      "id": 1381,
+      "document_id": 16,
+      "ordinal": 12,
+      "page": null,
+      "section": "声明响应式状态 ​",
+      "text": "虽然也可以不在 data 上定义，直接向组件实例添加新属性，但这个属性将无法触发响应式更新。",
+      "char_start": 785,
+      "char_end": 831,
+      "sha256": "c1e3788b852768fff34b8f534fc717a38b9fe0c0f8c4ed6b0e5a59bbce60a016",
+      "name": "S06_Vue3_响应式基础.md",
+      "version": "v1.0",
+      "modality": "text",
+      "knowledge_base_id": 13,
+      "knowledge_base_name": "网络资料测试 2026-11-01 · Vue前端",
+      "chunk_id": 1381,
+      "snippet": "虽然也可以不在 data 上定义，直接向组件实例添加新属性，但这个属性将无法触发响应式更新。",
+      "score": 0.075781,
+      "relevance": 0.0018,
+      "rerank_score": 0.001775,
+      "matched_queries": [
+        {
+          "query": "DOM更新是否同步,如何等待更新完成?",
+          "group": "question",
+          "rank": 5,
+          "coverage": 0.15,
+          "raw_score": 0.030331,
+          "vector_score": 0.5198
+        },
+        {
+          "query": "Is DOM update synchronous, and how to wait for the update to complete?",
+          "group": "question",
+          "rank": 12,
+          "coverage": 0.0,
+          "raw_score": 0.023775,
+          "vector_score": 0.4947
+        },
+        {
+          "query": "DOM更新是否同步执行?",
+          "group": "part-1",
+          "rank": 5,
+          "coverage": 0.2143,
+          "raw_score": 0.03031,
+          "vector_score": 0.5285
+        },
+        {
+          "query": "Is DOM update synchronous?",
+          "group": "part-1",
+          "rank": 11,
+          "coverage": 0.0,
+          "raw_score": 0.023775,
+          "vector_score": 0.4939
+        },
+        {
+          "query": "如何等待DOM更新完成?",
+          "group": "part-2",
+          "rank": 6,
+          "coverage": 0.25,
+          "raw_score": 0.029324,
+          "vector_score": 0.4768
+        },
+        {
+          "query": "How to wait for DOM update to complete?",
+          "group": "part-2",
+          "rank": 14,
+          "coverage": 0.0,
+          "raw_score": 0.023135,
+          "vector_score": 0.4786
+        }
+      ],
+      "source": "S06_Vue3_响应式基础.md · 声明响应式状态 ​ · v1.0"
+    }
+  ],
+  "elapsed_ms": 18445,
+  "pipeline": {
+    "embedding": "local-bge-m3",
+    "embedding_model": "BAAI/bge-m3",
+    "rerank": "local-cross-encoder",
+    "reranking": {
+      "model": "BAAI/bge-reranker-v2-m3",
+      "candidate_count": 40,
+      "device": "cuda",
+      "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+      "max_length": 1024,
+      "at_length_limit": 0
+    },
+    "policy": "multi-query-neural-v3",
+    "mode": "hybrid",
+    "top_k": 6,
+    "min_similarity": 0.3,
+    "min_coverage": 0.12,
+    "knowledge_base_ids": [
+      13
+    ],
+    "query_expansion": {
+      "policy": "bilingual-query-v1",
+      "status": "expanded",
+      "corpus_languages": [
+        "en",
+        "zh"
+      ],
+      "queries": [
+        {
+          "query": "DOM更新是否同步,如何等待更新完成?",
+          "group": "question",
+          "weight": 1.0,
+          "language": "original"
+        },
+        {
+          "query": "Is DOM update synchronous, and how to wait for the update to complete?",
+          "group": "question",
+          "weight": 1.0,
+          "language": "en"
+        },
+        {
+          "query": "DOM更新是否同步执行?",
+          "group": "part-1",
+          "weight": 0.8,
+          "language": "zh"
+        },
+        {
+          "query": "Is DOM update synchronous?",
+          "group": "part-1",
+          "weight": 0.8,
+          "language": "en"
+        },
+        {
+          "query": "如何等待DOM更新完成?",
+          "group": "part-2",
+          "weight": 0.8,
+          "language": "zh"
+        },
+        {
+          "query": "How to wait for DOM update to complete?",
+          "group": "part-2",
+          "weight": 0.8,
+          "language": "en"
+        }
+      ],
+      "warnings": [],
+      "cache": "miss",
+      "model": "kimi-k2.6"
+    },
+    "topic_anchors": [
+      "dom"
+    ],
+    "covered_topic_anchors": [
+      "dom"
+    ],
+    "part_coverage": {
+      "part-1": 6,
+      "part-2": 6
+    }
+  }
+}

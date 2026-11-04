@@ -1,0 +1,26 @@
+{
+  "md": {
+    "bytes": 2247,
+    "sha256": "7b3053d1137d3fdb307640d1199461f841d99ac388f48371248505ef0b34c709",
+    "http": 200
+  },
+  "docx": {
+    "bytes": 3307,
+    "sha256": "92cd354e5a41837058d0c4d496c5d6789e3e1adf4537ca817a7e1a38e83d570c",
+    "http": 200,
+    "zip_integrity": true,
+    "xml_parts_valid": true,
+    "has_all_headings": true,
+    "has_placeholder": true,
+    "deliberately_false_claim_absent": true,
+    "visual_render": "blocked: bundled LibreOffice unavailable; not claimed visually passed"
+  },
+  "pdf": {
+    "bytes": 5160,
+    "sha256": "3f1edb20cc955ac013cbbde333654a99be87148d64cb45b0ef20426a2c1babe3",
+    "http": 200,
+    "pages": 2,
+    "has_all_headings": true,
+    "has_sources": true
+  }
+}

@@ -1,0 +1,8 @@
+<script setup>
+import {computed} from 'vue'
+import CoveragePanel from './CoveragePanel.vue'
+const props=defineProps({checks:{type:Array,default:()=>[]},coverage:{type:Object,default:()=>({})}})
+const accepted=computed(()=>props.checks.filter(c=>c.status==='supported').length)
+</script>
+<template><CoveragePanel :assessment="coverage"/><details class="grounding"><summary v-if="checks.length">逐句证据核验：通过 {{accepted}} 句 · 拦截 {{checks.length-accepted}} 句</summary><summary v-else>暂无逐句核验记录（历史回答或无证据拒答）</summary><p class="help">只发布通过校验的句子；模型核验仍可能误判，不代表绝对无幻觉。被拦截的候选内容不展示。</p><article v-for="check in checks" :key="check.claim_id"><strong>候选句 #{{check.claim_id}} · {{check.status==='supported'?'通过':'未发布'}}{{check.origin==='coverage_supplement'?' · 关键点补充':''}}</strong><p>{{check.reason}}</p><blockquote v-for="(quote,i) in check.quotes||[]" :key="i">[{{quote.reference}}] {{quote.quote}}<small v-if="quote.char_start!=null">（片段内 {{quote.char_start}}–{{quote.char_end}}）</small></blockquote><small>候选哈希 {{check.sha256?.slice(0,16)}} · {{check.model||'规则 / 校验服务检查'}}</small></article></details></template>
+<style scoped>.grounding{margin:10px 0;padding:10px 12px;background:#f8fbfd;border:1px solid #d7e3ec;border-radius:8px;font-size:12px;color:#526f82}.grounding summary{cursor:pointer;color:#245e82;font-weight:700}.grounding article{border-top:1px solid #dce7ee;margin-top:12px;padding-top:10px}.grounding p{line-height:1.7;margin:7px 0}.grounding blockquote{margin:8px 0;padding:8px 12px;border-left:3px solid #6b9cb9;background:white;white-space:pre-wrap;max-height:150px;overflow:auto}.help,small{color:#6a7f8d}</style>

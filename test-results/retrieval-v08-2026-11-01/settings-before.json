@@ -1,0 +1,39 @@
+{
+  "settings": {
+    "chat": {
+      "base_url": "https://api.moonshot.cn/v1",
+      "model": "kimi-k2.6",
+      "timeout_seconds": 120,
+      "max_tokens": 4096
+    },
+    "embedding": {
+      "provider": "tfidf",
+      "base_url": "",
+      "model": "",
+      "timeout_seconds": 90
+    },
+    "chunk": {
+      "size": 800,
+      "overlap": 150
+    },
+    "retrieval": {
+      "mode": "hybrid",
+      "top_k": 6,
+      "min_similarity": 0.3,
+      "min_coverage": 0.12,
+      "rerank": true,
+      "cross_language": false,
+      "query_rewrite_timeout_seconds": 20
+    },
+    "queue": {
+      "concurrency": 2,
+      "max_attempts": 3
+    }
+  },
+  "revision": 2,
+  "updated_at": "2026-10-29T12:40:10+00:00",
+  "credentials": {
+    "chat": true,
+    "embedding": false
+  }
+}

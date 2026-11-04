@@ -1,0 +1,34 @@
+{
+  "backup": "C:\\Users\\wfl10\\Documents\\Codex\\2026-10-28\\new-chat\\rag-knowledge-system\\backend\\data\\backups\\pre-web-test-20261101-000420.db",
+  "conversations": [
+    1,
+    5
+  ],
+  "documents": [
+    5,
+    7,
+    8,
+    9,
+    10
+  ],
+  "knowledge_bases": [
+    4,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "templates": [
+    7
+  ],
+  "reports_retained_archived": [
+    2,
+    5,
+    7,
+    8,
+    9,
+    10
+  ],
+  "physical_files_deleted": false
+}

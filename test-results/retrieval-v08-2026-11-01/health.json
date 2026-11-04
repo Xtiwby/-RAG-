@@ -1,0 +1,6 @@
+{
+  "status": "ok",
+  "service": "rag-knowledge-api",
+  "version": "0.8.0",
+  "data_scope": "local"
+}

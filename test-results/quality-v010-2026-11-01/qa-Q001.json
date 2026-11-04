@@ -1,0 +1,807 @@
+{
+  "question_id": "Q001",
+  "question": "DPR论文采用哪类编码器框架学习问题和文段的稠密表示？",
+  "expected_for_human_review": "采用双编码器（dual-encoder）框架。",
+  "answerable": true,
+  "elapsed_ms": 48387,
+  "conversation": {
+    "id": 24,
+    "user_id": 1,
+    "title": "v0.10 质量复测 Q001 · DPR论文采用哪类编码器框架学习问题和文段的稠密表示？",
+    "knowledge_base_ids": [
+      11,
+      12,
+      13
+    ],
+    "created_at": "2026-11-01T12:57:34+00:00",
+    "updated_at": "2026-11-01T12:57:51+00:00",
+    "messages": [
+      {
+        "id": 51,
+        "conversation_id": 24,
+        "role": "user",
+        "content": "DPR论文采用哪类编码器框架学习问题和文段的稠密表示?",
+        "citations": [],
+        "status": "complete",
+        "feedback": null,
+        "created_at": "2026-11-01T12:57:34+00:00",
+        "verification": [],
+        "retrieval": {},
+        "coverage": {}
+      },
+      {
+        "id": 52,
+        "conversation_id": 24,
+        "role": "assistant",
+        "content": "该框架包含两个独立的编码器：一个稠密编码器 $E_P(\\cdot)$ 将文本文段映射为 $d$ 维实值向量，另一个编码器 $E_Q(\\cdot)$ 将输入问题映射为 $d$ 维向量 [3][4]。\n问题与文段之间的相似度通过它们向量的点积计算：$sim(q,p) = E_Q(q)^\\top E_P(p)$ [3]。\n这种编码器设计属于可分解的相似度函数形式，使得文段集合的表示可以在运行前预先计算和建立索引 [3]。\n\n部分候选句未通过引用或证据支撑校验，已过滤；上述仅展示通过校验的内容。",
+        "citations": [
+          {
+            "id": 67,
+            "document_id": 11,
+            "ordinal": 8,
+            "page": 2,
+            "section": "第 2 页",
+            "text": " (Bromley\net al., 1994), we focus on developing the right\ntraining scheme using a relatively small number\nof question and passage pairs. Through a series\nof careful ablation studies, our ﬁnal solution is\nsurprisingly simple: the embedding is optimized\nfor maximizing inner products of the question and\nrelevant passage vectors, with an objective compar-\ning all pairs of questions and passages in a batch.\nOur Dense Passage Retriever (DPR) is exception-\nally strong. It not only outperforms BM25 by a\nlarge margin (65.2% vs. 42.9% in Top-5 accuracy),\nbut also results in a substantial improvement on\nthe end-to-end QA accuracy compared to ORQA\n(41.5% vs. 33.3%) in the open Natural Questions\nsetting (Lee et al., 2019; Kwiatkowski et al., 2019).\nOur contributions are twofold. First, we demon-\nstrate",
+            "char_start": 4873,
+            "char_end": 5673,
+            "sha256": "eabaf9d4c581d7a656ef8218a7a7b1a0578fc8978d65e45b33099972a6df45a4",
+            "name": "S01_DPR_2020.pdf",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 11,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+            "chunk_id": 67,
+            "snippet": " (Bromley\net al., 1994), we focus on developing the right\ntraining scheme using a relatively small number\nof question and passage pairs. Through a series\nof careful ablation studies, our ﬁnal solution is\nsurprisingly simple: the embedding is optimized\nfor maximizing inner products of the question and\nrelevant passage vectors, with an objective compar-\ning all pairs of questions and passages in a batch.\nOur Dense Passage Retriever (DPR) is exception-\nally strong. It not only outperforms BM25 by a\nlarge margin (65.2% vs. 42.9% in Top-5 accuracy),\nbut also results in a substantial improvement on\nthe end-to-end QA accuracy compared to ORQA\n(41.5% vs. 33.3%) in the open Natural Questions\nsetting (Lee et al., 2019; Kwiatkowski et al., 2019).\nOur contributions are twofold. First, we demon-\nstrate",
+            "score": 0.027206,
+            "relevance": 0.733,
+            "rerank_score": 0.732974,
+            "matched_queries": [
+              {
+                "query": "DPR论文采用哪类编码器框架学习问题和文段的稠密表示?",
+                "group": "question",
+                "rank": 20,
+                "coverage": 0.0238,
+                "raw_score": 0.016931,
+                "vector_score": 0.5434
+              },
+              {
+                "query": "What type of encoder framework does the DPR paper use to learn dense representations of questions and passages?",
+                "group": "question",
+                "rank": 8,
+                "coverage": 0.3636,
+                "raw_score": 0.027072,
+                "vector_score": 0.5766
+              }
+            ],
+            "source": "S01_DPR_2020.pdf · 第 2 页 · 第2页 · v1.0"
+          },
+          {
+            "id": 92,
+            "document_id": 11,
+            "ordinal": 33,
+            "page": 5,
+            "section": "第 5 页",
+            "text": "pment sets.\n20 40 60 80 100\nk: # of retrieved passages\n40\n50\n60\n70\n80\n90Top-k accuracy (%)\nBM25\n# Train: 1k\n# Train: 10k\n# Train: 20k\n# Train: 40k\n# Train: all (59k)\nFigure 1: Retriever top-kaccuracy with different num-\nbers of training examples used in our dense passage re-\ntriever vs BM25. The results are measured on the de-\nvelopment set of Natural Questions. Our DPR trained\nusing 1,000 examples already outperforms BM25.\ntiple datasets, TREC, the smallest dataset of the\nﬁve, beneﬁts greatly from more training examples.\nIn contrast, Natural Questions and WebQuestions\nimprove modestly and TriviaQA degrades slightly.\nResults can be improved further in some cases by\ncombining DPR with BM25 in both single- and\nmulti-dataset settings.\nWe conjecture that the lower performance on\nSQuAD is due t",
+            "char_start": 20682,
+            "char_end": 21482,
+            "sha256": "10896b64296e2245fccd4dddbcfc6d8141288dddc9b73886df609c73331f53e7",
+            "name": "S01_DPR_2020.pdf",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 11,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+            "chunk_id": 92,
+            "snippet": "pment sets.\n20 40 60 80 100\nk: # of retrieved passages\n40\n50\n60\n70\n80\n90Top-k accuracy (%)\nBM25\n# Train: 1k\n# Train: 10k\n# Train: 20k\n# Train: 40k\n# Train: all (59k)\nFigure 1: Retriever top-kaccuracy with different num-\nbers of training examples used in our dense passage re-\ntriever vs BM25. The results are measured on the de-\nvelopment set of Natural Questions. Our DPR trained\nusing 1,000 examples already outperforms BM25.\ntiple datasets, TREC, the smallest dataset of the\nﬁve, beneﬁts greatly from more training examples.\nIn contrast, Natural Questions and WebQuestions\nimprove modestly and TriviaQA degrades slightly.\nResults can be improved further in some cases by\ncombining DPR with BM25 in both single- and\nmulti-dataset settings.\nWe conjecture that the lower performance on\nSQuAD is due t",
+            "score": 0.02837,
+            "relevance": 0.6429,
+            "rerank_score": 0.642881,
+            "matched_queries": [
+              {
+                "query": "DPR论文采用哪类编码器框架学习问题和文段的稠密表示?",
+                "group": "question",
+                "rank": 11,
+                "coverage": 0.0238,
+                "raw_score": 0.018589,
+                "vector_score": 0.5577
+              },
+              {
+                "query": "What type of encoder framework does the DPR paper use to learn dense representations of questions and passages?",
+                "group": "question",
+                "rank": 10,
+                "coverage": 0.3636,
+                "raw_score": 0.026686,
+                "vector_score": 0.5468
+              }
+            ],
+            "source": "S01_DPR_2020.pdf · 第 5 页 · 第5页 · v1.0"
+          },
+          {
+            "id": 74,
+            "document_id": 11,
+            "ordinal": 15,
+            "page": 3,
+            "section": "第 3 页",
+            "text": "6771\nAt run-time, DPR applies a different encoderEQ(·)\nthat maps the input question to a d-dimensional\nvector, and retrieves kpassages of which vectors\nare the closest to the question vector. We deﬁne\nthe similarity between the question and the passage\nusing the dot product of their vectors:\nsim(q,p) =EQ(q)⊺EP (p). (1)\nAlthough more expressive model forms for measur-\ning the similarity between a question and a passage\ndo exist, such as networks consisting of multiple\nlayers of cross attentions, the similarity function\nneeds to be decomposable so that the represen-\ntations of the collection of passages can be pre-\ncomputed. Most decomposable similarity functions\nare some transformations of Euclidean distance\n(L2). For instance, cosine is equivalent to inner\nproduct for unit vectors and the ",
+            "char_start": 9079,
+            "char_end": 9879,
+            "sha256": "178fadafb28ad87a688814d055665481c4e14243244aff9fb9c7c0b9bf841bb8",
+            "name": "S01_DPR_2020.pdf",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 11,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+            "chunk_id": 74,
+            "snippet": "6771\nAt run-time, DPR applies a different encoderEQ(·)\nthat maps the input question to a d-dimensional\nvector, and retrieves kpassages of which vectors\nare the closest to the question vector. We deﬁne\nthe similarity between the question and the passage\nusing the dot product of their vectors:\nsim(q,p) =EQ(q)⊺EP (p). (1)\nAlthough more expressive model forms for measur-\ning the similarity between a question and a passage\ndo exist, such as networks consisting of multiple\nlayers of cross attentions, the similarity function\nneeds to be decomposable so that the represen-\ntations of the collection of passages can be pre-\ncomputed. Most decomposable similarity functions\nare some transformations of Euclidean distance\n(L2). For instance, cosine is equivalent to inner\nproduct for unit vectors and the ",
+            "score": 0.023953,
+            "relevance": 0.5283,
+            "rerank_score": 0.52832,
+            "matched_queries": [
+              {
+                "query": "DPR论文采用哪类编码器框架学习问题和文段的稠密表示?",
+                "group": "question",
+                "rank": 23,
+                "coverage": 0.0238,
+                "raw_score": 0.015937,
+                "vector_score": 0.5273
+              },
+              {
+                "query": "What type of encoder framework does the DPR paper use to learn dense representations of questions and passages?",
+                "group": "question",
+                "rank": 24,
+                "coverage": 0.1818,
+                "raw_score": 0.022614,
+                "vector_score": 0.584
+              }
+            ],
+            "source": "S01_DPR_2020.pdf · 第 3 页 · 第3页 · v1.0"
+          },
+          {
+            "id": 72,
+            "document_id": 11,
+            "ordinal": 13,
+            "page": 2,
+            "section": "第 2 页",
+            "text": " passages in a low-dimensional and continuous\nspace, such that it can retrieve efﬁciently the top\nk passages relevant to the input question for the\nreader at run-time. Note that M can be very large\n(e.g., 21 million passages in our experiments, de-\nscribed in Section 4.1) and kis usually small, such\nas 20–100.\n3.1 Overview\nOur dense passage retriever (DPR) uses a dense\nencoder EP (·) which maps any text passage to a d-\ndimensional real-valued vectors and builds an index\nfor all the M passages that we will use for retrieval.\n3The ideal size and boundary of a text passage are func-\ntions of both the retriever and reader. We also experimented\nwith natural paragraphs in our preliminary trials and found that\nusing ﬁxed-length passages performs better in both retrieval\nand ﬁnal QA accuracy, as o",
+            "char_start": 8123,
+            "char_end": 8923,
+            "sha256": "c4ba65abf2e23437b5257606cc537d78e3d96fc2f7f871c5734e29cc35ec1d98",
+            "name": "S01_DPR_2020.pdf",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 11,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+            "chunk_id": 72,
+            "snippet": " passages in a low-dimensional and continuous\nspace, such that it can retrieve efﬁciently the top\nk passages relevant to the input question for the\nreader at run-time. Note that M can be very large\n(e.g., 21 million passages in our experiments, de-\nscribed in Section 4.1) and kis usually small, such\nas 20–100.\n3.1 Overview\nOur dense passage retriever (DPR) uses a dense\nencoder EP (·) which maps any text passage to a d-\ndimensional real-valued vectors and builds an index\nfor all the M passages that we will use for retrieval.\n3The ideal size and boundary of a text passage are func-\ntions of both the retriever and reader. We also experimented\nwith natural paragraphs in our preliminary trials and found that\nusing ﬁxed-length passages performs better in both retrieval\nand ﬁnal QA accuracy, as o",
+            "score": 0.029643,
+            "relevance": 0.441,
+            "rerank_score": 0.440981,
+            "matched_queries": [
+              {
+                "query": "DPR论文采用哪类编码器框架学习问题和文段的稠密表示?",
+                "group": "question",
+                "rank": 14,
+                "coverage": 0.0238,
+                "raw_score": 0.018252,
+                "vector_score": 0.5585
+              },
+              {
+                "query": "What type of encoder framework does the DPR paper use to learn dense representations of questions and passages?",
+                "group": "question",
+                "rank": 2,
+                "coverage": 0.4545,
+                "raw_score": 0.031778,
+                "vector_score": 0.6358
+              }
+            ],
+            "source": "S01_DPR_2020.pdf · 第 2 页 · 第2页 · v1.0"
+          },
+          {
+            "id": 112,
+            "document_id": 11,
+            "ordinal": 53,
+            "page": 8,
+            "section": "第 8 页",
+            "text": " This approach\nobtains a score of 39.8 EM, which suggests that our\nstrategy of training a strong retriever and reader in\nisolation can leverage effectively available supervi-\nsion, while outperforming a comparable joint train-\ning approach with a simpler design (Appendix D).\nOne thing worth noticing is that our reader does\nconsider more passages compared to ORQA, al-\nthough it is not completely clear how much more\ntime it takes for inference. While DPR processes\nup to 100 passages for each question, the reader\nis able to ﬁt all of them into one batch on a sin-\ngle 32GB GPU, thus the latency remains almost\nidentical to the single passage case (around 20ms).\nThe exact impact on throughput is harder to mea-\nsure: ORQA uses 2-3x longer passages compared\nto DPR (288 word pieces compared to our ",
+            "char_start": 33748,
+            "char_end": 34548,
+            "sha256": "88f4a5add793970f7ce90e65a6fb92c96d31efb41ef8261538a3d76eef3028fe",
+            "name": "S01_DPR_2020.pdf",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 11,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+            "chunk_id": 112,
+            "snippet": " This approach\nobtains a score of 39.8 EM, which suggests that our\nstrategy of training a strong retriever and reader in\nisolation can leverage effectively available supervi-\nsion, while outperforming a comparable joint train-\ning approach with a simpler design (Appendix D).\nOne thing worth noticing is that our reader does\nconsider more passages compared to ORQA, al-\nthough it is not completely clear how much more\ntime it takes for inference. While DPR processes\nup to 100 passages for each question, the reader\nis able to ﬁt all of them into one batch on a sin-\ngle 32GB GPU, thus the latency remains almost\nidentical to the single passage case (around 20ms).\nThe exact impact on throughput is harder to mea-\nsure: ORQA uses 2-3x longer passages compared\nto DPR (288 word pieces compared to our ",
+            "score": 0.029643,
+            "relevance": 0.4316,
+            "rerank_score": 0.431584,
+            "matched_queries": [
+              {
+                "query": "DPR论文采用哪类编码器框架学习问题和文段的稠密表示?",
+                "group": "question",
+                "rank": 2,
+                "coverage": 0.0238,
+                "raw_score": 0.021088,
+                "vector_score": 0.6238
+              },
+              {
+                "query": "What type of encoder framework does the DPR paper use to learn dense representations of questions and passages?",
+                "group": "question",
+                "rank": 14,
+                "coverage": 0.1818,
+                "raw_score": 0.02623,
+                "vector_score": 0.6135
+              }
+            ],
+            "source": "S01_DPR_2020.pdf · 第 8 页 · 第8页 · v1.0"
+          }
+        ],
+        "status": "complete",
+        "feedback": null,
+        "created_at": "2026-11-01T12:57:34+00:00",
+        "verification": [
+          {
+            "claim_id": 1,
+            "sha256": "5d4e68b618f052a568f99e31ac977331106a7e839c67c5bdc4b13e32f798952d",
+            "references": [],
+            "status": "rejected",
+            "reason_code": "invalid_citation",
+            "reason": "引用缺失、越界或不在句末"
+          },
+          {
+            "claim_id": 2,
+            "sha256": "46a304e65d1c1ed66a1adb3c40574c23cec6be81d9dac2d24da22fa14ec1aa6a",
+            "references": [
+              3,
+              4
+            ],
+            "status": "supported",
+            "reason_code": "supported",
+            "reason": "逐句引用、证据判断、原文定位及数字检查通过",
+            "verdict": "supported",
+            "text": "该框架包含两个独立的编码器：一个稠密编码器 $E_P(\\cdot)$ 将文本文段映射为 $d$ 维实值向量，另一个编码器 $E_Q(\\cdot)$ 将输入问题映射为 $d$ 维向量 [3][4]。",
+            "quotes": [
+              {
+                "reference": 4,
+                "quote": "Our dense passage retriever (DPR) uses a dense\nencoder EP (·) which maps any text passage to a d-\ndimensional real-valued vectors",
+                "char_start": 325,
+                "char_end": 454,
+                "match": "exact",
+                "source_sha256": "c4ba65abf2e23437b5257606cc537d78e3d96fc2f7f871c5734e29cc35ec1d98"
+              },
+              {
+                "reference": 3,
+                "quote": "At run-time, DPR applies a different encoderEQ(·)\nthat maps the input question to a d-dimensional\nvector",
+                "char_start": 5,
+                "char_end": 109,
+                "match": "layout-normalized",
+                "source_sha256": "178fadafb28ad87a688814d055665481c4e14243244aff9fb9c7c0b9bf841bb8"
+              }
+            ],
+            "model": "kimi-k2.6"
+          },
+          {
+            "claim_id": 3,
+            "sha256": "8e50b813739d886862e8011348733512ade83b4e8235eccb216e7c0a718477e8",
+            "references": [
+              3
+            ],
+            "status": "supported",
+            "reason_code": "supported",
+            "reason": "逐句引用、证据判断、原文定位及数字检查通过",
+            "verdict": "supported",
+            "text": "问题与文段之间的相似度通过它们向量的点积计算：$sim(q,p) = E_Q(q)^\\top E_P(p)$ [3]。",
+            "quotes": [
+              {
+                "reference": 3,
+                "quote": "We deﬁne\nthe similarity between the question and the passage\nusing the dot product of their vectors:\nsim(q,p) =EQ(q)⊺EP (p). (1)",
+                "char_start": 192,
+                "char_end": 320,
+                "match": "exact",
+                "source_sha256": "178fadafb28ad87a688814d055665481c4e14243244aff9fb9c7c0b9bf841bb8"
+              }
+            ],
+            "model": "kimi-k2.6"
+          },
+          {
+            "claim_id": 4,
+            "sha256": "a04d4c886f84545d841def65c98fe43b740202d18462685dd5e7f281da04e8ea",
+            "references": [
+              3
+            ],
+            "status": "supported",
+            "reason_code": "supported",
+            "reason": "逐句引用、证据判断、原文定位及数字检查通过",
+            "verdict": "supported",
+            "text": "这种编码器设计属于可分解的相似度函数形式，使得文段集合的表示可以在运行前预先计算和建立索引 [3]。",
+            "quotes": [
+              {
+                "reference": 3,
+                "quote": "the similarity function\nneeds to be decomposable so that the represen-\ntations of the collection of passages can be pre-\ncomputed.",
+                "char_start": 500,
+                "char_end": 630,
+                "match": "exact",
+                "source_sha256": "178fadafb28ad87a688814d055665481c4e14243244aff9fb9c7c0b9bf841bb8"
+              }
+            ],
+            "model": "kimi-k2.6"
+          }
+        ],
+        "retrieval": {
+          "embedding": "local-bge-m3",
+          "embedding_model": "BAAI/bge-m3",
+          "rerank": "local-cross-encoder",
+          "reranking": {
+            "model": "BAAI/bge-reranker-v2-m3",
+            "candidate_count": 40,
+            "device": "cuda",
+            "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+            "max_length": 1024,
+            "at_length_limit": 0
+          },
+          "policy": "multi-query-neural-v3",
+          "mode": "hybrid",
+          "top_k": 5,
+          "min_similarity": 0.3,
+          "min_coverage": 0.12,
+          "knowledge_base_ids": [
+            11,
+            12,
+            13
+          ],
+          "query_expansion": {
+            "policy": "bilingual-query-v1",
+            "status": "expanded",
+            "corpus_languages": [
+              "en",
+              "zh"
+            ],
+            "queries": [
+              {
+                "query": "DPR论文采用哪类编码器框架学习问题和文段的稠密表示?",
+                "group": "question",
+                "weight": 1.0,
+                "language": "original"
+              },
+              {
+                "query": "What type of encoder framework does the DPR paper use to learn dense representations of questions and passages?",
+                "group": "question",
+                "weight": 1.0,
+                "language": "en"
+              }
+            ],
+            "warnings": [],
+            "cache": "miss",
+            "model": "kimi-k2.6"
+          },
+          "topic_anchors": [
+            "dpr"
+          ],
+          "covered_topic_anchors": [
+            "dpr"
+          ],
+          "part_coverage": {}
+        },
+        "coverage": {
+          "policy": "question-coverage-v1",
+          "status": "assessed",
+          "items": [
+            {
+              "requirement": "DPR论文采用哪类编码器框架学习问题和文段的稠密表示",
+              "status": "covered",
+              "references": [
+                3,
+                4
+              ]
+            }
+          ],
+          "model": "kimi-k2.6",
+          "repair_attempted": false,
+          "complete": true
+        }
+      }
+    ]
+  },
+  "events": [
+    {
+      "type": "meta",
+      "conversation_id": 24,
+      "message_id": 52,
+      "citations": [
+        {
+          "id": 67,
+          "document_id": 11,
+          "ordinal": 8,
+          "page": 2,
+          "section": "第 2 页",
+          "text": " (Bromley\net al., 1994), we focus on developing the right\ntraining scheme using a relatively small number\nof question and passage pairs. Through a series\nof careful ablation studies, our ﬁnal solution is\nsurprisingly simple: the embedding is optimized\nfor maximizing inner products of the question and\nrelevant passage vectors, with an objective compar-\ning all pairs of questions and passages in a batch.\nOur Dense Passage Retriever (DPR) is exception-\nally strong. It not only outperforms BM25 by a\nlarge margin (65.2% vs. 42.9% in Top-5 accuracy),\nbut also results in a substantial improvement on\nthe end-to-end QA accuracy compared to ORQA\n(41.5% vs. 33.3%) in the open Natural Questions\nsetting (Lee et al., 2019; Kwiatkowski et al., 2019).\nOur contributions are twofold. First, we demon-\nstrate",
+          "char_start": 4873,
+          "char_end": 5673,
+          "sha256": "eabaf9d4c581d7a656ef8218a7a7b1a0578fc8978d65e45b33099972a6df45a4",
+          "name": "S01_DPR_2020.pdf",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 11,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+          "chunk_id": 67,
+          "snippet": " (Bromley\net al., 1994), we focus on developing the right\ntraining scheme using a relatively small number\nof question and passage pairs. Through a series\nof careful ablation studies, our ﬁnal solution is\nsurprisingly simple: the embedding is optimized\nfor maximizing inner products of the question and\nrelevant passage vectors, with an objective compar-\ning all pairs of questions and passages in a batch.\nOur Dense Passage Retriever (DPR) is exception-\nally strong. It not only outperforms BM25 by a\nlarge margin (65.2% vs. 42.9% in Top-5 accuracy),\nbut also results in a substantial improvement on\nthe end-to-end QA accuracy compared to ORQA\n(41.5% vs. 33.3%) in the open Natural Questions\nsetting (Lee et al., 2019; Kwiatkowski et al., 2019).\nOur contributions are twofold. First, we demon-\nstrate",
+          "score": 0.027206,
+          "relevance": 0.733,
+          "rerank_score": 0.732974,
+          "matched_queries": [
+            {
+              "query": "DPR论文采用哪类编码器框架学习问题和文段的稠密表示?",
+              "group": "question",
+              "rank": 20,
+              "coverage": 0.0238,
+              "raw_score": 0.016931,
+              "vector_score": 0.5434
+            },
+            {
+              "query": "What type of encoder framework does the DPR paper use to learn dense representations of questions and passages?",
+              "group": "question",
+              "rank": 8,
+              "coverage": 0.3636,
+              "raw_score": 0.027072,
+              "vector_score": 0.5766
+            }
+          ],
+          "source": "S01_DPR_2020.pdf · 第 2 页 · 第2页 · v1.0"
+        },
+        {
+          "id": 92,
+          "document_id": 11,
+          "ordinal": 33,
+          "page": 5,
+          "section": "第 5 页",
+          "text": "pment sets.\n20 40 60 80 100\nk: # of retrieved passages\n40\n50\n60\n70\n80\n90Top-k accuracy (%)\nBM25\n# Train: 1k\n# Train: 10k\n# Train: 20k\n# Train: 40k\n# Train: all (59k)\nFigure 1: Retriever top-kaccuracy with different num-\nbers of training examples used in our dense passage re-\ntriever vs BM25. The results are measured on the de-\nvelopment set of Natural Questions. Our DPR trained\nusing 1,000 examples already outperforms BM25.\ntiple datasets, TREC, the smallest dataset of the\nﬁve, beneﬁts greatly from more training examples.\nIn contrast, Natural Questions and WebQuestions\nimprove modestly and TriviaQA degrades slightly.\nResults can be improved further in some cases by\ncombining DPR with BM25 in both single- and\nmulti-dataset settings.\nWe conjecture that the lower performance on\nSQuAD is due t",
+          "char_start": 20682,
+          "char_end": 21482,
+          "sha256": "10896b64296e2245fccd4dddbcfc6d8141288dddc9b73886df609c73331f53e7",
+          "name": "S01_DPR_2020.pdf",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 11,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+          "chunk_id": 92,
+          "snippet": "pment sets.\n20 40 60 80 100\nk: # of retrieved passages\n40\n50\n60\n70\n80\n90Top-k accuracy (%)\nBM25\n# Train: 1k\n# Train: 10k\n# Train: 20k\n# Train: 40k\n# Train: all (59k)\nFigure 1: Retriever top-kaccuracy with different num-\nbers of training examples used in our dense passage re-\ntriever vs BM25. The results are measured on the de-\nvelopment set of Natural Questions. Our DPR trained\nusing 1,000 examples already outperforms BM25.\ntiple datasets, TREC, the smallest dataset of the\nﬁve, beneﬁts greatly from more training examples.\nIn contrast, Natural Questions and WebQuestions\nimprove modestly and TriviaQA degrades slightly.\nResults can be improved further in some cases by\ncombining DPR with BM25 in both single- and\nmulti-dataset settings.\nWe conjecture that the lower performance on\nSQuAD is due t",
+          "score": 0.02837,
+          "relevance": 0.6429,
+          "rerank_score": 0.642881,
+          "matched_queries": [
+            {
+              "query": "DPR论文采用哪类编码器框架学习问题和文段的稠密表示?",
+              "group": "question",
+              "rank": 11,
+              "coverage": 0.0238,
+              "raw_score": 0.018589,
+              "vector_score": 0.5577
+            },
+            {
+              "query": "What type of encoder framework does the DPR paper use to learn dense representations of questions and passages?",
+              "group": "question",
+              "rank": 10,
+              "coverage": 0.3636,
+              "raw_score": 0.026686,
+              "vector_score": 0.5468
+            }
+          ],
+          "source": "S01_DPR_2020.pdf · 第 5 页 · 第5页 · v1.0"
+        },
+        {
+          "id": 74,
+          "document_id": 11,
+          "ordinal": 15,
+          "page": 3,
+          "section": "第 3 页",
+          "text": "6771\nAt run-time, DPR applies a different encoderEQ(·)\nthat maps the input question to a d-dimensional\nvector, and retrieves kpassages of which vectors\nare the closest to the question vector. We deﬁne\nthe similarity between the question and the passage\nusing the dot product of their vectors:\nsim(q,p) =EQ(q)⊺EP (p). (1)\nAlthough more expressive model forms for measur-\ning the similarity between a question and a passage\ndo exist, such as networks consisting of multiple\nlayers of cross attentions, the similarity function\nneeds to be decomposable so that the represen-\ntations of the collection of passages can be pre-\ncomputed. Most decomposable similarity functions\nare some transformations of Euclidean distance\n(L2). For instance, cosine is equivalent to inner\nproduct for unit vectors and the ",
+          "char_start": 9079,
+          "char_end": 9879,
+          "sha256": "178fadafb28ad87a688814d055665481c4e14243244aff9fb9c7c0b9bf841bb8",
+          "name": "S01_DPR_2020.pdf",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 11,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+          "chunk_id": 74,
+          "snippet": "6771\nAt run-time, DPR applies a different encoderEQ(·)\nthat maps the input question to a d-dimensional\nvector, and retrieves kpassages of which vectors\nare the closest to the question vector. We deﬁne\nthe similarity between the question and the passage\nusing the dot product of their vectors:\nsim(q,p) =EQ(q)⊺EP (p). (1)\nAlthough more expressive model forms for measur-\ning the similarity between a question and a passage\ndo exist, such as networks consisting of multiple\nlayers of cross attentions, the similarity function\nneeds to be decomposable so that the represen-\ntations of the collection of passages can be pre-\ncomputed. Most decomposable similarity functions\nare some transformations of Euclidean distance\n(L2). For instance, cosine is equivalent to inner\nproduct for unit vectors and the ",
+          "score": 0.023953,
+          "relevance": 0.5283,
+          "rerank_score": 0.52832,
+          "matched_queries": [
+            {
+              "query": "DPR论文采用哪类编码器框架学习问题和文段的稠密表示?",
+              "group": "question",
+              "rank": 23,
+              "coverage": 0.0238,
+              "raw_score": 0.015937,
+              "vector_score": 0.5273
+            },
+            {
+              "query": "What type of encoder framework does the DPR paper use to learn dense representations of questions and passages?",
+              "group": "question",
+              "rank": 24,
+              "coverage": 0.1818,
+              "raw_score": 0.022614,
+              "vector_score": 0.584
+            }
+          ],
+          "source": "S01_DPR_2020.pdf · 第 3 页 · 第3页 · v1.0"
+        },
+        {
+          "id": 72,
+          "document_id": 11,
+          "ordinal": 13,
+          "page": 2,
+          "section": "第 2 页",
+          "text": " passages in a low-dimensional and continuous\nspace, such that it can retrieve efﬁciently the top\nk passages relevant to the input question for the\nreader at run-time. Note that M can be very large\n(e.g., 21 million passages in our experiments, de-\nscribed in Section 4.1) and kis usually small, such\nas 20–100.\n3.1 Overview\nOur dense passage retriever (DPR) uses a dense\nencoder EP (·) which maps any text passage to a d-\ndimensional real-valued vectors and builds an index\nfor all the M passages that we will use for retrieval.\n3The ideal size and boundary of a text passage are func-\ntions of both the retriever and reader. We also experimented\nwith natural paragraphs in our preliminary trials and found that\nusing ﬁxed-length passages performs better in both retrieval\nand ﬁnal QA accuracy, as o",
+          "char_start": 8123,
+          "char_end": 8923,
+          "sha256": "c4ba65abf2e23437b5257606cc537d78e3d96fc2f7f871c5734e29cc35ec1d98",
+          "name": "S01_DPR_2020.pdf",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 11,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+          "chunk_id": 72,
+          "snippet": " passages in a low-dimensional and continuous\nspace, such that it can retrieve efﬁciently the top\nk passages relevant to the input question for the\nreader at run-time. Note that M can be very large\n(e.g., 21 million passages in our experiments, de-\nscribed in Section 4.1) and kis usually small, such\nas 20–100.\n3.1 Overview\nOur dense passage retriever (DPR) uses a dense\nencoder EP (·) which maps any text passage to a d-\ndimensional real-valued vectors and builds an index\nfor all the M passages that we will use for retrieval.\n3The ideal size and boundary of a text passage are func-\ntions of both the retriever and reader. We also experimented\nwith natural paragraphs in our preliminary trials and found that\nusing ﬁxed-length passages performs better in both retrieval\nand ﬁnal QA accuracy, as o",
+          "score": 0.029643,
+          "relevance": 0.441,
+          "rerank_score": 0.440981,
+          "matched_queries": [
+            {
+              "query": "DPR论文采用哪类编码器框架学习问题和文段的稠密表示?",
+              "group": "question",
+              "rank": 14,
+              "coverage": 0.0238,
+              "raw_score": 0.018252,
+              "vector_score": 0.5585
+            },
+            {
+              "query": "What type of encoder framework does the DPR paper use to learn dense representations of questions and passages?",
+              "group": "question",
+              "rank": 2,
+              "coverage": 0.4545,
+              "raw_score": 0.031778,
+              "vector_score": 0.6358
+            }
+          ],
+          "source": "S01_DPR_2020.pdf · 第 2 页 · 第2页 · v1.0"
+        },
+        {
+          "id": 112,
+          "document_id": 11,
+          "ordinal": 53,
+          "page": 8,
+          "section": "第 8 页",
+          "text": " This approach\nobtains a score of 39.8 EM, which suggests that our\nstrategy of training a strong retriever and reader in\nisolation can leverage effectively available supervi-\nsion, while outperforming a comparable joint train-\ning approach with a simpler design (Appendix D).\nOne thing worth noticing is that our reader does\nconsider more passages compared to ORQA, al-\nthough it is not completely clear how much more\ntime it takes for inference. While DPR processes\nup to 100 passages for each question, the reader\nis able to ﬁt all of them into one batch on a sin-\ngle 32GB GPU, thus the latency remains almost\nidentical to the single passage case (around 20ms).\nThe exact impact on throughput is harder to mea-\nsure: ORQA uses 2-3x longer passages compared\nto DPR (288 word pieces compared to our ",
+          "char_start": 33748,
+          "char_end": 34548,
+          "sha256": "88f4a5add793970f7ce90e65a6fb92c96d31efb41ef8261538a3d76eef3028fe",
+          "name": "S01_DPR_2020.pdf",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 11,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+          "chunk_id": 112,
+          "snippet": " This approach\nobtains a score of 39.8 EM, which suggests that our\nstrategy of training a strong retriever and reader in\nisolation can leverage effectively available supervi-\nsion, while outperforming a comparable joint train-\ning approach with a simpler design (Appendix D).\nOne thing worth noticing is that our reader does\nconsider more passages compared to ORQA, al-\nthough it is not completely clear how much more\ntime it takes for inference. While DPR processes\nup to 100 passages for each question, the reader\nis able to ﬁt all of them into one batch on a sin-\ngle 32GB GPU, thus the latency remains almost\nidentical to the single passage case (around 20ms).\nThe exact impact on throughput is harder to mea-\nsure: ORQA uses 2-3x longer passages compared\nto DPR (288 word pieces compared to our ",
+          "score": 0.029643,
+          "relevance": 0.4316,
+          "rerank_score": 0.431584,
+          "matched_queries": [
+            {
+              "query": "DPR论文采用哪类编码器框架学习问题和文段的稠密表示?",
+              "group": "question",
+              "rank": 2,
+              "coverage": 0.0238,
+              "raw_score": 0.021088,
+              "vector_score": 0.6238
+            },
+            {
+              "query": "What type of encoder framework does the DPR paper use to learn dense representations of questions and passages?",
+              "group": "question",
+              "rank": 14,
+              "coverage": 0.1818,
+              "raw_score": 0.02623,
+              "vector_score": 0.6135
+            }
+          ],
+          "source": "S01_DPR_2020.pdf · 第 8 页 · 第8页 · v1.0"
+        }
+      ],
+      "pipeline": {
+        "embedding": "local-bge-m3",
+        "embedding_model": "BAAI/bge-m3",
+        "rerank": "local-cross-encoder",
+        "reranking": {
+          "model": "BAAI/bge-reranker-v2-m3",
+          "candidate_count": 40,
+          "device": "cuda",
+          "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+          "max_length": 1024,
+          "at_length_limit": 0
+        },
+        "policy": "multi-query-neural-v3",
+        "mode": "hybrid",
+        "top_k": 5,
+        "min_similarity": 0.3,
+        "min_coverage": 0.12,
+        "knowledge_base_ids": [
+          11,
+          12,
+          13
+        ],
+        "query_expansion": {
+          "policy": "bilingual-query-v1",
+          "status": "expanded",
+          "corpus_languages": [
+            "en",
+            "zh"
+          ],
+          "queries": [
+            {
+              "query": "DPR论文采用哪类编码器框架学习问题和文段的稠密表示?",
+              "group": "question",
+              "weight": 1.0,
+              "language": "original"
+            },
+            {
+              "query": "What type of encoder framework does the DPR paper use to learn dense representations of questions and passages?",
+              "group": "question",
+              "weight": 1.0,
+              "language": "en"
+            }
+          ],
+          "warnings": [],
+          "cache": "miss",
+          "model": "kimi-k2.6"
+        },
+        "topic_anchors": [
+          "dpr"
+        ],
+        "covered_topic_anchors": [
+          "dpr"
+        ],
+        "part_coverage": {}
+      }
+    },
+    {
+      "type": "verification",
+      "checks": [
+        {
+          "claim_id": 1,
+          "sha256": "5d4e68b618f052a568f99e31ac977331106a7e839c67c5bdc4b13e32f798952d",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        },
+        {
+          "claim_id": 2,
+          "sha256": "46a304e65d1c1ed66a1adb3c40574c23cec6be81d9dac2d24da22fa14ec1aa6a",
+          "references": [
+            3,
+            4
+          ],
+          "status": "supported",
+          "reason_code": "supported",
+          "reason": "逐句引用、证据判断、原文定位及数字检查通过",
+          "verdict": "supported",
+          "text": "该框架包含两个独立的编码器：一个稠密编码器 $E_P(\\cdot)$ 将文本文段映射为 $d$ 维实值向量，另一个编码器 $E_Q(\\cdot)$ 将输入问题映射为 $d$ 维向量 [3][4]。",
+          "quotes": [
+            {
+              "reference": 4,
+              "quote": "Our dense passage retriever (DPR) uses a dense\nencoder EP (·) which maps any text passage to a d-\ndimensional real-valued vectors",
+              "char_start": 325,
+              "char_end": 454,
+              "match": "exact",
+              "source_sha256": "c4ba65abf2e23437b5257606cc537d78e3d96fc2f7f871c5734e29cc35ec1d98"
+            },
+            {
+              "reference": 3,
+              "quote": "At run-time, DPR applies a different encoderEQ(·)\nthat maps the input question to a d-dimensional\nvector",
+              "char_start": 5,
+              "char_end": 109,
+              "match": "layout-normalized",
+              "source_sha256": "178fadafb28ad87a688814d055665481c4e14243244aff9fb9c7c0b9bf841bb8"
+            }
+          ],
+          "model": "kimi-k2.6"
+        },
+        {
+          "claim_id": 3,
+          "sha256": "8e50b813739d886862e8011348733512ade83b4e8235eccb216e7c0a718477e8",
+          "references": [
+            3
+          ],
+          "status": "supported",
+          "reason_code": "supported",
+          "reason": "逐句引用、证据判断、原文定位及数字检查通过",
+          "verdict": "supported",
+          "text": "问题与文段之间的相似度通过它们向量的点积计算：$sim(q,p) = E_Q(q)^\\top E_P(p)$ [3]。",
+          "quotes": [
+            {
+              "reference": 3,
+              "quote": "We deﬁne\nthe similarity between the question and the passage\nusing the dot product of their vectors:\nsim(q,p) =EQ(q)⊺EP (p). (1)",
+              "char_start": 192,
+              "char_end": 320,
+              "match": "exact",
+              "source_sha256": "178fadafb28ad87a688814d055665481c4e14243244aff9fb9c7c0b9bf841bb8"
+            }
+          ],
+          "model": "kimi-k2.6"
+        },
+        {
+          "claim_id": 4,
+          "sha256": "a04d4c886f84545d841def65c98fe43b740202d18462685dd5e7f281da04e8ea",
+          "references": [
+            3
+          ],
+          "status": "supported",
+          "reason_code": "supported",
+          "reason": "逐句引用、证据判断、原文定位及数字检查通过",
+          "verdict": "supported",
+          "text": "这种编码器设计属于可分解的相似度函数形式，使得文段集合的表示可以在运行前预先计算和建立索引 [3]。",
+          "quotes": [
+            {
+              "reference": 3,
+              "quote": "the similarity function\nneeds to be decomposable so that the represen-\ntations of the collection of passages can be pre-\ncomputed.",
+              "char_start": 500,
+              "char_end": 630,
+              "match": "exact",
+              "source_sha256": "178fadafb28ad87a688814d055665481c4e14243244aff9fb9c7c0b9bf841bb8"
+            }
+          ],
+          "model": "kimi-k2.6"
+        }
+      ]
+    },
+    {
+      "type": "token",
+      "content": "该框架包含两个独立的编码器：一个稠密编码器 $E_P(\\cdot)$ 将文本文段映射为 $d$ 维实值向量，另一个编码器 $E_Q(\\cdot)$ 将输入问题映射为 $d$ 维向量 [3][4]。\n"
+    },
+    {
+      "type": "token",
+      "content": "问题与文段之间的相似度通过它们向量的点积计算：$sim(q,p) = E_Q(q)^\\top E_P(p)$ [3]。\n"
+    },
+    {
+      "type": "token",
+      "content": "这种编码器设计属于可分解的相似度函数形式，使得文段集合的表示可以在运行前预先计算和建立索引 [3]。\n"
+    },
+    {
+      "type": "stage",
+      "stage": "coverage",
+      "message": "正在检查问题关键点，必要的补充仍须通过事实核验"
+    },
+    {
+      "type": "coverage",
+      "assessment": {
+        "policy": "question-coverage-v1",
+        "status": "assessed",
+        "items": [
+          {
+            "requirement": "DPR论文采用哪类编码器框架学习问题和文段的稠密表示",
+            "status": "covered",
+            "references": [
+              3,
+              4
+            ]
+          }
+        ],
+        "model": "kimi-k2.6",
+        "repair_attempted": false,
+        "complete": true
+      }
+    },
+    {
+      "type": "token",
+      "content": "\n部分候选句未通过引用或证据支撑校验，已过滤；上述仅展示通过校验的内容。"
+    },
+    {
+      "type": "done",
+      "conversation_id": 24,
+      "message_id": 52
+    }
+  ],
+  "grading": "人工复核，不以模型自评或词项命中自动判正确"
+}

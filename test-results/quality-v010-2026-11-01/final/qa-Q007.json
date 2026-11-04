@@ -1,0 +1,1035 @@
+{
+  "question_id": "Q007",
+  "question": "FastAPI中bytes接收文件与UploadFile的内存处理有什么区别？",
+  "expected_for_human_review": "bytes会将整个文件内容存入内存；UploadFile使用spooled文件，达到上限后写入磁盘。",
+  "answerable": true,
+  "elapsed_ms": 49860,
+  "conversation": {
+    "id": 33,
+    "user_id": 1,
+    "title": "v0.10 质量复测 Q007 · FastAPI中bytes接收文件与UploadFile的内存处理有什么区别？",
+    "knowledge_base_ids": [
+      11,
+      12,
+      13
+    ],
+    "created_at": "2026-11-01T13:05:01+00:00",
+    "updated_at": "2026-11-01T13:05:39+00:00",
+    "messages": [
+      {
+        "id": 69,
+        "conversation_id": 33,
+        "role": "user",
+        "content": "FastAPI中bytes接收文件与UploadFile的内存处理有什么区别?",
+        "citations": [],
+        "status": "complete",
+        "feedback": null,
+        "created_at": "2026-11-01T13:05:01+00:00",
+        "verification": [],
+        "retrieval": {},
+        "coverage": {}
+      },
+      {
+        "id": 70,
+        "conversation_id": 33,
+        "role": "assistant",
+        "content": "当前知识库证据不足：没有通过逐句引用与证据支撑校验的回答。请补充资料或缩小问题范围。",
+        "citations": [
+          {
+            "id": 1210,
+            "document_id": 13,
+            "ordinal": 49,
+            "page": null,
+            "section": "多文件上传",
+            "text": "接收的也是含 `bytes` 或 `UploadFile` 的列表（`list`）。",
+            "char_start": 3038,
+            "char_end": 3080,
+            "sha256": "6e62164f95b9268da1035be1b193d609afe138c261a79137761410fd0bbfac22",
+            "name": "S03_FastAPI_请求文件.md",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 12,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+            "chunk_id": 1210,
+            "snippet": "接收的也是含 `bytes` 或 `UploadFile` 的列表（`list`）。",
+            "score": 0.079477,
+            "relevance": 0.9258,
+            "rerank_score": 0.925769,
+            "matched_queries": [
+              {
+                "query": "FastAPI中bytes接收文件与UploadFile的内存处理有什么区别?",
+                "group": "question",
+                "rank": 2,
+                "coverage": 0.2083,
+                "raw_score": 0.032522,
+                "vector_score": 0.6805
+              },
+              {
+                "query": "What is the difference in memory handling between receiving files with bytes and UploadFile in FastAPI?",
+                "group": "question",
+                "rank": 4,
+                "coverage": 0.2222,
+                "raw_score": 0.029857,
+                "vector_score": 0.6047
+              },
+              {
+                "query": "FastAPI中bytes接收文件时的内存处理机制是什么?",
+                "group": "part-1",
+                "rank": 2,
+                "coverage": 0.16,
+                "raw_score": 0.031778,
+                "vector_score": 0.5953
+              },
+              {
+                "query": "What is the memory handling mechanism when receiving files with bytes in FastAPI?",
+                "group": "part-1",
+                "rank": 20,
+                "coverage": 0.1429,
+                "raw_score": 0.023894,
+                "vector_score": 0.5217
+              },
+              {
+                "query": "FastAPI中UploadFile接收文件时的内存处理机制是什么?",
+                "group": "part-2",
+                "rank": 3,
+                "coverage": 0.16,
+                "raw_score": 0.030282,
+                "vector_score": 0.5783
+              },
+              {
+                "query": "What is the memory handling mechanism when receiving files with UploadFile in FastAPI?",
+                "group": "part-2",
+                "rank": 6,
+                "coverage": 0.1429,
+                "raw_score": 0.027783,
+                "vector_score": 0.5634
+              }
+            ],
+            "source": "S03_FastAPI_请求文件.md · 多文件上传 · v1.0"
+          },
+          {
+            "id": 1179,
+            "document_id": 13,
+            "ordinal": 18,
+            "page": null,
+            "section": "定义 `File` 参数",
+            "text": "不过，在很多情况下，使用 `UploadFile` 会更有优势。",
+            "char_start": 706,
+            "char_end": 738,
+            "sha256": "a9e261d4780ee86dc4359b129f3d88913c68123ad629f4e5ae0e47bf5761195b",
+            "name": "S03_FastAPI_请求文件.md",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 12,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+            "chunk_id": 1179,
+            "snippet": "不过，在很多情况下，使用 `UploadFile` 会更有优势。",
+            "score": 0.048768,
+            "relevance": 0.8693,
+            "rerank_score": 0.869271,
+            "matched_queries": [
+              {
+                "query": "FastAPI中bytes接收文件与UploadFile的内存处理有什么区别?",
+                "group": "question",
+                "rank": 17,
+                "coverage": 0.0417,
+                "raw_score": 0.026121,
+                "vector_score": 0.6115
+              },
+              {
+                "query": "What is the difference in memory handling between receiving files with bytes and UploadFile in FastAPI?",
+                "group": "question",
+                "rank": 9,
+                "coverage": 0.1111,
+                "raw_score": 0.025582,
+                "vector_score": 0.6339
+              },
+              {
+                "query": "FastAPI中UploadFile接收文件时的内存处理机制是什么?",
+                "group": "part-2",
+                "rank": 24,
+                "coverage": 0.04,
+                "raw_score": 0.023184,
+                "vector_score": 0.5528
+              },
+              {
+                "query": "What is the memory handling mechanism when receiving files with UploadFile in FastAPI?",
+                "group": "part-2",
+                "rank": 8,
+                "coverage": 0.1429,
+                "raw_score": 0.027242,
+                "vector_score": 0.5718
+              }
+            ],
+            "source": "S03_FastAPI_请求文件.md · 定义 `File` 参数 · v1.0"
+          },
+          {
+            "id": 1182,
+            "document_id": 13,
+            "ordinal": 21,
+            "page": null,
+            "section": "含 `UploadFile` 的文件参数",
+            "text": "与 `bytes` 相比，使用 `UploadFile` 有多项优势：",
+            "char_start": 792,
+            "char_end": 827,
+            "sha256": "c5bfc3121a1357e824e67e7a912525d1040794cd117115e814af5871003feb5e",
+            "name": "S03_FastAPI_请求文件.md",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 12,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+            "chunk_id": 1182,
+            "snippet": "与 `bytes` 相比，使用 `UploadFile` 有多项优势：",
+            "score": 0.06257,
+            "relevance": 0.8253,
+            "rerank_score": 0.825308,
+            "matched_queries": [
+              {
+                "query": "FastAPI中bytes接收文件与UploadFile的内存处理有什么区别?",
+                "group": "question",
+                "rank": 3,
+                "coverage": 0.0833,
+                "raw_score": 0.030366,
+                "vector_score": 0.6458
+              },
+              {
+                "query": "What is the difference in memory handling between receiving files with bytes and UploadFile in FastAPI?",
+                "group": "question",
+                "rank": 2,
+                "coverage": 0.2222,
+                "raw_score": 0.030622,
+                "vector_score": 0.6513
+              },
+              {
+                "query": "FastAPI中bytes接收文件时的内存处理机制是什么?",
+                "group": "part-1",
+                "rank": 29,
+                "coverage": 0.04,
+                "raw_score": 0.020525,
+                "vector_score": 0.481
+              },
+              {
+                "query": "FastAPI中UploadFile接收文件时的内存处理机制是什么?",
+                "group": "part-2",
+                "rank": 23,
+                "coverage": 0.04,
+                "raw_score": 0.023582,
+                "vector_score": 0.532
+              },
+              {
+                "query": "What is the memory handling mechanism when receiving files with UploadFile in FastAPI?",
+                "group": "part-2",
+                "rank": 7,
+                "coverage": 0.1429,
+                "raw_score": 0.027402,
+                "vector_score": 0.5584
+              }
+            ],
+            "source": "S03_FastAPI_请求文件.md · 含 `UploadFile` 的文件参数 · v1.0"
+          },
+          {
+            "id": 1177,
+            "document_id": 13,
+            "ordinal": 16,
+            "page": null,
+            "section": "定义 `File` 参数",
+            "text": "如果把*路径操作函数*参数的类型声明为 `bytes`，**FastAPI** 会为你读取文件，并以 `bytes` 的形式接收其内容。",
+            "char_start": 606,
+            "char_end": 674,
+            "sha256": "ec0b645b982c791f8284feb92586594f8d7e3ef661976bf94baf172681c44b04",
+            "name": "S03_FastAPI_请求文件.md",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 12,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+            "chunk_id": 1177,
+            "snippet": "如果把*路径操作函数*参数的类型声明为 `bytes`，**FastAPI** 会为你读取文件，并以 `bytes` 的形式接收其内容。",
+            "score": 0.082551,
+            "relevance": 0.773,
+            "rerank_score": 0.773045,
+            "matched_queries": [
+              {
+                "query": "FastAPI中bytes接收文件与UploadFile的内存处理有什么区别?",
+                "group": "question",
+                "rank": 1,
+                "coverage": 0.375,
+                "raw_score": 0.032522,
+                "vector_score": 0.689
+              },
+              {
+                "query": "What is the difference in memory handling between receiving files with bytes and UploadFile in FastAPI?",
+                "group": "question",
+                "rank": 5,
+                "coverage": 0.2222,
+                "raw_score": 0.029052,
+                "vector_score": 0.6544
+              },
+              {
+                "query": "FastAPI中bytes接收文件时的内存处理机制是什么?",
+                "group": "part-1",
+                "rank": 1,
+                "coverage": 0.36,
+                "raw_score": 0.032522,
+                "vector_score": 0.7299
+              },
+              {
+                "query": "What is the memory handling mechanism when receiving files with bytes in FastAPI?",
+                "group": "part-1",
+                "rank": 1,
+                "coverage": 0.2857,
+                "raw_score": 0.031778,
+                "vector_score": 0.702
+              },
+              {
+                "query": "FastAPI中UploadFile接收文件时的内存处理机制是什么?",
+                "group": "part-2",
+                "rank": 1,
+                "coverage": 0.32,
+                "raw_score": 0.032266,
+                "vector_score": 0.6471
+              },
+              {
+                "query": "What is the memory handling mechanism when receiving files with UploadFile in FastAPI?",
+                "group": "part-2",
+                "rank": 10,
+                "coverage": 0.1429,
+                "raw_score": 0.026399,
+                "vector_score": 0.6183
+              }
+            ],
+            "source": "S03_FastAPI_请求文件.md · 定义 `File` 参数 · v1.0"
+          },
+          {
+            "id": 1216,
+            "document_id": 13,
+            "ordinal": 55,
+            "page": null,
+            "section": "小结",
+            "text": "使用 `File`、`bytes` 和 `UploadFile` 来声明在请求中上传的文件，它们以表单数据发送。",
+            "char_start": 3316,
+            "char_end": 3372,
+            "sha256": "ae669d943b1ede8b3bfc5e5f6c730f731978479b05b7fae90e0b337e5e968615",
+            "name": "S03_FastAPI_请求文件.md",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 12,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+            "chunk_id": 1216,
+            "snippet": "使用 `File`、`bytes` 和 `UploadFile` 来声明在请求中上传的文件，它们以表单数据发送。",
+            "score": 0.061346,
+            "relevance": 0.6215,
+            "rerank_score": 0.621483,
+            "matched_queries": [
+              {
+                "query": "FastAPI中bytes接收文件与UploadFile的内存处理有什么区别?",
+                "group": "question",
+                "rank": 5,
+                "coverage": 0.2083,
+                "raw_score": 0.029911,
+                "vector_score": 0.6381
+              },
+              {
+                "query": "What is the difference in memory handling between receiving files with bytes and UploadFile in FastAPI?",
+                "group": "question",
+                "rank": 7,
+                "coverage": 0.2222,
+                "raw_score": 0.027746,
+                "vector_score": 0.6097
+              },
+              {
+                "query": "FastAPI中bytes接收文件时的内存处理机制是什么?",
+                "group": "part-1",
+                "rank": 17,
+                "coverage": 0.16,
+                "raw_score": 0.024869,
+                "vector_score": 0.5342
+              },
+              {
+                "query": "FastAPI中UploadFile接收文件时的内存处理机制是什么?",
+                "group": "part-2",
+                "rank": 18,
+                "coverage": 0.16,
+                "raw_score": 0.025382,
+                "vector_score": 0.5688
+              },
+              {
+                "query": "What is the memory handling mechanism when receiving files with UploadFile in FastAPI?",
+                "group": "part-2",
+                "rank": 17,
+                "coverage": 0.1429,
+                "raw_score": 0.024828,
+                "vector_score": 0.5574
+              }
+            ],
+            "source": "S03_FastAPI_请求文件.md · 小结 · v1.0"
+          }
+        ],
+        "status": "complete",
+        "feedback": null,
+        "created_at": "2026-11-01T13:05:01+00:00",
+        "verification": [
+          {
+            "claim_id": 1,
+            "sha256": "09976d2546ec6efbc897145d436806945a0559d75324831b96158badf14ea9e2",
+            "references": [
+              4
+            ],
+            "status": "rejected",
+            "reason_code": "partial",
+            "reason": "仅部分事实得到支持，整句未发布",
+            "verdict": "partial"
+          },
+          {
+            "claim_id": 2,
+            "sha256": "f2aa45c97d8e1f8a67e272a40eae6b4d657132d4fcfc2df23d260552f371fdf4",
+            "references": [
+              3
+            ],
+            "status": "rejected",
+            "reason_code": "insufficient",
+            "reason": "引用证据不足以支持整句",
+            "verdict": "insufficient"
+          },
+          {
+            "claim_id": 3,
+            "sha256": "70ef7eb83f99181e18107ca6084e288c73ff20b60543748ecb5524a15075a5c8",
+            "references": [],
+            "status": "rejected",
+            "reason_code": "invalid_citation",
+            "reason": "引用缺失、越界或不在句末"
+          }
+        ],
+        "retrieval": {
+          "embedding": "local-bge-m3",
+          "embedding_model": "BAAI/bge-m3",
+          "rerank": "local-cross-encoder",
+          "reranking": {
+            "model": "BAAI/bge-reranker-v2-m3",
+            "candidate_count": 40,
+            "device": "cuda",
+            "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+            "max_length": 1024,
+            "at_length_limit": 0
+          },
+          "policy": "multi-query-neural-v3",
+          "mode": "hybrid",
+          "top_k": 5,
+          "min_similarity": 0.3,
+          "min_coverage": 0.12,
+          "knowledge_base_ids": [
+            11,
+            12,
+            13
+          ],
+          "query_expansion": {
+            "policy": "bilingual-query-v1",
+            "status": "expanded",
+            "corpus_languages": [
+              "en",
+              "zh"
+            ],
+            "queries": [
+              {
+                "query": "FastAPI中bytes接收文件与UploadFile的内存处理有什么区别?",
+                "group": "question",
+                "weight": 1.0,
+                "language": "original"
+              },
+              {
+                "query": "What is the difference in memory handling between receiving files with bytes and UploadFile in FastAPI?",
+                "group": "question",
+                "weight": 1.0,
+                "language": "en"
+              },
+              {
+                "query": "FastAPI中bytes接收文件时的内存处理机制是什么?",
+                "group": "part-1",
+                "weight": 0.8,
+                "language": "zh"
+              },
+              {
+                "query": "What is the memory handling mechanism when receiving files with bytes in FastAPI?",
+                "group": "part-1",
+                "weight": 0.8,
+                "language": "en"
+              },
+              {
+                "query": "FastAPI中UploadFile接收文件时的内存处理机制是什么?",
+                "group": "part-2",
+                "weight": 0.8,
+                "language": "zh"
+              },
+              {
+                "query": "What is the memory handling mechanism when receiving files with UploadFile in FastAPI?",
+                "group": "part-2",
+                "weight": 0.8,
+                "language": "en"
+              }
+            ],
+            "warnings": [],
+            "cache": "miss",
+            "model": "kimi-k2.6"
+          },
+          "topic_anchors": [
+            "bytes",
+            "fastapi",
+            "uploadfile"
+          ],
+          "covered_topic_anchors": [
+            "bytes",
+            "fastapi",
+            "uploadfile"
+          ],
+          "part_coverage": {
+            "part-1": 4,
+            "part-2": 5
+          }
+        },
+        "coverage": {
+          "policy": "question-coverage-v1",
+          "status": "assessed",
+          "items": [
+            {
+              "requirement": "bytes类型接收文件时的内存处理方式（FastAPI读取文件并以bytes形式接收内容）",
+              "status": "covered",
+              "references": [
+                4
+              ]
+            },
+            {
+              "requirement": "UploadFile的内存处理方式",
+              "status": "insufficient",
+              "references": []
+            },
+            {
+              "requirement": "bytes与UploadFile在内存处理上的具体区别",
+              "status": "insufficient",
+              "references": []
+            },
+            {
+              "requirement": "UploadFile相比bytes的优势",
+              "status": "insufficient",
+              "references": [
+                2,
+                3
+              ]
+            }
+          ],
+          "model": "kimi-k2.6",
+          "repair_attempted": false,
+          "complete": false
+        }
+      }
+    ]
+  },
+  "events": [
+    {
+      "type": "meta",
+      "conversation_id": 33,
+      "message_id": 70,
+      "citations": [
+        {
+          "id": 1210,
+          "document_id": 13,
+          "ordinal": 49,
+          "page": null,
+          "section": "多文件上传",
+          "text": "接收的也是含 `bytes` 或 `UploadFile` 的列表（`list`）。",
+          "char_start": 3038,
+          "char_end": 3080,
+          "sha256": "6e62164f95b9268da1035be1b193d609afe138c261a79137761410fd0bbfac22",
+          "name": "S03_FastAPI_请求文件.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1210,
+          "snippet": "接收的也是含 `bytes` 或 `UploadFile` 的列表（`list`）。",
+          "score": 0.079477,
+          "relevance": 0.9258,
+          "rerank_score": 0.925769,
+          "matched_queries": [
+            {
+              "query": "FastAPI中bytes接收文件与UploadFile的内存处理有什么区别?",
+              "group": "question",
+              "rank": 2,
+              "coverage": 0.2083,
+              "raw_score": 0.032522,
+              "vector_score": 0.6805
+            },
+            {
+              "query": "What is the difference in memory handling between receiving files with bytes and UploadFile in FastAPI?",
+              "group": "question",
+              "rank": 4,
+              "coverage": 0.2222,
+              "raw_score": 0.029857,
+              "vector_score": 0.6047
+            },
+            {
+              "query": "FastAPI中bytes接收文件时的内存处理机制是什么?",
+              "group": "part-1",
+              "rank": 2,
+              "coverage": 0.16,
+              "raw_score": 0.031778,
+              "vector_score": 0.5953
+            },
+            {
+              "query": "What is the memory handling mechanism when receiving files with bytes in FastAPI?",
+              "group": "part-1",
+              "rank": 20,
+              "coverage": 0.1429,
+              "raw_score": 0.023894,
+              "vector_score": 0.5217
+            },
+            {
+              "query": "FastAPI中UploadFile接收文件时的内存处理机制是什么?",
+              "group": "part-2",
+              "rank": 3,
+              "coverage": 0.16,
+              "raw_score": 0.030282,
+              "vector_score": 0.5783
+            },
+            {
+              "query": "What is the memory handling mechanism when receiving files with UploadFile in FastAPI?",
+              "group": "part-2",
+              "rank": 6,
+              "coverage": 0.1429,
+              "raw_score": 0.027783,
+              "vector_score": 0.5634
+            }
+          ],
+          "source": "S03_FastAPI_请求文件.md · 多文件上传 · v1.0"
+        },
+        {
+          "id": 1179,
+          "document_id": 13,
+          "ordinal": 18,
+          "page": null,
+          "section": "定义 `File` 参数",
+          "text": "不过，在很多情况下，使用 `UploadFile` 会更有优势。",
+          "char_start": 706,
+          "char_end": 738,
+          "sha256": "a9e261d4780ee86dc4359b129f3d88913c68123ad629f4e5ae0e47bf5761195b",
+          "name": "S03_FastAPI_请求文件.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1179,
+          "snippet": "不过，在很多情况下，使用 `UploadFile` 会更有优势。",
+          "score": 0.048768,
+          "relevance": 0.8693,
+          "rerank_score": 0.869271,
+          "matched_queries": [
+            {
+              "query": "FastAPI中bytes接收文件与UploadFile的内存处理有什么区别?",
+              "group": "question",
+              "rank": 17,
+              "coverage": 0.0417,
+              "raw_score": 0.026121,
+              "vector_score": 0.6115
+            },
+            {
+              "query": "What is the difference in memory handling between receiving files with bytes and UploadFile in FastAPI?",
+              "group": "question",
+              "rank": 9,
+              "coverage": 0.1111,
+              "raw_score": 0.025582,
+              "vector_score": 0.6339
+            },
+            {
+              "query": "FastAPI中UploadFile接收文件时的内存处理机制是什么?",
+              "group": "part-2",
+              "rank": 24,
+              "coverage": 0.04,
+              "raw_score": 0.023184,
+              "vector_score": 0.5528
+            },
+            {
+              "query": "What is the memory handling mechanism when receiving files with UploadFile in FastAPI?",
+              "group": "part-2",
+              "rank": 8,
+              "coverage": 0.1429,
+              "raw_score": 0.027242,
+              "vector_score": 0.5718
+            }
+          ],
+          "source": "S03_FastAPI_请求文件.md · 定义 `File` 参数 · v1.0"
+        },
+        {
+          "id": 1182,
+          "document_id": 13,
+          "ordinal": 21,
+          "page": null,
+          "section": "含 `UploadFile` 的文件参数",
+          "text": "与 `bytes` 相比，使用 `UploadFile` 有多项优势：",
+          "char_start": 792,
+          "char_end": 827,
+          "sha256": "c5bfc3121a1357e824e67e7a912525d1040794cd117115e814af5871003feb5e",
+          "name": "S03_FastAPI_请求文件.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1182,
+          "snippet": "与 `bytes` 相比，使用 `UploadFile` 有多项优势：",
+          "score": 0.06257,
+          "relevance": 0.8253,
+          "rerank_score": 0.825308,
+          "matched_queries": [
+            {
+              "query": "FastAPI中bytes接收文件与UploadFile的内存处理有什么区别?",
+              "group": "question",
+              "rank": 3,
+              "coverage": 0.0833,
+              "raw_score": 0.030366,
+              "vector_score": 0.6458
+            },
+            {
+              "query": "What is the difference in memory handling between receiving files with bytes and UploadFile in FastAPI?",
+              "group": "question",
+              "rank": 2,
+              "coverage": 0.2222,
+              "raw_score": 0.030622,
+              "vector_score": 0.6513
+            },
+            {
+              "query": "FastAPI中bytes接收文件时的内存处理机制是什么?",
+              "group": "part-1",
+              "rank": 29,
+              "coverage": 0.04,
+              "raw_score": 0.020525,
+              "vector_score": 0.481
+            },
+            {
+              "query": "FastAPI中UploadFile接收文件时的内存处理机制是什么?",
+              "group": "part-2",
+              "rank": 23,
+              "coverage": 0.04,
+              "raw_score": 0.023582,
+              "vector_score": 0.532
+            },
+            {
+              "query": "What is the memory handling mechanism when receiving files with UploadFile in FastAPI?",
+              "group": "part-2",
+              "rank": 7,
+              "coverage": 0.1429,
+              "raw_score": 0.027402,
+              "vector_score": 0.5584
+            }
+          ],
+          "source": "S03_FastAPI_请求文件.md · 含 `UploadFile` 的文件参数 · v1.0"
+        },
+        {
+          "id": 1177,
+          "document_id": 13,
+          "ordinal": 16,
+          "page": null,
+          "section": "定义 `File` 参数",
+          "text": "如果把*路径操作函数*参数的类型声明为 `bytes`，**FastAPI** 会为你读取文件，并以 `bytes` 的形式接收其内容。",
+          "char_start": 606,
+          "char_end": 674,
+          "sha256": "ec0b645b982c791f8284feb92586594f8d7e3ef661976bf94baf172681c44b04",
+          "name": "S03_FastAPI_请求文件.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1177,
+          "snippet": "如果把*路径操作函数*参数的类型声明为 `bytes`，**FastAPI** 会为你读取文件，并以 `bytes` 的形式接收其内容。",
+          "score": 0.082551,
+          "relevance": 0.773,
+          "rerank_score": 0.773045,
+          "matched_queries": [
+            {
+              "query": "FastAPI中bytes接收文件与UploadFile的内存处理有什么区别?",
+              "group": "question",
+              "rank": 1,
+              "coverage": 0.375,
+              "raw_score": 0.032522,
+              "vector_score": 0.689
+            },
+            {
+              "query": "What is the difference in memory handling between receiving files with bytes and UploadFile in FastAPI?",
+              "group": "question",
+              "rank": 5,
+              "coverage": 0.2222,
+              "raw_score": 0.029052,
+              "vector_score": 0.6544
+            },
+            {
+              "query": "FastAPI中bytes接收文件时的内存处理机制是什么?",
+              "group": "part-1",
+              "rank": 1,
+              "coverage": 0.36,
+              "raw_score": 0.032522,
+              "vector_score": 0.7299
+            },
+            {
+              "query": "What is the memory handling mechanism when receiving files with bytes in FastAPI?",
+              "group": "part-1",
+              "rank": 1,
+              "coverage": 0.2857,
+              "raw_score": 0.031778,
+              "vector_score": 0.702
+            },
+            {
+              "query": "FastAPI中UploadFile接收文件时的内存处理机制是什么?",
+              "group": "part-2",
+              "rank": 1,
+              "coverage": 0.32,
+              "raw_score": 0.032266,
+              "vector_score": 0.6471
+            },
+            {
+              "query": "What is the memory handling mechanism when receiving files with UploadFile in FastAPI?",
+              "group": "part-2",
+              "rank": 10,
+              "coverage": 0.1429,
+              "raw_score": 0.026399,
+              "vector_score": 0.6183
+            }
+          ],
+          "source": "S03_FastAPI_请求文件.md · 定义 `File` 参数 · v1.0"
+        },
+        {
+          "id": 1216,
+          "document_id": 13,
+          "ordinal": 55,
+          "page": null,
+          "section": "小结",
+          "text": "使用 `File`、`bytes` 和 `UploadFile` 来声明在请求中上传的文件，它们以表单数据发送。",
+          "char_start": 3316,
+          "char_end": 3372,
+          "sha256": "ae669d943b1ede8b3bfc5e5f6c730f731978479b05b7fae90e0b337e5e968615",
+          "name": "S03_FastAPI_请求文件.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1216,
+          "snippet": "使用 `File`、`bytes` 和 `UploadFile` 来声明在请求中上传的文件，它们以表单数据发送。",
+          "score": 0.061346,
+          "relevance": 0.6215,
+          "rerank_score": 0.621483,
+          "matched_queries": [
+            {
+              "query": "FastAPI中bytes接收文件与UploadFile的内存处理有什么区别?",
+              "group": "question",
+              "rank": 5,
+              "coverage": 0.2083,
+              "raw_score": 0.029911,
+              "vector_score": 0.6381
+            },
+            {
+              "query": "What is the difference in memory handling between receiving files with bytes and UploadFile in FastAPI?",
+              "group": "question",
+              "rank": 7,
+              "coverage": 0.2222,
+              "raw_score": 0.027746,
+              "vector_score": 0.6097
+            },
+            {
+              "query": "FastAPI中bytes接收文件时的内存处理机制是什么?",
+              "group": "part-1",
+              "rank": 17,
+              "coverage": 0.16,
+              "raw_score": 0.024869,
+              "vector_score": 0.5342
+            },
+            {
+              "query": "FastAPI中UploadFile接收文件时的内存处理机制是什么?",
+              "group": "part-2",
+              "rank": 18,
+              "coverage": 0.16,
+              "raw_score": 0.025382,
+              "vector_score": 0.5688
+            },
+            {
+              "query": "What is the memory handling mechanism when receiving files with UploadFile in FastAPI?",
+              "group": "part-2",
+              "rank": 17,
+              "coverage": 0.1429,
+              "raw_score": 0.024828,
+              "vector_score": 0.5574
+            }
+          ],
+          "source": "S03_FastAPI_请求文件.md · 小结 · v1.0"
+        }
+      ],
+      "pipeline": {
+        "embedding": "local-bge-m3",
+        "embedding_model": "BAAI/bge-m3",
+        "rerank": "local-cross-encoder",
+        "reranking": {
+          "model": "BAAI/bge-reranker-v2-m3",
+          "candidate_count": 40,
+          "device": "cuda",
+          "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+          "max_length": 1024,
+          "at_length_limit": 0
+        },
+        "policy": "multi-query-neural-v3",
+        "mode": "hybrid",
+        "top_k": 5,
+        "min_similarity": 0.3,
+        "min_coverage": 0.12,
+        "knowledge_base_ids": [
+          11,
+          12,
+          13
+        ],
+        "query_expansion": {
+          "policy": "bilingual-query-v1",
+          "status": "expanded",
+          "corpus_languages": [
+            "en",
+            "zh"
+          ],
+          "queries": [
+            {
+              "query": "FastAPI中bytes接收文件与UploadFile的内存处理有什么区别?",
+              "group": "question",
+              "weight": 1.0,
+              "language": "original"
+            },
+            {
+              "query": "What is the difference in memory handling between receiving files with bytes and UploadFile in FastAPI?",
+              "group": "question",
+              "weight": 1.0,
+              "language": "en"
+            },
+            {
+              "query": "FastAPI中bytes接收文件时的内存处理机制是什么?",
+              "group": "part-1",
+              "weight": 0.8,
+              "language": "zh"
+            },
+            {
+              "query": "What is the memory handling mechanism when receiving files with bytes in FastAPI?",
+              "group": "part-1",
+              "weight": 0.8,
+              "language": "en"
+            },
+            {
+              "query": "FastAPI中UploadFile接收文件时的内存处理机制是什么?",
+              "group": "part-2",
+              "weight": 0.8,
+              "language": "zh"
+            },
+            {
+              "query": "What is the memory handling mechanism when receiving files with UploadFile in FastAPI?",
+              "group": "part-2",
+              "weight": 0.8,
+              "language": "en"
+            }
+          ],
+          "warnings": [],
+          "cache": "miss",
+          "model": "kimi-k2.6"
+        },
+        "topic_anchors": [
+          "bytes",
+          "fastapi",
+          "uploadfile"
+        ],
+        "covered_topic_anchors": [
+          "bytes",
+          "fastapi",
+          "uploadfile"
+        ],
+        "part_coverage": {
+          "part-1": 4,
+          "part-2": 5
+        }
+      }
+    },
+    {
+      "type": "verification",
+      "checks": [
+        {
+          "claim_id": 1,
+          "sha256": "09976d2546ec6efbc897145d436806945a0559d75324831b96158badf14ea9e2",
+          "references": [
+            4
+          ],
+          "status": "rejected",
+          "reason_code": "partial",
+          "reason": "仅部分事实得到支持，整句未发布",
+          "verdict": "partial"
+        },
+        {
+          "claim_id": 2,
+          "sha256": "f2aa45c97d8e1f8a67e272a40eae6b4d657132d4fcfc2df23d260552f371fdf4",
+          "references": [
+            3
+          ],
+          "status": "rejected",
+          "reason_code": "insufficient",
+          "reason": "引用证据不足以支持整句",
+          "verdict": "insufficient"
+        },
+        {
+          "claim_id": 3,
+          "sha256": "70ef7eb83f99181e18107ca6084e288c73ff20b60543748ecb5524a15075a5c8",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        }
+      ]
+    },
+    {
+      "type": "stage",
+      "stage": "coverage",
+      "message": "正在检查问题关键点，必要的补充仍须通过事实核验"
+    },
+    {
+      "type": "coverage",
+      "assessment": {
+        "policy": "question-coverage-v1",
+        "status": "assessed",
+        "items": [
+          {
+            "requirement": "bytes类型接收文件时的内存处理方式（FastAPI读取文件并以bytes形式接收内容）",
+            "status": "covered",
+            "references": [
+              4
+            ]
+          },
+          {
+            "requirement": "UploadFile的内存处理方式",
+            "status": "insufficient",
+            "references": []
+          },
+          {
+            "requirement": "bytes与UploadFile在内存处理上的具体区别",
+            "status": "insufficient",
+            "references": []
+          },
+          {
+            "requirement": "UploadFile相比bytes的优势",
+            "status": "insufficient",
+            "references": [
+              2,
+              3
+            ]
+          }
+        ],
+        "model": "kimi-k2.6",
+        "repair_attempted": false,
+        "complete": false
+      }
+    },
+    {
+      "type": "token",
+      "content": "当前知识库证据不足：没有通过逐句引用与证据支撑校验的回答。请补充资料或缩小问题范围。"
+    },
+    {
+      "type": "done",
+      "conversation_id": 33,
+      "message_id": 70
+    }
+  ],
+  "grading": "人工复核，不以模型自评或词项命中自动判正确"
+}

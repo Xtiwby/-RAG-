@@ -1,0 +1,43 @@
+[
+  {
+    "name": "anonymous documents",
+    "status": 401,
+    "expected": 401
+  },
+  {
+    "name": "GET /api/documents/13",
+    "status": 403,
+    "expected": 403,
+    "resource_content_leaked": false
+  },
+  {
+    "name": "GET /api/documents/13/original",
+    "status": 403,
+    "expected": 403,
+    "resource_content_leaked": false
+  },
+  {
+    "name": "POST /api/search",
+    "status": 403,
+    "expected": 403,
+    "resource_content_leaked": false
+  },
+  {
+    "name": "POST /api/qa/stream",
+    "status": 403,
+    "expected": 403,
+    "resource_content_leaked": false
+  },
+  {
+    "name": "GET /api/audits/export?format=json",
+    "status": 403,
+    "expected": 403,
+    "resource_content_leaked": false
+  },
+  {
+    "name": "GET /api/reports/12",
+    "status": 404,
+    "expected": 404,
+    "resource_content_leaked": false
+  }
+]

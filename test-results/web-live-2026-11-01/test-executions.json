@@ -1,0 +1,27 @@
+{
+  "backend": {
+    "command": "backend/.venv/Scripts/python.exe -m pytest -q -p no:cacheprovider",
+    "exit_code": 0,
+    "passed": 58,
+    "warnings": 1,
+    "seconds": 88.33,
+    "environment": "isolated temporary SQLite, mocked models; not production DB"
+  },
+  "frontend": {
+    "command": "bundled node --test frontend/tests/profile-validation.test.mjs",
+    "exit_code": 0,
+    "passed": 6,
+    "failed": 0,
+    "scope": "profile validation helpers only"
+  },
+  "docx_visual": {
+    "attempted": true,
+    "exit_code": 1,
+    "reason": "Bundled LibreOffice soffice.exe unavailable; no alternate desktop Office used"
+  },
+  "pdf_visual": {
+    "rendered_pages": 2,
+    "inspected_pages": 2,
+    "result": "Chinese readable, no obvious clipping; English mixed-text spacing and plain Markdown source rendering need polish"
+  }
+}

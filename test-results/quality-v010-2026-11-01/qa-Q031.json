@@ -1,0 +1,1439 @@
+{
+  "question_id": "Q031",
+  "question": "DPR论文提升了9%–19%，所以本项目比BM25提高19个百分点，对吗？",
+  "expected_for_human_review": "不能得出这个结论；论文的实验范围不等于本项目实测，需要项目评测结果。",
+  "answerable": false,
+  "elapsed_ms": 56065,
+  "conversation": {
+    "id": 29,
+    "user_id": 1,
+    "title": "v0.10 质量复测 Q031 · DPR论文提升了9%–19%，所以本项目比BM25提高19个百分点，对吗？",
+    "knowledge_base_ids": [
+      11,
+      12,
+      13
+    ],
+    "created_at": "2026-11-01T12:59:00+00:00",
+    "updated_at": "2026-11-01T12:59:41+00:00",
+    "messages": [
+      {
+        "id": 61,
+        "conversation_id": 29,
+        "role": "user",
+        "content": "DPR论文提升了9%–19%,所以本项目比BM25提高19个百分点,对吗?",
+        "citations": [],
+        "status": "complete",
+        "feedback": null,
+        "created_at": "2026-11-01T12:59:00+00:00",
+        "verification": [],
+        "retrieval": {},
+        "coverage": {}
+      },
+      {
+        "id": 62,
+        "conversation_id": 29,
+        "role": "assistant",
+        "content": "具体而言，论文指出DPR在多个开放域QA数据集上\"outperforms a strong Lucene-BM25 system greatly by 9%-19% absolute in terms of top-20 passage retrieval accuracy\" [3]。\n\n说明：还有 1 个问题要点未获得可发布的证据答案，请查看关键点检查并补充资料。\n\n部分候选句未通过引用或证据支撑校验，已过滤；上述仅展示通过校验的内容。",
+        "citations": [
+          {
+            "id": 91,
+            "document_id": 11,
+            "ordinal": 32,
+            "page": 5,
+            "section": "第 5 页",
+            "text": "evelopment set.\n5.1 Main Results\nTable 2 compares different passage retrieval sys-\ntems on ﬁve QA datasets, using the top-kaccuracy\n(k ∈{20,100}). With the exception of SQuAD,\nDPR performs consistently better than BM25 on\nall datasets. The gap is especially large when kis\nsmall (e.g., 78.4% vs. 59.1% for top-20 accuracy\non Natural Questions). When training with mul-\n8SQuAD is limited to a small set of Wikipedia documents\nand thus introduces unwanted bias. We will discuss this issue\nmore in Section 5.1.\n9Lucene implementation. BM25 parameters b = 0.4 (doc-\nument length normalization) and k1 = 0.9 (term frequency\nscaling) are tuned using development sets.\n20 40 60 80 100\nk: # of retrieved passages\n40\n50\n60\n70\n80\n90Top-k accuracy (%)\nBM25\n# Train: 1k\n# Train: 10k\n# Train: 20k\n# Train: 40k\n# T",
+            "char_start": 20032,
+            "char_end": 20832,
+            "sha256": "31c2ebd1f4758b228ce2faad151c112f171ab7c5c6832dced98bdaa4ce6b32fd",
+            "name": "S01_DPR_2020.pdf",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 11,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+            "chunk_id": 91,
+            "snippet": "evelopment set.\n5.1 Main Results\nTable 2 compares different passage retrieval sys-\ntems on ﬁve QA datasets, using the top-kaccuracy\n(k ∈{20,100}). With the exception of SQuAD,\nDPR performs consistently better than BM25 on\nall datasets. The gap is especially large when kis\nsmall (e.g., 78.4% vs. 59.1% for top-20 accuracy\non Natural Questions). When training with mul-\n8SQuAD is limited to a small set of Wikipedia documents\nand thus introduces unwanted bias. We will discuss this issue\nmore in Section 5.1.\n9Lucene implementation. BM25 parameters b = 0.4 (doc-\nument length normalization) and k1 = 0.9 (term frequency\nscaling) are tuned using development sets.\n20 40 60 80 100\nk: # of retrieved passages\n40\n50\n60\n70\n80\n90Top-k accuracy (%)\nBM25\n# Train: 1k\n# Train: 10k\n# Train: 20k\n# Train: 40k\n# T",
+            "score": 0.078021,
+            "relevance": 0.71,
+            "rerank_score": 0.710025,
+            "matched_queries": [
+              {
+                "query": "DPR论文提升了9%–19%,所以本项目比BM25提高19个百分点,对吗?",
+                "group": "question",
+                "rank": 6,
+                "coverage": 0.0938,
+                "raw_score": 0.025933,
+                "vector_score": 0.5955
+              },
+              {
+                "query": "What is the specific meaning of 9%–19% improvement over BM25 in the DPR paper, and what is the specific meaning of 19 percentage points improvement over BM25 in this project",
+                "group": "question",
+                "rank": 3,
+                "coverage": 0.25,
+                "raw_score": 0.029907,
+                "vector_score": 0.567
+              },
+              {
+                "query": "DPR论文相比BM25提升了9%–19%的具体含义,本项目相比BM25提高19个百分点的具体含义",
+                "group": "question",
+                "rank": 7,
+                "coverage": 0.0789,
+                "raw_score": 0.02522,
+                "vector_score": 0.5586
+              },
+              {
+                "query": "DPR论文中9%–19%提升是相对提升还是绝对百分点提升",
+                "group": "part-1",
+                "rank": 5,
+                "coverage": 0.0714,
+                "raw_score": 0.02179,
+                "vector_score": 0.537
+              },
+              {
+                "query": "Is the 9%–19% improvement in the DPR paper a relative improvement or absolute percentage point improvement",
+                "group": "part-1",
+                "rank": 9,
+                "coverage": 0.2222,
+                "raw_score": 0.024259,
+                "vector_score": 0.5142
+              },
+              {
+                "query": "本项目相比BM25提高19个百分点是绝对百分点还是相对百分比",
+                "group": "part-2",
+                "rank": 11,
+                "coverage": 0.0323,
+                "raw_score": 0.021682,
+                "vector_score": 0.5264
+              },
+              {
+                "query": "Is the 19 percentage points improvement over BM25 in this project absolute percentage points or relative percentage",
+                "group": "part-2",
+                "rank": 7,
+                "coverage": 0.1111,
+                "raw_score": 0.026743,
+                "vector_score": 0.5362
+              }
+            ],
+            "source": "S01_DPR_2020.pdf · 第 5 页 · 第5页 · v1.0"
+          },
+          {
+            "id": 101,
+            "document_id": 11,
+            "ordinal": 42,
+            "page": 7,
+            "section": "第 7 页",
+            "text": "6775\n5.3 Qualitative Analysis\nAlthough DPR performs better than BM25 in gen-\neral, passages retrieved by these two methods dif-\nfer qualitatively. Term-matching methods like\nBM25 are sensitive to highly selective keywords\nand phrases, while DPR captures lexical variations\nor semantic relationships better. See Appendix C\nfor examples and more discussion.\n5.4 Run-time Efﬁciency\nThe main reason that we require a retrieval compo-\nnent for open-domain QA is to reduce the number\nof candidate passages that the reader needs to con-\nsider, which is crucial for answering user’s ques-\ntions in real-time. We proﬁled the passage retrieval\nspeed on a server with Intel Xeon CPU E5-2698 v4\n@ 2.20GHz and 512GB memory. With the help of\nFAISS in-memory index for real-valued vectors10,\nDPR can be made incredi",
+            "char_start": 26626,
+            "char_end": 27426,
+            "sha256": "694e18b6049399f195220db5be8758a8fbfaa66b28e538d4478396b57f2dd254",
+            "name": "S01_DPR_2020.pdf",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 11,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+            "chunk_id": 101,
+            "snippet": "6775\n5.3 Qualitative Analysis\nAlthough DPR performs better than BM25 in gen-\neral, passages retrieved by these two methods dif-\nfer qualitatively. Term-matching methods like\nBM25 are sensitive to highly selective keywords\nand phrases, while DPR captures lexical variations\nor semantic relationships better. See Appendix C\nfor examples and more discussion.\n5.4 Run-time Efﬁciency\nThe main reason that we require a retrieval compo-\nnent for open-domain QA is to reduce the number\nof candidate passages that the reader needs to con-\nsider, which is crucial for answering user’s ques-\ntions in real-time. We proﬁled the passage retrieval\nspeed on a server with Intel Xeon CPU E5-2698 v4\n@ 2.20GHz and 512GB memory. With the help of\nFAISS in-memory index for real-valued vectors10,\nDPR can be made incredi",
+            "score": 0.071368,
+            "relevance": 0.6816,
+            "rerank_score": 0.681621,
+            "matched_queries": [
+              {
+                "query": "DPR论文提升了9%–19%,所以本项目比BM25提高19个百分点,对吗?",
+                "group": "question",
+                "rank": 7,
+                "coverage": 0.0625,
+                "raw_score": 0.025726,
+                "vector_score": 0.5799
+              },
+              {
+                "query": "What is the specific meaning of 9%–19% improvement over BM25 in the DPR paper, and what is the specific meaning of 19 percentage points improvement over BM25 in this project",
+                "group": "question",
+                "rank": 5,
+                "coverage": 0.1667,
+                "raw_score": 0.029572,
+                "vector_score": 0.5339
+              },
+              {
+                "query": "DPR论文相比BM25提升了9%–19%的具体含义,本项目相比BM25提高19个百分点的具体含义",
+                "group": "question",
+                "rank": 8,
+                "coverage": 0.0526,
+                "raw_score": 0.024971,
+                "vector_score": 0.5477
+              },
+              {
+                "query": "DPR论文中9%–19%提升是相对提升还是绝对百分点提升",
+                "group": "part-1",
+                "rank": 13,
+                "coverage": 0.0357,
+                "raw_score": 0.02025,
+                "vector_score": 0.4926
+              },
+              {
+                "query": "Is the 9%–19% improvement in the DPR paper a relative improvement or absolute percentage point improvement",
+                "group": "part-1",
+                "rank": 11,
+                "coverage": 0.1111,
+                "raw_score": 0.023697,
+                "vector_score": 0.4886
+              },
+              {
+                "query": "本项目相比BM25提高19个百分点是绝对百分点还是相对百分比",
+                "group": "part-2",
+                "rank": 26,
+                "coverage": 0.0323,
+                "raw_score": 0.016192,
+                "vector_score": 0.4558
+              },
+              {
+                "query": "Is the 19 percentage points improvement over BM25 in this project absolute percentage points or relative percentage",
+                "group": "part-2",
+                "rank": 23,
+                "coverage": 0.1111,
+                "raw_score": 0.022867,
+                "vector_score": 0.4768
+              }
+            ],
+            "source": "S01_DPR_2020.pdf · 第 7 页 · 第7页 · v1.0"
+          },
+          {
+            "id": 60,
+            "document_id": 11,
+            "ordinal": 1,
+            "page": 1,
+            "section": "第 1 页",
+            "text": "se vector space\nmodels, such as TF-IDF or BM25, are the de\nfacto method. In this work, we show that\nretrieval can be practically implemented us-\ning dense representations alone, where em-\nbeddings are learned from a small number\nof questions and passages by a simple dual-\nencoder framework. When evaluated on a\nwide range of open-domain QA datasets, our\ndense retriever outperforms a strong Lucene-\nBM25 system greatly by 9%-19% absolute in\nterms of top-20 passage retrieval accuracy, and\nhelps our end-to-end QA system establish new\nstate-of-the-art on multiple open-domain QA\nbenchmarks.1\n1 Introduction\nOpen-domain question answering (QA) (V oorhees,\n1999) is a task that answers factoid questions us-\ning a large collection of documents. While early\nQA systems are often complicated and consist ",
+            "char_start": 650,
+            "char_end": 1450,
+            "sha256": "18d08ce761c567f8b4f4635e243300c1cdd592046255d55f02c13e2e72d0e3a1",
+            "name": "S01_DPR_2020.pdf",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 11,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+            "chunk_id": 60,
+            "snippet": "se vector space\nmodels, such as TF-IDF or BM25, are the de\nfacto method. In this work, we show that\nretrieval can be practically implemented us-\ning dense representations alone, where em-\nbeddings are learned from a small number\nof questions and passages by a simple dual-\nencoder framework. When evaluated on a\nwide range of open-domain QA datasets, our\ndense retriever outperforms a strong Lucene-\nBM25 system greatly by 9%-19% absolute in\nterms of top-20 passage retrieval accuracy, and\nhelps our end-to-end QA system establish new\nstate-of-the-art on multiple open-domain QA\nbenchmarks.1\n1 Introduction\nOpen-domain question answering (QA) (V oorhees,\n1999) is a task that answers factoid questions us-\ning a large collection of documents. While early\nQA systems are often complicated and consist ",
+            "score": 0.072638,
+            "relevance": 0.6007,
+            "rerank_score": 0.600657,
+            "matched_queries": [
+              {
+                "query": "DPR论文提升了9%–19%,所以本项目比BM25提高19个百分点,对吗?",
+                "group": "question",
+                "rank": 12,
+                "coverage": 0.0938,
+                "raw_score": 0.022605,
+                "vector_score": 0.4676
+              },
+              {
+                "query": "What is the specific meaning of 9%–19% improvement over BM25 in the DPR paper, and what is the specific meaning of 19 percentage points improvement over BM25 in this project",
+                "group": "question",
+                "rank": 14,
+                "coverage": 0.25,
+                "raw_score": 0.024729,
+                "vector_score": 0.4182
+              },
+              {
+                "query": "DPR论文相比BM25提升了9%–19%的具体含义,本项目相比BM25提高19个百分点的具体含义",
+                "group": "question",
+                "rank": 15,
+                "coverage": 0.0789,
+                "raw_score": 0.019913,
+                "vector_score": 0.4472
+              },
+              {
+                "query": "DPR论文中9%–19%提升是相对提升还是绝对百分点提升",
+                "group": "part-1",
+                "rank": 8,
+                "coverage": 0.0714,
+                "raw_score": 0.020774,
+                "vector_score": 0.4479
+              },
+              {
+                "query": "Is the 9%–19% improvement in the DPR paper a relative improvement or absolute percentage point improvement",
+                "group": "part-1",
+                "rank": 8,
+                "coverage": 0.3333,
+                "raw_score": 0.024532,
+                "vector_score": 0.4066
+              },
+              {
+                "query": "本项目相比BM25提高19个百分点是绝对百分点还是相对百分比",
+                "group": "part-2",
+                "rank": 17,
+                "coverage": 0.0645,
+                "raw_score": 0.020477,
+                "vector_score": 0.4453
+              },
+              {
+                "query": "Is the 19 percentage points improvement over BM25 in this project absolute percentage points or relative percentage",
+                "group": "part-2",
+                "rank": 9,
+                "coverage": 0.3333,
+                "raw_score": 0.026598,
+                "vector_score": 0.4354
+              }
+            ],
+            "source": "S01_DPR_2020.pdf · 第 1 页 · 第1页 · v1.0"
+          },
+          {
+            "id": 67,
+            "document_id": 11,
+            "ordinal": 8,
+            "page": 2,
+            "section": "第 2 页",
+            "text": " (Bromley\net al., 1994), we focus on developing the right\ntraining scheme using a relatively small number\nof question and passage pairs. Through a series\nof careful ablation studies, our ﬁnal solution is\nsurprisingly simple: the embedding is optimized\nfor maximizing inner products of the question and\nrelevant passage vectors, with an objective compar-\ning all pairs of questions and passages in a batch.\nOur Dense Passage Retriever (DPR) is exception-\nally strong. It not only outperforms BM25 by a\nlarge margin (65.2% vs. 42.9% in Top-5 accuracy),\nbut also results in a substantial improvement on\nthe end-to-end QA accuracy compared to ORQA\n(41.5% vs. 33.3%) in the open Natural Questions\nsetting (Lee et al., 2019; Kwiatkowski et al., 2019).\nOur contributions are twofold. First, we demon-\nstrate",
+            "char_start": 4873,
+            "char_end": 5673,
+            "sha256": "eabaf9d4c581d7a656ef8218a7a7b1a0578fc8978d65e45b33099972a6df45a4",
+            "name": "S01_DPR_2020.pdf",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 11,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+            "chunk_id": 67,
+            "snippet": " (Bromley\net al., 1994), we focus on developing the right\ntraining scheme using a relatively small number\nof question and passage pairs. Through a series\nof careful ablation studies, our ﬁnal solution is\nsurprisingly simple: the embedding is optimized\nfor maximizing inner products of the question and\nrelevant passage vectors, with an objective compar-\ning all pairs of questions and passages in a batch.\nOur Dense Passage Retriever (DPR) is exception-\nally strong. It not only outperforms BM25 by a\nlarge margin (65.2% vs. 42.9% in Top-5 accuracy),\nbut also results in a substantial improvement on\nthe end-to-end QA accuracy compared to ORQA\n(41.5% vs. 33.3%) in the open Natural Questions\nsetting (Lee et al., 2019; Kwiatkowski et al., 2019).\nOur contributions are twofold. First, we demon-\nstrate",
+            "score": 0.073297,
+            "relevance": 0.5197,
+            "rerank_score": 0.519719,
+            "matched_queries": [
+              {
+                "query": "DPR论文提升了9%–19%,所以本项目比BM25提高19个百分点,对吗?",
+                "group": "question",
+                "rank": 11,
+                "coverage": 0.0938,
+                "raw_score": 0.02304,
+                "vector_score": 0.5381
+              },
+              {
+                "query": "What is the specific meaning of 9%–19% improvement over BM25 in the DPR paper, and what is the specific meaning of 19 percentage points improvement over BM25 in this project",
+                "group": "question",
+                "rank": 9,
+                "coverage": 0.3333,
+                "raw_score": 0.029236,
+                "vector_score": 0.482
+              },
+              {
+                "query": "DPR论文相比BM25提升了9%–19%的具体含义,本项目相比BM25提高19个百分点的具体含义",
+                "group": "question",
+                "rank": 11,
+                "coverage": 0.0789,
+                "raw_score": 0.022085,
+                "vector_score": 0.4971
+              },
+              {
+                "query": "DPR论文中9%–19%提升是相对提升还是绝对百分点提升",
+                "group": "part-1",
+                "rank": 12,
+                "coverage": 0.0714,
+                "raw_score": 0.02027,
+                "vector_score": 0.4986
+              },
+              {
+                "query": "Is the 9%–19% improvement in the DPR paper a relative improvement or absolute percentage point improvement",
+                "group": "part-1",
+                "rank": 5,
+                "coverage": 0.3333,
+                "raw_score": 0.02885,
+                "vector_score": 0.4731
+              },
+              {
+                "query": "本项目相比BM25提高19个百分点是绝对百分点还是相对百分比",
+                "group": "part-2",
+                "rank": 33,
+                "coverage": 0.0323,
+                "raw_score": 0.014541,
+                "vector_score": 0.4506
+              },
+              {
+                "query": "Is the 19 percentage points improvement over BM25 in this project absolute percentage points or relative percentage",
+                "group": "part-2",
+                "rank": 3,
+                "coverage": 0.2222,
+                "raw_score": 0.028439,
+                "vector_score": 0.4844
+              }
+            ],
+            "source": "S01_DPR_2020.pdf · 第 2 页 · 第2页 · v1.0"
+          },
+          {
+            "id": 138,
+            "document_id": 11,
+            "ordinal": 79,
+            "page": 12,
+            "section": "第 12 页",
+            "text": "that the retrieval accuracy for our “baseline”\nsettings reported in Table 5 (Gold) and Table 6\n(DP, NLL) is slightly better than those reported in\nTable 3. This is due to a better hyper-parameter\nsetting used in these analysis experiments, which\nis documented in our code release.\nC Qualitative Analysis\nAlthough DPR performs better than BM25 in gen-\neral, the retrieved passages of these two retrievers\nactually differ qualitatively. Methods like BM25\nare sensitive to highly selective keywords and\nphrases, but cannot capture lexical variations or se-\nmantic relationships well. In contrast, DPR excels\nat semantic representation, but might lack sufﬁcient\ncapacity to represent salient phrases which appear\nrarely. Table 7 illustrates this phenomenon with\ntwo examples. In the ﬁrst example, the top",
+            "char_start": 50536,
+            "char_end": 51336,
+            "sha256": "0da1b07c7a1bd85fa6bad560284c1bfea34447c5bdd29d5652050363bd067c5e",
+            "name": "S01_DPR_2020.pdf",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 11,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+            "chunk_id": 138,
+            "snippet": "that the retrieval accuracy for our “baseline”\nsettings reported in Table 5 (Gold) and Table 6\n(DP, NLL) is slightly better than those reported in\nTable 3. This is due to a better hyper-parameter\nsetting used in these analysis experiments, which\nis documented in our code release.\nC Qualitative Analysis\nAlthough DPR performs better than BM25 in gen-\neral, the retrieved passages of these two retrievers\nactually differ qualitatively. Methods like BM25\nare sensitive to highly selective keywords and\nphrases, but cannot capture lexical variations or se-\nmantic relationships well. In contrast, DPR excels\nat semantic representation, but might lack sufﬁcient\ncapacity to represent salient phrases which appear\nrarely. Table 7 illustrates this phenomenon with\ntwo examples. In the ﬁrst example, the top",
+            "score": 0.072316,
+            "relevance": 0.4846,
+            "rerank_score": 0.484571,
+            "matched_queries": [
+              {
+                "query": "DPR论文提升了9%–19%,所以本项目比BM25提高19个百分点,对吗?",
+                "group": "question",
+                "rank": 5,
+                "coverage": 0.0625,
+                "raw_score": 0.026009,
+                "vector_score": 0.5966
+              },
+              {
+                "query": "What is the specific meaning of 9%–19% improvement over BM25 in the DPR paper, and what is the specific meaning of 19 percentage points improvement over BM25 in this project",
+                "group": "question",
+                "rank": 7,
+                "coverage": 0.1667,
+                "raw_score": 0.029462,
+                "vector_score": 0.5444
+              },
+              {
+                "query": "DPR论文相比BM25提升了9%–19%的具体含义,本项目相比BM25提高19个百分点的具体含义",
+                "group": "question",
+                "rank": 6,
+                "coverage": 0.0526,
+                "raw_score": 0.025322,
+                "vector_score": 0.567
+              },
+              {
+                "query": "DPR论文中9%–19%提升是相对提升还是绝对百分点提升",
+                "group": "part-1",
+                "rank": 14,
+                "coverage": 0.0357,
+                "raw_score": 0.019841,
+                "vector_score": 0.5053
+              },
+              {
+                "query": "Is the 9%–19% improvement in the DPR paper a relative improvement or absolute percentage point improvement",
+                "group": "part-1",
+                "rank": 10,
+                "coverage": 0.1111,
+                "raw_score": 0.023822,
+                "vector_score": 0.5004
+              },
+              {
+                "query": "本项目相比BM25提高19个百分点是绝对百分点还是相对百分比",
+                "group": "part-2",
+                "rank": 22,
+                "coverage": 0.0323,
+                "raw_score": 0.017929,
+                "vector_score": 0.4749
+              },
+              {
+                "query": "Is the 19 percentage points improvement over BM25 in this project absolute percentage points or relative percentage",
+                "group": "part-2",
+                "rank": 19,
+                "coverage": 0.1111,
+                "raw_score": 0.024085,
+                "vector_score": 0.4889
+              }
+            ],
+            "source": "S01_DPR_2020.pdf · 第 12 页 · 第12页 · v1.0"
+          }
+        ],
+        "status": "complete",
+        "feedback": null,
+        "created_at": "2026-11-01T12:59:00+00:00",
+        "verification": [
+          {
+            "claim_id": 1,
+            "sha256": "b6249e6dcef55002f6950541965a8c5c51198cef13431556d6e1f103a1edef74",
+            "references": [],
+            "status": "rejected",
+            "reason_code": "invalid_citation",
+            "reason": "引用缺失、越界或不在句末"
+          },
+          {
+            "claim_id": 2,
+            "sha256": "65f214bcfbbd9bfd5deca2bdfd0c20f3da74696ff8cb29f937a5c0bc01aa21b4",
+            "references": [
+              3
+            ],
+            "status": "rejected",
+            "reason_code": "numeric_mismatch",
+            "reason": "陈述数字或参数绑定未被实际原文短引文支持",
+            "verdict": "supported"
+          },
+          {
+            "claim_id": 3,
+            "sha256": "ff94b3184646cbfe733dce41df630a13b0b7584fdf9b46641396acdd4f3c4d41",
+            "references": [
+              3
+            ],
+            "status": "supported",
+            "reason_code": "supported",
+            "reason": "逐句引用、证据判断、原文定位及数字检查通过",
+            "verdict": "supported",
+            "text": "具体而言，论文指出DPR在多个开放域QA数据集上\"outperforms a strong Lucene-BM25 system greatly by 9%-19% absolute in terms of top-20 passage retrieval accuracy\" [3]。",
+            "quotes": [
+              {
+                "reference": 3,
+                "quote": "When evaluated on a\nwide range of open-domain QA datasets, our\ndense retriever outperforms a strong Lucene-\nBM25 system greatly by 9%-19% absolute in\nterms of top-20 passage retrieval accuracy",
+                "char_start": 292,
+                "char_end": 484,
+                "match": "exact",
+                "source_sha256": "18d08ce761c567f8b4f4635e243300c1cdd592046255d55f02c13e2e72d0e3a1"
+              }
+            ],
+            "model": "kimi-k2.6"
+          },
+          {
+            "claim_id": 4,
+            "sha256": "04282a369524c7d0d932dca0293e23ba7a26bc67bb27e50077730ec6902890fc",
+            "references": [
+              1
+            ],
+            "status": "rejected",
+            "reason_code": "numeric_mismatch",
+            "reason": "陈述数字或参数绑定未被实际原文短引文支持",
+            "verdict": "supported"
+          },
+          {
+            "claim_id": 5,
+            "sha256": "0a4afa3c1744dd3e6cebad1c6f61c7730ed5c8473cc292b57ba8e2187ccc5911",
+            "references": [
+              4
+            ],
+            "status": "rejected",
+            "reason_code": "numeric_mismatch",
+            "reason": "陈述数字或参数绑定未被实际原文短引文支持",
+            "verdict": "supported"
+          },
+          {
+            "claim_id": 6,
+            "sha256": "0cff9a449a87bada57830b9f6e601ed78fca4f5d6184d797be86baa8ed71f68b",
+            "references": [],
+            "status": "rejected",
+            "reason_code": "invalid_citation",
+            "reason": "引用缺失、越界或不在句末"
+          },
+          {
+            "claim_id": 7,
+            "sha256": "665c836dd9375320f0efe16ec35ff4bb0ad64dec6ac2b9db0127f0fd07cd8cd4",
+            "references": [],
+            "status": "rejected",
+            "reason_code": "invalid_citation",
+            "reason": "引用缺失、越界或不在句末"
+          },
+          {
+            "claim_id": 8,
+            "sha256": "fcefb80559b4d27b73e506529d5458b9017ab8273e4aae671b87f122945ed6be",
+            "references": [
+              3
+            ],
+            "status": "rejected",
+            "reason_code": "partial",
+            "reason": "仅部分事实得到支持，整句未发布",
+            "verdict": "partial"
+          },
+          {
+            "claim_id": 9,
+            "sha256": "9993d80101bd9f08542de170441bc22c9de9fba56da2dde296b5394b67f0109b",
+            "references": [],
+            "status": "rejected",
+            "reason_code": "invalid_citation",
+            "reason": "引用缺失、越界或不在句末"
+          }
+        ],
+        "retrieval": {
+          "embedding": "local-bge-m3",
+          "embedding_model": "BAAI/bge-m3",
+          "rerank": "local-cross-encoder",
+          "reranking": {
+            "model": "BAAI/bge-reranker-v2-m3",
+            "candidate_count": 40,
+            "device": "cuda",
+            "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+            "max_length": 1024,
+            "at_length_limit": 0
+          },
+          "policy": "multi-query-neural-v3",
+          "mode": "hybrid",
+          "top_k": 5,
+          "min_similarity": 0.3,
+          "min_coverage": 0.12,
+          "knowledge_base_ids": [
+            11,
+            12,
+            13
+          ],
+          "query_expansion": {
+            "policy": "bilingual-query-v1",
+            "status": "expanded",
+            "corpus_languages": [
+              "en",
+              "zh"
+            ],
+            "queries": [
+              {
+                "query": "DPR论文提升了9%–19%,所以本项目比BM25提高19个百分点,对吗?",
+                "group": "question",
+                "weight": 1.0,
+                "language": "original"
+              },
+              {
+                "query": "What is the specific meaning of 9%–19% improvement over BM25 in the DPR paper, and what is the specific meaning of 19 percentage points improvement over BM25 in this project",
+                "group": "question",
+                "weight": 1.0,
+                "language": "en"
+              },
+              {
+                "query": "DPR论文相比BM25提升了9%–19%的具体含义,本项目相比BM25提高19个百分点的具体含义",
+                "group": "question",
+                "weight": 1.0,
+                "language": "zh"
+              },
+              {
+                "query": "DPR论文中9%–19%提升是相对提升还是绝对百分点提升",
+                "group": "part-1",
+                "weight": 0.8,
+                "language": "zh"
+              },
+              {
+                "query": "Is the 9%–19% improvement in the DPR paper a relative improvement or absolute percentage point improvement",
+                "group": "part-1",
+                "weight": 0.8,
+                "language": "en"
+              },
+              {
+                "query": "本项目相比BM25提高19个百分点是绝对百分点还是相对百分比",
+                "group": "part-2",
+                "weight": 0.8,
+                "language": "zh"
+              },
+              {
+                "query": "Is the 19 percentage points improvement over BM25 in this project absolute percentage points or relative percentage",
+                "group": "part-2",
+                "weight": 0.8,
+                "language": "en"
+              }
+            ],
+            "warnings": [],
+            "cache": "miss",
+            "model": "kimi-k2.6"
+          },
+          "topic_anchors": [
+            "bm25",
+            "dpr"
+          ],
+          "covered_topic_anchors": [
+            "bm25",
+            "dpr"
+          ],
+          "part_coverage": {
+            "part-1": 5,
+            "part-2": 5
+          }
+        },
+        "coverage": {
+          "policy": "question-coverage-v1",
+          "status": "assessed",
+          "items": [
+            {
+              "requirement": "DPR论文提升了9%-19%",
+              "status": "covered",
+              "references": [
+                3
+              ]
+            },
+            {
+              "requirement": "本项目比BM25提高19个百分点",
+              "status": "missing",
+              "references": []
+            }
+          ],
+          "model": "kimi-k2.6",
+          "repair_attempted": false,
+          "complete": false
+        }
+      }
+    ]
+  },
+  "events": [
+    {
+      "type": "meta",
+      "conversation_id": 29,
+      "message_id": 62,
+      "citations": [
+        {
+          "id": 91,
+          "document_id": 11,
+          "ordinal": 32,
+          "page": 5,
+          "section": "第 5 页",
+          "text": "evelopment set.\n5.1 Main Results\nTable 2 compares different passage retrieval sys-\ntems on ﬁve QA datasets, using the top-kaccuracy\n(k ∈{20,100}). With the exception of SQuAD,\nDPR performs consistently better than BM25 on\nall datasets. The gap is especially large when kis\nsmall (e.g., 78.4% vs. 59.1% for top-20 accuracy\non Natural Questions). When training with mul-\n8SQuAD is limited to a small set of Wikipedia documents\nand thus introduces unwanted bias. We will discuss this issue\nmore in Section 5.1.\n9Lucene implementation. BM25 parameters b = 0.4 (doc-\nument length normalization) and k1 = 0.9 (term frequency\nscaling) are tuned using development sets.\n20 40 60 80 100\nk: # of retrieved passages\n40\n50\n60\n70\n80\n90Top-k accuracy (%)\nBM25\n# Train: 1k\n# Train: 10k\n# Train: 20k\n# Train: 40k\n# T",
+          "char_start": 20032,
+          "char_end": 20832,
+          "sha256": "31c2ebd1f4758b228ce2faad151c112f171ab7c5c6832dced98bdaa4ce6b32fd",
+          "name": "S01_DPR_2020.pdf",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 11,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+          "chunk_id": 91,
+          "snippet": "evelopment set.\n5.1 Main Results\nTable 2 compares different passage retrieval sys-\ntems on ﬁve QA datasets, using the top-kaccuracy\n(k ∈{20,100}). With the exception of SQuAD,\nDPR performs consistently better than BM25 on\nall datasets. The gap is especially large when kis\nsmall (e.g., 78.4% vs. 59.1% for top-20 accuracy\non Natural Questions). When training with mul-\n8SQuAD is limited to a small set of Wikipedia documents\nand thus introduces unwanted bias. We will discuss this issue\nmore in Section 5.1.\n9Lucene implementation. BM25 parameters b = 0.4 (doc-\nument length normalization) and k1 = 0.9 (term frequency\nscaling) are tuned using development sets.\n20 40 60 80 100\nk: # of retrieved passages\n40\n50\n60\n70\n80\n90Top-k accuracy (%)\nBM25\n# Train: 1k\n# Train: 10k\n# Train: 20k\n# Train: 40k\n# T",
+          "score": 0.078021,
+          "relevance": 0.71,
+          "rerank_score": 0.710025,
+          "matched_queries": [
+            {
+              "query": "DPR论文提升了9%–19%,所以本项目比BM25提高19个百分点,对吗?",
+              "group": "question",
+              "rank": 6,
+              "coverage": 0.0938,
+              "raw_score": 0.025933,
+              "vector_score": 0.5955
+            },
+            {
+              "query": "What is the specific meaning of 9%–19% improvement over BM25 in the DPR paper, and what is the specific meaning of 19 percentage points improvement over BM25 in this project",
+              "group": "question",
+              "rank": 3,
+              "coverage": 0.25,
+              "raw_score": 0.029907,
+              "vector_score": 0.567
+            },
+            {
+              "query": "DPR论文相比BM25提升了9%–19%的具体含义,本项目相比BM25提高19个百分点的具体含义",
+              "group": "question",
+              "rank": 7,
+              "coverage": 0.0789,
+              "raw_score": 0.02522,
+              "vector_score": 0.5586
+            },
+            {
+              "query": "DPR论文中9%–19%提升是相对提升还是绝对百分点提升",
+              "group": "part-1",
+              "rank": 5,
+              "coverage": 0.0714,
+              "raw_score": 0.02179,
+              "vector_score": 0.537
+            },
+            {
+              "query": "Is the 9%–19% improvement in the DPR paper a relative improvement or absolute percentage point improvement",
+              "group": "part-1",
+              "rank": 9,
+              "coverage": 0.2222,
+              "raw_score": 0.024259,
+              "vector_score": 0.5142
+            },
+            {
+              "query": "本项目相比BM25提高19个百分点是绝对百分点还是相对百分比",
+              "group": "part-2",
+              "rank": 11,
+              "coverage": 0.0323,
+              "raw_score": 0.021682,
+              "vector_score": 0.5264
+            },
+            {
+              "query": "Is the 19 percentage points improvement over BM25 in this project absolute percentage points or relative percentage",
+              "group": "part-2",
+              "rank": 7,
+              "coverage": 0.1111,
+              "raw_score": 0.026743,
+              "vector_score": 0.5362
+            }
+          ],
+          "source": "S01_DPR_2020.pdf · 第 5 页 · 第5页 · v1.0"
+        },
+        {
+          "id": 101,
+          "document_id": 11,
+          "ordinal": 42,
+          "page": 7,
+          "section": "第 7 页",
+          "text": "6775\n5.3 Qualitative Analysis\nAlthough DPR performs better than BM25 in gen-\neral, passages retrieved by these two methods dif-\nfer qualitatively. Term-matching methods like\nBM25 are sensitive to highly selective keywords\nand phrases, while DPR captures lexical variations\nor semantic relationships better. See Appendix C\nfor examples and more discussion.\n5.4 Run-time Efﬁciency\nThe main reason that we require a retrieval compo-\nnent for open-domain QA is to reduce the number\nof candidate passages that the reader needs to con-\nsider, which is crucial for answering user’s ques-\ntions in real-time. We proﬁled the passage retrieval\nspeed on a server with Intel Xeon CPU E5-2698 v4\n@ 2.20GHz and 512GB memory. With the help of\nFAISS in-memory index for real-valued vectors10,\nDPR can be made incredi",
+          "char_start": 26626,
+          "char_end": 27426,
+          "sha256": "694e18b6049399f195220db5be8758a8fbfaa66b28e538d4478396b57f2dd254",
+          "name": "S01_DPR_2020.pdf",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 11,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+          "chunk_id": 101,
+          "snippet": "6775\n5.3 Qualitative Analysis\nAlthough DPR performs better than BM25 in gen-\neral, passages retrieved by these two methods dif-\nfer qualitatively. Term-matching methods like\nBM25 are sensitive to highly selective keywords\nand phrases, while DPR captures lexical variations\nor semantic relationships better. See Appendix C\nfor examples and more discussion.\n5.4 Run-time Efﬁciency\nThe main reason that we require a retrieval compo-\nnent for open-domain QA is to reduce the number\nof candidate passages that the reader needs to con-\nsider, which is crucial for answering user’s ques-\ntions in real-time. We proﬁled the passage retrieval\nspeed on a server with Intel Xeon CPU E5-2698 v4\n@ 2.20GHz and 512GB memory. With the help of\nFAISS in-memory index for real-valued vectors10,\nDPR can be made incredi",
+          "score": 0.071368,
+          "relevance": 0.6816,
+          "rerank_score": 0.681621,
+          "matched_queries": [
+            {
+              "query": "DPR论文提升了9%–19%,所以本项目比BM25提高19个百分点,对吗?",
+              "group": "question",
+              "rank": 7,
+              "coverage": 0.0625,
+              "raw_score": 0.025726,
+              "vector_score": 0.5799
+            },
+            {
+              "query": "What is the specific meaning of 9%–19% improvement over BM25 in the DPR paper, and what is the specific meaning of 19 percentage points improvement over BM25 in this project",
+              "group": "question",
+              "rank": 5,
+              "coverage": 0.1667,
+              "raw_score": 0.029572,
+              "vector_score": 0.5339
+            },
+            {
+              "query": "DPR论文相比BM25提升了9%–19%的具体含义,本项目相比BM25提高19个百分点的具体含义",
+              "group": "question",
+              "rank": 8,
+              "coverage": 0.0526,
+              "raw_score": 0.024971,
+              "vector_score": 0.5477
+            },
+            {
+              "query": "DPR论文中9%–19%提升是相对提升还是绝对百分点提升",
+              "group": "part-1",
+              "rank": 13,
+              "coverage": 0.0357,
+              "raw_score": 0.02025,
+              "vector_score": 0.4926
+            },
+            {
+              "query": "Is the 9%–19% improvement in the DPR paper a relative improvement or absolute percentage point improvement",
+              "group": "part-1",
+              "rank": 11,
+              "coverage": 0.1111,
+              "raw_score": 0.023697,
+              "vector_score": 0.4886
+            },
+            {
+              "query": "本项目相比BM25提高19个百分点是绝对百分点还是相对百分比",
+              "group": "part-2",
+              "rank": 26,
+              "coverage": 0.0323,
+              "raw_score": 0.016192,
+              "vector_score": 0.4558
+            },
+            {
+              "query": "Is the 19 percentage points improvement over BM25 in this project absolute percentage points or relative percentage",
+              "group": "part-2",
+              "rank": 23,
+              "coverage": 0.1111,
+              "raw_score": 0.022867,
+              "vector_score": 0.4768
+            }
+          ],
+          "source": "S01_DPR_2020.pdf · 第 7 页 · 第7页 · v1.0"
+        },
+        {
+          "id": 60,
+          "document_id": 11,
+          "ordinal": 1,
+          "page": 1,
+          "section": "第 1 页",
+          "text": "se vector space\nmodels, such as TF-IDF or BM25, are the de\nfacto method. In this work, we show that\nretrieval can be practically implemented us-\ning dense representations alone, where em-\nbeddings are learned from a small number\nof questions and passages by a simple dual-\nencoder framework. When evaluated on a\nwide range of open-domain QA datasets, our\ndense retriever outperforms a strong Lucene-\nBM25 system greatly by 9%-19% absolute in\nterms of top-20 passage retrieval accuracy, and\nhelps our end-to-end QA system establish new\nstate-of-the-art on multiple open-domain QA\nbenchmarks.1\n1 Introduction\nOpen-domain question answering (QA) (V oorhees,\n1999) is a task that answers factoid questions us-\ning a large collection of documents. While early\nQA systems are often complicated and consist ",
+          "char_start": 650,
+          "char_end": 1450,
+          "sha256": "18d08ce761c567f8b4f4635e243300c1cdd592046255d55f02c13e2e72d0e3a1",
+          "name": "S01_DPR_2020.pdf",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 11,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+          "chunk_id": 60,
+          "snippet": "se vector space\nmodels, such as TF-IDF or BM25, are the de\nfacto method. In this work, we show that\nretrieval can be practically implemented us-\ning dense representations alone, where em-\nbeddings are learned from a small number\nof questions and passages by a simple dual-\nencoder framework. When evaluated on a\nwide range of open-domain QA datasets, our\ndense retriever outperforms a strong Lucene-\nBM25 system greatly by 9%-19% absolute in\nterms of top-20 passage retrieval accuracy, and\nhelps our end-to-end QA system establish new\nstate-of-the-art on multiple open-domain QA\nbenchmarks.1\n1 Introduction\nOpen-domain question answering (QA) (V oorhees,\n1999) is a task that answers factoid questions us-\ning a large collection of documents. While early\nQA systems are often complicated and consist ",
+          "score": 0.072638,
+          "relevance": 0.6007,
+          "rerank_score": 0.600657,
+          "matched_queries": [
+            {
+              "query": "DPR论文提升了9%–19%,所以本项目比BM25提高19个百分点,对吗?",
+              "group": "question",
+              "rank": 12,
+              "coverage": 0.0938,
+              "raw_score": 0.022605,
+              "vector_score": 0.4676
+            },
+            {
+              "query": "What is the specific meaning of 9%–19% improvement over BM25 in the DPR paper, and what is the specific meaning of 19 percentage points improvement over BM25 in this project",
+              "group": "question",
+              "rank": 14,
+              "coverage": 0.25,
+              "raw_score": 0.024729,
+              "vector_score": 0.4182
+            },
+            {
+              "query": "DPR论文相比BM25提升了9%–19%的具体含义,本项目相比BM25提高19个百分点的具体含义",
+              "group": "question",
+              "rank": 15,
+              "coverage": 0.0789,
+              "raw_score": 0.019913,
+              "vector_score": 0.4472
+            },
+            {
+              "query": "DPR论文中9%–19%提升是相对提升还是绝对百分点提升",
+              "group": "part-1",
+              "rank": 8,
+              "coverage": 0.0714,
+              "raw_score": 0.020774,
+              "vector_score": 0.4479
+            },
+            {
+              "query": "Is the 9%–19% improvement in the DPR paper a relative improvement or absolute percentage point improvement",
+              "group": "part-1",
+              "rank": 8,
+              "coverage": 0.3333,
+              "raw_score": 0.024532,
+              "vector_score": 0.4066
+            },
+            {
+              "query": "本项目相比BM25提高19个百分点是绝对百分点还是相对百分比",
+              "group": "part-2",
+              "rank": 17,
+              "coverage": 0.0645,
+              "raw_score": 0.020477,
+              "vector_score": 0.4453
+            },
+            {
+              "query": "Is the 19 percentage points improvement over BM25 in this project absolute percentage points or relative percentage",
+              "group": "part-2",
+              "rank": 9,
+              "coverage": 0.3333,
+              "raw_score": 0.026598,
+              "vector_score": 0.4354
+            }
+          ],
+          "source": "S01_DPR_2020.pdf · 第 1 页 · 第1页 · v1.0"
+        },
+        {
+          "id": 67,
+          "document_id": 11,
+          "ordinal": 8,
+          "page": 2,
+          "section": "第 2 页",
+          "text": " (Bromley\net al., 1994), we focus on developing the right\ntraining scheme using a relatively small number\nof question and passage pairs. Through a series\nof careful ablation studies, our ﬁnal solution is\nsurprisingly simple: the embedding is optimized\nfor maximizing inner products of the question and\nrelevant passage vectors, with an objective compar-\ning all pairs of questions and passages in a batch.\nOur Dense Passage Retriever (DPR) is exception-\nally strong. It not only outperforms BM25 by a\nlarge margin (65.2% vs. 42.9% in Top-5 accuracy),\nbut also results in a substantial improvement on\nthe end-to-end QA accuracy compared to ORQA\n(41.5% vs. 33.3%) in the open Natural Questions\nsetting (Lee et al., 2019; Kwiatkowski et al., 2019).\nOur contributions are twofold. First, we demon-\nstrate",
+          "char_start": 4873,
+          "char_end": 5673,
+          "sha256": "eabaf9d4c581d7a656ef8218a7a7b1a0578fc8978d65e45b33099972a6df45a4",
+          "name": "S01_DPR_2020.pdf",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 11,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+          "chunk_id": 67,
+          "snippet": " (Bromley\net al., 1994), we focus on developing the right\ntraining scheme using a relatively small number\nof question and passage pairs. Through a series\nof careful ablation studies, our ﬁnal solution is\nsurprisingly simple: the embedding is optimized\nfor maximizing inner products of the question and\nrelevant passage vectors, with an objective compar-\ning all pairs of questions and passages in a batch.\nOur Dense Passage Retriever (DPR) is exception-\nally strong. It not only outperforms BM25 by a\nlarge margin (65.2% vs. 42.9% in Top-5 accuracy),\nbut also results in a substantial improvement on\nthe end-to-end QA accuracy compared to ORQA\n(41.5% vs. 33.3%) in the open Natural Questions\nsetting (Lee et al., 2019; Kwiatkowski et al., 2019).\nOur contributions are twofold. First, we demon-\nstrate",
+          "score": 0.073297,
+          "relevance": 0.5197,
+          "rerank_score": 0.519719,
+          "matched_queries": [
+            {
+              "query": "DPR论文提升了9%–19%,所以本项目比BM25提高19个百分点,对吗?",
+              "group": "question",
+              "rank": 11,
+              "coverage": 0.0938,
+              "raw_score": 0.02304,
+              "vector_score": 0.5381
+            },
+            {
+              "query": "What is the specific meaning of 9%–19% improvement over BM25 in the DPR paper, and what is the specific meaning of 19 percentage points improvement over BM25 in this project",
+              "group": "question",
+              "rank": 9,
+              "coverage": 0.3333,
+              "raw_score": 0.029236,
+              "vector_score": 0.482
+            },
+            {
+              "query": "DPR论文相比BM25提升了9%–19%的具体含义,本项目相比BM25提高19个百分点的具体含义",
+              "group": "question",
+              "rank": 11,
+              "coverage": 0.0789,
+              "raw_score": 0.022085,
+              "vector_score": 0.4971
+            },
+            {
+              "query": "DPR论文中9%–19%提升是相对提升还是绝对百分点提升",
+              "group": "part-1",
+              "rank": 12,
+              "coverage": 0.0714,
+              "raw_score": 0.02027,
+              "vector_score": 0.4986
+            },
+            {
+              "query": "Is the 9%–19% improvement in the DPR paper a relative improvement or absolute percentage point improvement",
+              "group": "part-1",
+              "rank": 5,
+              "coverage": 0.3333,
+              "raw_score": 0.02885,
+              "vector_score": 0.4731
+            },
+            {
+              "query": "本项目相比BM25提高19个百分点是绝对百分点还是相对百分比",
+              "group": "part-2",
+              "rank": 33,
+              "coverage": 0.0323,
+              "raw_score": 0.014541,
+              "vector_score": 0.4506
+            },
+            {
+              "query": "Is the 19 percentage points improvement over BM25 in this project absolute percentage points or relative percentage",
+              "group": "part-2",
+              "rank": 3,
+              "coverage": 0.2222,
+              "raw_score": 0.028439,
+              "vector_score": 0.4844
+            }
+          ],
+          "source": "S01_DPR_2020.pdf · 第 2 页 · 第2页 · v1.0"
+        },
+        {
+          "id": 138,
+          "document_id": 11,
+          "ordinal": 79,
+          "page": 12,
+          "section": "第 12 页",
+          "text": "that the retrieval accuracy for our “baseline”\nsettings reported in Table 5 (Gold) and Table 6\n(DP, NLL) is slightly better than those reported in\nTable 3. This is due to a better hyper-parameter\nsetting used in these analysis experiments, which\nis documented in our code release.\nC Qualitative Analysis\nAlthough DPR performs better than BM25 in gen-\neral, the retrieved passages of these two retrievers\nactually differ qualitatively. Methods like BM25\nare sensitive to highly selective keywords and\nphrases, but cannot capture lexical variations or se-\nmantic relationships well. In contrast, DPR excels\nat semantic representation, but might lack sufﬁcient\ncapacity to represent salient phrases which appear\nrarely. Table 7 illustrates this phenomenon with\ntwo examples. In the ﬁrst example, the top",
+          "char_start": 50536,
+          "char_end": 51336,
+          "sha256": "0da1b07c7a1bd85fa6bad560284c1bfea34447c5bdd29d5652050363bd067c5e",
+          "name": "S01_DPR_2020.pdf",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 11,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+          "chunk_id": 138,
+          "snippet": "that the retrieval accuracy for our “baseline”\nsettings reported in Table 5 (Gold) and Table 6\n(DP, NLL) is slightly better than those reported in\nTable 3. This is due to a better hyper-parameter\nsetting used in these analysis experiments, which\nis documented in our code release.\nC Qualitative Analysis\nAlthough DPR performs better than BM25 in gen-\neral, the retrieved passages of these two retrievers\nactually differ qualitatively. Methods like BM25\nare sensitive to highly selective keywords and\nphrases, but cannot capture lexical variations or se-\nmantic relationships well. In contrast, DPR excels\nat semantic representation, but might lack sufﬁcient\ncapacity to represent salient phrases which appear\nrarely. Table 7 illustrates this phenomenon with\ntwo examples. In the ﬁrst example, the top",
+          "score": 0.072316,
+          "relevance": 0.4846,
+          "rerank_score": 0.484571,
+          "matched_queries": [
+            {
+              "query": "DPR论文提升了9%–19%,所以本项目比BM25提高19个百分点,对吗?",
+              "group": "question",
+              "rank": 5,
+              "coverage": 0.0625,
+              "raw_score": 0.026009,
+              "vector_score": 0.5966
+            },
+            {
+              "query": "What is the specific meaning of 9%–19% improvement over BM25 in the DPR paper, and what is the specific meaning of 19 percentage points improvement over BM25 in this project",
+              "group": "question",
+              "rank": 7,
+              "coverage": 0.1667,
+              "raw_score": 0.029462,
+              "vector_score": 0.5444
+            },
+            {
+              "query": "DPR论文相比BM25提升了9%–19%的具体含义,本项目相比BM25提高19个百分点的具体含义",
+              "group": "question",
+              "rank": 6,
+              "coverage": 0.0526,
+              "raw_score": 0.025322,
+              "vector_score": 0.567
+            },
+            {
+              "query": "DPR论文中9%–19%提升是相对提升还是绝对百分点提升",
+              "group": "part-1",
+              "rank": 14,
+              "coverage": 0.0357,
+              "raw_score": 0.019841,
+              "vector_score": 0.5053
+            },
+            {
+              "query": "Is the 9%–19% improvement in the DPR paper a relative improvement or absolute percentage point improvement",
+              "group": "part-1",
+              "rank": 10,
+              "coverage": 0.1111,
+              "raw_score": 0.023822,
+              "vector_score": 0.5004
+            },
+            {
+              "query": "本项目相比BM25提高19个百分点是绝对百分点还是相对百分比",
+              "group": "part-2",
+              "rank": 22,
+              "coverage": 0.0323,
+              "raw_score": 0.017929,
+              "vector_score": 0.4749
+            },
+            {
+              "query": "Is the 19 percentage points improvement over BM25 in this project absolute percentage points or relative percentage",
+              "group": "part-2",
+              "rank": 19,
+              "coverage": 0.1111,
+              "raw_score": 0.024085,
+              "vector_score": 0.4889
+            }
+          ],
+          "source": "S01_DPR_2020.pdf · 第 12 页 · 第12页 · v1.0"
+        }
+      ],
+      "pipeline": {
+        "embedding": "local-bge-m3",
+        "embedding_model": "BAAI/bge-m3",
+        "rerank": "local-cross-encoder",
+        "reranking": {
+          "model": "BAAI/bge-reranker-v2-m3",
+          "candidate_count": 40,
+          "device": "cuda",
+          "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+          "max_length": 1024,
+          "at_length_limit": 0
+        },
+        "policy": "multi-query-neural-v3",
+        "mode": "hybrid",
+        "top_k": 5,
+        "min_similarity": 0.3,
+        "min_coverage": 0.12,
+        "knowledge_base_ids": [
+          11,
+          12,
+          13
+        ],
+        "query_expansion": {
+          "policy": "bilingual-query-v1",
+          "status": "expanded",
+          "corpus_languages": [
+            "en",
+            "zh"
+          ],
+          "queries": [
+            {
+              "query": "DPR论文提升了9%–19%,所以本项目比BM25提高19个百分点,对吗?",
+              "group": "question",
+              "weight": 1.0,
+              "language": "original"
+            },
+            {
+              "query": "What is the specific meaning of 9%–19% improvement over BM25 in the DPR paper, and what is the specific meaning of 19 percentage points improvement over BM25 in this project",
+              "group": "question",
+              "weight": 1.0,
+              "language": "en"
+            },
+            {
+              "query": "DPR论文相比BM25提升了9%–19%的具体含义,本项目相比BM25提高19个百分点的具体含义",
+              "group": "question",
+              "weight": 1.0,
+              "language": "zh"
+            },
+            {
+              "query": "DPR论文中9%–19%提升是相对提升还是绝对百分点提升",
+              "group": "part-1",
+              "weight": 0.8,
+              "language": "zh"
+            },
+            {
+              "query": "Is the 9%–19% improvement in the DPR paper a relative improvement or absolute percentage point improvement",
+              "group": "part-1",
+              "weight": 0.8,
+              "language": "en"
+            },
+            {
+              "query": "本项目相比BM25提高19个百分点是绝对百分点还是相对百分比",
+              "group": "part-2",
+              "weight": 0.8,
+              "language": "zh"
+            },
+            {
+              "query": "Is the 19 percentage points improvement over BM25 in this project absolute percentage points or relative percentage",
+              "group": "part-2",
+              "weight": 0.8,
+              "language": "en"
+            }
+          ],
+          "warnings": [],
+          "cache": "miss",
+          "model": "kimi-k2.6"
+        },
+        "topic_anchors": [
+          "bm25",
+          "dpr"
+        ],
+        "covered_topic_anchors": [
+          "bm25",
+          "dpr"
+        ],
+        "part_coverage": {
+          "part-1": 5,
+          "part-2": 5
+        }
+      }
+    },
+    {
+      "type": "verification",
+      "checks": [
+        {
+          "claim_id": 1,
+          "sha256": "b6249e6dcef55002f6950541965a8c5c51198cef13431556d6e1f103a1edef74",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        },
+        {
+          "claim_id": 2,
+          "sha256": "65f214bcfbbd9bfd5deca2bdfd0c20f3da74696ff8cb29f937a5c0bc01aa21b4",
+          "references": [
+            3
+          ],
+          "status": "rejected",
+          "reason_code": "numeric_mismatch",
+          "reason": "陈述数字或参数绑定未被实际原文短引文支持",
+          "verdict": "supported"
+        },
+        {
+          "claim_id": 3,
+          "sha256": "ff94b3184646cbfe733dce41df630a13b0b7584fdf9b46641396acdd4f3c4d41",
+          "references": [
+            3
+          ],
+          "status": "supported",
+          "reason_code": "supported",
+          "reason": "逐句引用、证据判断、原文定位及数字检查通过",
+          "verdict": "supported",
+          "text": "具体而言，论文指出DPR在多个开放域QA数据集上\"outperforms a strong Lucene-BM25 system greatly by 9%-19% absolute in terms of top-20 passage retrieval accuracy\" [3]。",
+          "quotes": [
+            {
+              "reference": 3,
+              "quote": "When evaluated on a\nwide range of open-domain QA datasets, our\ndense retriever outperforms a strong Lucene-\nBM25 system greatly by 9%-19% absolute in\nterms of top-20 passage retrieval accuracy",
+              "char_start": 292,
+              "char_end": 484,
+              "match": "exact",
+              "source_sha256": "18d08ce761c567f8b4f4635e243300c1cdd592046255d55f02c13e2e72d0e3a1"
+            }
+          ],
+          "model": "kimi-k2.6"
+        }
+      ]
+    },
+    {
+      "type": "token",
+      "content": "具体而言，论文指出DPR在多个开放域QA数据集上\"outperforms a strong Lucene-BM25 system greatly by 9%-19% absolute in terms of top-20 passage retrieval accuracy\" [3]。\n"
+    },
+    {
+      "type": "verification",
+      "checks": [
+        {
+          "claim_id": 1,
+          "sha256": "b6249e6dcef55002f6950541965a8c5c51198cef13431556d6e1f103a1edef74",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        },
+        {
+          "claim_id": 2,
+          "sha256": "65f214bcfbbd9bfd5deca2bdfd0c20f3da74696ff8cb29f937a5c0bc01aa21b4",
+          "references": [
+            3
+          ],
+          "status": "rejected",
+          "reason_code": "numeric_mismatch",
+          "reason": "陈述数字或参数绑定未被实际原文短引文支持",
+          "verdict": "supported"
+        },
+        {
+          "claim_id": 3,
+          "sha256": "ff94b3184646cbfe733dce41df630a13b0b7584fdf9b46641396acdd4f3c4d41",
+          "references": [
+            3
+          ],
+          "status": "supported",
+          "reason_code": "supported",
+          "reason": "逐句引用、证据判断、原文定位及数字检查通过",
+          "verdict": "supported",
+          "text": "具体而言，论文指出DPR在多个开放域QA数据集上\"outperforms a strong Lucene-BM25 system greatly by 9%-19% absolute in terms of top-20 passage retrieval accuracy\" [3]。",
+          "quotes": [
+            {
+              "reference": 3,
+              "quote": "When evaluated on a\nwide range of open-domain QA datasets, our\ndense retriever outperforms a strong Lucene-\nBM25 system greatly by 9%-19% absolute in\nterms of top-20 passage retrieval accuracy",
+              "char_start": 292,
+              "char_end": 484,
+              "match": "exact",
+              "source_sha256": "18d08ce761c567f8b4f4635e243300c1cdd592046255d55f02c13e2e72d0e3a1"
+            }
+          ],
+          "model": "kimi-k2.6"
+        },
+        {
+          "claim_id": 4,
+          "sha256": "04282a369524c7d0d932dca0293e23ba7a26bc67bb27e50077730ec6902890fc",
+          "references": [
+            1
+          ],
+          "status": "rejected",
+          "reason_code": "numeric_mismatch",
+          "reason": "陈述数字或参数绑定未被实际原文短引文支持",
+          "verdict": "supported"
+        },
+        {
+          "claim_id": 5,
+          "sha256": "0a4afa3c1744dd3e6cebad1c6f61c7730ed5c8473cc292b57ba8e2187ccc5911",
+          "references": [
+            4
+          ],
+          "status": "rejected",
+          "reason_code": "numeric_mismatch",
+          "reason": "陈述数字或参数绑定未被实际原文短引文支持",
+          "verdict": "supported"
+        },
+        {
+          "claim_id": 6,
+          "sha256": "0cff9a449a87bada57830b9f6e601ed78fca4f5d6184d797be86baa8ed71f68b",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        },
+        {
+          "claim_id": 7,
+          "sha256": "665c836dd9375320f0efe16ec35ff4bb0ad64dec6ac2b9db0127f0fd07cd8cd4",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        }
+      ]
+    },
+    {
+      "type": "verification",
+      "checks": [
+        {
+          "claim_id": 1,
+          "sha256": "b6249e6dcef55002f6950541965a8c5c51198cef13431556d6e1f103a1edef74",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        },
+        {
+          "claim_id": 2,
+          "sha256": "65f214bcfbbd9bfd5deca2bdfd0c20f3da74696ff8cb29f937a5c0bc01aa21b4",
+          "references": [
+            3
+          ],
+          "status": "rejected",
+          "reason_code": "numeric_mismatch",
+          "reason": "陈述数字或参数绑定未被实际原文短引文支持",
+          "verdict": "supported"
+        },
+        {
+          "claim_id": 3,
+          "sha256": "ff94b3184646cbfe733dce41df630a13b0b7584fdf9b46641396acdd4f3c4d41",
+          "references": [
+            3
+          ],
+          "status": "supported",
+          "reason_code": "supported",
+          "reason": "逐句引用、证据判断、原文定位及数字检查通过",
+          "verdict": "supported",
+          "text": "具体而言，论文指出DPR在多个开放域QA数据集上\"outperforms a strong Lucene-BM25 system greatly by 9%-19% absolute in terms of top-20 passage retrieval accuracy\" [3]。",
+          "quotes": [
+            {
+              "reference": 3,
+              "quote": "When evaluated on a\nwide range of open-domain QA datasets, our\ndense retriever outperforms a strong Lucene-\nBM25 system greatly by 9%-19% absolute in\nterms of top-20 passage retrieval accuracy",
+              "char_start": 292,
+              "char_end": 484,
+              "match": "exact",
+              "source_sha256": "18d08ce761c567f8b4f4635e243300c1cdd592046255d55f02c13e2e72d0e3a1"
+            }
+          ],
+          "model": "kimi-k2.6"
+        },
+        {
+          "claim_id": 4,
+          "sha256": "04282a369524c7d0d932dca0293e23ba7a26bc67bb27e50077730ec6902890fc",
+          "references": [
+            1
+          ],
+          "status": "rejected",
+          "reason_code": "numeric_mismatch",
+          "reason": "陈述数字或参数绑定未被实际原文短引文支持",
+          "verdict": "supported"
+        },
+        {
+          "claim_id": 5,
+          "sha256": "0a4afa3c1744dd3e6cebad1c6f61c7730ed5c8473cc292b57ba8e2187ccc5911",
+          "references": [
+            4
+          ],
+          "status": "rejected",
+          "reason_code": "numeric_mismatch",
+          "reason": "陈述数字或参数绑定未被实际原文短引文支持",
+          "verdict": "supported"
+        },
+        {
+          "claim_id": 6,
+          "sha256": "0cff9a449a87bada57830b9f6e601ed78fca4f5d6184d797be86baa8ed71f68b",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        },
+        {
+          "claim_id": 7,
+          "sha256": "665c836dd9375320f0efe16ec35ff4bb0ad64dec6ac2b9db0127f0fd07cd8cd4",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        },
+        {
+          "claim_id": 8,
+          "sha256": "fcefb80559b4d27b73e506529d5458b9017ab8273e4aae671b87f122945ed6be",
+          "references": [
+            3
+          ],
+          "status": "rejected",
+          "reason_code": "partial",
+          "reason": "仅部分事实得到支持，整句未发布",
+          "verdict": "partial"
+        },
+        {
+          "claim_id": 9,
+          "sha256": "9993d80101bd9f08542de170441bc22c9de9fba56da2dde296b5394b67f0109b",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        }
+      ]
+    },
+    {
+      "type": "stage",
+      "stage": "coverage",
+      "message": "正在检查问题关键点，必要的补充仍须通过事实核验"
+    },
+    {
+      "type": "coverage",
+      "assessment": {
+        "policy": "question-coverage-v1",
+        "status": "assessed",
+        "items": [
+          {
+            "requirement": "DPR论文提升了9%-19%",
+            "status": "covered",
+            "references": [
+              3
+            ]
+          },
+          {
+            "requirement": "本项目比BM25提高19个百分点",
+            "status": "missing",
+            "references": []
+          }
+        ],
+        "model": "kimi-k2.6",
+        "repair_attempted": false,
+        "complete": false
+      }
+    },
+    {
+      "type": "token",
+      "content": "\n说明：还有 1 个问题要点未获得可发布的证据答案，请查看关键点检查并补充资料。\n"
+    },
+    {
+      "type": "token",
+      "content": "\n部分候选句未通过引用或证据支撑校验，已过滤；上述仅展示通过校验的内容。"
+    },
+    {
+      "type": "done",
+      "conversation_id": 29,
+      "message_id": 62
+    }
+  ],
+  "grading": "人工复核，不以模型自评或词项命中自动判正确"
+}

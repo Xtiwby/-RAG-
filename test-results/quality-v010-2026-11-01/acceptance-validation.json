@@ -1,0 +1,10 @@
+{
+  "cases": 100,
+  "source_groups": 20,
+  "answerable": 80,
+  "unanswerable": 20,
+  "integrity": "passed",
+  "labels_uploaded": false,
+  "real_model_evaluated_cases": 0,
+  "note": "仅完成文件完整性/结构检查，不是100题模型质量通过"
+}

@@ -1,0 +1,989 @@
+{
+  "question_id": "Q005",
+  "question": "SQLite FTS5文档中BM25的k1和b常数分别是多少？",
+  "expected_for_human_review": "k1=1.2，b=0.75。仅指SQLite FTS5文档。",
+  "answerable": true,
+  "elapsed_ms": 45055,
+  "conversation": {
+    "id": 40,
+    "user_id": 1,
+    "title": "v0.10 质量复测 Q005 · SQLite FTS5文档中BM25的k1和b常数分别是多少？",
+    "knowledge_base_ids": [
+      11,
+      12,
+      13
+    ],
+    "created_at": "2026-11-01T13:10:58+00:00",
+    "updated_at": "2026-11-01T13:11:24+00:00",
+    "messages": [
+      {
+        "id": 83,
+        "conversation_id": 40,
+        "role": "user",
+        "content": "SQLite FTS5文档中BM25的k1和b常数分别是多少?",
+        "citations": [],
+        "status": "complete",
+        "feedback": null,
+        "created_at": "2026-11-01T13:10:58+00:00",
+        "verification": [],
+        "retrieval": {},
+        "coverage": {}
+      },
+      {
+        "id": 84,
+        "conversation_id": 40,
+        "role": "assistant",
+        "content": "SQLite FTS5文档中BM25的k1常数为1.2，b常数为0.75[1]。\n",
+        "citations": [
+          {
+            "id": 565,
+            "document_id": 12,
+            "ordinal": 418,
+            "page": null,
+            "section": "正文",
+            "text": "In the above, nPhrase is the number of phrases in the query.\r\n    |D| is the number of tokens in the current document, and\r\n    avgdl is the average number of tokens in all documents within the\r\n    FTS5 table.  k1 and b are both constants,\r\n    hard-coded at 1.2 and 0.75 respectively.",
+            "char_start": 58549,
+            "char_end": 58835,
+            "sha256": "a6e94bbe080d1068f6a11a857b6f01225edd3f08bd9957b95179d8e5cae00a5e",
+            "name": "S02_SQLite_FTS5_BM25.html",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 11,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+            "chunk_id": 565,
+            "snippet": "In the above, nPhrase is the number of phrases in the query.\r\n    |D| is the number of tokens in the current document, and\r\n    avgdl is the average number of tokens in all documents within the\r\n    FTS5 table.  k1 and b are both constants,\r\n    hard-coded at 1.2 and 0.75 respectively.",
+            "score": 0.031545,
+            "relevance": 0.9905,
+            "rerank_score": 0.990478,
+            "matched_queries": [
+              {
+                "query": "SQLite FTS5文档中BM25的k1和b常数分别是多少?",
+                "group": "question",
+                "rank": 1,
+                "coverage": 0.1429,
+                "raw_score": 0.029437,
+                "vector_score": 0.5532
+              },
+              {
+                "query": "What are the k1 and b constants of BM25 in SQLite FTS5 documentation",
+                "group": "question",
+                "rank": 6,
+                "coverage": 0.5714,
+                "raw_score": 0.029052,
+                "vector_score": 0.5136
+              },
+              {
+                "query": "SQLite FTS5文档中BM25的k1和b常数分别是多少",
+                "group": "question",
+                "rank": 1,
+                "coverage": 0.1429,
+                "raw_score": 0.029437,
+                "vector_score": 0.554
+              }
+            ],
+            "source": "S02_SQLite_FTS5_BM25.html · 正文 · v1.0"
+          },
+          {
+            "id": 91,
+            "document_id": 11,
+            "ordinal": 32,
+            "page": 5,
+            "section": "第 5 页",
+            "text": "evelopment set.\n5.1 Main Results\nTable 2 compares different passage retrieval sys-\ntems on ﬁve QA datasets, using the top-kaccuracy\n(k ∈{20,100}). With the exception of SQuAD,\nDPR performs consistently better than BM25 on\nall datasets. The gap is especially large when kis\nsmall (e.g., 78.4% vs. 59.1% for top-20 accuracy\non Natural Questions). When training with mul-\n8SQuAD is limited to a small set of Wikipedia documents\nand thus introduces unwanted bias. We will discuss this issue\nmore in Section 5.1.\n9Lucene implementation. BM25 parameters b = 0.4 (doc-\nument length normalization) and k1 = 0.9 (term frequency\nscaling) are tuned using development sets.\n20 40 60 80 100\nk: # of retrieved passages\n40\n50\n60\n70\n80\n90Top-k accuracy (%)\nBM25\n# Train: 1k\n# Train: 10k\n# Train: 20k\n# Train: 40k\n# T",
+            "char_start": 20032,
+            "char_end": 20832,
+            "sha256": "31c2ebd1f4758b228ce2faad151c112f171ab7c5c6832dced98bdaa4ce6b32fd",
+            "name": "S01_DPR_2020.pdf",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 11,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+            "chunk_id": 91,
+            "snippet": "evelopment set.\n5.1 Main Results\nTable 2 compares different passage retrieval sys-\ntems on ﬁve QA datasets, using the top-kaccuracy\n(k ∈{20,100}). With the exception of SQuAD,\nDPR performs consistently better than BM25 on\nall datasets. The gap is especially large when kis\nsmall (e.g., 78.4% vs. 59.1% for top-20 accuracy\non Natural Questions). When training with mul-\n8SQuAD is limited to a small set of Wikipedia documents\nand thus introduces unwanted bias. We will discuss this issue\nmore in Section 5.1.\n9Lucene implementation. BM25 parameters b = 0.4 (doc-\nument length normalization) and k1 = 0.9 (term frequency\nscaling) are tuned using development sets.\n20 40 60 80 100\nk: # of retrieved passages\n40\n50\n60\n70\n80\n90Top-k accuracy (%)\nBM25\n# Train: 1k\n# Train: 10k\n# Train: 20k\n# Train: 40k\n# T",
+            "score": 0.029644,
+            "relevance": 0.9731,
+            "rerank_score": 0.973139,
+            "matched_queries": [
+              {
+                "query": "SQLite FTS5文档中BM25的k1和b常数分别是多少?",
+                "group": "question",
+                "rank": 6,
+                "coverage": 0.1429,
+                "raw_score": 0.024383,
+                "vector_score": 0.5364
+              },
+              {
+                "query": "What are the k1 and b constants of BM25 in SQLite FTS5 documentation",
+                "group": "question",
+                "rank": 9,
+                "coverage": 0.4286,
+                "raw_score": 0.025517,
+                "vector_score": 0.5022
+              },
+              {
+                "query": "SQLite FTS5文档中BM25的k1和b常数分别是多少",
+                "group": "question",
+                "rank": 6,
+                "coverage": 0.1429,
+                "raw_score": 0.024383,
+                "vector_score": 0.5346
+              }
+            ],
+            "source": "S01_DPR_2020.pdf · 第 5 页 · 第5页 · v1.0"
+          },
+          {
+            "id": 566,
+            "document_id": 12,
+            "ordinal": 419,
+            "page": null,
+            "section": "正文",
+            "text": "The \"-1\" term at the start of the formula is not found in most\r\nimplementations of the BM25 algorithm. Without it, a better match is assigned\r\na numerically higher BM25 score. Since the default sorting order is\r\n\"ascending\", this means that appending \"ORDER BY bm25(ft)\" to a query would\r\ncause results to be returned in order from worst to best. The \"DESC\" keyword\r\nwould be required in order to return the best matches first. In order to\r\navoid this pitfall, the FTS5 implementation of BM25 multiplies the result\r\nby -1 before returning it, ensuring that better matches are assigned\r\nnumerically lower scores.",
+            "char_start": 58837,
+            "char_end": 59448,
+            "sha256": "07dfbffa7e453d4b6d9d1bfca40169151348b0b1abdb9d052cd029fa250ab6af",
+            "name": "S02_SQLite_FTS5_BM25.html",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 11,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+            "chunk_id": 566,
+            "snippet": "The \"-1\" term at the start of the formula is not found in most\r\nimplementations of the BM25 algorithm. Without it, a better match is assigned\r\na numerically higher BM25 score. Since the default sorting order is\r\n\"ascending\", this means that appending \"ORDER BY bm25(ft)\" to a query would\r\ncause results to be returned in order from worst to best. The \"DESC\" keyword\r\nwould be required in order to return the best matches first. In order to\r\navoid this pitfall, the FTS5 implementation of BM25 multiplies the result\r\nby -1 before returning it, ensuring that better matches are assigned\r\nnumerically lower scores.",
+            "score": 0.029851,
+            "relevance": 0.4092,
+            "rerank_score": 0.409221,
+            "matched_queries": [
+              {
+                "query": "SQLite FTS5文档中BM25的k1和b常数分别是多少?",
+                "group": "question",
+                "rank": 7,
+                "coverage": 0.0952,
+                "raw_score": 0.023625,
+                "vector_score": 0.5873
+              },
+              {
+                "query": "What are the k1 and b constants of BM25 in SQLite FTS5 documentation",
+                "group": "question",
+                "rank": 7,
+                "coverage": 0.2857,
+                "raw_score": 0.026036,
+                "vector_score": 0.5635
+              },
+              {
+                "query": "SQLite FTS5文档中BM25的k1和b常数分别是多少",
+                "group": "question",
+                "rank": 7,
+                "coverage": 0.0952,
+                "raw_score": 0.023152,
+                "vector_score": 0.576
+              }
+            ],
+            "source": "S02_SQLite_FTS5_BM25.html · 正文 · v1.0"
+          },
+          {
+            "id": 676,
+            "document_id": 12,
+            "ordinal": 529,
+            "page": null,
+            "section": "正文",
+            "text": "INSERT INTO ft(ft, rank) VALUES('rank', 'bm25(10.0, 5.0)');",
+            "char_start": 80488,
+            "char_end": 80547,
+            "sha256": "d739fd1fe4ec8f6f1f84c5c9ec98c3d02badafb75b9db78c4c3430e566ed7190",
+            "name": "S02_SQLite_FTS5_BM25.html",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 11,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+            "chunk_id": 676,
+            "snippet": "INSERT INTO ft(ft, rank) VALUES('rank', 'bm25(10.0, 5.0)');",
+            "score": 0.026487,
+            "relevance": 0.2845,
+            "rerank_score": 0.284477,
+            "matched_queries": [
+              {
+                "query": "SQLite FTS5文档中BM25的k1和b常数分别是多少?",
+                "group": "question",
+                "rank": 12,
+                "coverage": 0.0476,
+                "raw_score": 0.020949,
+                "vector_score": 0.5955
+              },
+              {
+                "query": "What are the k1 and b constants of BM25 in SQLite FTS5 documentation",
+                "group": "question",
+                "rank": 20,
+                "coverage": 0.1429,
+                "raw_score": 0.021204,
+                "vector_score": 0.5461
+              },
+              {
+                "query": "SQLite FTS5文档中BM25的k1和b常数分别是多少",
+                "group": "question",
+                "rank": 11,
+                "coverage": 0.0476,
+                "raw_score": 0.020949,
+                "vector_score": 0.5865
+              }
+            ],
+            "source": "S02_SQLite_FTS5_BM25.html · 正文 · v1.0"
+          },
+          {
+            "id": 601,
+            "document_id": 12,
+            "ordinal": 454,
+            "page": null,
+            "section": "正文",
+            "text": "All FTS5 tables feature a special hidden column named \"rank\". If the\r\ncurrent query is not a full-text query (i.e. if it does not include a MATCH\r\noperator), the value of the \"rank\" column is always NULL. Otherwise, in a\r\nfull-text query, column rank contains by default the same value as would be\r\nreturned by executing the bm25() auxiliary function with no trailing\r\narguments.",
+            "char_start": 65339,
+            "char_end": 65718,
+            "sha256": "36c7e7a79c9f2fc8276941c99ebbd741f233dccfd3cc08b57a5d729159349231",
+            "name": "S02_SQLite_FTS5_BM25.html",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 11,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+            "chunk_id": 601,
+            "snippet": "All FTS5 tables feature a special hidden column named \"rank\". If the\r\ncurrent query is not a full-text query (i.e. if it does not include a MATCH\r\noperator), the value of the \"rank\" column is always NULL. Otherwise, in a\r\nfull-text query, column rank contains by default the same value as would be\r\nreturned by executing the bm25() auxiliary function with no trailing\r\narguments.",
+            "score": 0.022332,
+            "relevance": 0.208,
+            "rerank_score": 0.208018,
+            "matched_queries": [
+              {
+                "query": "SQLite FTS5文档中BM25的k1和b常数分别是多少?",
+                "group": "question",
+                "rank": 23,
+                "coverage": 0.0952,
+                "raw_score": 0.017041,
+                "vector_score": 0.5191
+              },
+              {
+                "query": "What are the k1 and b constants of BM25 in SQLite FTS5 documentation",
+                "group": "question",
+                "rank": 33,
+                "coverage": 0.2857,
+                "raw_score": 0.0174,
+                "vector_score": 0.5015
+              },
+              {
+                "query": "SQLite FTS5文档中BM25的k1和b常数分别是多少",
+                "group": "question",
+                "rank": 30,
+                "coverage": 0.0952,
+                "raw_score": 0.015564,
+                "vector_score": 0.508
+              }
+            ],
+            "source": "S02_SQLite_FTS5_BM25.html · 正文 · v1.0"
+          },
+          {
+            "id": 564,
+            "document_id": 12,
+            "ordinal": 417,
+            "page": null,
+            "section": "正文",
+            "text": "In order to calculate a documents score, the full-text query is separated\r\n    into its component phrases. The bm25 score for document D and\r\n    query Q is then calculated as follows:",
+            "char_start": 58363,
+            "char_end": 58547,
+            "sha256": "42b07eaae6d4fafc4d38631b3c6b3a589b464e8adb70fe763fe81031b48a9600",
+            "name": "S02_SQLite_FTS5_BM25.html",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 11,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+            "chunk_id": 564,
+            "snippet": "In order to calculate a documents score, the full-text query is separated\r\n    into its component phrases. The bm25 score for document D and\r\n    query Q is then calculated as follows:",
+            "score": 0,
+            "relevance": 0,
+            "rerank_score": 0,
+            "kind": "adjacent-context",
+            "context_for": 565,
+            "matched_queries": [],
+            "source": "S02_SQLite_FTS5_BM25.html · 正文 · v1.0 · 相邻原文（未独立评分）"
+          },
+          {
+            "id": 90,
+            "document_id": 11,
+            "ordinal": 31,
+            "page": 5,
+            "section": "第 5 页",
+            "text": "apt\nthe retriever to each dataset, it would also be de-\nsirable to obtain a single retriever that works well\nacross the board. To this end, we train a multi-\ndataset encoder by combining training data from\nall datasets excluding SQuAD.8 In addition to DPR,\nwe also present the results of BM25, the traditional\nretrieval method9 and BM25+DPR, using a linear\ncombination of their scores as the new ranking\nfunction. Speciﬁcally, we obtain two initial sets\nof top-2000 passages based on BM25 and DPR,\nrespectively, and rerank the union of them using\nBM25(q,p) + λ·sim(q,p) as the ranking function.\nWe used λ= 1.1 based on the retrieval accuracy in\nthe development set.\n5.1 Main Results\nTable 2 compares different passage retrieval sys-\ntems on ﬁve QA datasets, using the top-kaccuracy\n(k ∈{20,100}). Wit",
+            "char_start": 19382,
+            "char_end": 20182,
+            "sha256": "8446bd7fe4e9962f855e926f3f1b7da49849cde2f710cf954d3f73ef76a3a5bd",
+            "name": "S01_DPR_2020.pdf",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 11,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+            "chunk_id": 90,
+            "snippet": "apt\nthe retriever to each dataset, it would also be de-\nsirable to obtain a single retriever that works well\nacross the board. To this end, we train a multi-\ndataset encoder by combining training data from\nall datasets excluding SQuAD.8 In addition to DPR,\nwe also present the results of BM25, the traditional\nretrieval method9 and BM25+DPR, using a linear\ncombination of their scores as the new ranking\nfunction. Speciﬁcally, we obtain two initial sets\nof top-2000 passages based on BM25 and DPR,\nrespectively, and rerank the union of them using\nBM25(q,p) + λ·sim(q,p) as the ranking function.\nWe used λ= 1.1 based on the retrieval accuracy in\nthe development set.\n5.1 Main Results\nTable 2 compares different passage retrieval sys-\ntems on ﬁve QA datasets, using the top-kaccuracy\n(k ∈{20,100}). Wit",
+            "score": 0,
+            "relevance": 0,
+            "rerank_score": 0,
+            "kind": "adjacent-context",
+            "context_for": 91,
+            "matched_queries": [],
+            "source": "S01_DPR_2020.pdf · 第 5 页 · 第5页 · v1.0 · 相邻原文（未独立评分）"
+          },
+          {
+            "id": 92,
+            "document_id": 11,
+            "ordinal": 33,
+            "page": 5,
+            "section": "第 5 页",
+            "text": "pment sets.\n20 40 60 80 100\nk: # of retrieved passages\n40\n50\n60\n70\n80\n90Top-k accuracy (%)\nBM25\n# Train: 1k\n# Train: 10k\n# Train: 20k\n# Train: 40k\n# Train: all (59k)\nFigure 1: Retriever top-kaccuracy with different num-\nbers of training examples used in our dense passage re-\ntriever vs BM25. The results are measured on the de-\nvelopment set of Natural Questions. Our DPR trained\nusing 1,000 examples already outperforms BM25.\ntiple datasets, TREC, the smallest dataset of the\nﬁve, beneﬁts greatly from more training examples.\nIn contrast, Natural Questions and WebQuestions\nimprove modestly and TriviaQA degrades slightly.\nResults can be improved further in some cases by\ncombining DPR with BM25 in both single- and\nmulti-dataset settings.\nWe conjecture that the lower performance on\nSQuAD is due t",
+            "char_start": 20682,
+            "char_end": 21482,
+            "sha256": "10896b64296e2245fccd4dddbcfc6d8141288dddc9b73886df609c73331f53e7",
+            "name": "S01_DPR_2020.pdf",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 11,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+            "chunk_id": 92,
+            "snippet": "pment sets.\n20 40 60 80 100\nk: # of retrieved passages\n40\n50\n60\n70\n80\n90Top-k accuracy (%)\nBM25\n# Train: 1k\n# Train: 10k\n# Train: 20k\n# Train: 40k\n# Train: all (59k)\nFigure 1: Retriever top-kaccuracy with different num-\nbers of training examples used in our dense passage re-\ntriever vs BM25. The results are measured on the de-\nvelopment set of Natural Questions. Our DPR trained\nusing 1,000 examples already outperforms BM25.\ntiple datasets, TREC, the smallest dataset of the\nﬁve, beneﬁts greatly from more training examples.\nIn contrast, Natural Questions and WebQuestions\nimprove modestly and TriviaQA degrades slightly.\nResults can be improved further in some cases by\ncombining DPR with BM25 in both single- and\nmulti-dataset settings.\nWe conjecture that the lower performance on\nSQuAD is due t",
+            "score": 0,
+            "relevance": 0,
+            "rerank_score": 0,
+            "kind": "adjacent-context",
+            "context_for": 91,
+            "matched_queries": [],
+            "source": "S01_DPR_2020.pdf · 第 5 页 · 第5页 · v1.0 · 相邻原文（未独立评分）"
+          },
+          {
+            "id": 675,
+            "document_id": 12,
+            "ordinal": 528,
+            "page": null,
+            "section": "正文",
+            "text": "The rank option is used to change the default auxiliary function mapping\r\nfor the rank column. The option should be set to a text value in the same\r\nformat as described for \"rank MATCH ?\" terms\r\nabove. For example:",
+            "char_start": 80272,
+            "char_end": 80486,
+            "sha256": "aa51c5c9f17818260df00de99d5b75525701ad4399113ed7cc114a57223a4345",
+            "name": "S02_SQLite_FTS5_BM25.html",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 11,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+            "chunk_id": 675,
+            "snippet": "The rank option is used to change the default auxiliary function mapping\r\nfor the rank column. The option should be set to a text value in the same\r\nformat as described for \"rank MATCH ?\" terms\r\nabove. For example:",
+            "score": 0,
+            "relevance": 0,
+            "rerank_score": 0,
+            "kind": "adjacent-context",
+            "context_for": 676,
+            "matched_queries": [],
+            "source": "S02_SQLite_FTS5_BM25.html · 正文 · v1.0 · 相邻原文（未独立评分）"
+          }
+        ],
+        "status": "complete",
+        "feedback": null,
+        "created_at": "2026-11-01T13:10:58+00:00",
+        "verification": [
+          {
+            "claim_id": 1,
+            "sha256": "8a66e1d448af43dd374d28df682007bf77550cf08ddef1d622484d67024c7310",
+            "references": [
+              1
+            ],
+            "status": "supported",
+            "reason_code": "supported",
+            "reason": "逐句引用、证据判断、原文定位及数字检查通过",
+            "verdict": "supported",
+            "text": "SQLite FTS5文档中BM25的k1常数为1.2，b常数为0.75[1]。",
+            "quotes": [
+              {
+                "reference": 1,
+                "quote": "k1 and b are both constants,\r\n    hard-coded at 1.2 and 0.75 respectively.",
+                "char_start": 212,
+                "char_end": 286,
+                "match": "layout-normalized",
+                "source_sha256": "a6e94bbe080d1068f6a11a857b6f01225edd3f08bd9957b95179d8e5cae00a5e"
+              }
+            ],
+            "model": "kimi-k2.6"
+          }
+        ],
+        "retrieval": {
+          "embedding": "local-bge-m3",
+          "embedding_model": "BAAI/bge-m3",
+          "rerank": "local-cross-encoder",
+          "reranking": {
+            "model": "BAAI/bge-reranker-v2-m3",
+            "candidate_count": 40,
+            "device": "cuda",
+            "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+            "max_length": 1024,
+            "at_length_limit": 0
+          },
+          "policy": "multi-query-neural-v3",
+          "mode": "hybrid",
+          "top_k": 5,
+          "min_similarity": 0.3,
+          "min_coverage": 0.12,
+          "main_result_count": 5,
+          "context_result_count": 4,
+          "knowledge_base_ids": [
+            11,
+            12,
+            13
+          ],
+          "query_expansion": {
+            "policy": "bilingual-query-v1",
+            "status": "expanded",
+            "corpus_languages": [
+              "en",
+              "zh"
+            ],
+            "queries": [
+              {
+                "query": "SQLite FTS5文档中BM25的k1和b常数分别是多少?",
+                "group": "question",
+                "weight": 1.0,
+                "language": "original"
+              },
+              {
+                "query": "What are the k1 and b constants of BM25 in SQLite FTS5 documentation",
+                "group": "question",
+                "weight": 1.0,
+                "language": "en"
+              },
+              {
+                "query": "SQLite FTS5文档中BM25的k1和b常数分别是多少",
+                "group": "question",
+                "weight": 1.0,
+                "language": "zh"
+              }
+            ],
+            "warnings": [],
+            "cache": "miss",
+            "model": "kimi-k2.6"
+          },
+          "topic_anchors": [
+            "bm25",
+            "fts5",
+            "k1",
+            "sqlite"
+          ],
+          "covered_topic_anchors": [
+            "bm25",
+            "fts5",
+            "k1",
+            "sqlite"
+          ],
+          "part_coverage": {}
+        },
+        "coverage": {
+          "policy": "question-coverage-v1",
+          "status": "assessed",
+          "items": [
+            {
+              "requirement": "SQLite FTS5文档中BM25的k1常数值",
+              "status": "covered",
+              "references": [
+                1
+              ]
+            },
+            {
+              "requirement": "SQLite FTS5文档中BM25的b常数值",
+              "status": "covered",
+              "references": [
+                1
+              ]
+            }
+          ],
+          "model": "kimi-k2.6",
+          "repair_attempted": false,
+          "complete": true
+        }
+      }
+    ]
+  },
+  "events": [
+    {
+      "type": "meta",
+      "conversation_id": 40,
+      "message_id": 84,
+      "citations": [
+        {
+          "id": 565,
+          "document_id": 12,
+          "ordinal": 418,
+          "page": null,
+          "section": "正文",
+          "text": "In the above, nPhrase is the number of phrases in the query.\r\n    |D| is the number of tokens in the current document, and\r\n    avgdl is the average number of tokens in all documents within the\r\n    FTS5 table.  k1 and b are both constants,\r\n    hard-coded at 1.2 and 0.75 respectively.",
+          "char_start": 58549,
+          "char_end": 58835,
+          "sha256": "a6e94bbe080d1068f6a11a857b6f01225edd3f08bd9957b95179d8e5cae00a5e",
+          "name": "S02_SQLite_FTS5_BM25.html",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 11,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+          "chunk_id": 565,
+          "snippet": "In the above, nPhrase is the number of phrases in the query.\r\n    |D| is the number of tokens in the current document, and\r\n    avgdl is the average number of tokens in all documents within the\r\n    FTS5 table.  k1 and b are both constants,\r\n    hard-coded at 1.2 and 0.75 respectively.",
+          "score": 0.031545,
+          "relevance": 0.9905,
+          "rerank_score": 0.990478,
+          "matched_queries": [
+            {
+              "query": "SQLite FTS5文档中BM25的k1和b常数分别是多少?",
+              "group": "question",
+              "rank": 1,
+              "coverage": 0.1429,
+              "raw_score": 0.029437,
+              "vector_score": 0.5532
+            },
+            {
+              "query": "What are the k1 and b constants of BM25 in SQLite FTS5 documentation",
+              "group": "question",
+              "rank": 6,
+              "coverage": 0.5714,
+              "raw_score": 0.029052,
+              "vector_score": 0.5136
+            },
+            {
+              "query": "SQLite FTS5文档中BM25的k1和b常数分别是多少",
+              "group": "question",
+              "rank": 1,
+              "coverage": 0.1429,
+              "raw_score": 0.029437,
+              "vector_score": 0.554
+            }
+          ],
+          "source": "S02_SQLite_FTS5_BM25.html · 正文 · v1.0"
+        },
+        {
+          "id": 91,
+          "document_id": 11,
+          "ordinal": 32,
+          "page": 5,
+          "section": "第 5 页",
+          "text": "evelopment set.\n5.1 Main Results\nTable 2 compares different passage retrieval sys-\ntems on ﬁve QA datasets, using the top-kaccuracy\n(k ∈{20,100}). With the exception of SQuAD,\nDPR performs consistently better than BM25 on\nall datasets. The gap is especially large when kis\nsmall (e.g., 78.4% vs. 59.1% for top-20 accuracy\non Natural Questions). When training with mul-\n8SQuAD is limited to a small set of Wikipedia documents\nand thus introduces unwanted bias. We will discuss this issue\nmore in Section 5.1.\n9Lucene implementation. BM25 parameters b = 0.4 (doc-\nument length normalization) and k1 = 0.9 (term frequency\nscaling) are tuned using development sets.\n20 40 60 80 100\nk: # of retrieved passages\n40\n50\n60\n70\n80\n90Top-k accuracy (%)\nBM25\n# Train: 1k\n# Train: 10k\n# Train: 20k\n# Train: 40k\n# T",
+          "char_start": 20032,
+          "char_end": 20832,
+          "sha256": "31c2ebd1f4758b228ce2faad151c112f171ab7c5c6832dced98bdaa4ce6b32fd",
+          "name": "S01_DPR_2020.pdf",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 11,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+          "chunk_id": 91,
+          "snippet": "evelopment set.\n5.1 Main Results\nTable 2 compares different passage retrieval sys-\ntems on ﬁve QA datasets, using the top-kaccuracy\n(k ∈{20,100}). With the exception of SQuAD,\nDPR performs consistently better than BM25 on\nall datasets. The gap is especially large when kis\nsmall (e.g., 78.4% vs. 59.1% for top-20 accuracy\non Natural Questions). When training with mul-\n8SQuAD is limited to a small set of Wikipedia documents\nand thus introduces unwanted bias. We will discuss this issue\nmore in Section 5.1.\n9Lucene implementation. BM25 parameters b = 0.4 (doc-\nument length normalization) and k1 = 0.9 (term frequency\nscaling) are tuned using development sets.\n20 40 60 80 100\nk: # of retrieved passages\n40\n50\n60\n70\n80\n90Top-k accuracy (%)\nBM25\n# Train: 1k\n# Train: 10k\n# Train: 20k\n# Train: 40k\n# T",
+          "score": 0.029644,
+          "relevance": 0.9731,
+          "rerank_score": 0.973139,
+          "matched_queries": [
+            {
+              "query": "SQLite FTS5文档中BM25的k1和b常数分别是多少?",
+              "group": "question",
+              "rank": 6,
+              "coverage": 0.1429,
+              "raw_score": 0.024383,
+              "vector_score": 0.5364
+            },
+            {
+              "query": "What are the k1 and b constants of BM25 in SQLite FTS5 documentation",
+              "group": "question",
+              "rank": 9,
+              "coverage": 0.4286,
+              "raw_score": 0.025517,
+              "vector_score": 0.5022
+            },
+            {
+              "query": "SQLite FTS5文档中BM25的k1和b常数分别是多少",
+              "group": "question",
+              "rank": 6,
+              "coverage": 0.1429,
+              "raw_score": 0.024383,
+              "vector_score": 0.5346
+            }
+          ],
+          "source": "S01_DPR_2020.pdf · 第 5 页 · 第5页 · v1.0"
+        },
+        {
+          "id": 566,
+          "document_id": 12,
+          "ordinal": 419,
+          "page": null,
+          "section": "正文",
+          "text": "The \"-1\" term at the start of the formula is not found in most\r\nimplementations of the BM25 algorithm. Without it, a better match is assigned\r\na numerically higher BM25 score. Since the default sorting order is\r\n\"ascending\", this means that appending \"ORDER BY bm25(ft)\" to a query would\r\ncause results to be returned in order from worst to best. The \"DESC\" keyword\r\nwould be required in order to return the best matches first. In order to\r\navoid this pitfall, the FTS5 implementation of BM25 multiplies the result\r\nby -1 before returning it, ensuring that better matches are assigned\r\nnumerically lower scores.",
+          "char_start": 58837,
+          "char_end": 59448,
+          "sha256": "07dfbffa7e453d4b6d9d1bfca40169151348b0b1abdb9d052cd029fa250ab6af",
+          "name": "S02_SQLite_FTS5_BM25.html",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 11,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+          "chunk_id": 566,
+          "snippet": "The \"-1\" term at the start of the formula is not found in most\r\nimplementations of the BM25 algorithm. Without it, a better match is assigned\r\na numerically higher BM25 score. Since the default sorting order is\r\n\"ascending\", this means that appending \"ORDER BY bm25(ft)\" to a query would\r\ncause results to be returned in order from worst to best. The \"DESC\" keyword\r\nwould be required in order to return the best matches first. In order to\r\navoid this pitfall, the FTS5 implementation of BM25 multiplies the result\r\nby -1 before returning it, ensuring that better matches are assigned\r\nnumerically lower scores.",
+          "score": 0.029851,
+          "relevance": 0.4092,
+          "rerank_score": 0.409221,
+          "matched_queries": [
+            {
+              "query": "SQLite FTS5文档中BM25的k1和b常数分别是多少?",
+              "group": "question",
+              "rank": 7,
+              "coverage": 0.0952,
+              "raw_score": 0.023625,
+              "vector_score": 0.5873
+            },
+            {
+              "query": "What are the k1 and b constants of BM25 in SQLite FTS5 documentation",
+              "group": "question",
+              "rank": 7,
+              "coverage": 0.2857,
+              "raw_score": 0.026036,
+              "vector_score": 0.5635
+            },
+            {
+              "query": "SQLite FTS5文档中BM25的k1和b常数分别是多少",
+              "group": "question",
+              "rank": 7,
+              "coverage": 0.0952,
+              "raw_score": 0.023152,
+              "vector_score": 0.576
+            }
+          ],
+          "source": "S02_SQLite_FTS5_BM25.html · 正文 · v1.0"
+        },
+        {
+          "id": 676,
+          "document_id": 12,
+          "ordinal": 529,
+          "page": null,
+          "section": "正文",
+          "text": "INSERT INTO ft(ft, rank) VALUES('rank', 'bm25(10.0, 5.0)');",
+          "char_start": 80488,
+          "char_end": 80547,
+          "sha256": "d739fd1fe4ec8f6f1f84c5c9ec98c3d02badafb75b9db78c4c3430e566ed7190",
+          "name": "S02_SQLite_FTS5_BM25.html",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 11,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+          "chunk_id": 676,
+          "snippet": "INSERT INTO ft(ft, rank) VALUES('rank', 'bm25(10.0, 5.0)');",
+          "score": 0.026487,
+          "relevance": 0.2845,
+          "rerank_score": 0.284477,
+          "matched_queries": [
+            {
+              "query": "SQLite FTS5文档中BM25的k1和b常数分别是多少?",
+              "group": "question",
+              "rank": 12,
+              "coverage": 0.0476,
+              "raw_score": 0.020949,
+              "vector_score": 0.5955
+            },
+            {
+              "query": "What are the k1 and b constants of BM25 in SQLite FTS5 documentation",
+              "group": "question",
+              "rank": 20,
+              "coverage": 0.1429,
+              "raw_score": 0.021204,
+              "vector_score": 0.5461
+            },
+            {
+              "query": "SQLite FTS5文档中BM25的k1和b常数分别是多少",
+              "group": "question",
+              "rank": 11,
+              "coverage": 0.0476,
+              "raw_score": 0.020949,
+              "vector_score": 0.5865
+            }
+          ],
+          "source": "S02_SQLite_FTS5_BM25.html · 正文 · v1.0"
+        },
+        {
+          "id": 601,
+          "document_id": 12,
+          "ordinal": 454,
+          "page": null,
+          "section": "正文",
+          "text": "All FTS5 tables feature a special hidden column named \"rank\". If the\r\ncurrent query is not a full-text query (i.e. if it does not include a MATCH\r\noperator), the value of the \"rank\" column is always NULL. Otherwise, in a\r\nfull-text query, column rank contains by default the same value as would be\r\nreturned by executing the bm25() auxiliary function with no trailing\r\narguments.",
+          "char_start": 65339,
+          "char_end": 65718,
+          "sha256": "36c7e7a79c9f2fc8276941c99ebbd741f233dccfd3cc08b57a5d729159349231",
+          "name": "S02_SQLite_FTS5_BM25.html",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 11,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+          "chunk_id": 601,
+          "snippet": "All FTS5 tables feature a special hidden column named \"rank\". If the\r\ncurrent query is not a full-text query (i.e. if it does not include a MATCH\r\noperator), the value of the \"rank\" column is always NULL. Otherwise, in a\r\nfull-text query, column rank contains by default the same value as would be\r\nreturned by executing the bm25() auxiliary function with no trailing\r\narguments.",
+          "score": 0.022332,
+          "relevance": 0.208,
+          "rerank_score": 0.208018,
+          "matched_queries": [
+            {
+              "query": "SQLite FTS5文档中BM25的k1和b常数分别是多少?",
+              "group": "question",
+              "rank": 23,
+              "coverage": 0.0952,
+              "raw_score": 0.017041,
+              "vector_score": 0.5191
+            },
+            {
+              "query": "What are the k1 and b constants of BM25 in SQLite FTS5 documentation",
+              "group": "question",
+              "rank": 33,
+              "coverage": 0.2857,
+              "raw_score": 0.0174,
+              "vector_score": 0.5015
+            },
+            {
+              "query": "SQLite FTS5文档中BM25的k1和b常数分别是多少",
+              "group": "question",
+              "rank": 30,
+              "coverage": 0.0952,
+              "raw_score": 0.015564,
+              "vector_score": 0.508
+            }
+          ],
+          "source": "S02_SQLite_FTS5_BM25.html · 正文 · v1.0"
+        },
+        {
+          "id": 564,
+          "document_id": 12,
+          "ordinal": 417,
+          "page": null,
+          "section": "正文",
+          "text": "In order to calculate a documents score, the full-text query is separated\r\n    into its component phrases. The bm25 score for document D and\r\n    query Q is then calculated as follows:",
+          "char_start": 58363,
+          "char_end": 58547,
+          "sha256": "42b07eaae6d4fafc4d38631b3c6b3a589b464e8adb70fe763fe81031b48a9600",
+          "name": "S02_SQLite_FTS5_BM25.html",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 11,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+          "chunk_id": 564,
+          "snippet": "In order to calculate a documents score, the full-text query is separated\r\n    into its component phrases. The bm25 score for document D and\r\n    query Q is then calculated as follows:",
+          "score": 0,
+          "relevance": 0,
+          "rerank_score": 0,
+          "kind": "adjacent-context",
+          "context_for": 565,
+          "matched_queries": [],
+          "source": "S02_SQLite_FTS5_BM25.html · 正文 · v1.0 · 相邻原文（未独立评分）"
+        },
+        {
+          "id": 90,
+          "document_id": 11,
+          "ordinal": 31,
+          "page": 5,
+          "section": "第 5 页",
+          "text": "apt\nthe retriever to each dataset, it would also be de-\nsirable to obtain a single retriever that works well\nacross the board. To this end, we train a multi-\ndataset encoder by combining training data from\nall datasets excluding SQuAD.8 In addition to DPR,\nwe also present the results of BM25, the traditional\nretrieval method9 and BM25+DPR, using a linear\ncombination of their scores as the new ranking\nfunction. Speciﬁcally, we obtain two initial sets\nof top-2000 passages based on BM25 and DPR,\nrespectively, and rerank the union of them using\nBM25(q,p) + λ·sim(q,p) as the ranking function.\nWe used λ= 1.1 based on the retrieval accuracy in\nthe development set.\n5.1 Main Results\nTable 2 compares different passage retrieval sys-\ntems on ﬁve QA datasets, using the top-kaccuracy\n(k ∈{20,100}). Wit",
+          "char_start": 19382,
+          "char_end": 20182,
+          "sha256": "8446bd7fe4e9962f855e926f3f1b7da49849cde2f710cf954d3f73ef76a3a5bd",
+          "name": "S01_DPR_2020.pdf",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 11,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+          "chunk_id": 90,
+          "snippet": "apt\nthe retriever to each dataset, it would also be de-\nsirable to obtain a single retriever that works well\nacross the board. To this end, we train a multi-\ndataset encoder by combining training data from\nall datasets excluding SQuAD.8 In addition to DPR,\nwe also present the results of BM25, the traditional\nretrieval method9 and BM25+DPR, using a linear\ncombination of their scores as the new ranking\nfunction. Speciﬁcally, we obtain two initial sets\nof top-2000 passages based on BM25 and DPR,\nrespectively, and rerank the union of them using\nBM25(q,p) + λ·sim(q,p) as the ranking function.\nWe used λ= 1.1 based on the retrieval accuracy in\nthe development set.\n5.1 Main Results\nTable 2 compares different passage retrieval sys-\ntems on ﬁve QA datasets, using the top-kaccuracy\n(k ∈{20,100}). Wit",
+          "score": 0,
+          "relevance": 0,
+          "rerank_score": 0,
+          "kind": "adjacent-context",
+          "context_for": 91,
+          "matched_queries": [],
+          "source": "S01_DPR_2020.pdf · 第 5 页 · 第5页 · v1.0 · 相邻原文（未独立评分）"
+        },
+        {
+          "id": 92,
+          "document_id": 11,
+          "ordinal": 33,
+          "page": 5,
+          "section": "第 5 页",
+          "text": "pment sets.\n20 40 60 80 100\nk: # of retrieved passages\n40\n50\n60\n70\n80\n90Top-k accuracy (%)\nBM25\n# Train: 1k\n# Train: 10k\n# Train: 20k\n# Train: 40k\n# Train: all (59k)\nFigure 1: Retriever top-kaccuracy with different num-\nbers of training examples used in our dense passage re-\ntriever vs BM25. The results are measured on the de-\nvelopment set of Natural Questions. Our DPR trained\nusing 1,000 examples already outperforms BM25.\ntiple datasets, TREC, the smallest dataset of the\nﬁve, beneﬁts greatly from more training examples.\nIn contrast, Natural Questions and WebQuestions\nimprove modestly and TriviaQA degrades slightly.\nResults can be improved further in some cases by\ncombining DPR with BM25 in both single- and\nmulti-dataset settings.\nWe conjecture that the lower performance on\nSQuAD is due t",
+          "char_start": 20682,
+          "char_end": 21482,
+          "sha256": "10896b64296e2245fccd4dddbcfc6d8141288dddc9b73886df609c73331f53e7",
+          "name": "S01_DPR_2020.pdf",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 11,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+          "chunk_id": 92,
+          "snippet": "pment sets.\n20 40 60 80 100\nk: # of retrieved passages\n40\n50\n60\n70\n80\n90Top-k accuracy (%)\nBM25\n# Train: 1k\n# Train: 10k\n# Train: 20k\n# Train: 40k\n# Train: all (59k)\nFigure 1: Retriever top-kaccuracy with different num-\nbers of training examples used in our dense passage re-\ntriever vs BM25. The results are measured on the de-\nvelopment set of Natural Questions. Our DPR trained\nusing 1,000 examples already outperforms BM25.\ntiple datasets, TREC, the smallest dataset of the\nﬁve, beneﬁts greatly from more training examples.\nIn contrast, Natural Questions and WebQuestions\nimprove modestly and TriviaQA degrades slightly.\nResults can be improved further in some cases by\ncombining DPR with BM25 in both single- and\nmulti-dataset settings.\nWe conjecture that the lower performance on\nSQuAD is due t",
+          "score": 0,
+          "relevance": 0,
+          "rerank_score": 0,
+          "kind": "adjacent-context",
+          "context_for": 91,
+          "matched_queries": [],
+          "source": "S01_DPR_2020.pdf · 第 5 页 · 第5页 · v1.0 · 相邻原文（未独立评分）"
+        },
+        {
+          "id": 675,
+          "document_id": 12,
+          "ordinal": 528,
+          "page": null,
+          "section": "正文",
+          "text": "The rank option is used to change the default auxiliary function mapping\r\nfor the rank column. The option should be set to a text value in the same\r\nformat as described for \"rank MATCH ?\" terms\r\nabove. For example:",
+          "char_start": 80272,
+          "char_end": 80486,
+          "sha256": "aa51c5c9f17818260df00de99d5b75525701ad4399113ed7cc114a57223a4345",
+          "name": "S02_SQLite_FTS5_BM25.html",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 11,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+          "chunk_id": 675,
+          "snippet": "The rank option is used to change the default auxiliary function mapping\r\nfor the rank column. The option should be set to a text value in the same\r\nformat as described for \"rank MATCH ?\" terms\r\nabove. For example:",
+          "score": 0,
+          "relevance": 0,
+          "rerank_score": 0,
+          "kind": "adjacent-context",
+          "context_for": 676,
+          "matched_queries": [],
+          "source": "S02_SQLite_FTS5_BM25.html · 正文 · v1.0 · 相邻原文（未独立评分）"
+        }
+      ],
+      "pipeline": {
+        "embedding": "local-bge-m3",
+        "embedding_model": "BAAI/bge-m3",
+        "rerank": "local-cross-encoder",
+        "reranking": {
+          "model": "BAAI/bge-reranker-v2-m3",
+          "candidate_count": 40,
+          "device": "cuda",
+          "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+          "max_length": 1024,
+          "at_length_limit": 0
+        },
+        "policy": "multi-query-neural-v3",
+        "mode": "hybrid",
+        "top_k": 5,
+        "min_similarity": 0.3,
+        "min_coverage": 0.12,
+        "main_result_count": 5,
+        "context_result_count": 4,
+        "knowledge_base_ids": [
+          11,
+          12,
+          13
+        ],
+        "query_expansion": {
+          "policy": "bilingual-query-v1",
+          "status": "expanded",
+          "corpus_languages": [
+            "en",
+            "zh"
+          ],
+          "queries": [
+            {
+              "query": "SQLite FTS5文档中BM25的k1和b常数分别是多少?",
+              "group": "question",
+              "weight": 1.0,
+              "language": "original"
+            },
+            {
+              "query": "What are the k1 and b constants of BM25 in SQLite FTS5 documentation",
+              "group": "question",
+              "weight": 1.0,
+              "language": "en"
+            },
+            {
+              "query": "SQLite FTS5文档中BM25的k1和b常数分别是多少",
+              "group": "question",
+              "weight": 1.0,
+              "language": "zh"
+            }
+          ],
+          "warnings": [],
+          "cache": "miss",
+          "model": "kimi-k2.6"
+        },
+        "topic_anchors": [
+          "bm25",
+          "fts5",
+          "k1",
+          "sqlite"
+        ],
+        "covered_topic_anchors": [
+          "bm25",
+          "fts5",
+          "k1",
+          "sqlite"
+        ],
+        "part_coverage": {}
+      }
+    },
+    {
+      "type": "verification",
+      "checks": [
+        {
+          "claim_id": 1,
+          "sha256": "8a66e1d448af43dd374d28df682007bf77550cf08ddef1d622484d67024c7310",
+          "references": [
+            1
+          ],
+          "status": "supported",
+          "reason_code": "supported",
+          "reason": "逐句引用、证据判断、原文定位及数字检查通过",
+          "verdict": "supported",
+          "text": "SQLite FTS5文档中BM25的k1常数为1.2，b常数为0.75[1]。",
+          "quotes": [
+            {
+              "reference": 1,
+              "quote": "k1 and b are both constants,\r\n    hard-coded at 1.2 and 0.75 respectively.",
+              "char_start": 212,
+              "char_end": 286,
+              "match": "layout-normalized",
+              "source_sha256": "a6e94bbe080d1068f6a11a857b6f01225edd3f08bd9957b95179d8e5cae00a5e"
+            }
+          ],
+          "model": "kimi-k2.6"
+        }
+      ]
+    },
+    {
+      "type": "token",
+      "content": "SQLite FTS5文档中BM25的k1常数为1.2，b常数为0.75[1]。\n"
+    },
+    {
+      "type": "stage",
+      "stage": "coverage",
+      "message": "正在检查问题关键点，必要的补充仍须通过事实核验"
+    },
+    {
+      "type": "coverage",
+      "assessment": {
+        "policy": "question-coverage-v1",
+        "status": "assessed",
+        "items": [
+          {
+            "requirement": "SQLite FTS5文档中BM25的k1常数值",
+            "status": "covered",
+            "references": [
+              1
+            ]
+          },
+          {
+            "requirement": "SQLite FTS5文档中BM25的b常数值",
+            "status": "covered",
+            "references": [
+              1
+            ]
+          }
+        ],
+        "model": "kimi-k2.6",
+        "repair_attempted": false,
+        "complete": true
+      }
+    },
+    {
+      "type": "done",
+      "conversation_id": 40,
+      "message_id": 84
+    }
+  ],
+  "grading": "人工复核，不以模型自评或词项命中自动判正确"
+}

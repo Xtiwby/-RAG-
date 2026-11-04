@@ -1,0 +1,12 @@
+S09：TF-IDF特征表示（中文摘编）
+
+来源：scikit-learn官方TfidfVectorizer文档
+原文：https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html
+整理日期：2026-10-31
+性质：简短事实摘编，不是官方全文；不声称本项目调用了scikit-learn。
+
+功能：
+TfidfVectorizer把原始文档集合转换为TF-IDF特征矩阵。功能上相当于先运行CountVectorizer，再运行TfidfTransformer。
+
+输出：
+fit_transform返回稀疏的文档—词项矩阵，形状为(n_samples, n_features)。这些说明本身不证明使用了神经网络Embedding。

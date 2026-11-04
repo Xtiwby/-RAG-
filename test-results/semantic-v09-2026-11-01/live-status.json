@@ -1,0 +1,18 @@
+{
+  "configured": true,
+  "provider": "Kimi",
+  "model": "kimi-k2.6",
+  "embedding": "local-bge-m3",
+  "embedding_model": "BAAI/bge-m3",
+  "retrieval": {
+    "mode": "hybrid",
+    "top_k": 6,
+    "min_similarity": 0.3,
+    "min_coverage": 0.12,
+    "rerank": true,
+    "cross_language": true,
+    "query_rewrite_timeout_seconds": 20
+  },
+  "rerank": "local-cross-encoder",
+  "reranking_model": "BAAI/bge-reranker-v2-m3"
+}

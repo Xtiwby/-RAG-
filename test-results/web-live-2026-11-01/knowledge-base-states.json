@@ -1,0 +1,20 @@
+[
+  {
+    "status": "disabled",
+    "saved": true,
+    "search_http": 409,
+    "expected": 409
+  },
+  {
+    "status": "archived",
+    "saved": true,
+    "search_http": 409,
+    "expected": 409
+  },
+  {
+    "status": "active",
+    "saved": true,
+    "search_http": 200,
+    "expected": 200
+  }
+]

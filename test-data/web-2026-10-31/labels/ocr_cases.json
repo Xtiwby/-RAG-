@@ -1,0 +1,20 @@
+[
+  {
+    "id": "O01",
+    "input": "scenarios/ocr/S01_DPR_page01.png",
+    "source_id": "S01",
+    "physical_page": 1,
+    "question": "识别页面中的论文标题，并说明它报告的top-20检索准确率提升范围。",
+    "expected": "Dense Passage Retrieval for Open-Domain Question Answering；论文摘要为9%–19%的绝对提升，不是本项目实测。",
+    "note": "图像由原论文物理第1页渲染，不含额外文字层。此处只有参考标签，尚未调用OCR或模型。"
+  },
+  {
+    "id": "O02",
+    "input": "scenarios/ocr/S01_DPR_page02.png",
+    "source_id": "S01",
+    "physical_page": 2,
+    "question": "页面在Natural Questions设定下，列出的Top-5准确率对比数值是多少？",
+    "expected": "DPR为65.2%，BM25为42.9%，必须保留论文实验条件；不得归因到本项目。",
+    "note": "印刷页码6770对应物理第2页；跨栏识别与数值位置是检查重点。"
+  }
+]

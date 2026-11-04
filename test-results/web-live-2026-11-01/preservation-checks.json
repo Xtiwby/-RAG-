@@ -1,0 +1,12 @@
+{
+  "formal_report_12_unchanged": true,
+  "formal_report_12_sections_unchanged": true,
+  "original_knowledge_bases_unchanged": true,
+  "users_security_and_profile_unchanged": true,
+  "roles_unchanged": true,
+  "model_settings_unchanged": true,
+  "old_grants_unchanged": true,
+  "audit_history_retained": true,
+  "db_integrity": "ok",
+  "foreign_key_issues": 0
+}

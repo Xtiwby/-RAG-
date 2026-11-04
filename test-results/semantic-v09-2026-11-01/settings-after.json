@@ -1,0 +1,51 @@
+{
+  "settings": {
+    "chat": {
+      "base_url": "https://api.moonshot.cn/v1",
+      "model": "kimi-k2.6",
+      "timeout_seconds": 120,
+      "max_tokens": 4096
+    },
+    "embedding": {
+      "provider": "local",
+      "base_url": "",
+      "model": "BAAI/bge-m3",
+      "timeout_seconds": 90,
+      "device": "auto",
+      "batch_size": 8,
+      "max_length": 2048
+    },
+    "reranking": {
+      "provider": "local",
+      "model": "BAAI/bge-reranker-v2-m3",
+      "device": "auto",
+      "candidate_k": 40,
+      "batch_size": 4,
+      "max_length": 1024,
+      "timeout_seconds": 120
+    },
+    "chunk": {
+      "size": 800,
+      "overlap": 150
+    },
+    "retrieval": {
+      "mode": "hybrid",
+      "top_k": 6,
+      "min_similarity": 0.3,
+      "min_coverage": 0.12,
+      "rerank": true,
+      "cross_language": true,
+      "query_rewrite_timeout_seconds": 20
+    },
+    "queue": {
+      "concurrency": 2,
+      "max_attempts": 3
+    }
+  },
+  "revision": 4,
+  "updated_at": "2026-11-01T07:09:42+00:00",
+  "credentials": {
+    "chat": true,
+    "embedding": false
+  }
+}

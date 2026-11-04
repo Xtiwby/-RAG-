@@ -1,0 +1,611 @@
+{
+  "sections": [
+    {
+      "ordinal": 0,
+      "title": "UploadFile文件接收",
+      "kind": "fact",
+      "required": true,
+      "evidence": [
+        {
+          "id": 1183,
+          "document_id": 13,
+          "ordinal": 22,
+          "page": null,
+          "section": "含 `UploadFile` 的文件参数",
+          "text": "* 无需在参数的默认值中使用 `File()`。\r\n* 它使用“spooled”文件：\r\n    * 文件会先存储在内存中，直到达到最大上限，超过该上限后会写入磁盘。\r\n* 因此，非常适合处理图像、视频、大型二进制等大文件，而不会占用所有内存。\r\n* 你可以获取上传文件的元数据。\r\n* 它提供 [file-like](https://docs.python.org/3/glossary.html#term-file-like-object) 的 `async` 接口。\r\n* 它暴露了一个实际的 Python [`SpooledTemporaryFile`](https://docs.python.org/3/library/tempfile.html#tempfile.SpooledTemporaryFile) 对象，你可以直接传给期望「file-like」对象的其他库。",
+          "char_start": 829,
+          "char_end": 1220,
+          "sha256": "a54abd4e99345efebadadec1e2c7b2ebc13283347745a388f551bb7e40922950",
+          "name": "S03_FastAPI_请求文件.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1183,
+          "snippet": "* 无需在参数的默认值中使用 `File()`。\r\n* 它使用“spooled”文件：\r\n    * 文件会先存储在内存中，直到达到最大上限，超过该上限后会写入磁盘。\r\n* 因此，非常适合处理图像、视频、大型二进制等大文件，而不会占用所有内存。\r\n* 你可以获取上传文件的元数据。\r\n* 它提供 [file-like](https://docs.python.org/3/glossary.html#term-file-like-object) 的 `async` 接口。\r\n* 它暴露了一个实际的 Python [`SpooledTemporaryFile`](https://docs.python.org/3/library/tempfile.html#tempfile.SpooledTemporaryFile) 对象，你可以直接传给期望「file-like」对象的其他库。",
+          "score": 0.016393,
+          "relevance": 0.1347,
+          "rerank_score": 0.016393,
+          "matched_queries": [
+            {
+              "query": "UploadFile文件接收 仅两句说明UploadFile的spooled内存磁盘机制，每句引用。",
+              "group": "question",
+              "rank": 1,
+              "coverage": 0.3714,
+              "raw_score": 0.032787,
+              "vector_score": 0.1347
+            }
+          ],
+          "source": "S03_FastAPI_请求文件.md · 含 `UploadFile` 的文件参数 · v1.0"
+        },
+        {
+          "id": 1178,
+          "document_id": 13,
+          "ordinal": 17,
+          "page": null,
+          "section": "定义 `File` 参数",
+          "text": "请注意，这意味着整个内容会存储在内存中，适用于小型文件。",
+          "char_start": 676,
+          "char_end": 704,
+          "sha256": "d83c45f545db9fd76904eb5cdf559996f7785e9873e858c54de17efb6d9e789e",
+          "name": "S03_FastAPI_请求文件.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1178,
+          "snippet": "请注意，这意味着整个内容会存储在内存中，适用于小型文件。",
+          "score": 0.016129,
+          "relevance": 0.1051,
+          "rerank_score": 0.016129,
+          "matched_queries": [
+            {
+              "query": "UploadFile文件接收 仅两句说明UploadFile的spooled内存磁盘机制，每句引用。",
+              "group": "question",
+              "rank": 2,
+              "coverage": 0.2,
+              "raw_score": 0.031746,
+              "vector_score": 0.1051
+            }
+          ],
+          "source": "S03_FastAPI_请求文件.md · 定义 `File` 参数 · v1.0"
+        },
+        {
+          "id": 1177,
+          "document_id": 13,
+          "ordinal": 16,
+          "page": null,
+          "section": "定义 `File` 参数",
+          "text": "如果把*路径操作函数*参数的类型声明为 `bytes`，**FastAPI** 会为你读取文件，并以 `bytes` 的形式接收其内容。",
+          "char_start": 606,
+          "char_end": 674,
+          "sha256": "ec0b645b982c791f8284feb92586594f8d7e3ef661976bf94baf172681c44b04",
+          "name": "S03_FastAPI_请求文件.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1177,
+          "snippet": "如果把*路径操作函数*参数的类型声明为 `bytes`，**FastAPI** 会为你读取文件，并以 `bytes` 的形式接收其内容。",
+          "score": 0.015873,
+          "relevance": 0.0912,
+          "rerank_score": 0.015873,
+          "matched_queries": [
+            {
+              "query": "UploadFile文件接收 仅两句说明UploadFile的spooled内存磁盘机制，每句引用。",
+              "group": "question",
+              "rank": 3,
+              "coverage": 0.2286,
+              "raw_score": 0.03125,
+              "vector_score": 0.0912
+            }
+          ],
+          "source": "S03_FastAPI_请求文件.md · 定义 `File` 参数 · v1.0"
+        },
+        {
+          "id": 1166,
+          "document_id": 13,
+          "ordinal": 5,
+          "page": null,
+          "section": "请求文件",
+          "text": "要接收上传的文件，请先安装 [`python-multipart`](https://github.com/Kludex/python-multipart)。",
+          "char_start": 240,
+          "char_end": 319,
+          "sha256": "cc405391e85d0bc6d99758fefda1aaf8d04f8653b92a3017d568379ff04aa26e",
+          "name": "S03_FastAPI_请求文件.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1166,
+          "snippet": "要接收上传的文件，请先安装 [`python-multipart`](https://github.com/Kludex/python-multipart)。",
+          "score": 0.015625,
+          "relevance": 0.0857,
+          "rerank_score": 0.015625,
+          "matched_queries": [
+            {
+              "query": "UploadFile文件接收 仅两句说明UploadFile的spooled内存磁盘机制，每句引用。",
+              "group": "question",
+              "rank": 4,
+              "coverage": 0.1714,
+              "raw_score": 0.030536,
+              "vector_score": 0.0857
+            }
+          ],
+          "source": "S03_FastAPI_请求文件.md · 请求文件 · v1.0"
+        },
+        {
+          "id": 1181,
+          "document_id": 13,
+          "ordinal": 20,
+          "page": null,
+          "section": "含 `UploadFile` 的文件参数",
+          "text": "将文件参数的类型声明为 `UploadFile`：",
+          "char_start": 765,
+          "char_end": 790,
+          "sha256": "51ab7044d891a6178c439dc15f65ab2789404b5756298d24b0621638aa8aedd6",
+          "name": "S03_FastAPI_请求文件.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1181,
+          "snippet": "将文件参数的类型声明为 `UploadFile`：",
+          "score": 0.015385,
+          "relevance": 0.0868,
+          "rerank_score": 0.015385,
+          "matched_queries": [
+            {
+              "query": "UploadFile文件接收 仅两句说明UploadFile的spooled内存磁盘机制，每句引用。",
+              "group": "question",
+              "rank": 5,
+              "coverage": 0.1429,
+              "raw_score": 0.03009,
+              "vector_score": 0.0868
+            }
+          ],
+          "source": "S03_FastAPI_请求文件.md · 含 `UploadFile` 的文件参数 · v1.0"
+        },
+        {
+          "id": 1200,
+          "document_id": 13,
+          "ordinal": 39,
+          "page": null,
+          "section": "什么是「表单数据」",
+          "text": "你可以在一个*路径操作*中声明多个 `File` 和 `Form` 参数，但不能同时声明希望以 JSON 接收的 `Body` 字段，因为此时请求体会使用 `multipart/form-data` 编码，而不是 `application/json`。",
+          "char_start": 2645,
+          "char_end": 2771,
+          "sha256": "cf1aeed30d56c6d7137b3a8dfdb80d42ecfc1dc46107a7a0ceb2bf1df6df05e5",
+          "name": "S03_FastAPI_请求文件.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1200,
+          "snippet": "你可以在一个*路径操作*中声明多个 `File` 和 `Form` 参数，但不能同时声明希望以 JSON 接收的 `Body` 字段，因为此时请求体会使用 `multipart/form-data` 编码，而不是 `application/json`。",
+          "score": 0.015152,
+          "relevance": 0.0696,
+          "rerank_score": 0.015152,
+          "matched_queries": [
+            {
+              "query": "UploadFile文件接收 仅两句说明UploadFile的spooled内存磁盘机制，每句引用。",
+              "group": "question",
+              "rank": 6,
+              "coverage": 0.1429,
+              "raw_score": 0.029644,
+              "vector_score": 0.0696
+            }
+          ],
+          "source": "S03_FastAPI_请求文件.md · 什么是「表单数据」 · v1.0"
+        }
+      ],
+      "evidence_count": 6,
+      "retrieval": {
+        "policy": "section-focus-v2",
+        "section_title": "UploadFile文件接收",
+        "attempts": [
+          {
+            "query": "UploadFile文件接收 仅两句说明UploadFile的spooled内存磁盘机制，每句引用。",
+            "reason": "section-focus",
+            "retrieval": {
+              "embedding": "local-tfidf",
+              "rerank": "rank-aware-lexical",
+              "policy": "multi-query-rrf-v2",
+              "mode": "hybrid",
+              "top_k": 6,
+              "min_similarity": 0.3,
+              "min_coverage": 0.12,
+              "knowledge_base_ids": [
+                12
+              ],
+              "query_expansion": {
+                "policy": "bilingual-query-v1",
+                "status": "not_needed",
+                "corpus_languages": [
+                  "zh"
+                ],
+                "queries": [
+                  {
+                    "query": "UploadFile文件接收 仅两句说明UploadFile的spooled内存磁盘机制，每句引用。",
+                    "group": "question",
+                    "weight": 1.0,
+                    "language": "original"
+                  }
+                ],
+                "warnings": []
+              },
+              "part_coverage": {}
+            }
+          }
+        ],
+        "period_start": "",
+        "period_end": "",
+        "note": "业务日期约束由生成和核验执行；不是按文件上传日期过滤。写作总要求仅用于生成，不与章节主题等权拼接。"
+      },
+      "ready": true
+    },
+    {
+      "ordinal": 1,
+      "title": "pypdf与OCR边界",
+      "kind": "fact",
+      "required": true,
+      "evidence": [
+        {
+          "id": 1520,
+          "document_id": 20,
+          "ordinal": 3,
+          "page": null,
+          "section": "工具边界",
+          "text": "pypdf不是OCR软件。只有扫描图像而没有文字层的PDF，直接抽取可能几乎没有文字，应考虑OCR。",
+          "char_start": 187,
+          "char_end": 237,
+          "sha256": "f33f9826f8292754817fc612c877efce6662105a51d92df7bdff34b47e0e6d00",
+          "name": "S10_PDF与OCR_中文摘编.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1520,
+          "snippet": "pypdf不是OCR软件。只有扫描图像而没有文字层的PDF，直接抽取可能几乎没有文字，应考虑OCR。",
+          "score": 0.016393,
+          "relevance": 0.1122,
+          "rerank_score": 0.016393,
+          "matched_queries": [
+            {
+              "query": "pypdf与OCR边界 仅两句说明pypdf是否执行OCR及扫描文件的处理边界，每句引用。",
+              "group": "question",
+              "rank": 1,
+              "coverage": 0.1795,
+              "raw_score": 0.032787,
+              "vector_score": 0.1122
+            }
+          ],
+          "source": "S10_PDF与OCR_中文摘编.md · 工具边界 · v1.0"
+        },
+        {
+          "id": 1522,
+          "document_id": 20,
+          "ordinal": 5,
+          "page": null,
+          "section": "区分文件情况",
+          "text": "带有OCR文字层的扫描件可能被提取出文字，但这不等于pypdf识别了图像；识别文字与解析文字层是不同步骤。",
+          "char_start": 250,
+          "char_end": 303,
+          "sha256": "59ac15fb3df7e963534c6d0adc23fe99429ed568c23b480c40f54e6fb29eba7a",
+          "name": "S10_PDF与OCR_中文摘编.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1522,
+          "snippet": "带有OCR文字层的扫描件可能被提取出文字，但这不等于pypdf识别了图像；识别文字与解析文字层是不同步骤。",
+          "score": 0.016129,
+          "relevance": 0.0905,
+          "rerank_score": 0.016129,
+          "matched_queries": [
+            {
+              "query": "pypdf与OCR边界 仅两句说明pypdf是否执行OCR及扫描文件的处理边界，每句引用。",
+              "group": "question",
+              "rank": 2,
+              "coverage": 0.1795,
+              "raw_score": 0.032258,
+              "vector_score": 0.0905
+            }
+          ],
+          "source": "S10_PDF与OCR_中文摘编.md · 区分文件情况 · v1.0"
+        },
+        {
+          "id": 1518,
+          "document_id": 20,
+          "ordinal": 1,
+          "page": null,
+          "section": "S10：PDF文本提取与OCR（中文摘编）",
+          "text": "来源：pypdf官方文档《Extract Text from a PDF》\n原文：https://pypdf.readthedocs.io/en/stable/user/extract-text.html\n整理日期：2026-10-31\n性质：简短事实摘编，非官方全文；不描述本系统已完成的OCR能力。",
+          "char_start": 25,
+          "char_end": 176,
+          "sha256": "83bb85182fb590c86951d4f2b3a3db8aebc7934478cabc2bd17988ed0b2b175e",
+          "name": "S10_PDF与OCR_中文摘编.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1518,
+          "snippet": "来源：pypdf官方文档《Extract Text from a PDF》\n原文：https://pypdf.readthedocs.io/en/stable/user/extract-text.html\n整理日期：2026-10-31\n性质：简短事实摘编，非官方全文；不描述本系统已完成的OCR能力。",
+          "score": 0.015873,
+          "relevance": 0.0709,
+          "rerank_score": 0.015873,
+          "matched_queries": [
+            {
+              "query": "pypdf与OCR边界 仅两句说明pypdf是否执行OCR及扫描文件的处理边界，每句引用。",
+              "group": "question",
+              "rank": 3,
+              "coverage": 0.1282,
+              "raw_score": 0.031498,
+              "vector_score": 0.0709
+            }
+          ],
+          "source": "S10_PDF与OCR_中文摘编.md · S10：PDF文本提取与OCR（中文摘编） · v1.0"
+        },
+        {
+          "id": 1286,
+          "document_id": 14,
+          "ordinal": 69,
+          "page": null,
+          "section": "关于 JWT “主题” `sub` 的技术细节",
+          "text": "接着，你可以把这个 JWT 令牌交给一个用户（或机器人），他们就可以在没有账户的前提下，仅凭你的 API 生成的 JWT 令牌来执行这些操作（开车、编辑文章）。",
+          "char_start": 2686,
+          "char_end": 2766,
+          "sha256": "2115995f38f391b42decc1235e6306b369bff9384230df88e17c9ba610efe388",
+          "name": "S04_FastAPI_JWT.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1286,
+          "snippet": "接着，你可以把这个 JWT 令牌交给一个用户（或机器人），他们就可以在没有账户的前提下，仅凭你的 API 生成的 JWT 令牌来执行这些操作（开车、编辑文章）。",
+          "score": 0.015625,
+          "relevance": 0.067,
+          "rerank_score": 0.015625,
+          "matched_queries": [
+            {
+              "query": "pypdf与OCR边界 仅两句说明pypdf是否执行OCR及扫描文件的处理边界，每句引用。",
+              "group": "question",
+              "rank": 4,
+              "coverage": 0.1282,
+              "raw_score": 0.030769,
+              "vector_score": 0.067
+            }
+          ],
+          "source": "S04_FastAPI_JWT.md · 关于 JWT “主题” `sub` 的技术细节 · v1.0"
+        },
+        {
+          "id": 1175,
+          "document_id": 13,
+          "ordinal": 14,
+          "page": null,
+          "section": "定义 `File` 参数",
+          "text": "声明文件体必须使用 `File`，否则，这些参数会被当作查询参数或请求体（JSON）参数。",
+          "char_start": 543,
+          "char_end": 588,
+          "sha256": "233ce6694f27d44ef229398fa7b7694f0455635b227c90c4d3f988809bd6e6ba",
+          "name": "S03_FastAPI_请求文件.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1175,
+          "snippet": "声明文件体必须使用 `File`，否则，这些参数会被当作查询参数或请求体（JSON）参数。",
+          "score": 0.015385,
+          "relevance": 0.0581,
+          "rerank_score": 0.015385,
+          "matched_queries": [
+            {
+              "query": "pypdf与OCR边界 仅两句说明pypdf是否执行OCR及扫描文件的处理边界，每句引用。",
+              "group": "question",
+              "rank": 5,
+              "coverage": 0.1538,
+              "raw_score": 0.029857,
+              "vector_score": 0.0581
+            }
+          ],
+          "source": "S03_FastAPI_请求文件.md · 定义 `File` 参数 · v1.0"
+        },
+        {
+          "id": 1183,
+          "document_id": 13,
+          "ordinal": 22,
+          "page": null,
+          "section": "含 `UploadFile` 的文件参数",
+          "text": "* 无需在参数的默认值中使用 `File()`。\r\n* 它使用“spooled”文件：\r\n    * 文件会先存储在内存中，直到达到最大上限，超过该上限后会写入磁盘。\r\n* 因此，非常适合处理图像、视频、大型二进制等大文件，而不会占用所有内存。\r\n* 你可以获取上传文件的元数据。\r\n* 它提供 [file-like](https://docs.python.org/3/glossary.html#term-file-like-object) 的 `async` 接口。\r\n* 它暴露了一个实际的 Python [`SpooledTemporaryFile`](https://docs.python.org/3/library/tempfile.html#tempfile.SpooledTemporaryFile) 对象，你可以直接传给期望「file-like」对象的其他库。",
+          "char_start": 829,
+          "char_end": 1220,
+          "sha256": "a54abd4e99345efebadadec1e2c7b2ebc13283347745a388f551bb7e40922950",
+          "name": "S03_FastAPI_请求文件.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1183,
+          "snippet": "* 无需在参数的默认值中使用 `File()`。\r\n* 它使用“spooled”文件：\r\n    * 文件会先存储在内存中，直到达到最大上限，超过该上限后会写入磁盘。\r\n* 因此，非常适合处理图像、视频、大型二进制等大文件，而不会占用所有内存。\r\n* 你可以获取上传文件的元数据。\r\n* 它提供 [file-like](https://docs.python.org/3/glossary.html#term-file-like-object) 的 `async` 接口。\r\n* 它暴露了一个实际的 Python [`SpooledTemporaryFile`](https://docs.python.org/3/library/tempfile.html#tempfile.SpooledTemporaryFile) 对象，你可以直接传给期望「file-like」对象的其他库。",
+          "score": 0.015152,
+          "relevance": 0.0532,
+          "rerank_score": 0.015152,
+          "matched_queries": [
+            {
+              "query": "pypdf与OCR边界 仅两句说明pypdf是否执行OCR及扫描文件的处理边界，每句引用。",
+              "group": "question",
+              "rank": 6,
+              "coverage": 0.2051,
+              "raw_score": 0.028778,
+              "vector_score": 0.0532
+            }
+          ],
+          "source": "S03_FastAPI_请求文件.md · 含 `UploadFile` 的文件参数 · v1.0"
+        }
+      ],
+      "evidence_count": 6,
+      "retrieval": {
+        "policy": "section-focus-v2",
+        "section_title": "pypdf与OCR边界",
+        "attempts": [
+          {
+            "query": "pypdf与OCR边界 仅两句说明pypdf是否执行OCR及扫描文件的处理边界，每句引用。",
+            "reason": "section-focus",
+            "retrieval": {
+              "embedding": "local-tfidf",
+              "rerank": "rank-aware-lexical",
+              "policy": "multi-query-rrf-v2",
+              "mode": "hybrid",
+              "top_k": 6,
+              "min_similarity": 0.3,
+              "min_coverage": 0.12,
+              "knowledge_base_ids": [
+                12
+              ],
+              "query_expansion": {
+                "policy": "bilingual-query-v1",
+                "status": "not_needed",
+                "corpus_languages": [
+                  "zh"
+                ],
+                "queries": [
+                  {
+                    "query": "pypdf与OCR边界 仅两句说明pypdf是否执行OCR及扫描文件的处理边界，每句引用。",
+                    "group": "question",
+                    "weight": 1.0,
+                    "language": "original"
+                  }
+                ],
+                "warnings": []
+              },
+              "part_coverage": {}
+            }
+          }
+        ],
+        "period_start": "",
+        "period_end": "",
+        "note": "业务日期约束由生成和核验执行；不是按文件上传日期过滤。写作总要求仅用于生成，不与章节主题等权拼接。"
+      },
+      "ready": true
+    },
+    {
+      "ordinal": 2,
+      "title": "本项目本次压测吞吐量",
+      "kind": "fact",
+      "required": true,
+      "evidence": [
+        {
+          "id": 1163,
+          "document_id": 13,
+          "ordinal": 2,
+          "page": null,
+          "section": "S03: FastAPI 请求文件",
+          "text": "外部技术资料，不代表本项目实际实现、配置或性能。",
+          "char_start": 179,
+          "char_end": 203,
+          "sha256": "5500b1eca9b34f2a1b114f7bfee259a1d75561be25b45653b8b27ae67b5909ca",
+          "name": "S03_FastAPI_请求文件.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1163,
+          "snippet": "外部技术资料，不代表本项目实际实现、配置或性能。",
+          "score": 0.016393,
+          "relevance": 0.1502,
+          "rerank_score": 0.016393,
+          "matched_queries": [
+            {
+              "query": "本项目本次压测吞吐量 本节仅说明本项目实测QPS，没有项目实测数据则标记待补充；严禁引用外部文档编造。",
+              "group": "question",
+              "rank": 1,
+              "coverage": 0.1471,
+              "raw_score": 0.032522,
+              "vector_score": 0.1502
+            }
+          ],
+          "source": "S03_FastAPI_请求文件.md · S03: FastAPI 请求文件 · v1.0"
+        },
+        {
+          "id": 1219,
+          "document_id": 14,
+          "ordinal": 2,
+          "page": null,
+          "section": "S04: FastAPI OAuth2、密码哈希与JWT",
+          "text": "外部技术资料，不代表本项目实际实现、配置或性能。",
+          "char_start": 196,
+          "char_end": 220,
+          "sha256": "5500b1eca9b34f2a1b114f7bfee259a1d75561be25b45653b8b27ae67b5909ca",
+          "name": "S04_FastAPI_JWT.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1219,
+          "snippet": "外部技术资料，不代表本项目实际实现、配置或性能。",
+          "score": 0.016129,
+          "relevance": 0.15,
+          "rerank_score": 0.016129,
+          "matched_queries": [
+            {
+              "query": "本项目本次压测吞吐量 本节仅说明本项目实测QPS，没有项目实测数据则标记待补充；严禁引用外部文档编造。",
+              "group": "question",
+              "rank": 2,
+              "coverage": 0.1471,
+              "raw_score": 0.032522,
+              "vector_score": 0.15
+            }
+          ],
+          "source": "S04_FastAPI_JWT.md · S04: FastAPI OAuth2、密码哈希与JWT · v1.0"
+        }
+      ],
+      "evidence_count": 2,
+      "retrieval": {
+        "policy": "section-focus-v2",
+        "section_title": "本项目本次压测吞吐量",
+        "attempts": [
+          {
+            "query": "本项目本次压测吞吐量 本节仅说明本项目实测QPS，没有项目实测数据则标记待补充；严禁引用外部文档编造。",
+            "reason": "section-focus",
+            "retrieval": {
+              "embedding": "local-tfidf",
+              "rerank": "rank-aware-lexical",
+              "policy": "multi-query-rrf-v2",
+              "mode": "hybrid",
+              "top_k": 6,
+              "min_similarity": 0.3,
+              "min_coverage": 0.12,
+              "knowledge_base_ids": [
+                12
+              ],
+              "query_expansion": {
+                "policy": "bilingual-query-v1",
+                "status": "not_needed",
+                "corpus_languages": [
+                  "zh"
+                ],
+                "queries": [
+                  {
+                    "query": "本项目本次压测吞吐量 本节仅说明本项目实测QPS，没有项目实测数据则标记待补充；严禁引用外部文档编造。",
+                    "group": "question",
+                    "weight": 1.0,
+                    "language": "original"
+                  }
+                ],
+                "warnings": []
+              },
+              "part_coverage": {}
+            }
+          }
+        ],
+        "period_start": "",
+        "period_end": "",
+        "note": "业务日期约束由生成和核验执行；不是按文件上传日期过滤。写作总要求仅用于生成，不与章节主题等权拼接。"
+      },
+      "ready": true
+    }
+  ],
+  "missing": 0,
+  "warnings": [],
+  "preflight_id": "dbGngdsYVRsXkNeoBxK4XtKXQ_o1x4n7"
+}

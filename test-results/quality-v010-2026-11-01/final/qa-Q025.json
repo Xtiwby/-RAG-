@@ -1,0 +1,1313 @@
+{
+  "question_id": "Q025",
+  "question": "收到UploadFile后是否就等于完成了扫描PDF的OCR？请结合两份资料说明。",
+  "expected_for_human_review": "不是。UploadFile负责接收和提供类文件接口；扫描图像文字识别属于OCR，pypdf本身不是OCR软件。",
+  "answerable": true,
+  "elapsed_ms": 39321,
+  "conversation": {
+    "id": 34,
+    "user_id": 1,
+    "title": "v0.10 质量复测 Q025 · 收到UploadFile后是否就等于完成了扫描PDF的OCR？请结合两份资料说明。",
+    "knowledge_base_ids": [
+      11,
+      12,
+      13
+    ],
+    "created_at": "2026-11-01T13:05:25+00:00",
+    "updated_at": "2026-11-01T13:05:42+00:00",
+    "messages": [
+      {
+        "id": 71,
+        "conversation_id": 34,
+        "role": "user",
+        "content": "收到UploadFile后是否就等于完成了扫描PDF的OCR?请结合两份资料说明。",
+        "citations": [],
+        "status": "complete",
+        "feedback": null,
+        "created_at": "2026-11-01T13:05:25+00:00",
+        "verification": [],
+        "retrieval": {},
+        "coverage": {}
+      },
+      {
+        "id": 72,
+        "conversation_id": 34,
+        "role": "assistant",
+        "content": "扫描PDF的OCR是另一回事：pypdf不是OCR软件，对于只有扫描图像而没有文字层的PDF，直接抽取可能几乎没有文字[2]。\n识别文字与解析文字层是不同步骤[1]。\n\n部分候选句未通过引用或证据支撑校验，已过滤；上述仅展示通过校验的内容。",
+        "citations": [
+          {
+            "id": 1522,
+            "document_id": 20,
+            "ordinal": 5,
+            "page": null,
+            "section": "区分文件情况",
+            "text": "带有OCR文字层的扫描件可能被提取出文字，但这不等于pypdf识别了图像；识别文字与解析文字层是不同步骤。",
+            "char_start": 250,
+            "char_end": 303,
+            "sha256": "59ac15fb3df7e963534c6d0adc23fe99429ed568c23b480c40f54e6fb29eba7a",
+            "name": "S10_PDF与OCR_中文摘编.md",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 12,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+            "chunk_id": 1522,
+            "snippet": "带有OCR文字层的扫描件可能被提取出文字，但这不等于pypdf识别了图像；识别文字与解析文字层是不同步骤。",
+            "score": 0.077836,
+            "relevance": 0.4554,
+            "rerank_score": 0.455411,
+            "matched_queries": [
+              {
+                "query": "收到UploadFile后是否就等于完成了扫描PDF的OCR?请结合两份资料说明。",
+                "group": "question",
+                "rank": 1,
+                "coverage": 0.175,
+                "raw_score": 0.032787,
+                "vector_score": 0.6651
+              },
+              {
+                "query": "Does receiving UploadFile mean the OCR of scanned PDF is complete? Please explain with reference to two documents.",
+                "group": "question",
+                "rank": 8,
+                "coverage": 0.0833,
+                "raw_score": 0.024797,
+                "vector_score": 0.641
+              },
+              {
+                "query": "扫描PDF的OCR完整流程包含哪些步骤,何时才算完成?",
+                "group": "part-2",
+                "rank": 1,
+                "coverage": 0.2121,
+                "raw_score": 0.032522,
+                "vector_score": 0.6419
+              },
+              {
+                "query": "What steps are included in the complete OCR workflow for scanned PDF, and when is it considered complete?",
+                "group": "part-2",
+                "rank": 3,
+                "coverage": 0.125,
+                "raw_score": 0.028442,
+                "vector_score": 0.6074
+              },
+              {
+                "query": "UploadFile与OCR完成状态之间的关系或时序是怎样的?",
+                "group": "part-3",
+                "rank": 18,
+                "coverage": 0.0455,
+                "raw_score": 0.02067,
+                "vector_score": 0.4901
+              },
+              {
+                "query": "What is the relationship or sequence between UploadFile and the OCR completion status?",
+                "group": "part-3",
+                "rank": 15,
+                "coverage": 0.1429,
+                "raw_score": 0.023459,
+                "vector_score": 0.469
+              }
+            ],
+            "source": "S10_PDF与OCR_中文摘编.md · 区分文件情况 · v1.0"
+          },
+          {
+            "id": 1520,
+            "document_id": 20,
+            "ordinal": 3,
+            "page": null,
+            "section": "工具边界",
+            "text": "pypdf不是OCR软件。只有扫描图像而没有文字层的PDF，直接抽取可能几乎没有文字，应考虑OCR。",
+            "char_start": 187,
+            "char_end": 237,
+            "sha256": "f33f9826f8292754817fc612c877efce6662105a51d92df7bdff34b47e0e6d00",
+            "name": "S10_PDF与OCR_中文摘编.md",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 12,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+            "chunk_id": 1520,
+            "snippet": "pypdf不是OCR软件。只有扫描图像而没有文字层的PDF，直接抽取可能几乎没有文字，应考虑OCR。",
+            "score": 0.079478,
+            "relevance": 0.4221,
+            "rerank_score": 0.422088,
+            "matched_queries": [
+              {
+                "query": "收到UploadFile后是否就等于完成了扫描PDF的OCR?请结合两份资料说明。",
+                "group": "question",
+                "rank": 2,
+                "coverage": 0.125,
+                "raw_score": 0.032258,
+                "vector_score": 0.6359
+              },
+              {
+                "query": "Does receiving UploadFile mean the OCR of scanned PDF is complete? Please explain with reference to two documents.",
+                "group": "question",
+                "rank": 1,
+                "coverage": 0.1667,
+                "raw_score": 0.031498,
+                "vector_score": 0.5875
+              },
+              {
+                "query": "扫描PDF的OCR完整流程包含哪些步骤,何时才算完成?",
+                "group": "part-2",
+                "rank": 2,
+                "coverage": 0.1515,
+                "raw_score": 0.032266,
+                "vector_score": 0.6483
+              },
+              {
+                "query": "What steps are included in the complete OCR workflow for scanned PDF, and when is it considered complete?",
+                "group": "part-2",
+                "rank": 1,
+                "coverage": 0.25,
+                "raw_score": 0.032522,
+                "vector_score": 0.6
+              },
+              {
+                "query": "UploadFile与OCR完成状态之间的关系或时序是怎样的?",
+                "group": "part-3",
+                "rank": 19,
+                "coverage": 0.0455,
+                "raw_score": 0.020059,
+                "vector_score": 0.4458
+              },
+              {
+                "query": "What is the relationship or sequence between UploadFile and the OCR completion status?",
+                "group": "part-3",
+                "rank": 14,
+                "coverage": 0.1429,
+                "raw_score": 0.024313,
+                "vector_score": 0.4155
+              }
+            ],
+            "source": "S10_PDF与OCR_中文摘编.md · 工具边界 · v1.0"
+          },
+          {
+            "id": 1168,
+            "document_id": 13,
+            "ordinal": 7,
+            "page": null,
+            "section": "请求文件",
+            "text": "这是因为上传文件是以「表单数据」发送的。",
+            "char_start": 334,
+            "char_end": 354,
+            "sha256": "19eb39fe97fe86bdeb8add8a2cee780460866dcbce47d2cba0be60e2a8364633",
+            "name": "S03_FastAPI_请求文件.md",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 12,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+            "chunk_id": 1168,
+            "snippet": "这是因为上传文件是以「表单数据」发送的。",
+            "score": 0.067275,
+            "relevance": 0.264,
+            "rerank_score": 0.263979,
+            "matched_queries": [
+              {
+                "query": "收到UploadFile后是否就等于完成了扫描PDF的OCR?请结合两份资料说明。",
+                "group": "question",
+                "rank": 24,
+                "coverage": 0.0,
+                "raw_score": 0.016416,
+                "vector_score": 0.6149
+              },
+              {
+                "query": "Does receiving UploadFile mean the OCR of scanned PDF is complete? Please explain with reference to two documents.",
+                "group": "question",
+                "rank": 23,
+                "coverage": 0.0,
+                "raw_score": 0.016494,
+                "vector_score": 0.586
+              },
+              {
+                "query": "UploadFile事件或消息的定义、触发时机及含义是什么?",
+                "group": "part-1",
+                "rank": 6,
+                "coverage": 0.0769,
+                "raw_score": 0.02782,
+                "vector_score": 0.5933
+              },
+              {
+                "query": "What is the definition, trigger timing, and meaning of the UploadFile event or message?",
+                "group": "part-1",
+                "rank": 14,
+                "coverage": 0.0,
+                "raw_score": 0.016497,
+                "vector_score": 0.571
+              },
+              {
+                "query": "UploadFile与OCR完成状态之间的关系或时序是怎样的?",
+                "group": "part-3",
+                "rank": 20,
+                "coverage": 0.0,
+                "raw_score": 0.017201,
+                "vector_score": 0.5925
+              },
+              {
+                "query": "What is the relationship or sequence between UploadFile and the OCR completion status?",
+                "group": "part-3",
+                "rank": 17,
+                "coverage": 0.0,
+                "raw_score": 0.016743,
+                "vector_score": 0.5403
+              }
+            ],
+            "source": "S03_FastAPI_请求文件.md · 请求文件 · v1.0"
+          },
+          {
+            "id": 1179,
+            "document_id": 13,
+            "ordinal": 18,
+            "page": null,
+            "section": "定义 `File` 参数",
+            "text": "不过，在很多情况下，使用 `UploadFile` 会更有优势。",
+            "char_start": 706,
+            "char_end": 738,
+            "sha256": "a9e261d4780ee86dc4359b129f3d88913c68123ad629f4e5ae0e47bf5761195b",
+            "name": "S03_FastAPI_请求文件.md",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 12,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+            "chunk_id": 1179,
+            "snippet": "不过，在很多情况下，使用 `UploadFile` 会更有优势。",
+            "score": 0.076361,
+            "relevance": 0.1312,
+            "rerank_score": 0.131173,
+            "matched_queries": [
+              {
+                "query": "收到UploadFile后是否就等于完成了扫描PDF的OCR?请结合两份资料说明。",
+                "group": "question",
+                "rank": 10,
+                "coverage": 0.025,
+                "raw_score": 0.021897,
+                "vector_score": 0.5649
+              },
+              {
+                "query": "Does receiving UploadFile mean the OCR of scanned PDF is complete? Please explain with reference to two documents.",
+                "group": "question",
+                "rank": 6,
+                "coverage": 0.0833,
+                "raw_score": 0.025452,
+                "vector_score": 0.5593
+              },
+              {
+                "query": "UploadFile事件或消息的定义、触发时机及含义是什么?",
+                "group": "part-1",
+                "rank": 11,
+                "coverage": 0.0385,
+                "raw_score": 0.02578,
+                "vector_score": 0.5801
+              },
+              {
+                "query": "What is the definition, trigger timing, and meaning of the UploadFile event or message?",
+                "group": "part-1",
+                "rank": 7,
+                "coverage": 0.1429,
+                "raw_score": 0.028219,
+                "vector_score": 0.5423
+              },
+              {
+                "query": "UploadFile与OCR完成状态之间的关系或时序是怎样的?",
+                "group": "part-3",
+                "rank": 9,
+                "coverage": 0.0455,
+                "raw_score": 0.024415,
+                "vector_score": 0.5618
+              },
+              {
+                "query": "What is the relationship or sequence between UploadFile and the OCR completion status?",
+                "group": "part-3",
+                "rank": 6,
+                "coverage": 0.1429,
+                "raw_score": 0.02712,
+                "vector_score": 0.5175
+              }
+            ],
+            "source": "S03_FastAPI_请求文件.md · 定义 `File` 参数 · v1.0"
+          },
+          {
+            "id": 1210,
+            "document_id": 13,
+            "ordinal": 49,
+            "page": null,
+            "section": "多文件上传",
+            "text": "接收的也是含 `bytes` 或 `UploadFile` 的列表（`list`）。",
+            "char_start": 3038,
+            "char_end": 3080,
+            "sha256": "6e62164f95b9268da1035be1b193d609afe138c261a79137761410fd0bbfac22",
+            "name": "S03_FastAPI_请求文件.md",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 12,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+            "chunk_id": 1210,
+            "snippet": "接收的也是含 `bytes` 或 `UploadFile` 的列表（`list`）。",
+            "score": 0.080209,
+            "relevance": 0.0995,
+            "rerank_score": 0.09947,
+            "matched_queries": [
+              {
+                "query": "收到UploadFile后是否就等于完成了扫描PDF的OCR?请结合两份资料说明。",
+                "group": "question",
+                "rank": 4,
+                "coverage": 0.05,
+                "raw_score": 0.028543,
+                "vector_score": 0.6047
+              },
+              {
+                "query": "Does receiving UploadFile mean the OCR of scanned PDF is complete? Please explain with reference to two documents.",
+                "group": "question",
+                "rank": 3,
+                "coverage": 0.0833,
+                "raw_score": 0.028485,
+                "vector_score": 0.5607
+              },
+              {
+                "query": "UploadFile事件或消息的定义、触发时机及含义是什么?",
+                "group": "part-1",
+                "rank": 5,
+                "coverage": 0.0769,
+                "raw_score": 0.029083,
+                "vector_score": 0.5544
+              },
+              {
+                "query": "What is the definition, trigger timing, and meaning of the UploadFile event or message?",
+                "group": "part-1",
+                "rank": 8,
+                "coverage": 0.1429,
+                "raw_score": 0.028219,
+                "vector_score": 0.5234
+              },
+              {
+                "query": "UploadFile与OCR完成状态之间的关系或时序是怎样的?",
+                "group": "part-3",
+                "rank": 7,
+                "coverage": 0.0455,
+                "raw_score": 0.024723,
+                "vector_score": 0.5386
+              },
+              {
+                "query": "What is the relationship or sequence between UploadFile and the OCR completion status?",
+                "group": "part-3",
+                "rank": 3,
+                "coverage": 0.1429,
+                "raw_score": 0.02837,
+                "vector_score": 0.5092
+              }
+            ],
+            "source": "S03_FastAPI_请求文件.md · 多文件上传 · v1.0"
+          }
+        ],
+        "status": "complete",
+        "feedback": null,
+        "created_at": "2026-11-01T13:05:25+00:00",
+        "verification": [
+          {
+            "claim_id": 1,
+            "sha256": "7eebc667be3023bb3b9de62f2a110acbd1c55683c88c9ed0a8af83a44289384b",
+            "references": [
+              4
+            ],
+            "status": "rejected",
+            "reason_code": "insufficient",
+            "reason": "引用证据不足以支持整句",
+            "verdict": "insufficient"
+          },
+          {
+            "claim_id": 2,
+            "sha256": "fa5be2e6e182ba85a009ace31388a1fdaef53ea49c609a2f53060b1693a0a385",
+            "references": [
+              3,
+              4
+            ],
+            "status": "rejected",
+            "reason_code": "partial",
+            "reason": "仅部分事实得到支持，整句未发布",
+            "verdict": "partial"
+          },
+          {
+            "claim_id": 3,
+            "sha256": "e3024ecca113f2ff54344a983bd73120ec9fcae79ceb940de6427d7d2e296671",
+            "references": [],
+            "status": "rejected",
+            "reason_code": "invalid_citation",
+            "reason": "引用缺失、越界或不在句末"
+          },
+          {
+            "claim_id": 4,
+            "sha256": "f3ab914944b0649443ceb3ac12fb1314d2cca95f421162f45c1ee04fd56ee1f2",
+            "references": [
+              2
+            ],
+            "status": "supported",
+            "reason_code": "supported",
+            "reason": "逐句引用、证据判断、原文定位及数字检查通过",
+            "verdict": "supported",
+            "text": "扫描PDF的OCR是另一回事：pypdf不是OCR软件，对于只有扫描图像而没有文字层的PDF，直接抽取可能几乎没有文字[2]。",
+            "quotes": [
+              {
+                "reference": 2,
+                "quote": "pypdf不是OCR软件。只有扫描图像而没有文字层的PDF，直接抽取可能几乎没有文字，应考虑OCR。",
+                "char_start": 0,
+                "char_end": 50,
+                "match": "exact",
+                "source_sha256": "f33f9826f8292754817fc612c877efce6662105a51d92df7bdff34b47e0e6d00"
+              }
+            ],
+            "model": "kimi-k2.6"
+          },
+          {
+            "claim_id": 5,
+            "sha256": "9331d0114ea46ca7f8c6132756e897679841dd4537db9914de16d6618bc50bdb",
+            "references": [],
+            "status": "rejected",
+            "reason_code": "invalid_citation",
+            "reason": "引用缺失、越界或不在句末"
+          },
+          {
+            "claim_id": 6,
+            "sha256": "436da56db5a6c7e9628bcef0c36aa7dacade545080022ad0c5be9dade6bab096",
+            "references": [
+              1
+            ],
+            "status": "supported",
+            "reason_code": "supported",
+            "reason": "逐句引用、证据判断、原文定位及数字检查通过",
+            "verdict": "supported",
+            "text": "识别文字与解析文字层是不同步骤[1]。",
+            "quotes": [
+              {
+                "reference": 1,
+                "quote": "识别文字与解析文字层是不同步骤。",
+                "char_start": 37,
+                "char_end": 53,
+                "match": "exact",
+                "source_sha256": "59ac15fb3df7e963534c6d0adc23fe99429ed568c23b480c40f54e6fb29eba7a"
+              }
+            ],
+            "model": "kimi-k2.6"
+          },
+          {
+            "claim_id": 7,
+            "sha256": "995a37f870e1dd8695c381f1dc8dc101fa5809cc5a4012a20afe53930c447592",
+            "references": [
+              1,
+              2
+            ],
+            "status": "rejected",
+            "reason_code": "partial",
+            "reason": "仅部分事实得到支持，整句未发布",
+            "verdict": "partial"
+          }
+        ],
+        "retrieval": {
+          "embedding": "local-bge-m3",
+          "embedding_model": "BAAI/bge-m3",
+          "rerank": "local-cross-encoder",
+          "reranking": {
+            "model": "BAAI/bge-reranker-v2-m3",
+            "candidate_count": 40,
+            "device": "cuda",
+            "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+            "max_length": 1024,
+            "at_length_limit": 0
+          },
+          "policy": "multi-query-neural-v3",
+          "mode": "hybrid",
+          "top_k": 5,
+          "min_similarity": 0.3,
+          "min_coverage": 0.12,
+          "knowledge_base_ids": [
+            11,
+            12,
+            13
+          ],
+          "query_expansion": {
+            "policy": "bilingual-query-v1",
+            "status": "expanded",
+            "corpus_languages": [
+              "en",
+              "zh"
+            ],
+            "queries": [
+              {
+                "query": "收到UploadFile后是否就等于完成了扫描PDF的OCR?请结合两份资料说明。",
+                "group": "question",
+                "weight": 1.0,
+                "language": "original"
+              },
+              {
+                "query": "Does receiving UploadFile mean the OCR of scanned PDF is complete? Please explain with reference to two documents.",
+                "group": "question",
+                "weight": 1.0,
+                "language": "en"
+              },
+              {
+                "query": "UploadFile事件或消息的定义、触发时机及含义是什么?",
+                "group": "part-1",
+                "weight": 0.8,
+                "language": "zh"
+              },
+              {
+                "query": "What is the definition, trigger timing, and meaning of the UploadFile event or message?",
+                "group": "part-1",
+                "weight": 0.8,
+                "language": "en"
+              },
+              {
+                "query": "扫描PDF的OCR完整流程包含哪些步骤,何时才算完成?",
+                "group": "part-2",
+                "weight": 0.8,
+                "language": "zh"
+              },
+              {
+                "query": "What steps are included in the complete OCR workflow for scanned PDF, and when is it considered complete?",
+                "group": "part-2",
+                "weight": 0.8,
+                "language": "en"
+              },
+              {
+                "query": "UploadFile与OCR完成状态之间的关系或时序是怎样的?",
+                "group": "part-3",
+                "weight": 0.8,
+                "language": "zh"
+              },
+              {
+                "query": "What is the relationship or sequence between UploadFile and the OCR completion status?",
+                "group": "part-3",
+                "weight": 0.8,
+                "language": "en"
+              }
+            ],
+            "warnings": [],
+            "cache": "miss",
+            "model": "kimi-k2.6"
+          },
+          "topic_anchors": [
+            "ocr",
+            "pdf",
+            "uploadfile"
+          ],
+          "covered_topic_anchors": [
+            "ocr",
+            "pdf",
+            "uploadfile"
+          ],
+          "part_coverage": {
+            "part-1": 3,
+            "part-2": 2,
+            "part-3": 5
+          }
+        },
+        "coverage": {
+          "policy": "question-coverage-v1",
+          "status": "assessed",
+          "items": [
+            {
+              "requirement": "收到UploadFile后是否等于完成扫描PDF的OCR",
+              "status": "covered",
+              "references": [
+                1,
+                2
+              ]
+            },
+            {
+              "requirement": "pypdf不是OCR软件，扫描图像无文字层的PDF直接抽取可能几乎没有文字",
+              "status": "covered",
+              "references": [
+                2
+              ]
+            },
+            {
+              "requirement": "识别文字与解析文字层是不同步骤",
+              "status": "covered",
+              "references": [
+                1
+              ]
+            }
+          ],
+          "model": "kimi-k2.6",
+          "repair_attempted": false,
+          "complete": true
+        }
+      }
+    ]
+  },
+  "events": [
+    {
+      "type": "meta",
+      "conversation_id": 34,
+      "message_id": 72,
+      "citations": [
+        {
+          "id": 1522,
+          "document_id": 20,
+          "ordinal": 5,
+          "page": null,
+          "section": "区分文件情况",
+          "text": "带有OCR文字层的扫描件可能被提取出文字，但这不等于pypdf识别了图像；识别文字与解析文字层是不同步骤。",
+          "char_start": 250,
+          "char_end": 303,
+          "sha256": "59ac15fb3df7e963534c6d0adc23fe99429ed568c23b480c40f54e6fb29eba7a",
+          "name": "S10_PDF与OCR_中文摘编.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1522,
+          "snippet": "带有OCR文字层的扫描件可能被提取出文字，但这不等于pypdf识别了图像；识别文字与解析文字层是不同步骤。",
+          "score": 0.077836,
+          "relevance": 0.4554,
+          "rerank_score": 0.455411,
+          "matched_queries": [
+            {
+              "query": "收到UploadFile后是否就等于完成了扫描PDF的OCR?请结合两份资料说明。",
+              "group": "question",
+              "rank": 1,
+              "coverage": 0.175,
+              "raw_score": 0.032787,
+              "vector_score": 0.6651
+            },
+            {
+              "query": "Does receiving UploadFile mean the OCR of scanned PDF is complete? Please explain with reference to two documents.",
+              "group": "question",
+              "rank": 8,
+              "coverage": 0.0833,
+              "raw_score": 0.024797,
+              "vector_score": 0.641
+            },
+            {
+              "query": "扫描PDF的OCR完整流程包含哪些步骤,何时才算完成?",
+              "group": "part-2",
+              "rank": 1,
+              "coverage": 0.2121,
+              "raw_score": 0.032522,
+              "vector_score": 0.6419
+            },
+            {
+              "query": "What steps are included in the complete OCR workflow for scanned PDF, and when is it considered complete?",
+              "group": "part-2",
+              "rank": 3,
+              "coverage": 0.125,
+              "raw_score": 0.028442,
+              "vector_score": 0.6074
+            },
+            {
+              "query": "UploadFile与OCR完成状态之间的关系或时序是怎样的?",
+              "group": "part-3",
+              "rank": 18,
+              "coverage": 0.0455,
+              "raw_score": 0.02067,
+              "vector_score": 0.4901
+            },
+            {
+              "query": "What is the relationship or sequence between UploadFile and the OCR completion status?",
+              "group": "part-3",
+              "rank": 15,
+              "coverage": 0.1429,
+              "raw_score": 0.023459,
+              "vector_score": 0.469
+            }
+          ],
+          "source": "S10_PDF与OCR_中文摘编.md · 区分文件情况 · v1.0"
+        },
+        {
+          "id": 1520,
+          "document_id": 20,
+          "ordinal": 3,
+          "page": null,
+          "section": "工具边界",
+          "text": "pypdf不是OCR软件。只有扫描图像而没有文字层的PDF，直接抽取可能几乎没有文字，应考虑OCR。",
+          "char_start": 187,
+          "char_end": 237,
+          "sha256": "f33f9826f8292754817fc612c877efce6662105a51d92df7bdff34b47e0e6d00",
+          "name": "S10_PDF与OCR_中文摘编.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1520,
+          "snippet": "pypdf不是OCR软件。只有扫描图像而没有文字层的PDF，直接抽取可能几乎没有文字，应考虑OCR。",
+          "score": 0.079478,
+          "relevance": 0.4221,
+          "rerank_score": 0.422088,
+          "matched_queries": [
+            {
+              "query": "收到UploadFile后是否就等于完成了扫描PDF的OCR?请结合两份资料说明。",
+              "group": "question",
+              "rank": 2,
+              "coverage": 0.125,
+              "raw_score": 0.032258,
+              "vector_score": 0.6359
+            },
+            {
+              "query": "Does receiving UploadFile mean the OCR of scanned PDF is complete? Please explain with reference to two documents.",
+              "group": "question",
+              "rank": 1,
+              "coverage": 0.1667,
+              "raw_score": 0.031498,
+              "vector_score": 0.5875
+            },
+            {
+              "query": "扫描PDF的OCR完整流程包含哪些步骤,何时才算完成?",
+              "group": "part-2",
+              "rank": 2,
+              "coverage": 0.1515,
+              "raw_score": 0.032266,
+              "vector_score": 0.6483
+            },
+            {
+              "query": "What steps are included in the complete OCR workflow for scanned PDF, and when is it considered complete?",
+              "group": "part-2",
+              "rank": 1,
+              "coverage": 0.25,
+              "raw_score": 0.032522,
+              "vector_score": 0.6
+            },
+            {
+              "query": "UploadFile与OCR完成状态之间的关系或时序是怎样的?",
+              "group": "part-3",
+              "rank": 19,
+              "coverage": 0.0455,
+              "raw_score": 0.020059,
+              "vector_score": 0.4458
+            },
+            {
+              "query": "What is the relationship or sequence between UploadFile and the OCR completion status?",
+              "group": "part-3",
+              "rank": 14,
+              "coverage": 0.1429,
+              "raw_score": 0.024313,
+              "vector_score": 0.4155
+            }
+          ],
+          "source": "S10_PDF与OCR_中文摘编.md · 工具边界 · v1.0"
+        },
+        {
+          "id": 1168,
+          "document_id": 13,
+          "ordinal": 7,
+          "page": null,
+          "section": "请求文件",
+          "text": "这是因为上传文件是以「表单数据」发送的。",
+          "char_start": 334,
+          "char_end": 354,
+          "sha256": "19eb39fe97fe86bdeb8add8a2cee780460866dcbce47d2cba0be60e2a8364633",
+          "name": "S03_FastAPI_请求文件.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1168,
+          "snippet": "这是因为上传文件是以「表单数据」发送的。",
+          "score": 0.067275,
+          "relevance": 0.264,
+          "rerank_score": 0.263979,
+          "matched_queries": [
+            {
+              "query": "收到UploadFile后是否就等于完成了扫描PDF的OCR?请结合两份资料说明。",
+              "group": "question",
+              "rank": 24,
+              "coverage": 0.0,
+              "raw_score": 0.016416,
+              "vector_score": 0.6149
+            },
+            {
+              "query": "Does receiving UploadFile mean the OCR of scanned PDF is complete? Please explain with reference to two documents.",
+              "group": "question",
+              "rank": 23,
+              "coverage": 0.0,
+              "raw_score": 0.016494,
+              "vector_score": 0.586
+            },
+            {
+              "query": "UploadFile事件或消息的定义、触发时机及含义是什么?",
+              "group": "part-1",
+              "rank": 6,
+              "coverage": 0.0769,
+              "raw_score": 0.02782,
+              "vector_score": 0.5933
+            },
+            {
+              "query": "What is the definition, trigger timing, and meaning of the UploadFile event or message?",
+              "group": "part-1",
+              "rank": 14,
+              "coverage": 0.0,
+              "raw_score": 0.016497,
+              "vector_score": 0.571
+            },
+            {
+              "query": "UploadFile与OCR完成状态之间的关系或时序是怎样的?",
+              "group": "part-3",
+              "rank": 20,
+              "coverage": 0.0,
+              "raw_score": 0.017201,
+              "vector_score": 0.5925
+            },
+            {
+              "query": "What is the relationship or sequence between UploadFile and the OCR completion status?",
+              "group": "part-3",
+              "rank": 17,
+              "coverage": 0.0,
+              "raw_score": 0.016743,
+              "vector_score": 0.5403
+            }
+          ],
+          "source": "S03_FastAPI_请求文件.md · 请求文件 · v1.0"
+        },
+        {
+          "id": 1179,
+          "document_id": 13,
+          "ordinal": 18,
+          "page": null,
+          "section": "定义 `File` 参数",
+          "text": "不过，在很多情况下，使用 `UploadFile` 会更有优势。",
+          "char_start": 706,
+          "char_end": 738,
+          "sha256": "a9e261d4780ee86dc4359b129f3d88913c68123ad629f4e5ae0e47bf5761195b",
+          "name": "S03_FastAPI_请求文件.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1179,
+          "snippet": "不过，在很多情况下，使用 `UploadFile` 会更有优势。",
+          "score": 0.076361,
+          "relevance": 0.1312,
+          "rerank_score": 0.131173,
+          "matched_queries": [
+            {
+              "query": "收到UploadFile后是否就等于完成了扫描PDF的OCR?请结合两份资料说明。",
+              "group": "question",
+              "rank": 10,
+              "coverage": 0.025,
+              "raw_score": 0.021897,
+              "vector_score": 0.5649
+            },
+            {
+              "query": "Does receiving UploadFile mean the OCR of scanned PDF is complete? Please explain with reference to two documents.",
+              "group": "question",
+              "rank": 6,
+              "coverage": 0.0833,
+              "raw_score": 0.025452,
+              "vector_score": 0.5593
+            },
+            {
+              "query": "UploadFile事件或消息的定义、触发时机及含义是什么?",
+              "group": "part-1",
+              "rank": 11,
+              "coverage": 0.0385,
+              "raw_score": 0.02578,
+              "vector_score": 0.5801
+            },
+            {
+              "query": "What is the definition, trigger timing, and meaning of the UploadFile event or message?",
+              "group": "part-1",
+              "rank": 7,
+              "coverage": 0.1429,
+              "raw_score": 0.028219,
+              "vector_score": 0.5423
+            },
+            {
+              "query": "UploadFile与OCR完成状态之间的关系或时序是怎样的?",
+              "group": "part-3",
+              "rank": 9,
+              "coverage": 0.0455,
+              "raw_score": 0.024415,
+              "vector_score": 0.5618
+            },
+            {
+              "query": "What is the relationship or sequence between UploadFile and the OCR completion status?",
+              "group": "part-3",
+              "rank": 6,
+              "coverage": 0.1429,
+              "raw_score": 0.02712,
+              "vector_score": 0.5175
+            }
+          ],
+          "source": "S03_FastAPI_请求文件.md · 定义 `File` 参数 · v1.0"
+        },
+        {
+          "id": 1210,
+          "document_id": 13,
+          "ordinal": 49,
+          "page": null,
+          "section": "多文件上传",
+          "text": "接收的也是含 `bytes` 或 `UploadFile` 的列表（`list`）。",
+          "char_start": 3038,
+          "char_end": 3080,
+          "sha256": "6e62164f95b9268da1035be1b193d609afe138c261a79137761410fd0bbfac22",
+          "name": "S03_FastAPI_请求文件.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1210,
+          "snippet": "接收的也是含 `bytes` 或 `UploadFile` 的列表（`list`）。",
+          "score": 0.080209,
+          "relevance": 0.0995,
+          "rerank_score": 0.09947,
+          "matched_queries": [
+            {
+              "query": "收到UploadFile后是否就等于完成了扫描PDF的OCR?请结合两份资料说明。",
+              "group": "question",
+              "rank": 4,
+              "coverage": 0.05,
+              "raw_score": 0.028543,
+              "vector_score": 0.6047
+            },
+            {
+              "query": "Does receiving UploadFile mean the OCR of scanned PDF is complete? Please explain with reference to two documents.",
+              "group": "question",
+              "rank": 3,
+              "coverage": 0.0833,
+              "raw_score": 0.028485,
+              "vector_score": 0.5607
+            },
+            {
+              "query": "UploadFile事件或消息的定义、触发时机及含义是什么?",
+              "group": "part-1",
+              "rank": 5,
+              "coverage": 0.0769,
+              "raw_score": 0.029083,
+              "vector_score": 0.5544
+            },
+            {
+              "query": "What is the definition, trigger timing, and meaning of the UploadFile event or message?",
+              "group": "part-1",
+              "rank": 8,
+              "coverage": 0.1429,
+              "raw_score": 0.028219,
+              "vector_score": 0.5234
+            },
+            {
+              "query": "UploadFile与OCR完成状态之间的关系或时序是怎样的?",
+              "group": "part-3",
+              "rank": 7,
+              "coverage": 0.0455,
+              "raw_score": 0.024723,
+              "vector_score": 0.5386
+            },
+            {
+              "query": "What is the relationship or sequence between UploadFile and the OCR completion status?",
+              "group": "part-3",
+              "rank": 3,
+              "coverage": 0.1429,
+              "raw_score": 0.02837,
+              "vector_score": 0.5092
+            }
+          ],
+          "source": "S03_FastAPI_请求文件.md · 多文件上传 · v1.0"
+        }
+      ],
+      "pipeline": {
+        "embedding": "local-bge-m3",
+        "embedding_model": "BAAI/bge-m3",
+        "rerank": "local-cross-encoder",
+        "reranking": {
+          "model": "BAAI/bge-reranker-v2-m3",
+          "candidate_count": 40,
+          "device": "cuda",
+          "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+          "max_length": 1024,
+          "at_length_limit": 0
+        },
+        "policy": "multi-query-neural-v3",
+        "mode": "hybrid",
+        "top_k": 5,
+        "min_similarity": 0.3,
+        "min_coverage": 0.12,
+        "knowledge_base_ids": [
+          11,
+          12,
+          13
+        ],
+        "query_expansion": {
+          "policy": "bilingual-query-v1",
+          "status": "expanded",
+          "corpus_languages": [
+            "en",
+            "zh"
+          ],
+          "queries": [
+            {
+              "query": "收到UploadFile后是否就等于完成了扫描PDF的OCR?请结合两份资料说明。",
+              "group": "question",
+              "weight": 1.0,
+              "language": "original"
+            },
+            {
+              "query": "Does receiving UploadFile mean the OCR of scanned PDF is complete? Please explain with reference to two documents.",
+              "group": "question",
+              "weight": 1.0,
+              "language": "en"
+            },
+            {
+              "query": "UploadFile事件或消息的定义、触发时机及含义是什么?",
+              "group": "part-1",
+              "weight": 0.8,
+              "language": "zh"
+            },
+            {
+              "query": "What is the definition, trigger timing, and meaning of the UploadFile event or message?",
+              "group": "part-1",
+              "weight": 0.8,
+              "language": "en"
+            },
+            {
+              "query": "扫描PDF的OCR完整流程包含哪些步骤,何时才算完成?",
+              "group": "part-2",
+              "weight": 0.8,
+              "language": "zh"
+            },
+            {
+              "query": "What steps are included in the complete OCR workflow for scanned PDF, and when is it considered complete?",
+              "group": "part-2",
+              "weight": 0.8,
+              "language": "en"
+            },
+            {
+              "query": "UploadFile与OCR完成状态之间的关系或时序是怎样的?",
+              "group": "part-3",
+              "weight": 0.8,
+              "language": "zh"
+            },
+            {
+              "query": "What is the relationship or sequence between UploadFile and the OCR completion status?",
+              "group": "part-3",
+              "weight": 0.8,
+              "language": "en"
+            }
+          ],
+          "warnings": [],
+          "cache": "miss",
+          "model": "kimi-k2.6"
+        },
+        "topic_anchors": [
+          "ocr",
+          "pdf",
+          "uploadfile"
+        ],
+        "covered_topic_anchors": [
+          "ocr",
+          "pdf",
+          "uploadfile"
+        ],
+        "part_coverage": {
+          "part-1": 3,
+          "part-2": 2,
+          "part-3": 5
+        }
+      }
+    },
+    {
+      "type": "verification",
+      "checks": [
+        {
+          "claim_id": 1,
+          "sha256": "7eebc667be3023bb3b9de62f2a110acbd1c55683c88c9ed0a8af83a44289384b",
+          "references": [
+            4
+          ],
+          "status": "rejected",
+          "reason_code": "insufficient",
+          "reason": "引用证据不足以支持整句",
+          "verdict": "insufficient"
+        }
+      ]
+    },
+    {
+      "type": "verification",
+      "checks": [
+        {
+          "claim_id": 1,
+          "sha256": "7eebc667be3023bb3b9de62f2a110acbd1c55683c88c9ed0a8af83a44289384b",
+          "references": [
+            4
+          ],
+          "status": "rejected",
+          "reason_code": "insufficient",
+          "reason": "引用证据不足以支持整句",
+          "verdict": "insufficient"
+        },
+        {
+          "claim_id": 2,
+          "sha256": "fa5be2e6e182ba85a009ace31388a1fdaef53ea49c609a2f53060b1693a0a385",
+          "references": [
+            3,
+            4
+          ],
+          "status": "rejected",
+          "reason_code": "partial",
+          "reason": "仅部分事实得到支持，整句未发布",
+          "verdict": "partial"
+        },
+        {
+          "claim_id": 3,
+          "sha256": "e3024ecca113f2ff54344a983bd73120ec9fcae79ceb940de6427d7d2e296671",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        }
+      ]
+    },
+    {
+      "type": "verification",
+      "checks": [
+        {
+          "claim_id": 1,
+          "sha256": "7eebc667be3023bb3b9de62f2a110acbd1c55683c88c9ed0a8af83a44289384b",
+          "references": [
+            4
+          ],
+          "status": "rejected",
+          "reason_code": "insufficient",
+          "reason": "引用证据不足以支持整句",
+          "verdict": "insufficient"
+        },
+        {
+          "claim_id": 2,
+          "sha256": "fa5be2e6e182ba85a009ace31388a1fdaef53ea49c609a2f53060b1693a0a385",
+          "references": [
+            3,
+            4
+          ],
+          "status": "rejected",
+          "reason_code": "partial",
+          "reason": "仅部分事实得到支持，整句未发布",
+          "verdict": "partial"
+        },
+        {
+          "claim_id": 3,
+          "sha256": "e3024ecca113f2ff54344a983bd73120ec9fcae79ceb940de6427d7d2e296671",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        },
+        {
+          "claim_id": 4,
+          "sha256": "f3ab914944b0649443ceb3ac12fb1314d2cca95f421162f45c1ee04fd56ee1f2",
+          "references": [
+            2
+          ],
+          "status": "supported",
+          "reason_code": "supported",
+          "reason": "逐句引用、证据判断、原文定位及数字检查通过",
+          "verdict": "supported",
+          "text": "扫描PDF的OCR是另一回事：pypdf不是OCR软件，对于只有扫描图像而没有文字层的PDF，直接抽取可能几乎没有文字[2]。",
+          "quotes": [
+            {
+              "reference": 2,
+              "quote": "pypdf不是OCR软件。只有扫描图像而没有文字层的PDF，直接抽取可能几乎没有文字，应考虑OCR。",
+              "char_start": 0,
+              "char_end": 50,
+              "match": "exact",
+              "source_sha256": "f33f9826f8292754817fc612c877efce6662105a51d92df7bdff34b47e0e6d00"
+            }
+          ],
+          "model": "kimi-k2.6"
+        },
+        {
+          "claim_id": 5,
+          "sha256": "9331d0114ea46ca7f8c6132756e897679841dd4537db9914de16d6618bc50bdb",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        },
+        {
+          "claim_id": 6,
+          "sha256": "436da56db5a6c7e9628bcef0c36aa7dacade545080022ad0c5be9dade6bab096",
+          "references": [
+            1
+          ],
+          "status": "supported",
+          "reason_code": "supported",
+          "reason": "逐句引用、证据判断、原文定位及数字检查通过",
+          "verdict": "supported",
+          "text": "识别文字与解析文字层是不同步骤[1]。",
+          "quotes": [
+            {
+              "reference": 1,
+              "quote": "识别文字与解析文字层是不同步骤。",
+              "char_start": 37,
+              "char_end": 53,
+              "match": "exact",
+              "source_sha256": "59ac15fb3df7e963534c6d0adc23fe99429ed568c23b480c40f54e6fb29eba7a"
+            }
+          ],
+          "model": "kimi-k2.6"
+        },
+        {
+          "claim_id": 7,
+          "sha256": "995a37f870e1dd8695c381f1dc8dc101fa5809cc5a4012a20afe53930c447592",
+          "references": [
+            1,
+            2
+          ],
+          "status": "rejected",
+          "reason_code": "partial",
+          "reason": "仅部分事实得到支持，整句未发布",
+          "verdict": "partial"
+        }
+      ]
+    },
+    {
+      "type": "token",
+      "content": "扫描PDF的OCR是另一回事：pypdf不是OCR软件，对于只有扫描图像而没有文字层的PDF，直接抽取可能几乎没有文字[2]。\n"
+    },
+    {
+      "type": "token",
+      "content": "识别文字与解析文字层是不同步骤[1]。\n"
+    },
+    {
+      "type": "stage",
+      "stage": "coverage",
+      "message": "正在检查问题关键点，必要的补充仍须通过事实核验"
+    },
+    {
+      "type": "coverage",
+      "assessment": {
+        "policy": "question-coverage-v1",
+        "status": "assessed",
+        "items": [
+          {
+            "requirement": "收到UploadFile后是否等于完成扫描PDF的OCR",
+            "status": "covered",
+            "references": [
+              1,
+              2
+            ]
+          },
+          {
+            "requirement": "pypdf不是OCR软件，扫描图像无文字层的PDF直接抽取可能几乎没有文字",
+            "status": "covered",
+            "references": [
+              2
+            ]
+          },
+          {
+            "requirement": "识别文字与解析文字层是不同步骤",
+            "status": "covered",
+            "references": [
+              1
+            ]
+          }
+        ],
+        "model": "kimi-k2.6",
+        "repair_attempted": false,
+        "complete": true
+      }
+    },
+    {
+      "type": "token",
+      "content": "\n部分候选句未通过引用或证据支撑校验，已过滤；上述仅展示通过校验的内容。"
+    },
+    {
+      "type": "done",
+      "conversation_id": 34,
+      "message_id": 72
+    }
+  ],
+  "grading": "人工复核，不以模型自评或词项命中自动判正确"
+}

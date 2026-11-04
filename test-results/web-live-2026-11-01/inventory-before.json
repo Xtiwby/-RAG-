@@ -1,0 +1,405 @@
+{
+  "knowledge_bases": [
+    {
+      "id": 1,
+      "name": "课程项目知识库",
+      "status": "active",
+      "description": "项目计划、需求规格与课程资料"
+    },
+    {
+      "id": 2,
+      "name": "产品技术资料库",
+      "status": "active",
+      "description": "RAG、检索与多模态技术资料"
+    },
+    {
+      "id": 3,
+      "name": "制度与规范库",
+      "status": "active",
+      "description": "软件工程规范、会议纪要和模板"
+    },
+    {
+      "id": 4,
+      "name": "功能验收样例",
+      "status": "active",
+      "description": "仅包含项目自带合成资料，用于验证真实 Kimi RAG 流程"
+    },
+    {
+      "id": 5,
+      "name": "111111111",
+      "status": "deleted",
+      "description": "11111111111111"
+    },
+    {
+      "id": 6,
+      "name": "V0.4 功能验收（合成资料）",
+      "status": "active",
+      "description": "仅用于新版功能验收，不代表真实项目进展"
+    },
+    {
+      "id": 7,
+      "name": "V0.4 导出范围（空库）",
+      "status": "active",
+      "description": "仅用于新版功能验收，不代表真实项目进展"
+    },
+    {
+      "id": 8,
+      "name": "V0.5 报告草稿验收（合成资料）",
+      "status": "active",
+      "description": "只含合成算法说明，不代表项目实际进展"
+    },
+    {
+      "id": 9,
+      "name": "V0.6 模板与事实核验（合成资料）",
+      "status": "active",
+      "description": "仅含算法合成证据，不表示真实项目进展"
+    },
+    {
+      "id": 10,
+      "name": "V0.7 报告工作流验收（合成资料）",
+      "status": "active",
+      "description": "仅算法合成证据，不代表项目实际进度"
+    }
+  ],
+  "documents": [
+    {
+      "id": 1,
+      "name": "软件需求规格说明书.pdf",
+      "knowledge_base_id": 1,
+      "status": "ready",
+      "deleted": 0,
+      "version": "v1.0"
+    },
+    {
+      "id": 2,
+      "name": "总体技术架构.png",
+      "knowledge_base_id": 1,
+      "status": "ready",
+      "deleted": 0,
+      "version": "v1.0"
+    },
+    {
+      "id": 3,
+      "name": "八周迭代计划.docx",
+      "knowledge_base_id": 1,
+      "status": "ready",
+      "deleted": 0,
+      "version": "v1.0"
+    },
+    {
+      "id": 4,
+      "name": "混合检索评测表.xlsx",
+      "knowledge_base_id": 2,
+      "status": "ready",
+      "deleted": 0,
+      "version": "v1.0"
+    },
+    {
+      "id": 5,
+      "name": "功能验收资料.md",
+      "knowledge_base_id": 4,
+      "status": "ready",
+      "deleted": 0,
+      "version": "v1.0"
+    },
+    {
+      "id": 6,
+      "name": "卓越工程综合训练-2026课程安排.pdf",
+      "knowledge_base_id": 5,
+      "status": "ready",
+      "deleted": 1,
+      "version": "v1.0"
+    },
+    {
+      "id": 7,
+      "name": "逐句校验合成资料.md",
+      "knowledge_base_id": 6,
+      "status": "ready",
+      "deleted": 0,
+      "version": "v1.0"
+    },
+    {
+      "id": 8,
+      "name": "算法合成验收.md",
+      "knowledge_base_id": 8,
+      "status": "ready",
+      "deleted": 0,
+      "version": "v1.0"
+    },
+    {
+      "id": 9,
+      "name": "混合检索合成证据.txt",
+      "knowledge_base_id": 9,
+      "status": "ready",
+      "deleted": 0,
+      "version": "v1.0"
+    },
+    {
+      "id": 10,
+      "name": "报告合成证据.txt",
+      "knowledge_base_id": 10,
+      "status": "ready",
+      "deleted": 0,
+      "version": "v1.0"
+    }
+  ],
+  "conversations": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "title": "功能验收：真实 Kimi 问答与引用追溯",
+      "knowledge_base_ids": "[4]"
+    },
+    {
+      "id": 2,
+      "user_id": 1,
+      "title": "知源知识库系统的前端与后端采用的是什么?",
+      "knowledge_base_ids": "[1]"
+    },
+    {
+      "id": 3,
+      "user_id": 1,
+      "title": "知源知识库系统的前端与后端采用的是什么?",
+      "knowledge_base_ids": "[1]"
+    },
+    {
+      "id": 4,
+      "user_id": 4,
+      "title": "给我讲一下卓越工程综合训练的课程要求",
+      "knowledge_base_ids": "[5]"
+    },
+    {
+      "id": 5,
+      "user_id": 1,
+      "title": "仅用一句话回答:本资料中关键词检索采用哪种算法?请在句末引用证据。",
+      "knowledge_base_ids": "[6, 7]"
+    }
+  ],
+  "reports": [
+    {
+      "id": 1,
+      "title": "第一周项目技术方案",
+      "knowledge_base_id": 1,
+      "template_id": 1,
+      "status": "legacy",
+      "document_state": "archived",
+      "user_id": 1
+    },
+    {
+      "id": 2,
+      "title": "知源知识库系统功能验收报告",
+      "knowledge_base_id": 4,
+      "template_id": 4,
+      "status": "needs_review",
+      "document_state": "archived",
+      "user_id": 1
+    },
+    {
+      "id": 3,
+      "title": "第一周项目技术方案",
+      "knowledge_base_id": 1,
+      "template_id": 1,
+      "status": "needs_review",
+      "document_state": "archived",
+      "user_id": 1
+    },
+    {
+      "id": 4,
+      "title": "第一周周报",
+      "knowledge_base_id": 1,
+      "template_id": 1,
+      "status": "needs_review",
+      "document_state": "draft",
+      "user_id": 4
+    },
+    {
+      "id": 5,
+      "title": "自然语言模板格式验收报告",
+      "knowledge_base_id": 4,
+      "template_id": 5,
+      "status": "needs_review",
+      "document_state": "archived",
+      "user_id": 1
+    },
+    {
+      "id": 6,
+      "title": "test1",
+      "knowledge_base_id": 1,
+      "template_id": 6,
+      "status": "needs_review",
+      "document_state": "archived",
+      "user_id": 1
+    },
+    {
+      "id": 7,
+      "title": "V0.5 草稿与单节验收报告（合成资料）",
+      "knowledge_base_id": 8,
+      "template_id": 7,
+      "status": "draft",
+      "document_state": "archived",
+      "user_id": 1
+    },
+    {
+      "id": 8,
+      "title": "V0.6 模板与章节核验报告（合成资料）",
+      "knowledge_base_id": 9,
+      "template_id": 8,
+      "status": "completed",
+      "document_state": "archived",
+      "user_id": 1
+    },
+    {
+      "id": 9,
+      "title": "V0.7 报告编制闭环验收（合成资料）",
+      "knowledge_base_id": 10,
+      "template_id": 10,
+      "status": "completed",
+      "document_state": "archived",
+      "user_id": 1
+    },
+    {
+      "id": 10,
+      "title": "V0.7 浏览器交互验收草稿（合成资料）",
+      "knowledge_base_id": 10,
+      "template_id": 11,
+      "status": "draft",
+      "document_state": "archived",
+      "user_id": 1
+    },
+    {
+      "id": 11,
+      "title": "知识库的技术方案",
+      "knowledge_base_id": 1,
+      "template_id": 15,
+      "status": "failed",
+      "document_state": "archived",
+      "user_id": 1
+    },
+    {
+      "id": 12,
+      "title": "知识库的技术方案",
+      "knowledge_base_id": 1,
+      "template_id": 15,
+      "status": "draft",
+      "document_state": "finalized",
+      "user_id": 1
+    }
+  ],
+  "templates": [
+    {
+      "id": 1,
+      "name": "项目周报",
+      "version": "v1.0",
+      "lifecycle": "published",
+      "knowledge_base_ids": "[]"
+    },
+    {
+      "id": 2,
+      "name": "技术方案报告",
+      "version": "v1.1",
+      "lifecycle": "published",
+      "knowledge_base_ids": "[]"
+    },
+    {
+      "id": 3,
+      "name": "",
+      "version": "v1.0",
+      "lifecycle": "deleted",
+      "knowledge_base_ids": "[]"
+    },
+    {
+      "id": 4,
+      "name": "功能验收报告",
+      "version": "v1.0",
+      "lifecycle": "deleted",
+      "knowledge_base_ids": "[]"
+    },
+    {
+      "id": 5,
+      "name": "自然语言验收：知识库功能说明",
+      "version": "v1.0",
+      "lifecycle": "deleted",
+      "knowledge_base_ids": "[]"
+    },
+    {
+      "id": 6,
+      "name": "第一周项目汇报技术方案报告模板",
+      "version": "v1.0",
+      "lifecycle": "deleted",
+      "knowledge_base_ids": "[]"
+    },
+    {
+      "id": 7,
+      "name": "V0.5 双章节合成验收",
+      "version": "v1.0",
+      "lifecycle": "published",
+      "knowledge_base_ids": "[]"
+    },
+    {
+      "id": 8,
+      "name": "V0.6 DOCX结构验收模板",
+      "version": "v1.0",
+      "lifecycle": "deleted",
+      "knowledge_base_ids": "[9]"
+    },
+    {
+      "id": 9,
+      "name": "V0.6 DOCX结构验收模板",
+      "version": "v1.1",
+      "lifecycle": "deleted",
+      "knowledge_base_ids": "[9]"
+    },
+    {
+      "id": 10,
+      "name": "V0.7 DOCX真实套用验收模板",
+      "version": "v1.0",
+      "lifecycle": "deleted",
+      "knowledge_base_ids": "[10]"
+    },
+    {
+      "id": 11,
+      "name": "V0.7 页面交互验收模板（固定结构）",
+      "version": "v1.0",
+      "lifecycle": "deleted",
+      "knowledge_base_ids": "[10]"
+    },
+    {
+      "id": 12,
+      "name": "V0.7 页面交互验收模板（固定结构）",
+      "version": "v2.0",
+      "lifecycle": "deleted",
+      "knowledge_base_ids": "[10]"
+    },
+    {
+      "id": 13,
+      "name": "删除功能验收模板（临时合成数据）",
+      "version": "v1.0",
+      "lifecycle": "deleted",
+      "knowledge_base_ids": "[]"
+    },
+    {
+      "id": 14,
+      "name": "技术方案报告",
+      "version": "v2.0",
+      "lifecycle": "published",
+      "knowledge_base_ids": "[]"
+    },
+    {
+      "id": 15,
+      "name": "技术方案报告",
+      "version": "v3.0",
+      "lifecycle": "published",
+      "knowledge_base_ids": "[]"
+    }
+  ],
+  "preserved_report_12": [
+    {
+      "id": 12,
+      "title": "知识库的技术方案",
+      "document_state": "finalized",
+      "final_release_id": 4,
+      "revision": 17,
+      "content": "# 知识库的技术方案\n\n> 新生成正文仅发布通过独立逐句证据核验的事实。模型核验可能误判，仍需人工复核；确认状态只表示防覆盖。\n\n## 背景与目标\n\n> 证据不足，未获得可发布事实；通过 0，拦截 1；核验时间 2026-10-31T08:42:10+00:00；正文SHA256 ec1c1066d1e0a451046094ec9d9d07319605290e1e4335051da47aeb25e1a4fa\n\n目标是完成一个rag相关的知识库管理系统\n\n核验记录\n- 句段 1：rejected；引用缺失、越界或不在句末；SHA256 ec1c1066d1e0a451046094ec9d9d07319605290e1e4335051da47aeb25e1a4fa\n\n### 本章来源\n[1] 软件需求规格说明书.pdf · 历史演示文本（无原文件） · v1.0 | 知识库#1 课程项目知识库 | 片段#1 | 相关度 0.1251\n> 系统支持知识库构建、自然语言问答、报告模板导入、报告生成、引用溯源、用户角色权限和审计。问答答案必须基于知识库，不得脱离知识库编造。\n[2] 八周迭代计划.docx · 历史演示文本（无原文件） · v1.0 | 知识库#1 课程项目知识库 | 片段#3 | 相关度 0.0698\n> 第一周完成需求与项目计划，第二周完成基础平台，第三周完成知识库，第四周完成问答MVP，第五周完成模板管理，第六周完成报告生成，第七周系统加固，第八周发布结项。\n\n## 总体架构\n\n> 部分候选句被拦截，需评审；通过 4，拦截 2；核验时间 2026-10-31T08:29:29+00:00；正文SHA256 6d8f908f55857e0e57d1782d10797c3cdc2abff11dc10732ef7c243b58f27c85\n\n本项目的功能架构围绕知识库构建、自然语言问答、报告模板导入、报告生成、引用溯源、用户角色权限和审计七大核心能力展开，其中问答答案必须基于知识库，不得脱离知识库编造 [1]。\n在分层设计上，系统采用Vue 3交互层作为前端用户界面，FastAPI服务层提供后端业务逻辑处理，数据层由PostgreSQL管理元数据，并配合对象存储、向量索引和关键字索引实现多模态数据管理 [2]。\n架构设计强调权限前置控制、模型可替换以及引用可追溯三大原则，确保系统的安全性与可扩展性 [2]。\n按照八周迭代计划，项目从需求与项目计划起步，依次完成基础平台搭建、知识库建设、问答MVP开发、模板管理、报告生成、系统加固，最终发布结项 [3]。\n\n\n核验记录\n- 句段 1：supported；逐句引用、证据判断、原文引文及数字检查通过；SHA256 c93cdb284b635c8ba881fd55ede361dfd0385b023e35eb432bdc6487601aac1c\n  证据[1]原文：系统支持知识库构建、自然语言问答、报告模板导入、报告生成、引用溯源、用户角色权限和审计。问答答案必须基于知识库，不得脱离知识库编造。\n- 句段 2：supported；逐句引用、证据判断、原文引文及数字检查通过；SHA256 9f4b993acf70fc055917e78d91d6497460651e4379a39229df24fe0fe9af0f8f\n  证据[2]原文：系统总体技术架构图，包含Vue 3交互层、FastAPI服务层、PostgreSQL元数据、对象存储、向量索引和关键字索引。\n- 句段 3：supported；逐句引用、证据判断、原文引文及数字检查通过；SHA256 4cebc0b7b0e5fd49afbdcb3409c54d3fb95b518aafef243204b64772d9128142\n  证据[2]原文：OCR识别文字：权限前置、模型可替换、引用可追溯。\n- 句段 4：supported；逐句引用、证据判断、原文引文及数字检查通过；SHA256 b43d6e656b51f665c305b826ef2b4247761c201f2044bc95023e9c266a3f07e1\n  证据[3]原文：第一周完成需求与项目计划，第二周完成基础平台，第三周完成知识库，第四周完成问答MVP，第五周完成模板管理，第六周完成报告生成，第七周系统加固，第八周发布结项。\n- 句段 5：rejected；引用缺失、越界或不在句末；SHA256 5cd56444fd1b01819f064fea30039955863df4935be1e4b5938c82a7f1a6206b\n- 句段 6：rejected；引用证据不足以支持整句；SHA256 82326a39f8c4b307fd84e45b516ad0b96a818117cea915bd09e25f813edc8566\n\n### 本章来源\n[1] 软件需求规格说明书.pdf · 历史演示文本（无原文件） · v1.0 | 知识库#1 课程项目知识库 | 片段#1 | 相关度 0.1335\n> 系统支持知识库构建、自然语言问答、报告模板导入、报告生成、引用溯源、用户角色权限和审计。问答答案必须基于知识库，不得脱离知识库编造。\n[2] 总体技术架构.png · 历史演示文本（无原文件） · v1.0 | 知识库#1 课程项目知识库 | 片段#2 | 相关度 0.1337\n> 系统总体技术架构图，包含Vue 3交互层、FastAPI服务层、PostgreSQL元数据、对象存储、向量索引和关键字索引。OCR识别文字：权限前置、模型可替换、引用可追溯。\n[3] 八周迭代计划.docx · 历史演示文本（无原文件） · v1.0 | 知识库#1 课程项目知识库 | 片段#3 | 相关度 0.0716\n> 第一周完成需求与项目计划，第二周完成基础平台，第三周完成知识库，第四周完成问答MVP，第五周完成模板管理，第六周完成报告生成，第七周系统加固，第八周发布结项。\n\n## 核心流程\n\n> 部分候选句被拦截，需评审；通过 9，拦截 1；核验时间 2026-10-31T08:29:48+00:00；正文SHA256 c4ea40c49a3ee4e1303bb2a7651ff6d000645671f7dd75a7bc6428d687e39dd9\n\n第一周完成需求分析与项目计划制定，明确系统边界与交付目标 [2]。\n第二周搭建基础平台，为后续模块提供运行支撑 [2]。\n第三周完成知识库构建，作为系统核心数据基础 [2]。\n第四周实现问答 MVP，确保答案必须基于知识库，不得脱离知识库编造 [1][2]。\n第五周完成报告模板管理功能，支持模板导入与维护 [1][2]。\n第六周实现报告生成，结合知识库内容输出结构化文档 [1][2]。\n第七周进行系统加固，提升稳定性与安全性 [2]。\n第八周完成发布结项，交付可用系统 [2]。\n整个流程中，系统支持知识库构建、自然语言问答、报告模板导入、报告生成、引用溯源、用户角色权限和审计等核心能力 [1]，问答环节严格限定答案来源，确保基于知识库的事实准确性 [1]。\n\n\n核验记录\n- 句段 1：rejected；引用缺失、越界或不在句末；SHA256 9ac7a097cd6a5eaa011a6bf88d3f4e2c254392eb22fe6f55400633b4d221eddb\n- 句段 2：supported；逐句引用、证据判断、原文引文及数字检查通过；SHA256 807487747b42f53961c282434e5eebc3b0ffd184ef0a40342385a07528aa6335\n  证据[2]原文：第一周完成需求与项目计划\n- 句段 3：supported；逐句引用、证据判断、原文引文及数字检查通过；SHA256 51066da8cae0a51d5a259380f310d8b59709576b53f504b25a9cbcbd4d6a0f3a\n  证据[2]原文：第二周完成基础平台\n- 句段 4：supported；逐句引用、证据判断、原文引文及数字检查通过；SHA256 c5c93c5f722f4faddd412965f1d1e84307f0cfe3a41fbb19b0e5a187c8c6a7ca\n  证据[2]原文：第三周完成知识库\n- 句段 5：supported；逐句引用、证据判断、原文引文及数字检查通过；SHA256 0e3ef89e7296a4b2645069281877cf8aea4b294f33d8528e2419b0b2c856ca17\n  证据[1]原文：问答答案必须基于知识库，不得脱离知识库编造\n  证据[2]原文：第四周完成问答MVP\n- 句段 6：supported；逐句引用、证据判断、原文引文及数字检查通过；SHA256 fb6f1f1f81586f545b5ec2048d7f3b8c0e68729dae3cff56f4c52b792d25ac85\n  证据[1]原文：报告模板导入\n  证据[2]原文：第五周完成模板管理\n- 句段 7：supported；逐句引用、证据判断、原文引文及数字检查通过；SHA256 c3f381c12018844296fd84f9db9c64194b3c8d599b3e0456a6fc727b5fbe9b83\n  证据[1]原文：报告生成\n  证据[2]原文：第六周完成报告生成\n- 句段 8：supported；逐句引用、证据判断、原文引文及数字检查通过；SHA256 292b3c51646b9ccb74af46adc50a7440b7bbf66902e9cc576e3bdac7a1cae9a2\n  证据[2]原文：第七周系统加固\n- 句段 9：supported；逐句引用、证据判断、原文引文及数字检查通过；SHA256 f1fb8e738b46141e7ea3972cc351e7b35ba40466fbae16b3615dfe0b1bf26d52\n  证据[2]原文：第八周发布结项\n- 句段 10：supported；逐句引用、证据判断、原文引文及数字检查通过；SHA256 f3442ef0fba749b43ca468aa8031669fef466264993172d60d1d4c581a23eb40\n  证据[1]原文：系统支持知识库构建、自然语言问答、报告模板导入、报告生成、引用溯源、用户角色权限和审计\n  证据[1]原文：问答答案必须基于知识库，不得脱离知识库编造\n\n### 本章来源\n[1] 软件需求规格说明书.pdf · 历史演示文本（无原文件） · v1.0 | 知识库#1 课程项目知识库 | 片段#1 | 相关度 0.1271\n> 系统支持知识库构建、自然语言问答、报告模板导入、报告生成、引用溯源、用户角色权限和审计。问答答案必须基于知识库，不得脱离知识库编造。\n[2] 八周迭代计划.docx · 历史演示文本（无原文件） · v1.0 | 知识库#1 课程项目知识库 | 片段#3 | 相关度 0.0709\n> 第一周完成需求与项目计划，第二周完成基础平台，第三周完成知识库，第四周完成问答MVP，第五周完成模板管理，第六周完成报告生成，第七周系统加固，第八周发布结项。\n\n## 实施计划\n\n> 部分候选句被拦截，需评审；通过 9，拦截 3；核验时间 2026-10-31T08:30:22+00:00；正文SHA256 5e52508c9dc8ff66fcfb2c0725bcf1cfc513654b19bbade010f40d89a90a7a05\n\n项目实施采用八周迭代方式推进，第一周完成需求分析与项目计划制定，为后续开发奠定基础 [1]。\n第二周搭建基础平台，提供系统运行所需的技术支撑环境 [1]。\n第三周完成知识库构建，实现系统核心数据层的建设 [1]。\n第四周开发问答最小可行产品，确保系统具备基础的自然语言问答能力，且问答答案必须基于知识库内容，不得脱离知识库编造 [1][2]。\n第五周实现模板管理功能，支持报告模板的导入与维护 [1][2]。\n第六周完成报告生成功能，将知识库内容与模板结合输出成果 [1][2]。\n第七周进行系统加固，提升整体稳定性与安全性 [1]。\n第八周完成发布与结项工作，交付最终成果 [1]。\n系统整体涵盖知识库构建、自然语言问答、报告模板导入、报告生成、引用溯源、用户角色权限管理及审计等核心能力 [2]。\n\n\n核验记录\n- 句段 1：supported；逐句引用、证据判断、原文引文及数字检查通过；SHA256 3c81d824f68288383627bf672d4f36e85d234a0bc07a638e4dd8e1cb86a35fb3\n  证据[1]原文：第一周完成需求与项目计划\n- 句段 2：supported；逐句引用、证据判断、原文引文及数字检查通过；SHA256 b011a951d276ca3bb630d3127813302345cb2e71981d4e7ae0c28cf967068283\n  证据[1]原文：第二周完成基础平台\n- 句段 3：supported；逐句引用、证据判断、原文引文及数字检查通过；SHA256 5ac795ea48fee485a92d73244e9e5d982694243e6f1e0f6760804b61c8b63a67\n  证据[1]原文：第三周完成知识库\n- 句段 4：supported；逐句引用、证据判断、原文引文及数字检查通过；SHA256 0a3d053113fa9ca2627b7a88a9f4bfe83e94bad593cc9e8ff008bb45fce6f33c\n  证据[1]原文：第四周完成问答MVP\n  证据[2]原文：问答答案必须基于知识库，不得脱离知识库编造\n- 句段 5：supported；逐句引用、证据判断、原文引文及数字检查通过；SHA256 64824a72f8dfbf3d56611a859b4bf96c21e8213ba20bb0d20e0f50b445b14e3e\n  证据[1]原文：第五周完成模板管理\n  证据[2]原文：报告模板导入\n- 句段 6：supported；逐句引用、证据判断、原文引文及数字检查通过；SHA256 89fa7c8e754d9b68e93f027f4977a3e43103bb0982ec593fd4a09864ffcb1083\n  证据[1]原文：第六周完成报告生成\n  证据[2]原文：报告生成\n- 句段 7：supported；逐句引用、证据判断、原文引文及数字检查通过；SHA256 14a22700972779825780c0cf023cdaac61edbe1edd54fc0144dc236e9a769001\n  证据[1]原文：第七周系统加固\n- 句段 8：supported；逐句引用、证据判断、原文引文及数字检查通过；SHA256 fb139c72da5fca04d85b8315785dba4534147d43d2eff9b5d27b6206610b1b21\n  证据[1]原文：第八周发布结项\n- 句段 9：supported；逐句引用、证据判断、原文引文及数字检查通过；SHA256 1ba83cdf8e2381d683d62dbdda467785e76f1127a6fbb550ca17312a2eb9f912\n  证据[2]原文：系统支持知识库构建、自然语言问答、报告模板导入、报告生成、引用溯源、用户角色权限和审计。\n- 句段 10：rejected；引用证据不足以支持整句；SHA256 32fccbb466905a290c66f9c32d21c18ebd3f8ad3c095a5d8c2e608d869a9bd47\n- 句段 11：rejected；引用证据不足以支持整句；SHA256 56cadb81d879010b30d0633eaeba6c4eecda9df4115e00d3cca35c59914d3adc\n- 句段 12：rejected；引用缺失、越界或不在句末；SHA256 9149235605b35a01748f62ea362be250187a1def012fda3fa0c312e17ccb8311\n\n### 本章来源\n[1] 八周迭代计划.docx · 历史演示文本（无原文件） · v1.0 | 知识库#1 课程项目知识库 | 片段#3 | 相关度 0.1042\n> 第一周完成需求与项目计划，第二周完成基础平台，第三周完成知识库，第四周完成问答MVP，第五周完成模板管理，第六周完成报告生成，第七周系统加固，第八周发布结项。\n[2] 软件需求规格说明书.pdf · 历史演示文本（无原文件） · v1.0 | 知识库#1 课程项目知识库 | 片段#1 | 相关度 0.1319\n> 系统支持知识库构建、自然语言问答、报告模板导入、报告生成、引用溯源、用户角色权限和审计。问答答案必须基于知识库，不得脱离知识库编造。\n"
+    }
+  ]
+}

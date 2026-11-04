@@ -1,0 +1,23 @@
+{
+  "vector": {
+    "answerable_questions": 25,
+    "all_sources_hit": 18,
+    "any_source_hit": 19,
+    "all_exact_quotes_hit": 14,
+    "mean_latency_ms": 95.2
+  },
+  "keyword": {
+    "answerable_questions": 25,
+    "all_sources_hit": 18,
+    "any_source_hit": 19,
+    "all_exact_quotes_hit": 14,
+    "mean_latency_ms": 117.1
+  },
+  "hybrid": {
+    "answerable_questions": 25,
+    "all_sources_hit": 18,
+    "any_source_hit": 19,
+    "all_exact_quotes_hit": 14,
+    "mean_latency_ms": 95.3
+  }
+}

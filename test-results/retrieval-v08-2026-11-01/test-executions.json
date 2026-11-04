@@ -1,0 +1,8 @@
+{
+  "backend":{"passed":67,"warnings":1,"seconds":104.30,"isolated_database":true,"mocked_models":true},
+  "frontend_build":{"exit_code":0,"command":"bundled node node_modules/vite/bin/vite.js build --configLoader runner"},
+  "frontend_unit":{"passed":6,"scope":"profile-validation helpers, not retrieval quality"},
+  "live_retrieval":{"requests":96,"answerable_questions":25,"top_k":5,"rerank":true,"source_hits":{"vector":25,"keyword":25,"hybrid":25},"all_gold_quotes_hits":{"vector":17,"keyword":17,"hybrid":17}},
+  "live_qa":{"questions":9,"ids":["Q001","Q004","Q005","Q024","Q025","Q027","Q031","Q007","Q016"],"note":"Includes incomplete answers and a false refusal; not all QA passed, source hit is not answer accuracy."},
+  "browser":{"checked":["explicit bilingual expansion and real DPR passage","saved cross-language settings revision 3","section-first report preflight and S10 evidence","report 14 OCR section verified"],"unsubmitted_wizard_discarded":true,"user_report_12_not_edited":true}
+}

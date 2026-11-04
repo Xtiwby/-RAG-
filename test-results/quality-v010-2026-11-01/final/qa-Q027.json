@@ -1,0 +1,1146 @@
+{
+  "question_id": "Q027",
+  "question": "本项目上周的QPS和P99延迟各是多少？",
+  "expected_for_human_review": "资料没有本项目实测数据，不能编造；需要性能测试结果。",
+  "answerable": false,
+  "elapsed_ms": 37963,
+  "conversation": {
+    "id": 35,
+    "user_id": 1,
+    "title": "v0.10 质量复测 Q027 · 本项目上周的QPS和P99延迟各是多少？",
+    "knowledge_base_ids": [
+      11,
+      12,
+      13
+    ],
+    "created_at": "2026-11-01T13:05:51+00:00",
+    "updated_at": "2026-11-01T13:06:17+00:00",
+    "messages": [
+      {
+        "id": 73,
+        "conversation_id": 35,
+        "role": "user",
+        "content": "本项目上周的QPS和P99延迟各是多少?",
+        "citations": [],
+        "status": "complete",
+        "feedback": null,
+        "created_at": "2026-11-01T13:05:52+00:00",
+        "verification": [],
+        "retrieval": {},
+        "coverage": {}
+      },
+      {
+        "id": 74,
+        "conversation_id": 35,
+        "role": "assistant",
+        "content": "当前知识库证据不足：没有通过逐句引用与证据支撑校验的回答。请补充资料或缩小问题范围。",
+        "citations": [
+          {
+            "id": 112,
+            "document_id": 11,
+            "ordinal": 53,
+            "page": 8,
+            "section": "第 8 页",
+            "text": " This approach\nobtains a score of 39.8 EM, which suggests that our\nstrategy of training a strong retriever and reader in\nisolation can leverage effectively available supervi-\nsion, while outperforming a comparable joint train-\ning approach with a simpler design (Appendix D).\nOne thing worth noticing is that our reader does\nconsider more passages compared to ORQA, al-\nthough it is not completely clear how much more\ntime it takes for inference. While DPR processes\nup to 100 passages for each question, the reader\nis able to ﬁt all of them into one batch on a sin-\ngle 32GB GPU, thus the latency remains almost\nidentical to the single passage case (around 20ms).\nThe exact impact on throughput is harder to mea-\nsure: ORQA uses 2-3x longer passages compared\nto DPR (288 word pieces compared to our ",
+            "char_start": 33748,
+            "char_end": 34548,
+            "sha256": "88f4a5add793970f7ce90e65a6fb92c96d31efb41ef8261538a3d76eef3028fe",
+            "name": "S01_DPR_2020.pdf",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 11,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+            "chunk_id": 112,
+            "snippet": " This approach\nobtains a score of 39.8 EM, which suggests that our\nstrategy of training a strong retriever and reader in\nisolation can leverage effectively available supervi-\nsion, while outperforming a comparable joint train-\ning approach with a simpler design (Appendix D).\nOne thing worth noticing is that our reader does\nconsider more passages compared to ORQA, al-\nthough it is not completely clear how much more\ntime it takes for inference. While DPR processes\nup to 100 passages for each question, the reader\nis able to ﬁt all of them into one batch on a sin-\ngle 32GB GPU, thus the latency remains almost\nidentical to the single passage case (around 20ms).\nThe exact impact on throughput is harder to mea-\nsure: ORQA uses 2-3x longer passages compared\nto DPR (288 word pieces compared to our ",
+            "score": 0.073801,
+            "relevance": 0.0004,
+            "rerank_score": 0.000444,
+            "matched_queries": [
+              {
+                "query": "本项目上周的QPS和P99延迟各是多少?",
+                "group": "question",
+                "rank": 11,
+                "coverage": 0.0,
+                "raw_score": 0.020824,
+                "vector_score": 0.474
+              },
+              {
+                "query": "What were this project's QPS and P99 latency last week?",
+                "group": "question",
+                "rank": 1,
+                "coverage": 0.1429,
+                "raw_score": 0.028439,
+                "vector_score": 0.502
+              },
+              {
+                "query": "本项目上周的QPS是多少?",
+                "group": "part-1",
+                "rank": 26,
+                "coverage": 0.0,
+                "raw_score": 0.015931,
+                "vector_score": 0.4518
+              },
+              {
+                "query": "What was this project's QPS last week?",
+                "group": "part-1",
+                "rank": 23,
+                "coverage": 0.0,
+                "raw_score": 0.017276,
+                "vector_score": 0.4209
+              },
+              {
+                "query": "本项目上周的P99延迟是多少?",
+                "group": "part-2",
+                "rank": 11,
+                "coverage": 0.0,
+                "raw_score": 0.02032,
+                "vector_score": 0.4777
+              },
+              {
+                "query": "What was this project's P99 latency last week?",
+                "group": "part-2",
+                "rank": 1,
+                "coverage": 0.1667,
+                "raw_score": 0.029643,
+                "vector_score": 0.5073
+              }
+            ],
+            "source": "S01_DPR_2020.pdf · 第 8 页 · 第8页 · v1.0"
+          },
+          {
+            "id": 149,
+            "document_id": 12,
+            "ordinal": 2,
+            "page": null,
+            "section": "正文",
+            "text": "外部技术资料，不代表本项目实际实现、配置或性能。",
+            "char_start": 161,
+            "char_end": 185,
+            "sha256": "5500b1eca9b34f2a1b114f7bfee259a1d75561be25b45653b8b27ae67b5909ca",
+            "name": "S02_SQLite_FTS5_BM25.html",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 11,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+            "chunk_id": 149,
+            "snippet": "外部技术资料，不代表本项目实际实现、配置或性能。",
+            "score": 0.081836,
+            "relevance": 0.0003,
+            "rerank_score": 0.000278,
+            "matched_queries": [
+              {
+                "query": "本项目上周的QPS和P99延迟各是多少?",
+                "group": "question",
+                "rank": 1,
+                "coverage": 0.2273,
+                "raw_score": 0.031319,
+                "vector_score": 0.4604
+              },
+              {
+                "query": "What were this project's QPS and P99 latency last week?",
+                "group": "question",
+                "rank": 6,
+                "coverage": 0.0,
+                "raw_score": 0.022418,
+                "vector_score": 0.5095
+              },
+              {
+                "query": "本项目上周的QPS是多少?",
+                "group": "part-1",
+                "rank": 1,
+                "coverage": 0.3333,
+                "raw_score": 0.030679,
+                "vector_score": 0.4683
+              },
+              {
+                "query": "What was this project's QPS last week?",
+                "group": "part-1",
+                "rank": 7,
+                "coverage": 0.0,
+                "raw_score": 0.021215,
+                "vector_score": 0.4503
+              },
+              {
+                "query": "本项目上周的P99延迟是多少?",
+                "group": "part-2",
+                "rank": 1,
+                "coverage": 0.2632,
+                "raw_score": 0.031545,
+                "vector_score": 0.4671
+              },
+              {
+                "query": "What was this project's P99 latency last week?",
+                "group": "part-2",
+                "rank": 6,
+                "coverage": 0.0,
+                "raw_score": 0.022162,
+                "vector_score": 0.5002
+              }
+            ],
+            "source": "S02_SQLite_FTS5_BM25.html · 正文 · v1.0"
+          },
+          {
+            "id": 1163,
+            "document_id": 13,
+            "ordinal": 2,
+            "page": null,
+            "section": "S03: FastAPI 请求文件",
+            "text": "外部技术资料，不代表本项目实际实现、配置或性能。",
+            "char_start": 179,
+            "char_end": 203,
+            "sha256": "5500b1eca9b34f2a1b114f7bfee259a1d75561be25b45653b8b27ae67b5909ca",
+            "name": "S03_FastAPI_请求文件.md",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 12,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+            "chunk_id": 1163,
+            "snippet": "外部技术资料，不代表本项目实际实现、配置或性能。",
+            "score": 0.070435,
+            "relevance": 0.0003,
+            "rerank_score": 0.000278,
+            "matched_queries": [
+              {
+                "query": "本项目上周的QPS和P99延迟各是多少?",
+                "group": "question",
+                "rank": 3,
+                "coverage": 0.2273,
+                "raw_score": 0.030331,
+                "vector_score": 0.4604
+              },
+              {
+                "query": "What were this project's QPS and P99 latency last week?",
+                "group": "question",
+                "rank": 28,
+                "coverage": 0.0,
+                "raw_score": 0.016758,
+                "vector_score": 0.5095
+              },
+              {
+                "query": "本项目上周的QPS是多少?",
+                "group": "part-1",
+                "rank": 3,
+                "coverage": 0.3333,
+                "raw_score": 0.02971,
+                "vector_score": 0.4683
+              },
+              {
+                "query": "What was this project's QPS last week?",
+                "group": "part-1",
+                "rank": 38,
+                "coverage": 0.0,
+                "raw_score": 0.015591,
+                "vector_score": 0.4503
+              },
+              {
+                "query": "本项目上周的P99延迟是多少?",
+                "group": "part-2",
+                "rank": 3,
+                "coverage": 0.2632,
+                "raw_score": 0.03055,
+                "vector_score": 0.4671
+              },
+              {
+                "query": "What was this project's P99 latency last week?",
+                "group": "part-2",
+                "rank": 23,
+                "coverage": 0.0,
+                "raw_score": 0.01651,
+                "vector_score": 0.5002
+              }
+            ],
+            "source": "S03_FastAPI_请求文件.md · S03: FastAPI 请求文件 · v1.0"
+          },
+          {
+            "id": 1219,
+            "document_id": 14,
+            "ordinal": 2,
+            "page": null,
+            "section": "S04: FastAPI OAuth2、密码哈希与JWT",
+            "text": "外部技术资料，不代表本项目实际实现、配置或性能。",
+            "char_start": 196,
+            "char_end": 220,
+            "sha256": "5500b1eca9b34f2a1b114f7bfee259a1d75561be25b45653b8b27ae67b5909ca",
+            "name": "S04_FastAPI_JWT.md",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 12,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+            "chunk_id": 1219,
+            "snippet": "外部技术资料，不代表本项目实际实现、配置或性能。",
+            "score": 0.062458,
+            "relevance": 0.0003,
+            "rerank_score": 0.000278,
+            "matched_queries": [
+              {
+                "query": "本项目上周的QPS和P99延迟各是多少?",
+                "group": "question",
+                "rank": 2,
+                "coverage": 0.2273,
+                "raw_score": 0.030622,
+                "vector_score": 0.4604
+              },
+              {
+                "query": "What were this project's QPS and P99 latency last week?",
+                "group": "question",
+                "rank": 30,
+                "coverage": 0.0,
+                "raw_score": 0.016477,
+                "vector_score": 0.5095
+              },
+              {
+                "query": "本项目上周的QPS是多少?",
+                "group": "part-1",
+                "rank": 2,
+                "coverage": 0.3333,
+                "raw_score": 0.030018,
+                "vector_score": 0.4683
+              },
+              {
+                "query": "本项目上周的P99延迟是多少?",
+                "group": "part-2",
+                "rank": 2,
+                "coverage": 0.2632,
+                "raw_score": 0.030835,
+                "vector_score": 0.4671
+              },
+              {
+                "query": "What was this project's P99 latency last week?",
+                "group": "part-2",
+                "rank": 25,
+                "coverage": 0.0,
+                "raw_score": 0.016236,
+                "vector_score": 0.5002
+              }
+            ],
+            "source": "S04_FastAPI_JWT.md · S04: FastAPI OAuth2、密码哈希与JWT · v1.0"
+          },
+          {
+            "id": 1319,
+            "document_id": 15,
+            "ordinal": 2,
+            "page": null,
+            "section": "S05: Vue 3 简介",
+            "text": "外部技术资料，不代表本项目实际实现、配置或性能。",
+            "char_start": 207,
+            "char_end": 231,
+            "sha256": "5500b1eca9b34f2a1b114f7bfee259a1d75561be25b45653b8b27ae67b5909ca",
+            "name": "S05_Vue3_简介.md",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 13,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · Vue前端",
+            "chunk_id": 1319,
+            "snippet": "外部技术资料，不代表本项目实际实现、配置或性能。",
+            "score": 0.06069,
+            "relevance": 0.0003,
+            "rerank_score": 0.000278,
+            "matched_queries": [
+              {
+                "query": "本项目上周的QPS和P99延迟各是多少?",
+                "group": "question",
+                "rank": 4,
+                "coverage": 0.2273,
+                "raw_score": 0.030159,
+                "vector_score": 0.4604
+              },
+              {
+                "query": "What were this project's QPS and P99 latency last week?",
+                "group": "question",
+                "rank": 32,
+                "coverage": 0.0,
+                "raw_score": 0.01618,
+                "vector_score": 0.5095
+              },
+              {
+                "query": "本项目上周的QPS是多少?",
+                "group": "part-1",
+                "rank": 4,
+                "coverage": 0.3333,
+                "raw_score": 0.029572,
+                "vector_score": 0.4683
+              },
+              {
+                "query": "本项目上周的P99延迟是多少?",
+                "group": "part-2",
+                "rank": 4,
+                "coverage": 0.2632,
+                "raw_score": 0.030366,
+                "vector_score": 0.4671
+              },
+              {
+                "query": "What was this project's P99 latency last week?",
+                "group": "part-2",
+                "rank": 27,
+                "coverage": 0.0,
+                "raw_score": 0.015946,
+                "vector_score": 0.5002
+              }
+            ],
+            "source": "S05_Vue3_简介.md · S05: Vue 3 简介 · v1.0"
+          }
+        ],
+        "status": "complete",
+        "feedback": null,
+        "created_at": "2026-11-01T13:05:52+00:00",
+        "verification": [
+          {
+            "claim_id": 1,
+            "sha256": "a906bc5e5f379a18531cb5162f9b88c3d4092c2f92c183b7050ffe2736d988bf",
+            "references": [],
+            "status": "rejected",
+            "reason_code": "invalid_citation",
+            "reason": "引用缺失、越界或不在句末"
+          },
+          {
+            "claim_id": 2,
+            "sha256": "8ae64169cbeb2286aaabfe40034b44b09ba01f674373fdcea2e2d3fca40cbf52",
+            "references": [],
+            "status": "rejected",
+            "reason_code": "invalid_citation",
+            "reason": "引用缺失、越界或不在句末"
+          },
+          {
+            "claim_id": 3,
+            "sha256": "42a9c407ab81afbba1fc52dc58838d9ca62c082a97b00f402484ed3cdc7d7383",
+            "references": [],
+            "status": "rejected",
+            "reason_code": "invalid_citation",
+            "reason": "引用缺失、越界或不在句末"
+          },
+          {
+            "claim_id": 4,
+            "sha256": "1a291983d72ff0a936ccbf45fe679c7543ef7ca731bbeda6333a0df700f036b8",
+            "references": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "status": "rejected",
+            "reason_code": "numeric_mismatch",
+            "reason": "陈述数字或参数绑定未被实际原文短引文支持",
+            "verdict": "supported"
+          },
+          {
+            "claim_id": 5,
+            "sha256": "113f4d686acd907a5c88e52afa4396e572dbf54f7a7bcd9d8a56a13d1fbbf746",
+            "references": [],
+            "status": "rejected",
+            "reason_code": "invalid_citation",
+            "reason": "引用缺失、越界或不在句末"
+          }
+        ],
+        "retrieval": {
+          "embedding": "local-bge-m3",
+          "embedding_model": "BAAI/bge-m3",
+          "rerank": "local-cross-encoder",
+          "reranking": {
+            "model": "BAAI/bge-reranker-v2-m3",
+            "candidate_count": 40,
+            "device": "cuda",
+            "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+            "max_length": 1024,
+            "at_length_limit": 0
+          },
+          "policy": "multi-query-neural-v3",
+          "mode": "hybrid",
+          "top_k": 5,
+          "min_similarity": 0.3,
+          "min_coverage": 0.12,
+          "knowledge_base_ids": [
+            11,
+            12,
+            13
+          ],
+          "query_expansion": {
+            "policy": "bilingual-query-v1",
+            "status": "expanded",
+            "corpus_languages": [
+              "en",
+              "zh"
+            ],
+            "queries": [
+              {
+                "query": "本项目上周的QPS和P99延迟各是多少?",
+                "group": "question",
+                "weight": 1.0,
+                "language": "original"
+              },
+              {
+                "query": "What were this project's QPS and P99 latency last week?",
+                "group": "question",
+                "weight": 1.0,
+                "language": "en"
+              },
+              {
+                "query": "本项目上周的QPS是多少?",
+                "group": "part-1",
+                "weight": 0.8,
+                "language": "zh"
+              },
+              {
+                "query": "What was this project's QPS last week?",
+                "group": "part-1",
+                "weight": 0.8,
+                "language": "en"
+              },
+              {
+                "query": "本项目上周的P99延迟是多少?",
+                "group": "part-2",
+                "weight": 0.8,
+                "language": "zh"
+              },
+              {
+                "query": "What was this project's P99 latency last week?",
+                "group": "part-2",
+                "weight": 0.8,
+                "language": "en"
+              }
+            ],
+            "warnings": [],
+            "cache": "miss",
+            "model": "kimi-k2.6"
+          },
+          "topic_anchors": [],
+          "covered_topic_anchors": [],
+          "part_coverage": {
+            "part-1": 5,
+            "part-2": 5
+          }
+        },
+        "coverage": {
+          "policy": "question-coverage-v1",
+          "status": "assessed",
+          "items": [
+            {
+              "requirement": "本项目上周的QPS是多少",
+              "status": "insufficient",
+              "references": []
+            },
+            {
+              "requirement": "本项目上周的P99延迟是多少",
+              "status": "insufficient",
+              "references": []
+            }
+          ],
+          "model": "kimi-k2.6",
+          "repair_attempted": false,
+          "complete": false
+        }
+      }
+    ]
+  },
+  "events": [
+    {
+      "type": "meta",
+      "conversation_id": 35,
+      "message_id": 74,
+      "citations": [
+        {
+          "id": 112,
+          "document_id": 11,
+          "ordinal": 53,
+          "page": 8,
+          "section": "第 8 页",
+          "text": " This approach\nobtains a score of 39.8 EM, which suggests that our\nstrategy of training a strong retriever and reader in\nisolation can leverage effectively available supervi-\nsion, while outperforming a comparable joint train-\ning approach with a simpler design (Appendix D).\nOne thing worth noticing is that our reader does\nconsider more passages compared to ORQA, al-\nthough it is not completely clear how much more\ntime it takes for inference. While DPR processes\nup to 100 passages for each question, the reader\nis able to ﬁt all of them into one batch on a sin-\ngle 32GB GPU, thus the latency remains almost\nidentical to the single passage case (around 20ms).\nThe exact impact on throughput is harder to mea-\nsure: ORQA uses 2-3x longer passages compared\nto DPR (288 word pieces compared to our ",
+          "char_start": 33748,
+          "char_end": 34548,
+          "sha256": "88f4a5add793970f7ce90e65a6fb92c96d31efb41ef8261538a3d76eef3028fe",
+          "name": "S01_DPR_2020.pdf",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 11,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+          "chunk_id": 112,
+          "snippet": " This approach\nobtains a score of 39.8 EM, which suggests that our\nstrategy of training a strong retriever and reader in\nisolation can leverage effectively available supervi-\nsion, while outperforming a comparable joint train-\ning approach with a simpler design (Appendix D).\nOne thing worth noticing is that our reader does\nconsider more passages compared to ORQA, al-\nthough it is not completely clear how much more\ntime it takes for inference. While DPR processes\nup to 100 passages for each question, the reader\nis able to ﬁt all of them into one batch on a sin-\ngle 32GB GPU, thus the latency remains almost\nidentical to the single passage case (around 20ms).\nThe exact impact on throughput is harder to mea-\nsure: ORQA uses 2-3x longer passages compared\nto DPR (288 word pieces compared to our ",
+          "score": 0.073801,
+          "relevance": 0.0004,
+          "rerank_score": 0.000444,
+          "matched_queries": [
+            {
+              "query": "本项目上周的QPS和P99延迟各是多少?",
+              "group": "question",
+              "rank": 11,
+              "coverage": 0.0,
+              "raw_score": 0.020824,
+              "vector_score": 0.474
+            },
+            {
+              "query": "What were this project's QPS and P99 latency last week?",
+              "group": "question",
+              "rank": 1,
+              "coverage": 0.1429,
+              "raw_score": 0.028439,
+              "vector_score": 0.502
+            },
+            {
+              "query": "本项目上周的QPS是多少?",
+              "group": "part-1",
+              "rank": 26,
+              "coverage": 0.0,
+              "raw_score": 0.015931,
+              "vector_score": 0.4518
+            },
+            {
+              "query": "What was this project's QPS last week?",
+              "group": "part-1",
+              "rank": 23,
+              "coverage": 0.0,
+              "raw_score": 0.017276,
+              "vector_score": 0.4209
+            },
+            {
+              "query": "本项目上周的P99延迟是多少?",
+              "group": "part-2",
+              "rank": 11,
+              "coverage": 0.0,
+              "raw_score": 0.02032,
+              "vector_score": 0.4777
+            },
+            {
+              "query": "What was this project's P99 latency last week?",
+              "group": "part-2",
+              "rank": 1,
+              "coverage": 0.1667,
+              "raw_score": 0.029643,
+              "vector_score": 0.5073
+            }
+          ],
+          "source": "S01_DPR_2020.pdf · 第 8 页 · 第8页 · v1.0"
+        },
+        {
+          "id": 149,
+          "document_id": 12,
+          "ordinal": 2,
+          "page": null,
+          "section": "正文",
+          "text": "外部技术资料，不代表本项目实际实现、配置或性能。",
+          "char_start": 161,
+          "char_end": 185,
+          "sha256": "5500b1eca9b34f2a1b114f7bfee259a1d75561be25b45653b8b27ae67b5909ca",
+          "name": "S02_SQLite_FTS5_BM25.html",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 11,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+          "chunk_id": 149,
+          "snippet": "外部技术资料，不代表本项目实际实现、配置或性能。",
+          "score": 0.081836,
+          "relevance": 0.0003,
+          "rerank_score": 0.000278,
+          "matched_queries": [
+            {
+              "query": "本项目上周的QPS和P99延迟各是多少?",
+              "group": "question",
+              "rank": 1,
+              "coverage": 0.2273,
+              "raw_score": 0.031319,
+              "vector_score": 0.4604
+            },
+            {
+              "query": "What were this project's QPS and P99 latency last week?",
+              "group": "question",
+              "rank": 6,
+              "coverage": 0.0,
+              "raw_score": 0.022418,
+              "vector_score": 0.5095
+            },
+            {
+              "query": "本项目上周的QPS是多少?",
+              "group": "part-1",
+              "rank": 1,
+              "coverage": 0.3333,
+              "raw_score": 0.030679,
+              "vector_score": 0.4683
+            },
+            {
+              "query": "What was this project's QPS last week?",
+              "group": "part-1",
+              "rank": 7,
+              "coverage": 0.0,
+              "raw_score": 0.021215,
+              "vector_score": 0.4503
+            },
+            {
+              "query": "本项目上周的P99延迟是多少?",
+              "group": "part-2",
+              "rank": 1,
+              "coverage": 0.2632,
+              "raw_score": 0.031545,
+              "vector_score": 0.4671
+            },
+            {
+              "query": "What was this project's P99 latency last week?",
+              "group": "part-2",
+              "rank": 6,
+              "coverage": 0.0,
+              "raw_score": 0.022162,
+              "vector_score": 0.5002
+            }
+          ],
+          "source": "S02_SQLite_FTS5_BM25.html · 正文 · v1.0"
+        },
+        {
+          "id": 1163,
+          "document_id": 13,
+          "ordinal": 2,
+          "page": null,
+          "section": "S03: FastAPI 请求文件",
+          "text": "外部技术资料，不代表本项目实际实现、配置或性能。",
+          "char_start": 179,
+          "char_end": 203,
+          "sha256": "5500b1eca9b34f2a1b114f7bfee259a1d75561be25b45653b8b27ae67b5909ca",
+          "name": "S03_FastAPI_请求文件.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1163,
+          "snippet": "外部技术资料，不代表本项目实际实现、配置或性能。",
+          "score": 0.070435,
+          "relevance": 0.0003,
+          "rerank_score": 0.000278,
+          "matched_queries": [
+            {
+              "query": "本项目上周的QPS和P99延迟各是多少?",
+              "group": "question",
+              "rank": 3,
+              "coverage": 0.2273,
+              "raw_score": 0.030331,
+              "vector_score": 0.4604
+            },
+            {
+              "query": "What were this project's QPS and P99 latency last week?",
+              "group": "question",
+              "rank": 28,
+              "coverage": 0.0,
+              "raw_score": 0.016758,
+              "vector_score": 0.5095
+            },
+            {
+              "query": "本项目上周的QPS是多少?",
+              "group": "part-1",
+              "rank": 3,
+              "coverage": 0.3333,
+              "raw_score": 0.02971,
+              "vector_score": 0.4683
+            },
+            {
+              "query": "What was this project's QPS last week?",
+              "group": "part-1",
+              "rank": 38,
+              "coverage": 0.0,
+              "raw_score": 0.015591,
+              "vector_score": 0.4503
+            },
+            {
+              "query": "本项目上周的P99延迟是多少?",
+              "group": "part-2",
+              "rank": 3,
+              "coverage": 0.2632,
+              "raw_score": 0.03055,
+              "vector_score": 0.4671
+            },
+            {
+              "query": "What was this project's P99 latency last week?",
+              "group": "part-2",
+              "rank": 23,
+              "coverage": 0.0,
+              "raw_score": 0.01651,
+              "vector_score": 0.5002
+            }
+          ],
+          "source": "S03_FastAPI_请求文件.md · S03: FastAPI 请求文件 · v1.0"
+        },
+        {
+          "id": 1219,
+          "document_id": 14,
+          "ordinal": 2,
+          "page": null,
+          "section": "S04: FastAPI OAuth2、密码哈希与JWT",
+          "text": "外部技术资料，不代表本项目实际实现、配置或性能。",
+          "char_start": 196,
+          "char_end": 220,
+          "sha256": "5500b1eca9b34f2a1b114f7bfee259a1d75561be25b45653b8b27ae67b5909ca",
+          "name": "S04_FastAPI_JWT.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 12,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 后端与接入",
+          "chunk_id": 1219,
+          "snippet": "外部技术资料，不代表本项目实际实现、配置或性能。",
+          "score": 0.062458,
+          "relevance": 0.0003,
+          "rerank_score": 0.000278,
+          "matched_queries": [
+            {
+              "query": "本项目上周的QPS和P99延迟各是多少?",
+              "group": "question",
+              "rank": 2,
+              "coverage": 0.2273,
+              "raw_score": 0.030622,
+              "vector_score": 0.4604
+            },
+            {
+              "query": "What were this project's QPS and P99 latency last week?",
+              "group": "question",
+              "rank": 30,
+              "coverage": 0.0,
+              "raw_score": 0.016477,
+              "vector_score": 0.5095
+            },
+            {
+              "query": "本项目上周的QPS是多少?",
+              "group": "part-1",
+              "rank": 2,
+              "coverage": 0.3333,
+              "raw_score": 0.030018,
+              "vector_score": 0.4683
+            },
+            {
+              "query": "本项目上周的P99延迟是多少?",
+              "group": "part-2",
+              "rank": 2,
+              "coverage": 0.2632,
+              "raw_score": 0.030835,
+              "vector_score": 0.4671
+            },
+            {
+              "query": "What was this project's P99 latency last week?",
+              "group": "part-2",
+              "rank": 25,
+              "coverage": 0.0,
+              "raw_score": 0.016236,
+              "vector_score": 0.5002
+            }
+          ],
+          "source": "S04_FastAPI_JWT.md · S04: FastAPI OAuth2、密码哈希与JWT · v1.0"
+        },
+        {
+          "id": 1319,
+          "document_id": 15,
+          "ordinal": 2,
+          "page": null,
+          "section": "S05: Vue 3 简介",
+          "text": "外部技术资料，不代表本项目实际实现、配置或性能。",
+          "char_start": 207,
+          "char_end": 231,
+          "sha256": "5500b1eca9b34f2a1b114f7bfee259a1d75561be25b45653b8b27ae67b5909ca",
+          "name": "S05_Vue3_简介.md",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 13,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · Vue前端",
+          "chunk_id": 1319,
+          "snippet": "外部技术资料，不代表本项目实际实现、配置或性能。",
+          "score": 0.06069,
+          "relevance": 0.0003,
+          "rerank_score": 0.000278,
+          "matched_queries": [
+            {
+              "query": "本项目上周的QPS和P99延迟各是多少?",
+              "group": "question",
+              "rank": 4,
+              "coverage": 0.2273,
+              "raw_score": 0.030159,
+              "vector_score": 0.4604
+            },
+            {
+              "query": "What were this project's QPS and P99 latency last week?",
+              "group": "question",
+              "rank": 32,
+              "coverage": 0.0,
+              "raw_score": 0.01618,
+              "vector_score": 0.5095
+            },
+            {
+              "query": "本项目上周的QPS是多少?",
+              "group": "part-1",
+              "rank": 4,
+              "coverage": 0.3333,
+              "raw_score": 0.029572,
+              "vector_score": 0.4683
+            },
+            {
+              "query": "本项目上周的P99延迟是多少?",
+              "group": "part-2",
+              "rank": 4,
+              "coverage": 0.2632,
+              "raw_score": 0.030366,
+              "vector_score": 0.4671
+            },
+            {
+              "query": "What was this project's P99 latency last week?",
+              "group": "part-2",
+              "rank": 27,
+              "coverage": 0.0,
+              "raw_score": 0.015946,
+              "vector_score": 0.5002
+            }
+          ],
+          "source": "S05_Vue3_简介.md · S05: Vue 3 简介 · v1.0"
+        }
+      ],
+      "pipeline": {
+        "embedding": "local-bge-m3",
+        "embedding_model": "BAAI/bge-m3",
+        "rerank": "local-cross-encoder",
+        "reranking": {
+          "model": "BAAI/bge-reranker-v2-m3",
+          "candidate_count": 40,
+          "device": "cuda",
+          "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+          "max_length": 1024,
+          "at_length_limit": 0
+        },
+        "policy": "multi-query-neural-v3",
+        "mode": "hybrid",
+        "top_k": 5,
+        "min_similarity": 0.3,
+        "min_coverage": 0.12,
+        "knowledge_base_ids": [
+          11,
+          12,
+          13
+        ],
+        "query_expansion": {
+          "policy": "bilingual-query-v1",
+          "status": "expanded",
+          "corpus_languages": [
+            "en",
+            "zh"
+          ],
+          "queries": [
+            {
+              "query": "本项目上周的QPS和P99延迟各是多少?",
+              "group": "question",
+              "weight": 1.0,
+              "language": "original"
+            },
+            {
+              "query": "What were this project's QPS and P99 latency last week?",
+              "group": "question",
+              "weight": 1.0,
+              "language": "en"
+            },
+            {
+              "query": "本项目上周的QPS是多少?",
+              "group": "part-1",
+              "weight": 0.8,
+              "language": "zh"
+            },
+            {
+              "query": "What was this project's QPS last week?",
+              "group": "part-1",
+              "weight": 0.8,
+              "language": "en"
+            },
+            {
+              "query": "本项目上周的P99延迟是多少?",
+              "group": "part-2",
+              "weight": 0.8,
+              "language": "zh"
+            },
+            {
+              "query": "What was this project's P99 latency last week?",
+              "group": "part-2",
+              "weight": 0.8,
+              "language": "en"
+            }
+          ],
+          "warnings": [],
+          "cache": "miss",
+          "model": "kimi-k2.6"
+        },
+        "topic_anchors": [],
+        "covered_topic_anchors": [],
+        "part_coverage": {
+          "part-1": 5,
+          "part-2": 5
+        }
+      }
+    },
+    {
+      "type": "verification",
+      "checks": [
+        {
+          "claim_id": 1,
+          "sha256": "a906bc5e5f379a18531cb5162f9b88c3d4092c2f92c183b7050ffe2736d988bf",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        },
+        {
+          "claim_id": 2,
+          "sha256": "8ae64169cbeb2286aaabfe40034b44b09ba01f674373fdcea2e2d3fca40cbf52",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        }
+      ]
+    },
+    {
+      "type": "verification",
+      "checks": [
+        {
+          "claim_id": 1,
+          "sha256": "a906bc5e5f379a18531cb5162f9b88c3d4092c2f92c183b7050ffe2736d988bf",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        },
+        {
+          "claim_id": 2,
+          "sha256": "8ae64169cbeb2286aaabfe40034b44b09ba01f674373fdcea2e2d3fca40cbf52",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        },
+        {
+          "claim_id": 3,
+          "sha256": "42a9c407ab81afbba1fc52dc58838d9ca62c082a97b00f402484ed3cdc7d7383",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        }
+      ]
+    },
+    {
+      "type": "verification",
+      "checks": [
+        {
+          "claim_id": 1,
+          "sha256": "a906bc5e5f379a18531cb5162f9b88c3d4092c2f92c183b7050ffe2736d988bf",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        },
+        {
+          "claim_id": 2,
+          "sha256": "8ae64169cbeb2286aaabfe40034b44b09ba01f674373fdcea2e2d3fca40cbf52",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        },
+        {
+          "claim_id": 3,
+          "sha256": "42a9c407ab81afbba1fc52dc58838d9ca62c082a97b00f402484ed3cdc7d7383",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        },
+        {
+          "claim_id": 4,
+          "sha256": "1a291983d72ff0a936ccbf45fe679c7543ef7ca731bbeda6333a0df700f036b8",
+          "references": [
+            2,
+            3,
+            4,
+            5
+          ],
+          "status": "rejected",
+          "reason_code": "numeric_mismatch",
+          "reason": "陈述数字或参数绑定未被实际原文短引文支持",
+          "verdict": "supported"
+        }
+      ]
+    },
+    {
+      "type": "verification",
+      "checks": [
+        {
+          "claim_id": 1,
+          "sha256": "a906bc5e5f379a18531cb5162f9b88c3d4092c2f92c183b7050ffe2736d988bf",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        },
+        {
+          "claim_id": 2,
+          "sha256": "8ae64169cbeb2286aaabfe40034b44b09ba01f674373fdcea2e2d3fca40cbf52",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        },
+        {
+          "claim_id": 3,
+          "sha256": "42a9c407ab81afbba1fc52dc58838d9ca62c082a97b00f402484ed3cdc7d7383",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        },
+        {
+          "claim_id": 4,
+          "sha256": "1a291983d72ff0a936ccbf45fe679c7543ef7ca731bbeda6333a0df700f036b8",
+          "references": [
+            2,
+            3,
+            4,
+            5
+          ],
+          "status": "rejected",
+          "reason_code": "numeric_mismatch",
+          "reason": "陈述数字或参数绑定未被实际原文短引文支持",
+          "verdict": "supported"
+        },
+        {
+          "claim_id": 5,
+          "sha256": "113f4d686acd907a5c88e52afa4396e572dbf54f7a7bcd9d8a56a13d1fbbf746",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        }
+      ]
+    },
+    {
+      "type": "stage",
+      "stage": "coverage",
+      "message": "正在检查问题关键点，必要的补充仍须通过事实核验"
+    },
+    {
+      "type": "coverage",
+      "assessment": {
+        "policy": "question-coverage-v1",
+        "status": "assessed",
+        "items": [
+          {
+            "requirement": "本项目上周的QPS是多少",
+            "status": "insufficient",
+            "references": []
+          },
+          {
+            "requirement": "本项目上周的P99延迟是多少",
+            "status": "insufficient",
+            "references": []
+          }
+        ],
+        "model": "kimi-k2.6",
+        "repair_attempted": false,
+        "complete": false
+      }
+    },
+    {
+      "type": "token",
+      "content": "当前知识库证据不足：没有通过逐句引用与证据支撑校验的回答。请补充资料或缩小问题范围。"
+    },
+    {
+      "type": "done",
+      "conversation_id": 35,
+      "message_id": 74
+    }
+  ],
+  "grading": "人工复核，不以模型自评或词项命中自动判正确"
+}

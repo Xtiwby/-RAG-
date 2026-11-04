@@ -1,0 +1,16 @@
+{
+  "BAAI/bge-m3": {
+    "downloaded": true,
+    "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+    "loaded": true,
+    "device": "cuda",
+    "dtype": "float16"
+  },
+  "BAAI/bge-reranker-v2-m3": {
+    "downloaded": true,
+    "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+    "loaded": true,
+    "device": "cuda",
+    "dtype": "float16"
+  }
+}

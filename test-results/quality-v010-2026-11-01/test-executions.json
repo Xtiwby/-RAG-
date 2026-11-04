@@ -1,0 +1,9 @@
+{
+  "backend": {"passed":117,"new_quality_cases":35,"duration_seconds":123.17,"model":"mock","warning":"AnyIO BlockingPortal deprecation"},
+  "frontend": {"production_build":"passed","existing_profile_tests_passed":6},
+  "real_qa": {"latest_run":"trial2","cases":8,"all_correct":false,"partial_case":"Q025","reviewer":"assistant semantic review, not independent human acceptance"},
+  "controlled_real_repair": {"passed":true,"counted_as_end_to_end_qa":false},
+  "synthetic_acceptance": {"cases":100,"integrity":"passed","real_model_cases_evaluated":0,"labels_ingested":false},
+  "backend_version":"0.10.0",
+  "configuration_revision":6
+}

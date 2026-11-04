@@ -1,0 +1,16 @@
+{
+  "backend": {
+    "passed": 82,
+    "new_semantic_cases": 15,
+    "warning": "AnyIO BlockingPortal deprecation",
+    "duration_seconds": 139.04
+  },
+  "frontend": {
+    "production_build": "passed",
+    "profile_tests_passed": 6
+  },
+  "real_local_retrieval_requests": 96,
+  "real_generation_retested": false,
+  "backend_version": "0.9.0",
+  "configuration_revision": 4
+}

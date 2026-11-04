@@ -1,0 +1,47 @@
+[
+  {
+    "question_id": "Q004",
+    "full_scope_present": true,
+    "message_times_present": true
+  },
+  {
+    "question_id": "Q007",
+    "full_scope_present": true,
+    "message_times_present": true
+  },
+  {
+    "question_id": "Q010",
+    "full_scope_present": true,
+    "message_times_present": true
+  },
+  {
+    "question_id": "Q016",
+    "full_scope_present": true,
+    "message_times_present": true
+  },
+  {
+    "question_id": "Q018",
+    "full_scope_present": true,
+    "message_times_present": true
+  },
+  {
+    "question_id": "Q022",
+    "full_scope_present": true,
+    "message_times_present": true
+  },
+  {
+    "question_id": "Q025",
+    "full_scope_present": true,
+    "message_times_present": true
+  },
+  {
+    "question_id": "Q027",
+    "full_scope_present": true,
+    "message_times_present": true
+  },
+  {
+    "question_id": "Q031",
+    "full_scope_present": true,
+    "message_times_present": true
+  }
+]

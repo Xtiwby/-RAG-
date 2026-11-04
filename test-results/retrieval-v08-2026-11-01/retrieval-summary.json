@@ -1,0 +1,20 @@
+{
+  "vector": {
+    "answerable_questions": 25,
+    "all_sources_hit": 25,
+    "any_source_hit": 25,
+    "all_exact_quotes_hit": 17
+  },
+  "keyword": {
+    "answerable_questions": 25,
+    "all_sources_hit": 25,
+    "any_source_hit": 25,
+    "all_exact_quotes_hit": 17
+  },
+  "hybrid": {
+    "answerable_questions": 25,
+    "all_sources_hit": 25,
+    "any_source_hit": 25,
+    "all_exact_quotes_hit": 17
+  }
+}

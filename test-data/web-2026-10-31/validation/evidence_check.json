@@ -1,0 +1,254 @@
+[
+  {
+    "question": "Q001",
+    "source": "S01",
+    "quote": "simple dual-encoder framework",
+    "physical_page": 1,
+    "found": true
+  },
+  {
+    "question": "Q002",
+    "source": "S01",
+    "quote": "9%-19% absolute",
+    "physical_page": 1,
+    "found": true
+  },
+  {
+    "question": "Q002",
+    "source": "S01",
+    "quote": "top-20 passage retrieval accuracy",
+    "physical_page": 1,
+    "found": true
+  },
+  {
+    "question": "Q003",
+    "source": "S01",
+    "quote": "synonyms or paraphrases",
+    "physical_page": 1,
+    "found": true
+  },
+  {
+    "question": "Q004",
+    "source": "S02",
+    "quote": "The better the match, the numerically smaller",
+    "physical_page": null,
+    "found": true
+  },
+  {
+    "question": "Q005",
+    "source": "S02",
+    "quote": "hard-coded at 1.2 and 0.75 respectively",
+    "physical_page": null,
+    "found": true
+  },
+  {
+    "question": "Q006",
+    "source": "S02",
+    "quote": "multiplies the result by -1",
+    "physical_page": null,
+    "found": true
+  },
+  {
+    "question": "Q007",
+    "source": "S03",
+    "quote": "整个内容会存储在内存中",
+    "physical_page": null,
+    "found": true
+  },
+  {
+    "question": "Q007",
+    "source": "S03",
+    "quote": "超过该上限后会写入磁盘",
+    "physical_page": null,
+    "found": true
+  },
+  {
+    "question": "Q008",
+    "source": "S03",
+    "quote": "multipart/form-data",
+    "physical_page": null,
+    "found": true
+  },
+  {
+    "question": "Q009",
+    "source": "S03",
+    "quote": "filename",
+    "physical_page": null,
+    "found": true
+  },
+  {
+    "question": "Q009",
+    "source": "S03",
+    "quote": "content_type",
+    "physical_page": null,
+    "found": true
+  },
+  {
+    "question": "Q009",
+    "source": "S03",
+    "quote": "SpooledTemporaryFile",
+    "physical_page": null,
+    "found": true
+  },
+  {
+    "question": "Q010",
+    "source": "S04",
+    "quote": "它不是加密的，所以任何人都可以从内容中恢复信息",
+    "physical_page": null,
+    "found": true
+  },
+  {
+    "question": "Q010",
+    "source": "S04",
+    "quote": "但它是“签名”的",
+    "physical_page": null,
+    "found": true
+  },
+  {
+    "question": "Q011",
+    "source": "S04",
+    "quote": "令牌的“主题”（subject）",
+    "physical_page": null,
+    "found": true
+  },
+  {
+    "question": "Q011",
+    "source": "S04",
+    "quote": "sub` 键在整个应用中应该是一个唯一标识符",
+    "physical_page": null,
+    "found": true
+  },
+  {
+    "question": "Q012",
+    "source": "S04",
+    "quote": "需要重新登录以获取新令牌",
+    "physical_page": null,
+    "found": true
+  },
+  {
+    "question": "Q013",
+    "source": "S05",
+    "quote": "基于标准 HTML、CSS 和 JavaScript 构建",
+    "physical_page": null,
+    "found": true
+  },
+  {
+    "question": "Q014",
+    "source": "S05",
+    "quote": ".vue",
+    "physical_page": null,
+    "found": true
+  },
+  {
+    "question": "Q014",
+    "source": "S05",
+    "quote": "单文件组件",
+    "physical_page": null,
+    "found": true
+  },
+  {
+    "question": "Q015",
+    "source": "S06",
+    "quote": "带有 .value 属性的 ref 对象",
+    "physical_page": null,
+    "found": true
+  },
+  {
+    "question": "Q016",
+    "source": "S06",
+    "quote": "DOM 更新不是同步的",
+    "physical_page": null,
+    "found": true
+  },
+  {
+    "question": "Q016",
+    "source": "S06",
+    "quote": "可以使用 nextTick() 全局 API",
+    "physical_page": null,
+    "found": true
+  },
+  {
+    "question": "Q017",
+    "source": "S06",
+    "quote": "当 ref 作为响应式数组或原生集合类型",
+    "physical_page": null,
+    "found": true
+  },
+  {
+    "question": "Q017",
+    "source": "S06",
+    "quote": "不会被解包",
+    "physical_page": null,
+    "found": true
+  },
+  {
+    "question": "Q018",
+    "source": "S07",
+    "quote": "1/(k+rank)；rank从1开始",
+    "physical_page": null,
+    "found": true
+  },
+  {
+    "question": "Q019",
+    "source": "S07",
+    "quote": "rank_constant默认值为60",
+    "physical_page": null,
+    "found": true
+  },
+  {
+    "question": "Q020",
+    "source": "S08",
+    "quote": "结合参数化记忆与非参数化记忆",
+    "physical_page": null,
+    "found": true
+  },
+  {
+    "question": "Q021",
+    "source": "S09",
+    "quote": "先运行CountVectorizer，再运行TfidfTransformer",
+    "physical_page": null,
+    "found": true
+  },
+  {
+    "question": "Q022",
+    "source": "S10",
+    "quote": "pypdf不是OCR软件",
+    "physical_page": null,
+    "found": true
+  },
+  {
+    "question": "Q023",
+    "source": "S10",
+    "quote": "没有文字层的PDF，直接抽取可能几乎没有文字，应考虑OCR",
+    "physical_page": null,
+    "found": true
+  },
+  {
+    "question": "Q024",
+    "source": "S01",
+    "quote": "synonyms or paraphrases",
+    "physical_page": 1,
+    "found": true
+  },
+  {
+    "question": "Q024",
+    "source": "S02",
+    "quote": "The bm25 score for document",
+    "physical_page": null,
+    "found": true
+  },
+  {
+    "question": "Q025",
+    "source": "S03",
+    "quote": "SpooledTemporaryFile",
+    "physical_page": null,
+    "found": true
+  },
+  {
+    "question": "Q025",
+    "source": "S10",
+    "quote": "pypdf不是OCR软件",
+    "physical_page": null,
+    "found": true
+  }
+]

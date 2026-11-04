@@ -1,0 +1,1043 @@
+{
+  "question_id": "Q004",
+  "question": "SQLite FTS5的bm25()分数，是越大越好还是越小越好？",
+  "expected_for_human_review": "SQLite FTS5中匹配越好，bm25()值越小。",
+  "answerable": true,
+  "elapsed_ms": 21860,
+  "conversation": {
+    "id": 45,
+    "user_id": 1,
+    "title": "v0.10 质量复测 Q004 · SQLite FTS5的bm25()分数，是越大越好还是越小越好？",
+    "knowledge_base_ids": [
+      11,
+      12,
+      13
+    ],
+    "created_at": "2026-11-01T13:12:39+00:00",
+    "updated_at": "2026-11-01T13:12:52+00:00",
+    "messages": [
+      {
+        "id": 93,
+        "conversation_id": 45,
+        "role": "user",
+        "content": "SQLite FTS5的bm25()分数,是越大越好还是越小越好?",
+        "citations": [],
+        "status": "complete",
+        "feedback": null,
+        "created_at": "2026-11-01T13:12:39+00:00",
+        "verification": [],
+        "retrieval": {},
+        "coverage": {}
+      },
+      {
+        "id": 94,
+        "conversation_id": 45,
+        "role": "assistant",
+        "content": "SQLite FTS5 的 `bm25()` 分数是**越小越好**。[1]\n\n部分候选句未通过引用或证据支撑校验，已过滤；上述仅展示通过校验的内容。",
+        "citations": [
+          {
+            "id": 562,
+            "document_id": 12,
+            "ordinal": 415,
+            "page": null,
+            "section": "正文",
+            "text": "The built-in auxiliary function bm25() returns a real value indicating\r\nhow well the current row matches the full-text query. The better the match,\r\nthe numerically smaller the value returned. A query such as the following may\r\nbe used to return matches in order from best to worst match:",
+            "char_start": 58020,
+            "char_end": 58308,
+            "sha256": "d24a4acd40f255de3946ef862e3ac1a93346fde45fc20161f59ad94ecfe07316",
+            "name": "S02_SQLite_FTS5_BM25.html",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 11,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+            "chunk_id": 562,
+            "snippet": "The built-in auxiliary function bm25() returns a real value indicating\r\nhow well the current row matches the full-text query. The better the match,\r\nthe numerically smaller the value returned. A query such as the following may\r\nbe used to return matches in order from best to worst match:",
+            "score": 0.02863,
+            "relevance": 0.9466,
+            "rerank_score": 0.946597,
+            "matched_queries": [
+              {
+                "query": "SQLite FTS5的bm25()分数,是越大越好还是越小越好?",
+                "group": "question",
+                "rank": 16,
+                "coverage": 0.0526,
+                "raw_score": 0.021728,
+                "vector_score": 0.6156
+              },
+              {
+                "query": "Is SQLite FTS5 bm25() score higher better or lower better",
+                "group": "question",
+                "rank": 5,
+                "coverage": 0.2857,
+                "raw_score": 0.028624,
+                "vector_score": 0.6183
+              },
+              {
+                "query": "SQLite FTS5的bm25()分数是越大越好还是越小越好",
+                "group": "question",
+                "rank": 15,
+                "coverage": 0.05,
+                "raw_score": 0.022382,
+                "vector_score": 0.6242
+              }
+            ],
+            "source": "S02_SQLite_FTS5_BM25.html · 正文 · v1.0"
+          },
+          {
+            "id": 566,
+            "document_id": 12,
+            "ordinal": 419,
+            "page": null,
+            "section": "正文",
+            "text": "The \"-1\" term at the start of the formula is not found in most\r\nimplementations of the BM25 algorithm. Without it, a better match is assigned\r\na numerically higher BM25 score. Since the default sorting order is\r\n\"ascending\", this means that appending \"ORDER BY bm25(ft)\" to a query would\r\ncause results to be returned in order from worst to best. The \"DESC\" keyword\r\nwould be required in order to return the best matches first. In order to\r\navoid this pitfall, the FTS5 implementation of BM25 multiplies the result\r\nby -1 before returning it, ensuring that better matches are assigned\r\nnumerically lower scores.",
+            "char_start": 58837,
+            "char_end": 59448,
+            "sha256": "07dfbffa7e453d4b6d9d1bfca40169151348b0b1abdb9d052cd029fa250ab6af",
+            "name": "S02_SQLite_FTS5_BM25.html",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 11,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+            "chunk_id": 566,
+            "snippet": "The \"-1\" term at the start of the formula is not found in most\r\nimplementations of the BM25 algorithm. Without it, a better match is assigned\r\na numerically higher BM25 score. Since the default sorting order is\r\n\"ascending\", this means that appending \"ORDER BY bm25(ft)\" to a query would\r\ncause results to be returned in order from worst to best. The \"DESC\" keyword\r\nwould be required in order to return the best matches first. In order to\r\navoid this pitfall, the FTS5 implementation of BM25 multiplies the result\r\nby -1 before returning it, ensuring that better matches are assigned\r\nnumerically lower scores.",
+            "score": 0.031778,
+            "relevance": 0.9154,
+            "rerank_score": 0.915356,
+            "matched_queries": [
+              {
+                "query": "SQLite FTS5的bm25()分数,是越大越好还是越小越好?",
+                "group": "question",
+                "rank": 5,
+                "coverage": 0.1053,
+                "raw_score": 0.028531,
+                "vector_score": 0.6476
+              },
+              {
+                "query": "Is SQLite FTS5 bm25() score higher better or lower better",
+                "group": "question",
+                "rank": 1,
+                "coverage": 0.8571,
+                "raw_score": 0.032787,
+                "vector_score": 0.6669
+              },
+              {
+                "query": "SQLite FTS5的bm25()分数是越大越好还是越小越好",
+                "group": "question",
+                "rank": 5,
+                "coverage": 0.1,
+                "raw_score": 0.028531,
+                "vector_score": 0.6524
+              }
+            ],
+            "source": "S02_SQLite_FTS5_BM25.html · 正文 · v1.0"
+          },
+          {
+            "id": 91,
+            "document_id": 11,
+            "ordinal": 32,
+            "page": 5,
+            "section": "第 5 页",
+            "text": "evelopment set.\n5.1 Main Results\nTable 2 compares different passage retrieval sys-\ntems on ﬁve QA datasets, using the top-kaccuracy\n(k ∈{20,100}). With the exception of SQuAD,\nDPR performs consistently better than BM25 on\nall datasets. The gap is especially large when kis\nsmall (e.g., 78.4% vs. 59.1% for top-20 accuracy\non Natural Questions). When training with mul-\n8SQuAD is limited to a small set of Wikipedia documents\nand thus introduces unwanted bias. We will discuss this issue\nmore in Section 5.1.\n9Lucene implementation. BM25 parameters b = 0.4 (doc-\nument length normalization) and k1 = 0.9 (term frequency\nscaling) are tuned using development sets.\n20 40 60 80 100\nk: # of retrieved passages\n40\n50\n60\n70\n80\n90Top-k accuracy (%)\nBM25\n# Train: 1k\n# Train: 10k\n# Train: 20k\n# Train: 40k\n# T",
+            "char_start": 20032,
+            "char_end": 20832,
+            "sha256": "31c2ebd1f4758b228ce2faad151c112f171ab7c5c6832dced98bdaa4ce6b32fd",
+            "name": "S01_DPR_2020.pdf",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 11,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+            "chunk_id": 91,
+            "snippet": "evelopment set.\n5.1 Main Results\nTable 2 compares different passage retrieval sys-\ntems on ﬁve QA datasets, using the top-kaccuracy\n(k ∈{20,100}). With the exception of SQuAD,\nDPR performs consistently better than BM25 on\nall datasets. The gap is especially large when kis\nsmall (e.g., 78.4% vs. 59.1% for top-20 accuracy\non Natural Questions). When training with mul-\n8SQuAD is limited to a small set of Wikipedia documents\nand thus introduces unwanted bias. We will discuss this issue\nmore in Section 5.1.\n9Lucene implementation. BM25 parameters b = 0.4 (doc-\nument length normalization) and k1 = 0.9 (term frequency\nscaling) are tuned using development sets.\n20 40 60 80 100\nk: # of retrieved passages\n40\n50\n60\n70\n80\n90Top-k accuracy (%)\nBM25\n# Train: 1k\n# Train: 10k\n# Train: 20k\n# Train: 40k\n# T",
+            "score": 0.022755,
+            "relevance": 0.8287,
+            "rerank_score": 0.828662,
+            "matched_queries": [
+              {
+                "query": "SQLite FTS5的bm25()分数,是越大越好还是越小越好?",
+                "group": "question",
+                "rank": 30,
+                "coverage": 0.0526,
+                "raw_score": 0.017423,
+                "vector_score": 0.551
+              },
+              {
+                "query": "Is SQLite FTS5 bm25() score higher better or lower better",
+                "group": "question",
+                "rank": 25,
+                "coverage": 0.2857,
+                "raw_score": 0.021277,
+                "vector_score": 0.545
+              },
+              {
+                "query": "SQLite FTS5的bm25()分数是越大越好还是越小越好",
+                "group": "question",
+                "rank": 32,
+                "coverage": 0.05,
+                "raw_score": 0.017159,
+                "vector_score": 0.5485
+              }
+            ],
+            "source": "S01_DPR_2020.pdf · 第 5 页 · 第5页 · v1.0"
+          },
+          {
+            "id": 92,
+            "document_id": 11,
+            "ordinal": 33,
+            "page": 5,
+            "section": "第 5 页",
+            "text": "pment sets.\n20 40 60 80 100\nk: # of retrieved passages\n40\n50\n60\n70\n80\n90Top-k accuracy (%)\nBM25\n# Train: 1k\n# Train: 10k\n# Train: 20k\n# Train: 40k\n# Train: all (59k)\nFigure 1: Retriever top-kaccuracy with different num-\nbers of training examples used in our dense passage re-\ntriever vs BM25. The results are measured on the de-\nvelopment set of Natural Questions. Our DPR trained\nusing 1,000 examples already outperforms BM25.\ntiple datasets, TREC, the smallest dataset of the\nﬁve, beneﬁts greatly from more training examples.\nIn contrast, Natural Questions and WebQuestions\nimprove modestly and TriviaQA degrades slightly.\nResults can be improved further in some cases by\ncombining DPR with BM25 in both single- and\nmulti-dataset settings.\nWe conjecture that the lower performance on\nSQuAD is due t",
+            "char_start": 20682,
+            "char_end": 21482,
+            "sha256": "10896b64296e2245fccd4dddbcfc6d8141288dddc9b73886df609c73331f53e7",
+            "name": "S01_DPR_2020.pdf",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 11,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+            "chunk_id": 92,
+            "snippet": "pment sets.\n20 40 60 80 100\nk: # of retrieved passages\n40\n50\n60\n70\n80\n90Top-k accuracy (%)\nBM25\n# Train: 1k\n# Train: 10k\n# Train: 20k\n# Train: 40k\n# Train: all (59k)\nFigure 1: Retriever top-kaccuracy with different num-\nbers of training examples used in our dense passage re-\ntriever vs BM25. The results are measured on the de-\nvelopment set of Natural Questions. Our DPR trained\nusing 1,000 examples already outperforms BM25.\ntiple datasets, TREC, the smallest dataset of the\nﬁve, beneﬁts greatly from more training examples.\nIn contrast, Natural Questions and WebQuestions\nimprove modestly and TriviaQA degrades slightly.\nResults can be improved further in some cases by\ncombining DPR with BM25 in both single- and\nmulti-dataset settings.\nWe conjecture that the lower performance on\nSQuAD is due t",
+            "score": 0.023245,
+            "relevance": 0.4784,
+            "rerank_score": 0.478437,
+            "matched_queries": [
+              {
+                "query": "SQLite FTS5的bm25()分数,是越大越好还是越小越好?",
+                "group": "question",
+                "rank": 31,
+                "coverage": 0.0526,
+                "raw_score": 0.017091,
+                "vector_score": 0.5329
+              },
+              {
+                "query": "Is SQLite FTS5 bm25() score higher better or lower better",
+                "group": "question",
+                "rank": 22,
+                "coverage": 0.2857,
+                "raw_score": 0.022274,
+                "vector_score": 0.5273
+              },
+              {
+                "query": "SQLite FTS5的bm25()分数是越大越好还是越小越好",
+                "group": "question",
+                "rank": 30,
+                "coverage": 0.05,
+                "raw_score": 0.017282,
+                "vector_score": 0.5318
+              }
+            ],
+            "source": "S01_DPR_2020.pdf · 第 5 页 · 第5页 · v1.0"
+          },
+          {
+            "id": 97,
+            "document_id": 11,
+            "ordinal": 38,
+            "page": 6,
+            "section": "第 6 页",
+            "text": "ores given the question, but do not\ncontain the answer string (the bottom block). These\nadditional passages are used as negative passages\nfor all questions in the same batch. We ﬁnd that\nadding a single BM25 negative passage improves\nthe result substantially while adding two does not\nhelp further.\nImpact of gold passages We use passages that\nmatch the gold contexts in the original datasets\n(when available) as positive examples (Section 4.2).\nType #N IB Top-5 Top-20 Top-100\nRandom 7 \u0017 47.0 64.3 77.8\nBM25 7 \u0017 50.0 63.3 74.8\nGold 7 \u0017 42.6 63.1 78.3\nGold 7 \u0013 51.1 69.1 80.8\nGold 31 \u0013 52.1 70.8 82.1\nGold 127 \u0013 55.8 73.0 83.1\nG.+BM25(1) 31+32 \u0013 65.0 77.3 84.4\nG.+BM25(2) 31+64 \u0013 64.5 76.4 84.0\nG.+BM25(1) 127+128 \u0013 65.8 78.0 84.9\nTable 3: Comparison of different training schemes,\nmeasured as top-kr",
+            "char_start": 23996,
+            "char_end": 24796,
+            "sha256": "461fdfa266f47a834976a1616150a5b3afbe7572e135829d0247215d23b6d3ac",
+            "name": "S01_DPR_2020.pdf",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 11,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+            "chunk_id": 97,
+            "snippet": "ores given the question, but do not\ncontain the answer string (the bottom block). These\nadditional passages are used as negative passages\nfor all questions in the same batch. We ﬁnd that\nadding a single BM25 negative passage improves\nthe result substantially while adding two does not\nhelp further.\nImpact of gold passages We use passages that\nmatch the gold contexts in the original datasets\n(when available) as positive examples (Section 4.2).\nType #N IB Top-5 Top-20 Top-100\nRandom 7 \u0017 47.0 64.3 77.8\nBM25 7 \u0017 50.0 63.3 74.8\nGold 7 \u0017 42.6 63.1 78.3\nGold 7 \u0013 51.1 69.1 80.8\nGold 31 \u0013 52.1 70.8 82.1\nGold 127 \u0013 55.8 73.0 83.1\nG.+BM25(1) 31+32 \u0013 65.0 77.3 84.4\nG.+BM25(2) 31+64 \u0013 64.5 76.4 84.0\nG.+BM25(1) 127+128 \u0013 65.8 78.0 84.9\nTable 3: Comparison of different training schemes,\nmeasured as top-kr",
+            "score": 0.022864,
+            "relevance": 0.4145,
+            "rerank_score": 0.414484,
+            "matched_queries": [
+              {
+                "query": "SQLite FTS5的bm25()分数,是越大越好还是越小越好?",
+                "group": "question",
+                "rank": 29,
+                "coverage": 0.0526,
+                "raw_score": 0.017713,
+                "vector_score": 0.5443
+              },
+              {
+                "query": "Is SQLite FTS5 bm25() score higher better or lower better",
+                "group": "question",
+                "rank": 28,
+                "coverage": 0.1429,
+                "raw_score": 0.020313,
+                "vector_score": 0.5724
+              },
+              {
+                "query": "SQLite FTS5的bm25()分数是越大越好还是越小越好",
+                "group": "question",
+                "rank": 25,
+                "coverage": 0.05,
+                "raw_score": 0.018169,
+                "vector_score": 0.5502
+              }
+            ],
+            "source": "S01_DPR_2020.pdf · 第 6 页 · 第6页 · v1.0"
+          },
+          {
+            "id": 563,
+            "document_id": 12,
+            "ordinal": 416,
+            "page": null,
+            "section": "正文",
+            "text": "SELECT * FROM ft WHERE ft MATCH ? ORDER BY bm25(ft)",
+            "char_start": 58310,
+            "char_end": 58361,
+            "sha256": "cf10939e5197d49457f4d24850cf8a59dd704a417063938004f8fc19fcd789a0",
+            "name": "S02_SQLite_FTS5_BM25.html",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 11,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+            "chunk_id": 563,
+            "snippet": "SELECT * FROM ft WHERE ft MATCH ? ORDER BY bm25(ft)",
+            "score": 0,
+            "relevance": 0,
+            "rerank_score": 0,
+            "kind": "adjacent-context",
+            "context_for": 562,
+            "matched_queries": [],
+            "source": "S02_SQLite_FTS5_BM25.html · 正文 · v1.0 · 相邻原文（未独立评分）"
+          },
+          {
+            "id": 561,
+            "document_id": 12,
+            "ordinal": 414,
+            "page": null,
+            "section": "正文",
+            "text": "5.1.1. The bm25() function",
+            "char_start": 57992,
+            "char_end": 58018,
+            "sha256": "a42bde34aa811b6b26ce24c7b4d9780daebbf4f34dabac8946995e4f625daad2",
+            "name": "S02_SQLite_FTS5_BM25.html",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 11,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+            "chunk_id": 561,
+            "snippet": "5.1.1. The bm25() function",
+            "score": 0,
+            "relevance": 0,
+            "rerank_score": 0,
+            "kind": "adjacent-context",
+            "context_for": 562,
+            "matched_queries": [],
+            "source": "S02_SQLite_FTS5_BM25.html · 正文 · v1.0 · 相邻原文（未独立评分）"
+          },
+          {
+            "id": 565,
+            "document_id": 12,
+            "ordinal": 418,
+            "page": null,
+            "section": "正文",
+            "text": "In the above, nPhrase is the number of phrases in the query.\r\n    |D| is the number of tokens in the current document, and\r\n    avgdl is the average number of tokens in all documents within the\r\n    FTS5 table.  k1 and b are both constants,\r\n    hard-coded at 1.2 and 0.75 respectively.",
+            "char_start": 58549,
+            "char_end": 58835,
+            "sha256": "a6e94bbe080d1068f6a11a857b6f01225edd3f08bd9957b95179d8e5cae00a5e",
+            "name": "S02_SQLite_FTS5_BM25.html",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 11,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+            "chunk_id": 565,
+            "snippet": "In the above, nPhrase is the number of phrases in the query.\r\n    |D| is the number of tokens in the current document, and\r\n    avgdl is the average number of tokens in all documents within the\r\n    FTS5 table.  k1 and b are both constants,\r\n    hard-coded at 1.2 and 0.75 respectively.",
+            "score": 0,
+            "relevance": 0,
+            "rerank_score": 0,
+            "kind": "adjacent-context",
+            "context_for": 566,
+            "matched_queries": [],
+            "source": "S02_SQLite_FTS5_BM25.html · 正文 · v1.0 · 相邻原文（未独立评分）"
+          },
+          {
+            "id": 567,
+            "document_id": 12,
+            "ordinal": 420,
+            "page": null,
+            "section": "正文",
+            "text": "IDF(qi) is the inverse-document-frequency of query\r\n    phrase i. It is calculated as follows, where N is the total\r\n    number of rows in the FTS5 table and n(qi) is the total\r\n    number of rows that contain at least one instance of phrase i:",
+            "char_start": 59450,
+            "char_end": 59694,
+            "sha256": "f8806d699620f7d2be4f645acb936819f792a73c7c76be6beeba570b7b1a8d95",
+            "name": "S02_SQLite_FTS5_BM25.html",
+            "version": "v1.0",
+            "modality": "text",
+            "knowledge_base_id": 11,
+            "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+            "chunk_id": 567,
+            "snippet": "IDF(qi) is the inverse-document-frequency of query\r\n    phrase i. It is calculated as follows, where N is the total\r\n    number of rows in the FTS5 table and n(qi) is the total\r\n    number of rows that contain at least one instance of phrase i:",
+            "score": 0,
+            "relevance": 0,
+            "rerank_score": 0,
+            "kind": "adjacent-context",
+            "context_for": 566,
+            "matched_queries": [],
+            "source": "S02_SQLite_FTS5_BM25.html · 正文 · v1.0 · 相邻原文（未独立评分）"
+          }
+        ],
+        "status": "complete",
+        "feedback": null,
+        "created_at": "2026-11-01T13:12:39+00:00",
+        "verification": [
+          {
+            "claim_id": 1,
+            "sha256": "dd7a7f45c5e6dac5e74db62b8e605ca462862dbccda435e8311321256e635d3c",
+            "references": [
+              1
+            ],
+            "status": "supported",
+            "reason_code": "supported",
+            "reason": "逐句引用、证据判断、原文定位及数字检查通过",
+            "verdict": "supported",
+            "text": "SQLite FTS5 的 `bm25()` 分数是**越小越好**。[1]",
+            "quotes": [
+              {
+                "reference": 1,
+                "quote": "The better the match,\r\nthe numerically smaller the value returned.",
+                "char_start": 126,
+                "char_end": 192,
+                "match": "layout-normalized",
+                "source_sha256": "d24a4acd40f255de3946ef862e3ac1a93346fde45fc20161f59ad94ecfe07316"
+              }
+            ],
+            "model": "kimi-k2.6"
+          },
+          {
+            "claim_id": 2,
+            "sha256": "b9c3d0b23224c370d415755dcb6ecb372fc7d83ee10636fad37b6ab3ffaa63f1",
+            "references": [],
+            "status": "rejected",
+            "reason_code": "invalid_citation",
+            "reason": "引用缺失、越界或不在句末"
+          },
+          {
+            "claim_id": 3,
+            "sha256": "e95ab2f0dd6eda74a61570e6845f585f27f7f1c4c57ca2a2b8b9db044aeca56c",
+            "references": [
+              2
+            ],
+            "status": "rejected",
+            "reason_code": "contradicted",
+            "reason": "陈述与引用证据矛盾",
+            "verdict": "contradicted"
+          }
+        ],
+        "retrieval": {
+          "embedding": "local-bge-m3",
+          "embedding_model": "BAAI/bge-m3",
+          "rerank": "local-cross-encoder",
+          "reranking": {
+            "model": "BAAI/bge-reranker-v2-m3",
+            "candidate_count": 40,
+            "device": "cuda",
+            "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+            "max_length": 1024,
+            "at_length_limit": 0
+          },
+          "policy": "multi-query-neural-v3",
+          "mode": "hybrid",
+          "top_k": 5,
+          "min_similarity": 0.3,
+          "min_coverage": 0.12,
+          "main_result_count": 5,
+          "context_result_count": 4,
+          "knowledge_base_ids": [
+            11,
+            12,
+            13
+          ],
+          "query_expansion": {
+            "policy": "bilingual-query-v1",
+            "status": "expanded",
+            "corpus_languages": [
+              "en",
+              "zh"
+            ],
+            "queries": [
+              {
+                "query": "SQLite FTS5的bm25()分数,是越大越好还是越小越好?",
+                "group": "question",
+                "weight": 1.0,
+                "language": "original"
+              },
+              {
+                "query": "Is SQLite FTS5 bm25() score higher better or lower better",
+                "group": "question",
+                "weight": 1.0,
+                "language": "en"
+              },
+              {
+                "query": "SQLite FTS5的bm25()分数是越大越好还是越小越好",
+                "group": "question",
+                "weight": 1.0,
+                "language": "zh"
+              }
+            ],
+            "warnings": [],
+            "cache": "miss",
+            "model": "kimi-k2.6"
+          },
+          "topic_anchors": [
+            "bm25",
+            "fts5",
+            "sqlite"
+          ],
+          "covered_topic_anchors": [
+            "bm25",
+            "fts5",
+            "sqlite"
+          ],
+          "part_coverage": {}
+        },
+        "coverage": {
+          "policy": "question-coverage-v1",
+          "status": "assessed",
+          "items": [
+            {
+              "requirement": "SQLite FTS5的bm25()分数是越大越好还是越小越好",
+              "status": "covered",
+              "references": [
+                1,
+                2
+              ]
+            }
+          ],
+          "model": "kimi-k2.6",
+          "repair_attempted": false,
+          "complete": true
+        }
+      }
+    ]
+  },
+  "events": [
+    {
+      "type": "meta",
+      "conversation_id": 45,
+      "message_id": 94,
+      "citations": [
+        {
+          "id": 562,
+          "document_id": 12,
+          "ordinal": 415,
+          "page": null,
+          "section": "正文",
+          "text": "The built-in auxiliary function bm25() returns a real value indicating\r\nhow well the current row matches the full-text query. The better the match,\r\nthe numerically smaller the value returned. A query such as the following may\r\nbe used to return matches in order from best to worst match:",
+          "char_start": 58020,
+          "char_end": 58308,
+          "sha256": "d24a4acd40f255de3946ef862e3ac1a93346fde45fc20161f59ad94ecfe07316",
+          "name": "S02_SQLite_FTS5_BM25.html",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 11,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+          "chunk_id": 562,
+          "snippet": "The built-in auxiliary function bm25() returns a real value indicating\r\nhow well the current row matches the full-text query. The better the match,\r\nthe numerically smaller the value returned. A query such as the following may\r\nbe used to return matches in order from best to worst match:",
+          "score": 0.02863,
+          "relevance": 0.9466,
+          "rerank_score": 0.946597,
+          "matched_queries": [
+            {
+              "query": "SQLite FTS5的bm25()分数,是越大越好还是越小越好?",
+              "group": "question",
+              "rank": 16,
+              "coverage": 0.0526,
+              "raw_score": 0.021728,
+              "vector_score": 0.6156
+            },
+            {
+              "query": "Is SQLite FTS5 bm25() score higher better or lower better",
+              "group": "question",
+              "rank": 5,
+              "coverage": 0.2857,
+              "raw_score": 0.028624,
+              "vector_score": 0.6183
+            },
+            {
+              "query": "SQLite FTS5的bm25()分数是越大越好还是越小越好",
+              "group": "question",
+              "rank": 15,
+              "coverage": 0.05,
+              "raw_score": 0.022382,
+              "vector_score": 0.6242
+            }
+          ],
+          "source": "S02_SQLite_FTS5_BM25.html · 正文 · v1.0"
+        },
+        {
+          "id": 566,
+          "document_id": 12,
+          "ordinal": 419,
+          "page": null,
+          "section": "正文",
+          "text": "The \"-1\" term at the start of the formula is not found in most\r\nimplementations of the BM25 algorithm. Without it, a better match is assigned\r\na numerically higher BM25 score. Since the default sorting order is\r\n\"ascending\", this means that appending \"ORDER BY bm25(ft)\" to a query would\r\ncause results to be returned in order from worst to best. The \"DESC\" keyword\r\nwould be required in order to return the best matches first. In order to\r\navoid this pitfall, the FTS5 implementation of BM25 multiplies the result\r\nby -1 before returning it, ensuring that better matches are assigned\r\nnumerically lower scores.",
+          "char_start": 58837,
+          "char_end": 59448,
+          "sha256": "07dfbffa7e453d4b6d9d1bfca40169151348b0b1abdb9d052cd029fa250ab6af",
+          "name": "S02_SQLite_FTS5_BM25.html",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 11,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+          "chunk_id": 566,
+          "snippet": "The \"-1\" term at the start of the formula is not found in most\r\nimplementations of the BM25 algorithm. Without it, a better match is assigned\r\na numerically higher BM25 score. Since the default sorting order is\r\n\"ascending\", this means that appending \"ORDER BY bm25(ft)\" to a query would\r\ncause results to be returned in order from worst to best. The \"DESC\" keyword\r\nwould be required in order to return the best matches first. In order to\r\navoid this pitfall, the FTS5 implementation of BM25 multiplies the result\r\nby -1 before returning it, ensuring that better matches are assigned\r\nnumerically lower scores.",
+          "score": 0.031778,
+          "relevance": 0.9154,
+          "rerank_score": 0.915356,
+          "matched_queries": [
+            {
+              "query": "SQLite FTS5的bm25()分数,是越大越好还是越小越好?",
+              "group": "question",
+              "rank": 5,
+              "coverage": 0.1053,
+              "raw_score": 0.028531,
+              "vector_score": 0.6476
+            },
+            {
+              "query": "Is SQLite FTS5 bm25() score higher better or lower better",
+              "group": "question",
+              "rank": 1,
+              "coverage": 0.8571,
+              "raw_score": 0.032787,
+              "vector_score": 0.6669
+            },
+            {
+              "query": "SQLite FTS5的bm25()分数是越大越好还是越小越好",
+              "group": "question",
+              "rank": 5,
+              "coverage": 0.1,
+              "raw_score": 0.028531,
+              "vector_score": 0.6524
+            }
+          ],
+          "source": "S02_SQLite_FTS5_BM25.html · 正文 · v1.0"
+        },
+        {
+          "id": 91,
+          "document_id": 11,
+          "ordinal": 32,
+          "page": 5,
+          "section": "第 5 页",
+          "text": "evelopment set.\n5.1 Main Results\nTable 2 compares different passage retrieval sys-\ntems on ﬁve QA datasets, using the top-kaccuracy\n(k ∈{20,100}). With the exception of SQuAD,\nDPR performs consistently better than BM25 on\nall datasets. The gap is especially large when kis\nsmall (e.g., 78.4% vs. 59.1% for top-20 accuracy\non Natural Questions). When training with mul-\n8SQuAD is limited to a small set of Wikipedia documents\nand thus introduces unwanted bias. We will discuss this issue\nmore in Section 5.1.\n9Lucene implementation. BM25 parameters b = 0.4 (doc-\nument length normalization) and k1 = 0.9 (term frequency\nscaling) are tuned using development sets.\n20 40 60 80 100\nk: # of retrieved passages\n40\n50\n60\n70\n80\n90Top-k accuracy (%)\nBM25\n# Train: 1k\n# Train: 10k\n# Train: 20k\n# Train: 40k\n# T",
+          "char_start": 20032,
+          "char_end": 20832,
+          "sha256": "31c2ebd1f4758b228ce2faad151c112f171ab7c5c6832dced98bdaa4ce6b32fd",
+          "name": "S01_DPR_2020.pdf",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 11,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+          "chunk_id": 91,
+          "snippet": "evelopment set.\n5.1 Main Results\nTable 2 compares different passage retrieval sys-\ntems on ﬁve QA datasets, using the top-kaccuracy\n(k ∈{20,100}). With the exception of SQuAD,\nDPR performs consistently better than BM25 on\nall datasets. The gap is especially large when kis\nsmall (e.g., 78.4% vs. 59.1% for top-20 accuracy\non Natural Questions). When training with mul-\n8SQuAD is limited to a small set of Wikipedia documents\nand thus introduces unwanted bias. We will discuss this issue\nmore in Section 5.1.\n9Lucene implementation. BM25 parameters b = 0.4 (doc-\nument length normalization) and k1 = 0.9 (term frequency\nscaling) are tuned using development sets.\n20 40 60 80 100\nk: # of retrieved passages\n40\n50\n60\n70\n80\n90Top-k accuracy (%)\nBM25\n# Train: 1k\n# Train: 10k\n# Train: 20k\n# Train: 40k\n# T",
+          "score": 0.022755,
+          "relevance": 0.8287,
+          "rerank_score": 0.828662,
+          "matched_queries": [
+            {
+              "query": "SQLite FTS5的bm25()分数,是越大越好还是越小越好?",
+              "group": "question",
+              "rank": 30,
+              "coverage": 0.0526,
+              "raw_score": 0.017423,
+              "vector_score": 0.551
+            },
+            {
+              "query": "Is SQLite FTS5 bm25() score higher better or lower better",
+              "group": "question",
+              "rank": 25,
+              "coverage": 0.2857,
+              "raw_score": 0.021277,
+              "vector_score": 0.545
+            },
+            {
+              "query": "SQLite FTS5的bm25()分数是越大越好还是越小越好",
+              "group": "question",
+              "rank": 32,
+              "coverage": 0.05,
+              "raw_score": 0.017159,
+              "vector_score": 0.5485
+            }
+          ],
+          "source": "S01_DPR_2020.pdf · 第 5 页 · 第5页 · v1.0"
+        },
+        {
+          "id": 92,
+          "document_id": 11,
+          "ordinal": 33,
+          "page": 5,
+          "section": "第 5 页",
+          "text": "pment sets.\n20 40 60 80 100\nk: # of retrieved passages\n40\n50\n60\n70\n80\n90Top-k accuracy (%)\nBM25\n# Train: 1k\n# Train: 10k\n# Train: 20k\n# Train: 40k\n# Train: all (59k)\nFigure 1: Retriever top-kaccuracy with different num-\nbers of training examples used in our dense passage re-\ntriever vs BM25. The results are measured on the de-\nvelopment set of Natural Questions. Our DPR trained\nusing 1,000 examples already outperforms BM25.\ntiple datasets, TREC, the smallest dataset of the\nﬁve, beneﬁts greatly from more training examples.\nIn contrast, Natural Questions and WebQuestions\nimprove modestly and TriviaQA degrades slightly.\nResults can be improved further in some cases by\ncombining DPR with BM25 in both single- and\nmulti-dataset settings.\nWe conjecture that the lower performance on\nSQuAD is due t",
+          "char_start": 20682,
+          "char_end": 21482,
+          "sha256": "10896b64296e2245fccd4dddbcfc6d8141288dddc9b73886df609c73331f53e7",
+          "name": "S01_DPR_2020.pdf",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 11,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+          "chunk_id": 92,
+          "snippet": "pment sets.\n20 40 60 80 100\nk: # of retrieved passages\n40\n50\n60\n70\n80\n90Top-k accuracy (%)\nBM25\n# Train: 1k\n# Train: 10k\n# Train: 20k\n# Train: 40k\n# Train: all (59k)\nFigure 1: Retriever top-kaccuracy with different num-\nbers of training examples used in our dense passage re-\ntriever vs BM25. The results are measured on the de-\nvelopment set of Natural Questions. Our DPR trained\nusing 1,000 examples already outperforms BM25.\ntiple datasets, TREC, the smallest dataset of the\nﬁve, beneﬁts greatly from more training examples.\nIn contrast, Natural Questions and WebQuestions\nimprove modestly and TriviaQA degrades slightly.\nResults can be improved further in some cases by\ncombining DPR with BM25 in both single- and\nmulti-dataset settings.\nWe conjecture that the lower performance on\nSQuAD is due t",
+          "score": 0.023245,
+          "relevance": 0.4784,
+          "rerank_score": 0.478437,
+          "matched_queries": [
+            {
+              "query": "SQLite FTS5的bm25()分数,是越大越好还是越小越好?",
+              "group": "question",
+              "rank": 31,
+              "coverage": 0.0526,
+              "raw_score": 0.017091,
+              "vector_score": 0.5329
+            },
+            {
+              "query": "Is SQLite FTS5 bm25() score higher better or lower better",
+              "group": "question",
+              "rank": 22,
+              "coverage": 0.2857,
+              "raw_score": 0.022274,
+              "vector_score": 0.5273
+            },
+            {
+              "query": "SQLite FTS5的bm25()分数是越大越好还是越小越好",
+              "group": "question",
+              "rank": 30,
+              "coverage": 0.05,
+              "raw_score": 0.017282,
+              "vector_score": 0.5318
+            }
+          ],
+          "source": "S01_DPR_2020.pdf · 第 5 页 · 第5页 · v1.0"
+        },
+        {
+          "id": 97,
+          "document_id": 11,
+          "ordinal": 38,
+          "page": 6,
+          "section": "第 6 页",
+          "text": "ores given the question, but do not\ncontain the answer string (the bottom block). These\nadditional passages are used as negative passages\nfor all questions in the same batch. We ﬁnd that\nadding a single BM25 negative passage improves\nthe result substantially while adding two does not\nhelp further.\nImpact of gold passages We use passages that\nmatch the gold contexts in the original datasets\n(when available) as positive examples (Section 4.2).\nType #N IB Top-5 Top-20 Top-100\nRandom 7 \u0017 47.0 64.3 77.8\nBM25 7 \u0017 50.0 63.3 74.8\nGold 7 \u0017 42.6 63.1 78.3\nGold 7 \u0013 51.1 69.1 80.8\nGold 31 \u0013 52.1 70.8 82.1\nGold 127 \u0013 55.8 73.0 83.1\nG.+BM25(1) 31+32 \u0013 65.0 77.3 84.4\nG.+BM25(2) 31+64 \u0013 64.5 76.4 84.0\nG.+BM25(1) 127+128 \u0013 65.8 78.0 84.9\nTable 3: Comparison of different training schemes,\nmeasured as top-kr",
+          "char_start": 23996,
+          "char_end": 24796,
+          "sha256": "461fdfa266f47a834976a1616150a5b3afbe7572e135829d0247215d23b6d3ac",
+          "name": "S01_DPR_2020.pdf",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 11,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+          "chunk_id": 97,
+          "snippet": "ores given the question, but do not\ncontain the answer string (the bottom block). These\nadditional passages are used as negative passages\nfor all questions in the same batch. We ﬁnd that\nadding a single BM25 negative passage improves\nthe result substantially while adding two does not\nhelp further.\nImpact of gold passages We use passages that\nmatch the gold contexts in the original datasets\n(when available) as positive examples (Section 4.2).\nType #N IB Top-5 Top-20 Top-100\nRandom 7 \u0017 47.0 64.3 77.8\nBM25 7 \u0017 50.0 63.3 74.8\nGold 7 \u0017 42.6 63.1 78.3\nGold 7 \u0013 51.1 69.1 80.8\nGold 31 \u0013 52.1 70.8 82.1\nGold 127 \u0013 55.8 73.0 83.1\nG.+BM25(1) 31+32 \u0013 65.0 77.3 84.4\nG.+BM25(2) 31+64 \u0013 64.5 76.4 84.0\nG.+BM25(1) 127+128 \u0013 65.8 78.0 84.9\nTable 3: Comparison of different training schemes,\nmeasured as top-kr",
+          "score": 0.022864,
+          "relevance": 0.4145,
+          "rerank_score": 0.414484,
+          "matched_queries": [
+            {
+              "query": "SQLite FTS5的bm25()分数,是越大越好还是越小越好?",
+              "group": "question",
+              "rank": 29,
+              "coverage": 0.0526,
+              "raw_score": 0.017713,
+              "vector_score": 0.5443
+            },
+            {
+              "query": "Is SQLite FTS5 bm25() score higher better or lower better",
+              "group": "question",
+              "rank": 28,
+              "coverage": 0.1429,
+              "raw_score": 0.020313,
+              "vector_score": 0.5724
+            },
+            {
+              "query": "SQLite FTS5的bm25()分数是越大越好还是越小越好",
+              "group": "question",
+              "rank": 25,
+              "coverage": 0.05,
+              "raw_score": 0.018169,
+              "vector_score": 0.5502
+            }
+          ],
+          "source": "S01_DPR_2020.pdf · 第 6 页 · 第6页 · v1.0"
+        },
+        {
+          "id": 563,
+          "document_id": 12,
+          "ordinal": 416,
+          "page": null,
+          "section": "正文",
+          "text": "SELECT * FROM ft WHERE ft MATCH ? ORDER BY bm25(ft)",
+          "char_start": 58310,
+          "char_end": 58361,
+          "sha256": "cf10939e5197d49457f4d24850cf8a59dd704a417063938004f8fc19fcd789a0",
+          "name": "S02_SQLite_FTS5_BM25.html",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 11,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+          "chunk_id": 563,
+          "snippet": "SELECT * FROM ft WHERE ft MATCH ? ORDER BY bm25(ft)",
+          "score": 0,
+          "relevance": 0,
+          "rerank_score": 0,
+          "kind": "adjacent-context",
+          "context_for": 562,
+          "matched_queries": [],
+          "source": "S02_SQLite_FTS5_BM25.html · 正文 · v1.0 · 相邻原文（未独立评分）"
+        },
+        {
+          "id": 561,
+          "document_id": 12,
+          "ordinal": 414,
+          "page": null,
+          "section": "正文",
+          "text": "5.1.1. The bm25() function",
+          "char_start": 57992,
+          "char_end": 58018,
+          "sha256": "a42bde34aa811b6b26ce24c7b4d9780daebbf4f34dabac8946995e4f625daad2",
+          "name": "S02_SQLite_FTS5_BM25.html",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 11,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+          "chunk_id": 561,
+          "snippet": "5.1.1. The bm25() function",
+          "score": 0,
+          "relevance": 0,
+          "rerank_score": 0,
+          "kind": "adjacent-context",
+          "context_for": 562,
+          "matched_queries": [],
+          "source": "S02_SQLite_FTS5_BM25.html · 正文 · v1.0 · 相邻原文（未独立评分）"
+        },
+        {
+          "id": 565,
+          "document_id": 12,
+          "ordinal": 418,
+          "page": null,
+          "section": "正文",
+          "text": "In the above, nPhrase is the number of phrases in the query.\r\n    |D| is the number of tokens in the current document, and\r\n    avgdl is the average number of tokens in all documents within the\r\n    FTS5 table.  k1 and b are both constants,\r\n    hard-coded at 1.2 and 0.75 respectively.",
+          "char_start": 58549,
+          "char_end": 58835,
+          "sha256": "a6e94bbe080d1068f6a11a857b6f01225edd3f08bd9957b95179d8e5cae00a5e",
+          "name": "S02_SQLite_FTS5_BM25.html",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 11,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+          "chunk_id": 565,
+          "snippet": "In the above, nPhrase is the number of phrases in the query.\r\n    |D| is the number of tokens in the current document, and\r\n    avgdl is the average number of tokens in all documents within the\r\n    FTS5 table.  k1 and b are both constants,\r\n    hard-coded at 1.2 and 0.75 respectively.",
+          "score": 0,
+          "relevance": 0,
+          "rerank_score": 0,
+          "kind": "adjacent-context",
+          "context_for": 566,
+          "matched_queries": [],
+          "source": "S02_SQLite_FTS5_BM25.html · 正文 · v1.0 · 相邻原文（未独立评分）"
+        },
+        {
+          "id": 567,
+          "document_id": 12,
+          "ordinal": 420,
+          "page": null,
+          "section": "正文",
+          "text": "IDF(qi) is the inverse-document-frequency of query\r\n    phrase i. It is calculated as follows, where N is the total\r\n    number of rows in the FTS5 table and n(qi) is the total\r\n    number of rows that contain at least one instance of phrase i:",
+          "char_start": 59450,
+          "char_end": 59694,
+          "sha256": "f8806d699620f7d2be4f645acb936819f792a73c7c76be6beeba570b7b1a8d95",
+          "name": "S02_SQLite_FTS5_BM25.html",
+          "version": "v1.0",
+          "modality": "text",
+          "knowledge_base_id": 11,
+          "knowledge_base_name": "网络资料测试 2026-11-01 · 检索技术",
+          "chunk_id": 567,
+          "snippet": "IDF(qi) is the inverse-document-frequency of query\r\n    phrase i. It is calculated as follows, where N is the total\r\n    number of rows in the FTS5 table and n(qi) is the total\r\n    number of rows that contain at least one instance of phrase i:",
+          "score": 0,
+          "relevance": 0,
+          "rerank_score": 0,
+          "kind": "adjacent-context",
+          "context_for": 566,
+          "matched_queries": [],
+          "source": "S02_SQLite_FTS5_BM25.html · 正文 · v1.0 · 相邻原文（未独立评分）"
+        }
+      ],
+      "pipeline": {
+        "embedding": "local-bge-m3",
+        "embedding_model": "BAAI/bge-m3",
+        "rerank": "local-cross-encoder",
+        "reranking": {
+          "model": "BAAI/bge-reranker-v2-m3",
+          "candidate_count": 40,
+          "device": "cuda",
+          "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+          "max_length": 1024,
+          "at_length_limit": 0
+        },
+        "policy": "multi-query-neural-v3",
+        "mode": "hybrid",
+        "top_k": 5,
+        "min_similarity": 0.3,
+        "min_coverage": 0.12,
+        "main_result_count": 5,
+        "context_result_count": 4,
+        "knowledge_base_ids": [
+          11,
+          12,
+          13
+        ],
+        "query_expansion": {
+          "policy": "bilingual-query-v1",
+          "status": "expanded",
+          "corpus_languages": [
+            "en",
+            "zh"
+          ],
+          "queries": [
+            {
+              "query": "SQLite FTS5的bm25()分数,是越大越好还是越小越好?",
+              "group": "question",
+              "weight": 1.0,
+              "language": "original"
+            },
+            {
+              "query": "Is SQLite FTS5 bm25() score higher better or lower better",
+              "group": "question",
+              "weight": 1.0,
+              "language": "en"
+            },
+            {
+              "query": "SQLite FTS5的bm25()分数是越大越好还是越小越好",
+              "group": "question",
+              "weight": 1.0,
+              "language": "zh"
+            }
+          ],
+          "warnings": [],
+          "cache": "miss",
+          "model": "kimi-k2.6"
+        },
+        "topic_anchors": [
+          "bm25",
+          "fts5",
+          "sqlite"
+        ],
+        "covered_topic_anchors": [
+          "bm25",
+          "fts5",
+          "sqlite"
+        ],
+        "part_coverage": {}
+      }
+    },
+    {
+      "type": "verification",
+      "checks": [
+        {
+          "claim_id": 1,
+          "sha256": "dd7a7f45c5e6dac5e74db62b8e605ca462862dbccda435e8311321256e635d3c",
+          "references": [
+            1
+          ],
+          "status": "supported",
+          "reason_code": "supported",
+          "reason": "逐句引用、证据判断、原文定位及数字检查通过",
+          "verdict": "supported",
+          "text": "SQLite FTS5 的 `bm25()` 分数是**越小越好**。[1]",
+          "quotes": [
+            {
+              "reference": 1,
+              "quote": "The better the match,\r\nthe numerically smaller the value returned.",
+              "char_start": 126,
+              "char_end": 192,
+              "match": "layout-normalized",
+              "source_sha256": "d24a4acd40f255de3946ef862e3ac1a93346fde45fc20161f59ad94ecfe07316"
+            }
+          ],
+          "model": "kimi-k2.6"
+        }
+      ]
+    },
+    {
+      "type": "token",
+      "content": "SQLite FTS5 的 `bm25()` 分数是**越小越好**。[1]\n"
+    },
+    {
+      "type": "verification",
+      "checks": [
+        {
+          "claim_id": 1,
+          "sha256": "dd7a7f45c5e6dac5e74db62b8e605ca462862dbccda435e8311321256e635d3c",
+          "references": [
+            1
+          ],
+          "status": "supported",
+          "reason_code": "supported",
+          "reason": "逐句引用、证据判断、原文定位及数字检查通过",
+          "verdict": "supported",
+          "text": "SQLite FTS5 的 `bm25()` 分数是**越小越好**。[1]",
+          "quotes": [
+            {
+              "reference": 1,
+              "quote": "The better the match,\r\nthe numerically smaller the value returned.",
+              "char_start": 126,
+              "char_end": 192,
+              "match": "layout-normalized",
+              "source_sha256": "d24a4acd40f255de3946ef862e3ac1a93346fde45fc20161f59ad94ecfe07316"
+            }
+          ],
+          "model": "kimi-k2.6"
+        },
+        {
+          "claim_id": 2,
+          "sha256": "b9c3d0b23224c370d415755dcb6ecb372fc7d83ee10636fad37b6ab3ffaa63f1",
+          "references": [],
+          "status": "rejected",
+          "reason_code": "invalid_citation",
+          "reason": "引用缺失、越界或不在句末"
+        },
+        {
+          "claim_id": 3,
+          "sha256": "e95ab2f0dd6eda74a61570e6845f585f27f7f1c4c57ca2a2b8b9db044aeca56c",
+          "references": [
+            2
+          ],
+          "status": "rejected",
+          "reason_code": "contradicted",
+          "reason": "陈述与引用证据矛盾",
+          "verdict": "contradicted"
+        }
+      ]
+    },
+    {
+      "type": "stage",
+      "stage": "coverage",
+      "message": "正在检查问题关键点，必要的补充仍须通过事实核验"
+    },
+    {
+      "type": "coverage",
+      "assessment": {
+        "policy": "question-coverage-v1",
+        "status": "assessed",
+        "items": [
+          {
+            "requirement": "SQLite FTS5的bm25()分数是越大越好还是越小越好",
+            "status": "covered",
+            "references": [
+              1,
+              2
+            ]
+          }
+        ],
+        "model": "kimi-k2.6",
+        "repair_attempted": false,
+        "complete": true
+      }
+    },
+    {
+      "type": "token",
+      "content": "\n部分候选句未通过引用或证据支撑校验，已过滤；上述仅展示通过校验的内容。"
+    },
+    {
+      "type": "done",
+      "conversation_id": 45,
+      "message_id": 94
+    }
+  ],
+  "grading": "人工复核，不以模型自评或词项命中自动判正确"
+}

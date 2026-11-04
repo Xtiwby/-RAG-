@@ -1,0 +1,16 @@
+{
+  "run":"trial2",
+  "reviewer":"assistant; not external human acceptance",
+  "automatic_coverage_is_not_ground_truth":true,
+  "cases":[
+    {"id":"Q001","result":"meets_expected_core_facts","note":"Names dual-encoder with actual context citation"},
+    {"id":"Q005","result":"meets_expected_core_facts","note":"k1=1.2 and b=0.75"},
+    {"id":"Q007","result":"meets_expected_core_facts","note":"bytes all in memory; UploadFile spooled memory/disk and advantages"},
+    {"id":"Q025","result":"partial","note":"Explains OCR boundaries but does not directly and completely answer whether receiving UploadFile completes OCR; model coverage falsely reports complete"},
+    {"id":"Q027","result":"appropriate_insufficiency","note":"No fabricated project QPS or P99"},
+    {"id":"Q031","result":"appropriate_insufficiency","note":"Separates paper improvement from unknown project improvement"},
+    {"id":"Q004","result":"meets_expected_core_facts","note":"SQLite FTS5 smaller BM25 score is better"},
+    {"id":"Q016","result":"meets_expected_core_facts","note":"nextTick"}
+  ],
+  "caveat":"Small development diagnostic; not blind evaluation or a general accuracy estimate. Initial and final directories preserve prior trials and must not be pooled."
+}

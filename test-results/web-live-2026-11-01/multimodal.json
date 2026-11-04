@@ -1,0 +1,292 @@
+{
+  "knowledge_base_id": 14,
+  "ocr_original": {
+    "id": 21,
+    "knowledge_base_id": 14,
+    "name": "S01_DPR_page01.png",
+    "file_type": "png",
+    "modality": "image",
+    "size": 484189,
+    "status": "processing",
+    "version": "v1.0",
+    "page_count": 1,
+    "created_at": "2026-10-31T16:09:24+00:00",
+    "sha256": "6d5165ec050c4bd204d8868afd0337422403900ccffb2dde14914782b9233aea",
+    "deleted": 0,
+    "parse_error": "",
+    "index_config": "{}",
+    "job_id": 45,
+    "processing_stage": "parse",
+    "processing_progress": 25,
+    "has_original": true
+  },
+  "image_before_vision": {
+    "document_id": 21,
+    "status": "needs_extraction",
+    "progress": 50,
+    "stages": [
+      {
+        "id": 1044,
+        "document_id": 21,
+        "job_id": null,
+        "attempt": 0,
+        "stage": "upload",
+        "status": "completed",
+        "progress": 100,
+        "overall_progress": 25,
+        "message": "原文件和 SHA-256 已保存",
+        "created_at": "2026-10-31T16:09:24+00:00"
+      },
+      {
+        "id": 1047,
+        "document_id": 21,
+        "job_id": 45,
+        "attempt": 1,
+        "stage": "parse",
+        "status": "needs_extraction",
+        "progress": 100,
+        "overall_progress": 50,
+        "message": "未提取到文本；图片需视觉解析，扫描PDF需先转图片",
+        "created_at": "2026-10-31T16:09:25+00:00"
+      },
+      {
+        "stage": "chunk",
+        "status": "pending",
+        "progress": 0,
+        "message": ""
+      },
+      {
+        "stage": "index",
+        "status": "pending",
+        "progress": 0,
+        "message": ""
+      }
+    ],
+    "events": [
+      {
+        "id": 1042,
+        "document_id": 21,
+        "job_id": null,
+        "attempt": 0,
+        "stage": "upload",
+        "status": "running",
+        "progress": 0,
+        "overall_progress": 0,
+        "message": "正在接收原文件",
+        "created_at": "2026-10-31T16:09:24+00:00"
+      },
+      {
+        "id": 1043,
+        "document_id": 21,
+        "job_id": null,
+        "attempt": 0,
+        "stage": "upload",
+        "status": "running",
+        "progress": 99,
+        "overall_progress": 25,
+        "message": "已接收 484189 字节",
+        "created_at": "2026-10-31T16:09:24+00:00"
+      },
+      {
+        "id": 1044,
+        "document_id": 21,
+        "job_id": null,
+        "attempt": 0,
+        "stage": "upload",
+        "status": "completed",
+        "progress": 100,
+        "overall_progress": 25,
+        "message": "原文件和 SHA-256 已保存",
+        "created_at": "2026-10-31T16:09:24+00:00"
+      },
+      {
+        "id": 1045,
+        "document_id": 21,
+        "job_id": 45,
+        "attempt": 0,
+        "stage": "parse",
+        "status": "queued",
+        "progress": 0,
+        "overall_progress": 25,
+        "message": "等待解析工作槽位",
+        "created_at": "2026-10-31T16:09:25+00:00"
+      },
+      {
+        "id": 1046,
+        "document_id": 21,
+        "job_id": 45,
+        "attempt": 1,
+        "stage": "parse",
+        "status": "running",
+        "progress": 0,
+        "overall_progress": 25,
+        "message": "正在解析原文件",
+        "created_at": "2026-10-31T16:09:25+00:00"
+      },
+      {
+        "id": 1047,
+        "document_id": 21,
+        "job_id": 45,
+        "attempt": 1,
+        "stage": "parse",
+        "status": "needs_extraction",
+        "progress": 100,
+        "overall_progress": 50,
+        "message": "未提取到文本；图片需视觉解析，扫描PDF需先转图片",
+        "created_at": "2026-10-31T16:09:25+00:00"
+      }
+    ],
+    "job": {
+      "id": 45,
+      "status": "needs_review",
+      "attempts": 1,
+      "max_attempts": 3,
+      "error": ""
+    },
+    "error": "没有可索引文本，请完成视觉解析"
+  },
+  "ocr_http_status": 200,
+  "ocr_result": {
+    "id": 22,
+    "knowledge_base_id": 14,
+    "name": "S01_DPR_page01.png",
+    "file_type": "png",
+    "modality": "image",
+    "size": 484189,
+    "status": "ready",
+    "version": "v2.0",
+    "page_count": 1,
+    "created_at": "2026-10-31T16:09:50+00:00",
+    "sha256": "6d5165ec050c4bd204d8868afd0337422403900ccffb2dde14914782b9233aea",
+    "deleted": 0,
+    "parse_error": "",
+    "index_config": "{\"size\":800,\"overlap\":150}",
+    "job_id": null,
+    "processing_stage": "",
+    "processing_progress": 0,
+    "has_original": true,
+    "structured": [
+      {
+        "page": 1,
+        "section": "图片视觉解析（模型转录，需人工核对）",
+        "text": "Dense Passage Retrieval for Open-Domain Question Answering\n\nVladimir Karpukhin*, Barlas Oğuz*, Sewon Min†, Patrick Lewis,\nLedell Wu, Sergey Edunov, Danqi Chen‡, Wen-tau Yih\nFacebook AI †University of Washington ‡Princeton University\n{vladk, barlaso, plewis, ledell, edunov, scottyih}@fb.com\nsewon@cs.washington.edu\ndanqic@cs.princeton.edu\n\nAbstract\n\nOpen-domain question answering relies on efficient passage retrieval to select candidate contexts, where traditional sparse vector space models, such as TF-IDF or BM25, are the de facto method. In this work, we show that retrieval can be practically implemented using *dense* representations alone, where embeddings are learned from a small number of questions and passages by a simple dual-encoder framework. When evaluated on a wide range of open-domain QA datasets, our dense retriever outperforms a strong Lucene-BM25 system greatly by 9%-19% absolute in terms of top-20 passage retrieval accuracy, and helps our end-to-end QA system establish new state-of-the-art on multiple open-domain QA benchmarks.¹\n\n1 Introduction\n\nOpen-domain question answering (QA) (Voorhees, 1999) is a task that answers factoid questions using a large collection of documents. While early QA systems are often complicated and consist of multiple components (Ferrucci (2012); Moldovan et al. (2003), *inter alia*), the advances of reading comprehension models suggest a much simplified two-stage framework: (1) a context *retriever* first selects a small subset of passages where some of them contain the answer to the question, and then (2) a machine *reader* can thoroughly examine the retrieved contexts and identify the correct answer (Chen et al., 2017). Although reducing open-domain QA to machine reading is a very reasonable strategy, a huge performance degradation is often observed in practice², indicating the needs of improving retrieval.\n\nRetrieval in open-domain QA is usually implemented using TF-IDF or BM25 (Robertson and Zaragoza, 2009), which matches keywords efficiently with an inverted index and can be seen as representing the question and context in high-dimensional, sparse vectors (with weighting). Conversely, the *dense*, latent semantic encoding is *complementary* to sparse representations by design. For example, synonyms or paraphrases that consist of completely different tokens may still be mapped to vectors close to each other. Consider the question \"*Who is the bad guy in lord of the rings?*\", which can be answered from the context \"*Sala Baker is best known for portraying the villain Sauron in the Lord of the Rings trilogy.*\" A term-based system would have difficulty retrieving such a context, while a dense retrieval system would be able to better match \"*bad guy*\" with \"*villain*\" and fetch the correct context. Dense encodings are also *learnable* by adjusting the embedding functions, which provides additional flexibility to have a task-specific representation. With special in-memory data structures and indexing schemes, retrieval can be done efficiently using maximum inner product search (MIPS) algorithms (e.g., Shrivastava and Li (2014); Guo et al. (2016)).\n\nHowever, it is generally believed that learning a good dense vector representation needs a large number of labeled pairs of question and contexts. Dense retrieval methods have thus never be shown to outperform TF-IDF/BM25 for open-domain QA before ORQA (Lee et al., 2019), which proposes a sophisticated inverse cloze task (ICT) objective, predicting the blocks that contain the masked sentence, for additional pretraining. The question encoder and the reader model are then fine-tuned using pairs of questions and answers jointly. Although ORQA successfully demonstrates that dense retrieval can outperform BM25, setting new state-of-the-art results on multiple open-domain\n\n---\n*Equal contribution\n¹The code and trained models have been released at https://github.com/facebookresearch/DPR.\n²For instance, the exact match score on SQuAD v1.1 drops from above 80% to less than 40% (Yang et al., 2019a).\n\n6769\n\n*Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing*, pages 6769–6781,\nNovember 16–20, 2020. ©2020 Association for Computational Linguistics",
+        "char_start": 0,
+        "char_end": 4231
+      }
+    ],
+    "chunks": [
+      {
+        "id": 1523,
+        "document_id": 22,
+        "ordinal": 0,
+        "page": 1,
+        "section": "图片视觉解析（模型转录，需人工核对）",
+        "text": "Dense Passage Retrieval for Open-Domain Question Answering\n\nVladimir Karpukhin*, Barlas Oğuz*, Sewon Min†, Patrick Lewis,\nLedell Wu, Sergey Edunov, Danqi Chen‡, Wen-tau Yih\nFacebook AI †University of Washington ‡Princeton University\n{vladk, barlaso, plewis, ledell, edunov, scottyih}@fb.com\nsewon@cs.washington.edu\ndanqic@cs.princeton.edu\n\nAbstract\n\nOpen-domain question answering relies on efficient passage retrieval to select candidate contexts, where traditional sparse vector space models, such as TF-IDF or BM25, are the de facto method. In this work, we show that retrieval can be practically implemented using *dense* representations alone, where embeddings are learned from a small number of questions and passages by a simple dual-encoder framework. When evaluated on a wide range of open-d",
+        "char_start": 0,
+        "char_end": 800,
+        "sha256": "84289f8972a345ee781dc003fa488569814755e087cee6b263db7938615b9e1e"
+      },
+      {
+        "id": 1524,
+        "document_id": 22,
+        "ordinal": 1,
+        "page": 1,
+        "section": "图片视觉解析（模型转录，需人工核对）",
+        "text": "here embeddings are learned from a small number of questions and passages by a simple dual-encoder framework. When evaluated on a wide range of open-domain QA datasets, our dense retriever outperforms a strong Lucene-BM25 system greatly by 9%-19% absolute in terms of top-20 passage retrieval accuracy, and helps our end-to-end QA system establish new state-of-the-art on multiple open-domain QA benchmarks.¹\n\n1 Introduction\n\nOpen-domain question answering (QA) (Voorhees, 1999) is a task that answers factoid questions using a large collection of documents. While early QA systems are often complicated and consist of multiple components (Ferrucci (2012); Moldovan et al. (2003), *inter alia*), the advances of reading comprehension models suggest a much simplified two-stage framework: (1) a contex",
+        "char_start": 650,
+        "char_end": 1450,
+        "sha256": "5031c8c737cb49128b3347daa849661cb99fe4cd5afe60b3b5c306dc7325d1a3"
+      },
+      {
+        "id": 1525,
+        "document_id": 22,
+        "ordinal": 2,
+        "page": 1,
+        "section": "图片视觉解析（模型转录，需人工核对）",
+        "text": "2012); Moldovan et al. (2003), *inter alia*), the advances of reading comprehension models suggest a much simplified two-stage framework: (1) a context *retriever* first selects a small subset of passages where some of them contain the answer to the question, and then (2) a machine *reader* can thoroughly examine the retrieved contexts and identify the correct answer (Chen et al., 2017). Although reducing open-domain QA to machine reading is a very reasonable strategy, a huge performance degradation is often observed in practice², indicating the needs of improving retrieval.\n\nRetrieval in open-domain QA is usually implemented using TF-IDF or BM25 (Robertson and Zaragoza, 2009), which matches keywords efficiently with an inverted index and can be seen as representing the question and contex",
+        "char_start": 1300,
+        "char_end": 2100,
+        "sha256": "17d24582678869a9a26cbe633faebf185d33d41f9e45744fb714bc28ed9583e5"
+      },
+      {
+        "id": 1526,
+        "document_id": 22,
+        "ordinal": 3,
+        "page": 1,
+        "section": "图片视觉解析（模型转录，需人工核对）",
+        "text": "BM25 (Robertson and Zaragoza, 2009), which matches keywords efficiently with an inverted index and can be seen as representing the question and context in high-dimensional, sparse vectors (with weighting). Conversely, the *dense*, latent semantic encoding is *complementary* to sparse representations by design. For example, synonyms or paraphrases that consist of completely different tokens may still be mapped to vectors close to each other. Consider the question \"*Who is the bad guy in lord of the rings?*\", which can be answered from the context \"*Sala Baker is best known for portraying the villain Sauron in the Lord of the Rings trilogy.*\" A term-based system would have difficulty retrieving such a context, while a dense retrieval system would be able to better match \"*bad guy*\" with \"*vi",
+        "char_start": 1950,
+        "char_end": 2750,
+        "sha256": "f385a1b4fd12fa4006df96607f5065fa965ab1542a90c7beb6583bfd18d651f7"
+      },
+      {
+        "id": 1527,
+        "document_id": 22,
+        "ordinal": 4,
+        "page": 1,
+        "section": "图片视觉解析（模型转录，需人工核对）",
+        "text": " term-based system would have difficulty retrieving such a context, while a dense retrieval system would be able to better match \"*bad guy*\" with \"*villain*\" and fetch the correct context. Dense encodings are also *learnable* by adjusting the embedding functions, which provides additional flexibility to have a task-specific representation. With special in-memory data structures and indexing schemes, retrieval can be done efficiently using maximum inner product search (MIPS) algorithms (e.g., Shrivastava and Li (2014); Guo et al. (2016)).\n\nHowever, it is generally believed that learning a good dense vector representation needs a large number of labeled pairs of question and contexts. Dense retrieval methods have thus never be shown to outperform TF-IDF/BM25 for open-domain QA before ORQA (L",
+        "char_start": 2600,
+        "char_end": 3400,
+        "sha256": "7dafd881010b30ffd43e57f763851a2c89dd3f143e5e4655f065c32acf6ef18a"
+      },
+      {
+        "id": 1528,
+        "document_id": 22,
+        "ordinal": 5,
+        "page": 1,
+        "section": "图片视觉解析（模型转录，需人工核对）",
+        "text": "f labeled pairs of question and contexts. Dense retrieval methods have thus never be shown to outperform TF-IDF/BM25 for open-domain QA before ORQA (Lee et al., 2019), which proposes a sophisticated inverse cloze task (ICT) objective, predicting the blocks that contain the masked sentence, for additional pretraining. The question encoder and the reader model are then fine-tuned using pairs of questions and answers jointly. Although ORQA successfully demonstrates that dense retrieval can outperform BM25, setting new state-of-the-art results on multiple open-domain\n\n---\n*Equal contribution\n¹The code and trained models have been released at https://github.com/facebookresearch/DPR.\n²For instance, the exact match score on SQuAD v1.1 drops from above 80% to less than 40% (Yang et al., 2019a).\n\n6",
+        "char_start": 3250,
+        "char_end": 4050,
+        "sha256": "c33377c5e728c37fb311439df3b84801eb45e761e2a34b1d8ab3652b87b68d50"
+      },
+      {
+        "id": 1529,
+        "document_id": 22,
+        "ordinal": 6,
+        "page": 1,
+        "section": "图片视觉解析（模型转录，需人工核对）",
+        "text": "s://github.com/facebookresearch/DPR.\n²For instance, the exact match score on SQuAD v1.1 drops from above 80% to less than 40% (Yang et al., 2019a).\n\n6769\n\n*Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing*, pages 6769–6781,\nNovember 16–20, 2020. ©2020 Association for Computational Linguistics",
+        "char_start": 3900,
+        "char_end": 4231,
+        "sha256": "d86d8fc0ecab7344bdb0a1bcbd3c5b0a9c5327755089143d3f8107b2f8ce5aa1"
+      }
+    ],
+    "versions": [
+      {
+        "id": 22,
+        "version": "v2.0",
+        "sha256": "6d5165ec050c4bd204d8868afd0337422403900ccffb2dde14914782b9233aea",
+        "created_at": "2026-10-31T16:09:50+00:00",
+        "status": "ready"
+      },
+      {
+        "id": 21,
+        "version": "v1.0",
+        "sha256": "6d5165ec050c4bd204d8868afd0337422403900ccffb2dde14914782b9233aea",
+        "created_at": "2026-10-31T16:09:24+00:00",
+        "status": "needs_extraction"
+      }
+    ]
+  },
+  "duplicate_uploads": [
+    {
+      "id": 23,
+      "name": "S03_FastAPI_请求文件.md",
+      "version": "v1.0",
+      "sha256": "b5def09425bf23d5349a69d5065b97bd6213118e34513ff6fba7c025133c822b",
+      "status": "ready",
+      "deleted": 0
+    },
+    {
+      "id": 24,
+      "name": "S03_FastAPI_请求文件.md",
+      "version": "v2.0",
+      "sha256": "b5def09425bf23d5349a69d5065b97bd6213118e34513ff6fba7c025133c822b",
+      "status": "ready",
+      "deleted": 0
+    }
+  ],
+  "duplicate_prompt_returned": false
+}

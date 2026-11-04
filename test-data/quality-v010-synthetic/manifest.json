@@ -1,0 +1,115 @@
+{
+  "version": "quality-synthetic-v1",
+  "locked": true,
+  "cases": 100,
+  "answerable": 80,
+  "unanswerable": 20,
+  "independent_source_groups": 20,
+  "synthetic": true,
+  "used_to_tune": false,
+  "limitations": "同源问题相关；开发者编写，不是第三方盲测。没有扫描PDF、真实表格或图像，不能替代多模态验收。",
+  "corpus": [
+    {
+      "source_id": "N01",
+      "path": "corpus/N01_NX01.md",
+      "sha256": "f1b8548595a451665f971d5de27f5e613032b80225a2aa8a88913f5ac3195c21"
+    },
+    {
+      "source_id": "N02",
+      "path": "corpus/N02_NX02.md",
+      "sha256": "edcc72ad98c570785cd1ae4639d722e326ad0187f47e9779e55901b45c19fcde"
+    },
+    {
+      "source_id": "N03",
+      "path": "corpus/N03_NX03.md",
+      "sha256": "a27eb5ca20bf62632e28980a52df0e68100a053434011dcc42814d2fe768684c"
+    },
+    {
+      "source_id": "N04",
+      "path": "corpus/N04_NX04.md",
+      "sha256": "3baab8f5d6e05d214100721dc2e20c4be5899dd9b85690a4333797c109bba997"
+    },
+    {
+      "source_id": "N05",
+      "path": "corpus/N05_NX05.md",
+      "sha256": "2b1f6c051ee38e425c29cde08c75cfafadcd657101b6830b989a00c99f71aa83"
+    },
+    {
+      "source_id": "N06",
+      "path": "corpus/N06_NX06.md",
+      "sha256": "a836d740912acc8c7738c63ca50f61842f9d6ee87151dc263d8f465ef84e8bf2"
+    },
+    {
+      "source_id": "N07",
+      "path": "corpus/N07_NX07.md",
+      "sha256": "fff907ceaa89bbd9f049d0db1eb15535a03aacbba527119ed9e712bdf3145c1e"
+    },
+    {
+      "source_id": "N08",
+      "path": "corpus/N08_NX08.md",
+      "sha256": "2b3cbb0e7f8b6c6c439e92fd06e8b11aedf41cc18d43f04f3655d743699d493b"
+    },
+    {
+      "source_id": "N09",
+      "path": "corpus/N09_NX09.md",
+      "sha256": "7a084dce3ac9957f4300fe7327753514530e5f51fc0a0c3509a1e642c88280db"
+    },
+    {
+      "source_id": "N10",
+      "path": "corpus/N10_NX10.md",
+      "sha256": "b4d2d238d0d6255e1b9c83697715c9c11cb425ac53d7f51bd5de865eaa2bd65e"
+    },
+    {
+      "source_id": "N11",
+      "path": "corpus/N11_NX11.md",
+      "sha256": "73cb3d9e566a4f4f71f704820483bb7eb270ea7af0a7179a578d5a09d8301f78"
+    },
+    {
+      "source_id": "N12",
+      "path": "corpus/N12_NX12.md",
+      "sha256": "dab18a8db6a5701f25cd046733a6a57cc6e1561a4b80af919f57b45006d35984"
+    },
+    {
+      "source_id": "N13",
+      "path": "corpus/N13_NX13.md",
+      "sha256": "631372216ba7526717d916c295f5cd9639d3851c04743fe402c000530a069ba3"
+    },
+    {
+      "source_id": "N14",
+      "path": "corpus/N14_NX14.md",
+      "sha256": "78a53f3e9f8b4b61651c4e568e15e15fb6c65a1364cc09aa0a72e27651957314"
+    },
+    {
+      "source_id": "N15",
+      "path": "corpus/N15_NX15.md",
+      "sha256": "2eea17f8361a0a89ca2dfba44ee46081108da9e7c776def3b54bc2353ea395f8"
+    },
+    {
+      "source_id": "N16",
+      "path": "corpus/N16_NX16.md",
+      "sha256": "908f9e9e7183329255261d53ea8a021df382661d547ee601e1098251e1eb8636"
+    },
+    {
+      "source_id": "N17",
+      "path": "corpus/N17_NX17.md",
+      "sha256": "19158759ce7c3fdb26cfa65c652255eb2591f073826203b19d7c1d1f4c441592"
+    },
+    {
+      "source_id": "N18",
+      "path": "corpus/N18_NX18.md",
+      "sha256": "04ec25a94d8c7d0a5b62a7d43b1a9810bf43926ca5d51fee5a92d62b45e8ad26"
+    },
+    {
+      "source_id": "N19",
+      "path": "corpus/N19_NX19.md",
+      "sha256": "95713c663f68d810d5a7145a36a94e5a44f56e2930b5c45d782acd3d6e3222a3"
+    },
+    {
+      "source_id": "N20",
+      "path": "corpus/N20_NX20.md",
+      "sha256": "238e35ce51ccda1ca297036a04b3271a2cc551febf4e9089c19c48623ee3bd4b"
+    }
+  ],
+  "labels_path": "labels/questions.jsonl",
+  "labels_sha256": "d444df80bfa245442a998204e83dd912ca51f0914f1e2a7d08856297fc7679c5"
+}

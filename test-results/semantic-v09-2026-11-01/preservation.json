@@ -1,0 +1,14 @@
+{
+  "report_tasks_old_rows_unchanged": true,
+  "report_sections_old_rows_unchanged": true,
+  "report_templates_old_rows_unchanged": true,
+  "report_releases_old_rows_unchanged": true,
+  "documents_old_rows_unchanged": true,
+  "chunks_old_rows_unchanged": true,
+  "users_old_rows_unchanged": true,
+  "roles_old_rows_unchanged": true,
+  "kb_grants_old_rows_unchanged": true,
+  "conversations_old_rows_unchanged": true,
+  "messages_old_rows_unchanged": true,
+  "integrity": "ok"
+}
