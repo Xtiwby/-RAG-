@@ -1,0 +1,30 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: rag
+      POSTGRES_USER: rag
+      POSTGRES_PASSWORD: rag-local-dev
+    ports:
+      - '127.0.0.1:5432:5432'
+    volumes:
+      - rag_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U rag -d rag']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  minio:
+    image: pgsty/minio:latest
+    command: server /data --console-address ':9001'
+    environment:
+      MINIO_ROOT_USER: rag-local-dev
+      MINIO_ROOT_PASSWORD: change-me-local
+    ports:
+      - '127.0.0.1:9000:9000'
+      - '127.0.0.1:9001:9001'
+    volumes:
+      - rag_object_data:/data
+volumes:
+  rag_pg_data:
+  rag_object_data:

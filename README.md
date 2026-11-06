@@ -1,5 +1,7 @@
 # 知源 RAG 知识库管理系统
 
+0.11.0 可选的对象存储、PostgreSQL/pgvector 和独立 worker 部署见 [存储与工作进程升级指南](docs/storage-upgrade.md)。默认 SQLite 与本地目录模式保留。
+
 Vue 3 + FastAPI + SQLite。本版补齐用户与权限、原文追溯、真实 Kimi 流式问答、会话管理及报告正文生成。
 
 ## 0.8.0 版：中英查询召回与报告分章检索（当前后端版本）

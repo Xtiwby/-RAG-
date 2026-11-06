@@ -2,8 +2,9 @@
 import asyncio
 import json
 import threading
+from zipfile import BadZipFile
 from pathlib import Path
-from . import store as s,rag,jobs
+from . import store as s,rag,jobs,object_storage
 
 STAGES=('upload','parse','chunk','index')
 
@@ -77,7 +78,8 @@ async def run(row,payload,user,validate):
             for name in ('chunk','index'):
                 record(did,name,'pending',0,'等待本次解析',row['id'],row['attempts'])
         track('parse','running',0,'正在解析原文件')
-        units=await asyncio.to_thread(rag.parse_local,Path(doc['path']),doc['file_type'],measured('parse','已解析'))
+        async with object_storage.async_local_path(doc) as source:
+            units=await asyncio.to_thread(rag.parse_local,source,doc['file_type'],measured('parse','已解析'))
         validate(row)
         if not any(unit['text'].strip() for unit in units):
             track('parse','needs_extraction',100,'未提取到文本；图片需视觉解析，扫描PDF需先转图片')
@@ -98,7 +100,9 @@ async def run(row,payload,user,validate):
         return {'document_id':did}
     except BaseException as error:
         state='interrupted' if isinstance(error,asyncio.CancelledError) else 'failed'
-        message='文档处理已中断，可重试' if state=='interrupted' else getattr(error,'detail',None) or (str(error) if isinstance(error,(ValueError,RuntimeError)) else '文件解析或索引失败，请检查文件内容')
+        message=('文档处理已中断，可重试' if state=='interrupted' else
+                 '文件内容不是有效的 Office 文档压缩包，请确认文件未损坏且扩展名正确后重新上传' if isinstance(error,BadZipFile) else
+                 getattr(error,'detail',None) or (str(error) if isinstance(error,(ValueError,RuntimeError)) else '文件解析或索引失败，请检查文件内容'))
         with callback_lock:
             stopped.set()
             s.execute('UPDATE documents SET status=?,parse_error=? WHERE id=?',('parse_failed' if stage=='parse' else 'processing_failed',message[:800],did))

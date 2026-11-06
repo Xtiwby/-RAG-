@@ -63,9 +63,28 @@ def bindings(text):
     return result
 
 
-def numeric_support(claim,quotes):
+def source_years(titles):
+    """Only years in cited document titles can supply a row's missing year."""
+    years=set()
+    for title in titles:
+        normalized=unicodedata.normalize('NFKC',title)
+        for match in re.finditer(r'(?<![A-Za-z0-9])(?:19|20)\d{2}(?=\s*年|[^A-Za-z0-9]|$)',normalized):
+            years.add(normalized_number(match.group()))
+    return years
+
+
+def claim_years(text):
+    normalized=unicodedata.normalize('NFKC',text)
+    return {normalized_number(match.group()) for match in re.finditer(
+        r'(?<![A-Za-z0-9])(?:19|20)\d{2}(?=\s*年|[^A-Za-z0-9]|$)',normalized)}
+
+
+def numeric_support(claim,quotes,source_titles=()):
     source='\n'.join(quotes)
-    if not numbers(claim)<=numbers(source):return False
+    missing=numbers(claim)-numbers(source)
+    # A list row can omit the year stated in its document title. Other
+    # numbers in filenames cannot substantiate numerical claims about rows.
+    if missing-(claim_years(claim)&source_years(source_titles)):return False
     available=bindings(source)
     # Check associations when the quoted source expresses an explicit binding.
     return all(not available.get(key) or values<=available[key] for key,values in bindings(claim).items())

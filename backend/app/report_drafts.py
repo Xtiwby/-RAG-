@@ -122,7 +122,8 @@ def install(app,auth,require,check_kb,report_task,source_lines):
             plan=blueprints.ReportBlueprint.model_validate_json(report['blueprint']) if report['blueprint']!='{}' else None
             spec=plan.sections[section['ordinal']].model_dump() if plan and section['ordinal']<len(plan.sections) else {'title':section['title'],'instructions':'','target_words':400}
             payload={'report_id':tid,'section_id':sid,'knowledge_base_id':report['knowledge_base_id'],'expected_revision':section['revision'],
-                     'instructions':body.instructions,'title':report['title'],'requirements':report['requirements'],'section':spec,'purpose':plan.purpose if plan else '', 'mode':mode,'preview':body.preview,'workflow_version':report['workflow_version'] or int(body.preview),'period_start':report['period_start'],'period_end':report['period_end']}
+                     'instructions':body.instructions,'title':report['title'],'requirements':report['requirements'],'section':spec,'purpose':plan.purpose if plan else '', 'mode':mode,'preview':body.preview,'workflow_version':report['workflow_version'] or int(body.preview),'period_start':report['period_start'],'period_end':report['period_end'],
+                      'template_structure':json.loads(report['template_snapshot'] or '{}').get('structure','')}
             jid=jobs.add('report_section',payload,user,{'report_id':tid,'section_id':sid},c)
             c.execute("UPDATE report_sections SET job_id=?,generation_status='queued',generation_error='' WHERE id=?",(jid,sid))
         s.audit(user,'核验报告章节' if mode=='verify' else '重新生成报告单节','报告章节',f'报告#{tid}；任务#{jid}',object_id=sid)
@@ -165,13 +166,17 @@ def install(app,auth,require,check_kb,report_task,source_lines):
         else:
             evidence,retrieval=await report_retrieval.retrieve_section(payload['knowledge_base_id'],payload['section'],purpose=payload['purpose'],
                 report_title=payload['title'],requirements=payload['requirements'],instructions=payload['instructions'],
-                period_start=payload.get('period_start',''),period_end=payload.get('period_end',''))
+                period_start=payload.get('period_start',''),period_end=payload.get('period_end',''),
+                 template_structure=payload.get('template_structure'))
             jobs.emit(row['id'],'retrieval',section_id=sid,parameters=retrieval,chunk_ids=[e['chunk_id'] for e in evidence])
             content=''
-            instruction=f"仅重新撰写报告《{payload['title']}》的“{payload['section']['title']}”一节，不输出其他章节。目的：{payload['purpose']}；本章要求：{payload['section']['instructions']}；目标约{payload['section']['target_words']}字；报告要求：{payload['requirements']}；本次要求：{payload['instructions']}。事实须引用证据，不编造进展。"
+            hint=report_retrieval.template_section_hint(payload.get('template_structure'),payload['section'].get('block_id'))
+            scoped=report_retrieval.scoped_requirements(payload['requirements'],payload['section']['title'],hint)
+            focus=f"{payload['section']['title']}。{hint}。{payload['section']['instructions']}。{payload['instructions']}"
+            instruction=f"仅重新撰写报告《{payload['title']}》的“{payload['section']['title']}”一节，不输出其他章节。本节定位：{hint}；本章要求：{payload['section']['instructions']}；目标约{payload['section']['target_words']}字；通用要求：{scoped}；本次要求：{payload['instructions']}。只写本节对应题目，每个事实句末必须引用本轮证据，不编造进展。"
             if payload.get('workflow_version'):
                 from .report_workflow import generate_section
-                content,verification=await generate_section(instruction+f" 业务期间：{payload.get('period_start','')} 至 {payload.get('period_end','')}。",evidence,fresh,payload['section'].get('kind','fact'))
+                content,verification=await generate_section(instruction+f" 业务期间：{payload.get('period_start','')} 至 {payload.get('period_end','')}。",evidence,fresh,payload['section'].get('kind','fact'),coverage_question=focus)
             else:
                 async for item in report_grounding.generate(instruction,evidence,fresh):
                     if item['type']=='result':content=item['content'];verification=item['verification']

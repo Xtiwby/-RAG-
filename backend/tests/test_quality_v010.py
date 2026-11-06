@@ -22,6 +22,13 @@ from app import grounding,rag,settings,evidence_matching as match,report_groundi
 def test_numbers_and_parameter_bindings(claim,source,expected):
     assert match.numeric_support(claim,[source]) is expected
 
+def test_list_row_uses_cited_document_year_without_accepting_other_numbers():
+    row='NEWC202509799 潘思媛 南京传媒学院 国家一等奖 C'
+    title='2025年全国大学生英语作文大赛获奖名单.pdf'
+    assert match.numeric_support('潘思媛在2025年获国家一等奖。[1]',[row],[title])
+    assert not match.numeric_support('潘思媛在2024年获国家一等奖。[1]',[row],[title])
+    assert not match.numeric_support('潘思媛在2025年获第4名。[1]',[row],[title])
+
 @pytest.mark.parametrize('quote,source,expected',[
  ('multilingual retrieval','multi-\nlingual retrieval',True),
  ('dual-encoder framework','dual-encoder framework',True),
@@ -97,6 +104,15 @@ def test_partial_verdict_never_means_supported(admin,configured,monkeypatch):
     accepted,checks=asyncio.run(grounding.check_batch(['部分事实加编造。[1]'],[{'text':'只支持部分事实'}],1))
     assert accepted==[] and checks[0]['status']=='rejected' and checks[0]['reason_code']=='partial'
 
+def test_list_row_year_passes_full_grounding_gate(admin,configured,monkeypatch):
+    row='NEWC202509799 潘思媛 南京传媒学院 国家一等奖 C'
+    async def judge(messages,max_tokens=None):
+        yield json.dumps({'verdicts':[{'claim_id':1,'verdict':'supported','quotes':[{'reference':1,'quote':row}]}]},ensure_ascii=False)
+    monkeypatch.setattr(rag,'llm_stream',judge)
+    evidence=[{'name':'2025年全国大学生英语作文大赛获奖名单.pdf','text':row}]
+    accepted,checks=asyncio.run(grounding.check_batch(['潘思媛在2025年获国家一等奖。[1]'],evidence,1))
+    assert accepted and checks[0]['status']=='supported'
+
 def test_judge_failure_does_not_trigger_unverified_repair(admin,configured,monkeypatch):
     enable(admin);calls=[]
     async def broken(messages,max_tokens=None):
@@ -115,6 +131,24 @@ def test_fact_report_reuses_coverage_without_overwriting_saved_report(admin,conf
     evidence=[{'text':'控制器采用被动散热。机壳使用陶瓷散热片，不配备转动风扇。','name':'合成资料','section':'正文','page':None,'version':'v1'}]
     content,record=asyncio.run(report_workflow.generate_section('说明散热方式和材料',evidence,lambda:None))
     assert '陶瓷' in content and record['coverage']['items'][1]['status']=='supplemented'
+
+def test_report_verifies_generated_sentences_in_batches(admin,configured,monkeypatch):
+    from app import report_workflow
+    source=' '.join(f'事实{i}。' for i in range(9))
+    calls=[]
+    async def model(messages,max_tokens=4096):
+        data=json.loads(messages[-1]['content'])
+        if 'verification_schema' in data:
+            calls.append(len(data['claims']))
+            yield json.dumps({'verdicts':[{'claim_id':claim['claim_id'],'verdict':'supported',
+                'quotes':[{'reference':1,'quote':source}]} for claim in data['claims']]},ensure_ascii=False)
+        else:
+            yield ''.join(f'{i+1}. 事实{i}。[1]\n' for i in range(9))
+    monkeypatch.setattr(rag,'llm_stream',model)
+    content,record=asyncio.run(report_workflow.generate_section('逐句概括',
+        [{'name':'合成资料','text':source,'section':'正文','page':None,'version':'v1'}],lambda:None,kind='analysis'))
+    assert calls==[8,1] and record['accepted_count']==9
+    assert '事实8' in content
 
 def test_layout_quote_and_identifier_numeric_guard_with_full_judge(admin,configured,monkeypatch):
     async def judge(messages,max_tokens=None):

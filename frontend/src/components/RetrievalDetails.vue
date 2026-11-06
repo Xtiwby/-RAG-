@@ -20,6 +20,7 @@ const warnings=computed(()=>[...new Set([...(expansion.value?.warnings||[]),...(
    <template v-else>
     <p>向量：{{embeddingLabel(pipeline.embedding)}} · 重排：{{rerankLabel(pipeline.rerank)}}<span v-if="pipeline.top_k"> · TopK {{pipeline.top_k}}</span></p>
     <p v-if="pipeline.embedding_model">语义模型：{{pipeline.embedding_model}}</p>
+    <p v-if="pipeline.search_index">候选获取：{{pipeline.search_index==='postgresql-fts-pgvector'?'PostgreSQL 全文与向量索引':'应用层扫描'}}</p>
     <p v-if="pipeline.context_result_count">主检索 {{pipeline.main_result_count}} 条，另补相邻原文 {{pipeline.context_result_count}} 条（独立片段与引用，未单独相关性评分）。</p>
     <p v-if="pipeline.reranking">重排模型：{{pipeline.reranking.model}} · 候选 {{pipeline.reranking.candidate_count}} 条 · {{pipeline.reranking.device||'未执行'}}<span v-if="pipeline.reranking.at_length_limit"> · {{pipeline.reranking.at_length_limit}} 条达到输入长度上限（模型仅评分截取部分，原文引用不变）</span></p>
     <p v-if="expansion?.status==='expanded'">只改写信息需求，不生成答案。{{expansion.cache==='hit'?'本次复用短期改写缓存。':'本次调用生成模型改写，可能产生API费用。'}}所有回答仍须使用授权原文证据。</p>

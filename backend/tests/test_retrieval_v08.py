@@ -118,7 +118,7 @@ def test_report_preflight_and_regeneration_share_section_focus(admin,configured,
     preflight=client.post('/api/reports/preflight',headers=admin,json=params).json()
     second=preflight['sections'][1]
     assert optical['id'] in {e['document_id'] for e in second['evidence']}
-    assert second['retrieval']['policy']=='section-focus-v2'
+    assert second['retrieval']['policy']=='section-focus-v4'
     focused=second['retrieval']['attempts'][0]['query']
     assert 'UploadFile' not in focused and '两句' not in focused
     created=client.post('/api/report-tasks',headers=admin,json={**params,'preflight_id':preflight['preflight_id'],'allow_missing':True}).json()
@@ -130,3 +130,26 @@ def test_report_preflight_and_regeneration_share_section_focus(admin,configured,
     final=client.get(f"/api/reports/{created['id']}",headers=admin).json()
     assert final['sections'][0]['content']==report['sections'][0]['content']
     assert optical['id'] in {e['document_id'] for e in final['candidates'][0]['citations']}
+
+
+def test_imported_template_notes_focus_section_without_global_topic_bleed(monkeypatch):
+    structure={'body_order':['a','b','c','d'], 'blocks':[
+        {'id':'a','type':'heading','text':'2 基准测试脚本与模型规模'},
+        {'id':'b','type':'paragraph','text':'来源定位：原作业第 2-4 页；对应题目：benchmarking_script。'},
+        {'id':'c','type':'paragraph','text':'本节覆盖：模型规模表与基准计时方法。'},
+        {'id':'d','type':'heading','text':'3 Nsight Systems 性能剖析'}]}
+    hint=report_retrieval.template_section_hint(structure,'a')
+    assert 'benchmarking_script' in hint and '模型规模表' in hint
+    scoped=report_retrieval.scoped_requirements('逐章写实验要求。重点说明 flash_forward 的 Triton 实现。',
+        '2 基准测试脚本与模型规模',hint)
+    assert '逐章' in scoped and 'flash_forward' not in scoped
+    assert 'flash_forward' in report_retrieval.scoped_requirements('重点说明 flash_forward。',
+        '7 FlashAttention 前向','对应题目：flash_forward')
+    calls=[]
+    async def fake_retrieve(query,ids,**kwargs):
+        calls.append((query,kwargs))
+        return [{'text':'已命中原文'}],{}
+    monkeypatch.setattr(rag,'retrieve',fake_retrieve)
+    asyncio.run(report_retrieval.retrieve_section(1,{'title':'2 基准测试脚本与模型规模','block_id':'a'},
+        template_structure=structure))
+    assert 'benchmarking_script' in calls[0][0] and calls[0][1]['expand_queries'] is False

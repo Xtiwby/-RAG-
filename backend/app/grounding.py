@@ -135,7 +135,10 @@ supported 必须为每个所引用编号提供原文逐字连续短引文。不�
         if not valid or quoted!=set(claim['references']):
             check['reason_code']='quote_mismatch'
             continue
-        if not evidence_matching.numeric_support(claim['text'],[q['quote'] for q in located]):
+        if not evidence_matching.numeric_support(
+            claim['text'],[q['quote'] for q in located],
+            [evidence[ref-1].get('name','') for ref in claim['references']]
+        ):
             check.update(reason_code='numeric_mismatch',reason='陈述数字或参数绑定未被实际原文短引文支持')
             continue
         check.update(status='supported',text=claim['text'],reason_code='supported',reason='逐句引用、证据判断、原文定位及数字检查通过',

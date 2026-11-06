@@ -10,7 +10,7 @@ import httpx
 from fastapi import Depends,HTTPException,Query,Request
 from fastapi.responses import StreamingResponse
 from pydantic import Field,ValidationError
-from . import blueprints,jobs,rag,settings,store as s,telemetry,ingestion,report_grounding,template_docx,report_retrieval
+from . import blueprints,jobs,rag,settings,store as s,telemetry,ingestion,report_grounding,template_docx,report_retrieval,object_storage
 from .audit_export import audit_filters,export_logs
 
 class SettingsUpdate(settings.Strict):
@@ -108,12 +108,17 @@ def install(app,auth,require,check_kb,document,ReportBody,source_lines):
             if body.workflow_version:
                 evidence=payload['preflight']['sections'][i]['evidence']
             else:evidence,_=await report_retrieval.retrieve_section(body.knowledge_base_id,section.model_dump(),purpose=plan.purpose,
-                report_title=body.title,requirements=body.requirements,period_start=body.period_start,period_end=body.period_end)
+                report_title=body.title,requirements=body.requirements,period_start=body.period_start,period_end=body.period_end,
+                 template_structure=(payload.get('template_snapshot') or {}).get('structure'))
             sid=s.execute('INSERT INTO report_sections(task_id,ordinal,title,status,citations) VALUES(?,?,?,?,?)',
                           (tid,i,section.title,'generating',json.dumps(evidence,ensure_ascii=False)))
             jobs.emit(row['id'],'section',index=i,title=section.title,citations=evidence)
             content='';verification={}
-            instructions=f'仅撰写报告《{body.title}》中的“{section.title}”正文，不重复报告和章节标题。写作目的：{plan.purpose}。本章要求：{section.instructions}。目标约 {section.target_words} 字。用户要求：{body.requirements}。所有事实须引用本轮证据，不编造项目进展。'
+            structure=(payload.get('template_snapshot') or {}).get('structure')
+            hint=report_retrieval.template_section_hint(structure,section.block_id)
+            scoped=report_retrieval.scoped_requirements(body.requirements,section.title,hint)
+            focus=f'{section.title}。{hint}。{section.instructions}'
+            instructions=f'仅撰写报告《{body.title}》中的“{section.title}”正文，不重复报告和章节标题。本节定位：{hint}。本章要求：{section.instructions}。目标约 {section.target_words} 字。通用写作要求：{scoped}。只写本节对应的题目，其他章节的重点要求不得写入本节。每个事实句末必须有本轮证据引用，不编造项目进展。'
             if body.workflow_version:
                 from . import report_workflow
                 s.execute("UPDATE report_sections SET stage='生成与独立核验' WHERE id=?",(sid,))
@@ -121,7 +126,7 @@ def install(app,auth,require,check_kb,document,ReportBody,source_lines):
                     content=section.fixed_content if section.kind=='fixed' else '';verification=report_grounding.record(content,[],'structure',evidence=[])
                 else:
                     instructions+=f'报告业务日期范围：{body.period_start} 至 {body.period_end}；只用来源明确支持的该期间事实，不将文档上传时间当作业务日期。业务字段：'+json.dumps(body.field_values,ensure_ascii=False)
-                    content,verification=await report_workflow.generate_section(instructions,evidence,lambda:fresh_job_user(row),section.kind)
+                    content,verification=await report_workflow.generate_section(instructions,evidence,lambda:fresh_job_user(row),section.kind,coverage_question=focus)
                 jobs.emit(row['id'],'verification',section_id=sid,checks=verification['checks'])
                 jobs.emit(row['id'],'token',content=content)
             else:
@@ -150,8 +155,9 @@ def install(app,auth,require,check_kb,document,ReportBody,source_lines):
     async def reindex_handler(row,payload,user):
         doc=document(user,payload['document_id'],True)
         units=json.loads(doc['structured'])
-        if not units and doc['path']:
-            units=await asyncio.to_thread(rag.parse_local,Path(doc['path']),doc['file_type'])
+        if not units and object_storage.exists(doc):
+            async with object_storage.async_local_path(doc) as source:
+                units=await asyncio.to_thread(rag.parse_local,source,doc['file_type'])
         if not any(unit['text'].strip() for unit in units):
             raise RuntimeError('此文档尚无可用结构化文本，请先完成解析或视觉转录')
         prepared=rag.prepare_index(units)
@@ -159,8 +165,8 @@ def install(app,auth,require,check_kb,document,ReportBody,source_lines):
         fresh_job_user(row)
         with s.connect() as c:
             count=c.execute('SELECT COUNT(*) FROM documents WHERE name=? AND knowledge_base_id=?',(doc['name'],doc['knowledge_base_id'])).fetchone()[0]
-            did=c.execute('''INSERT INTO documents(knowledge_base_id,name,file_type,modality,size,status,version,page_count,content,path,created_at,sha256)
-                VALUES(?,?,?,?,?,?,?,?,?,?,?,?)''',(doc['knowledge_base_id'],doc['name'],doc['file_type'],doc['modality'],doc['size'],'processing',f'v{count+1}.0',doc['page_count'],'',doc['path'],s.now(),doc['sha256'])).lastrowid
+            did=c.execute('''INSERT INTO documents(knowledge_base_id,name,file_type,modality,size,status,version,page_count,content,path,created_at,sha256,storage_backend,storage_bucket,object_key,object_version_id)
+                VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)''',(doc['knowledge_base_id'],doc['name'],doc['file_type'],doc['modality'],doc['size'],'processing',f'v{count+1}.0',doc['page_count'],'',doc['path'],s.now(),doc['sha256'],doc['storage_backend'],doc['storage_bucket'],doc['object_key'],doc['object_version_id'])).lastrowid
         rag.commit_index(did,prepared)
         return {'document_id':did,'previous_document_id':doc['id'],'chunk':settings.get().chunk.model_dump()}
 
@@ -351,19 +357,28 @@ def install(app,auth,require,check_kb,document,ReportBody,source_lines):
         counts={r['status']:r['n'] for r in s.rows('SELECT status,COUNT(*) n FROM jobs GROUP BY status')}
         disk=shutil.disk_usage(s.DATA)
         files=[p for p in s.UPLOADS.iterdir() if p.is_file()]
-        originals=s.rows("SELECT DISTINCT path FROM documents WHERE path<>''")
+        originals=s.rows("SELECT * FROM documents WHERE path<>'' OR object_key<>''")
+        originals+=s.rows("SELECT * FROM template_imports WHERE path<>'' OR object_key<>''")
         db_path=s.DATA/'rag_knowledge.db'
-        storage={'disk_total_bytes':disk.total,'disk_free_bytes':disk.free,'uploads_bytes':sum(p.stat().st_size for p in files),
-                 'upload_files':len(files),'database_bytes':db_path.stat().st_size,
-                 'missing_originals':sum(not Path(row['path']).is_file() for row in originals),
+        postgres=bool(os.getenv('RAG_DATABASE_URL'))
+        database_bytes=s.one('SELECT pg_database_size(current_database()) n')['n'] if postgres else db_path.stat().st_size if db_path.exists() else None
+        object_references=s.one("SELECT COUNT(*) n FROM documents WHERE storage_backend='s3'")['n']
+        object_references+=s.one("SELECT COUNT(*) n FROM template_imports WHERE storage_backend='s3'")['n']
+        storage={'disk_total_bytes':disk.total,'disk_free_bytes':disk.free,'original_backend':object_storage.backend(),
+                 'object_references':object_references,
+                 'uploads_bytes':sum(p.stat().st_size for p in files),
+                 'upload_files':len(files),'database_bytes':database_bytes,
+                 'missing_originals':sum(not object_storage.exists(row) for row in originals),
                  'documents':s.one('SELECT COUNT(*) n FROM documents')['n'],'chunks':s.one('SELECT COUNT(*) n FROM chunks')['n']}
-        metrics=s.one("""SELECT COUNT(*) total,SUM(status='success') succeeded,SUM(status='failure') failed,
-            SUM(status='running') running,ROUND(AVG(CASE WHEN status='success' THEN latency_ms END)) average_latency_ms,
+        metrics=s.one("""SELECT COUNT(*) total,SUM(CASE WHEN status='success' THEN 1 ELSE 0 END) succeeded,SUM(CASE WHEN status='failure' THEN 1 ELSE 0 END) failed,
+            SUM(CASE WHEN status='running' THEN 1 ELSE 0 END) running,ROUND(AVG(CASE WHEN status='success' THEN latency_ms END)) average_latency_ms,
             SUM(input_tokens) input_tokens,SUM(output_tokens) output_tokens FROM model_calls""")
         from . import local_models
-        return {'checked_at':s.now(),'database':'ok','storage':storage,'local_models':local_models.status(),'queue':{'counts':counts,
-            'worker_alive':bool(jobs.supervisor and not jobs.supervisor.done() and jobs.heartbeat and time.monotonic()-jobs.heartbeat<5),
-            'active_jobs':list(jobs.active),'concurrency':settings.get().queue.concurrency,'heartbeat_age_seconds':round(time.monotonic()-jobs.heartbeat,2) if jobs.heartbeat else None},
+        worker=s.one('SELECT * FROM worker_heartbeats WHERE id=1')
+        age=(datetime.now(timezone.utc)-datetime.fromisoformat(worker['seen_at'])).total_seconds() if worker else None
+        return {'checked_at':s.now(),'database':'ok','database_backend':'postgresql' if os.getenv('RAG_DATABASE_URL') else 'sqlite','storage':storage,'local_models':local_models.status(),'queue':{'counts':counts,
+            'worker_alive':bool(age is not None and age<5),'mode':os.getenv('RAG_WORKER_MODE','embedded'),
+            'active_jobs':[r['id'] for r in s.rows("SELECT id FROM jobs WHERE status='running'")],'concurrency':settings.get().queue.concurrency,'heartbeat_age_seconds':round(age,2) if age is not None else None},
             'model_calls':metrics,'recent_calls':s.rows('SELECT * FROM model_calls ORDER BY id DESC LIMIT 30'),
             'failed_tasks':[public_job(row) for row in s.rows("SELECT * FROM jobs WHERE status IN ('failed','interrupted') ORDER BY id DESC LIMIT 20")]}
 

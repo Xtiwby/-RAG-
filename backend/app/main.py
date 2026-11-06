@@ -24,8 +24,9 @@ from contextlib import asynccontextmanager
 
 load_dotenv(Path(__file__).resolve().parents[1] / '.env')
 from . import store as s
+from . import db_postgres
 from . import rag
-from . import settings,jobs,telemetry,blueprints,report_export,ingestion,grounding,template_docx,report_grounding
+from . import settings,jobs,telemetry,blueprints,report_export,ingestion,grounding,template_docx,report_grounding,object_storage
 
 @asynccontextmanager
 async def lifespan(app):
@@ -35,14 +36,16 @@ async def lifespan(app):
     finally:
         await jobs.stop()
 
-app = FastAPI(title='知源 RAG API', version='0.10.0',lifespan=lifespan)
+app = FastAPI(title='知源 RAG API', version='0.11.0',lifespan=lifespan)
 app.add_middleware(CORSMiddleware,allow_origins=['http://localhost:5173','http://127.0.0.1:5173','http://localhost:4173','http://127.0.0.1:4173','http://127.0.0.1:4174'],allow_credentials=True,allow_methods=['*'],allow_headers=['*'])
-rag.backfill_legacy()
-# Single-worker local deployment: recover records left by an interrupted previous process.
-s.execute("UPDATE messages SET status='interrupted' WHERE status='streaming'")
-s.execute("UPDATE report_tasks SET status='interrupted',error='服务重启导致生成中断，请重新生成' WHERE status='generating'")
-s.execute("UPDATE report_sections SET status='interrupted' WHERE status='generating'")
-s.execute("UPDATE report_tasks SET status='needs_review' WHERE status='completed' AND EXISTS (SELECT 1 FROM report_sections WHERE task_id=report_tasks.id AND status='needs_review')")
+if os.getenv('RAG_WORKER_PROCESS')!='1':
+    rag.backfill_legacy()
+    # API restarts may interrupt in-flight streams; worker imports must not alter them.
+    s.execute("UPDATE messages SET status='interrupted' WHERE status='streaming'")
+    if os.getenv('RAG_WORKER_MODE','embedded')!='external':
+        s.execute("UPDATE report_tasks SET status='interrupted',error='服务重启导致生成中断，请重新生成' WHERE status='generating'")
+        s.execute("UPDATE report_sections SET status='interrupted' WHERE status='generating'")
+    s.execute("UPDATE report_tasks SET status='needs_review' WHERE status='completed' AND EXISTS (SELECT 1 FROM report_sections WHERE task_id=report_tasks.id AND status='needs_review')")
 ACTIVE_CONVERSATIONS: set[int] = set()
 
 @app.middleware('http')
@@ -142,7 +145,7 @@ def conversation(user,cid):
     return row
 
 def safe_doc(row):
-    return {k:v for k,v in row.items() if k not in {'path','content','structured'}} | {'has_original':bool(row.get('path') and Path(row['path']).is_file())}
+    return {k:v for k,v in row.items() if k not in {'path','content','structured','object_key','object_version_id','storage_bucket'}} | {'has_original':bool(row.get('object_key')) if row.get('storage_backend')=='s3' else bool(row.get('path') and Path(row['path']).is_file())}
 
 class Login(BaseModel):
     username: str
@@ -230,7 +233,10 @@ class ReportBody(BaseModel):
 @app.get('/api/health')
 def health():
     return {'status':'ok','service':'rag-knowledge-api','version':app.version,
-            'data_scope':'acceptance' if s.DATA.name=='data-acceptance-v04' else 'local'}
+            'data_scope':'acceptance' if s.DATA.name=='data-acceptance-v04' else 'local',
+            'database':'postgresql' if os.getenv('RAG_DATABASE_URL') else 'sqlite',
+            'original_storage':object_storage.backend(),
+            'worker_mode':os.getenv('RAG_WORKER_MODE','embedded')}
 
 @app.get('/api/model-status')
 def model_status(user=Depends(current_user)):
@@ -300,7 +306,7 @@ def create_user(body:UserCreate,user=Depends(current_user)):
     try:
         uid=s.execute('INSERT INTO users(username,name,password_hash,role_id,status,created_at) VALUES(?,?,?,?,?,?)',
                       (body.username,body.name,s.password_hash(body.password),body.role_id,'active',s.now()))
-    except sqlite3.IntegrityError:
+    except (sqlite3.IntegrityError, db_postgres.IntegrityError):
         raise HTTPException(409,'账号已存在') from None
     s.audit(user,'创建用户','账户',body.username)
     return s.public_user(s.one('SELECT * FROM users WHERE id=?',(uid,)))
@@ -359,7 +365,7 @@ def create_role(body:RoleBody,user=Depends(current_user)):
     require(user,'roles.manage')
     try:
         rid=s.execute('INSERT INTO roles(name,permissions) VALUES(?,?)',(body.name,role_values(body)))
-    except sqlite3.IntegrityError:
+    except (sqlite3.IntegrityError, db_postgres.IntegrityError):
         raise HTTPException(409,'角色名称已存在') from None
     s.audit(user,'创建角色','角色',body.name)
     return {'id':rid}
@@ -374,7 +380,7 @@ def update_role(rid:int,body:RoleBody,user=Depends(current_user)):
         raise HTTPException(409,'系统管理员为保留角色，权限不可修改')
     try:
         s.execute('UPDATE roles SET name=?,permissions=? WHERE id=?',(body.name,role_values(body),rid))
-    except sqlite3.IntegrityError:
+    except (sqlite3.IntegrityError, db_postgres.IntegrityError):
         raise HTTPException(409,'角色名称已存在') from None
     s.audit(user,'修改角色','角色',body.name)
     return {'ok':True}
@@ -475,6 +481,8 @@ async def upload(knowledge_base_id:int=Form(...),modality:Literal['text','image'
     size=0
     sha=hashlib.sha256()
     did=ingestion.create_document(knowledge_base_id,name,suffix,modality,str(target))
+    stored=None
+    key=None
     ingestion.record(did,'upload','running',0,'正在接收原文件')
     last_percent=-1
     try:
@@ -489,7 +497,11 @@ async def upload(knowledge_base_id:int=Form(...),modality:Literal['text','image'
                 if percent!=last_percent:
                     ingestion.record(did,'upload','running',percent,f'已接收 {size} 字节')
                     last_percent=percent
-        s.execute("UPDATE documents SET size=?,sha256=?,status='processing' WHERE id=?",(size,sha.hexdigest(),did))
+        key=object_storage.object_key('documents',did,s.one('SELECT version FROM documents WHERE id=?',(did,))['version'],suffix)
+        stored=await asyncio.to_thread(object_storage.save_file,target,key,sha.hexdigest())
+        s.execute("UPDATE documents SET size=?,sha256=?,status='processing',path=?,storage_backend=?,storage_bucket=?,object_key=?,object_version_id=? WHERE id=?",
+                  (size,sha.hexdigest(),stored['path'],stored['storage_backend'],stored['storage_bucket'],stored['object_key'],stored['object_version_id'],did))
+        if stored['storage_backend']=='s3':target.unlink(missing_ok=True)
         ingestion.record(did,'upload','completed',100,'原文件和 SHA-256 已保存')
         with s.connect() as c:
             jid=jobs.add('ingest',{'document_id':did},user,{'document_id':did},c)
@@ -501,16 +513,32 @@ async def upload(knowledge_base_id:int=Form(...),modality:Literal['text','image'
     except BaseException as error:
         if not s.one('SELECT job_id FROM documents WHERE id=?',(did,))['job_id']:
             target.unlink(missing_ok=True)
+            if key and os.getenv('RAG_FILE_STORAGE','local').lower()=='s3':
+                try:
+                    object_storage.remove_uncommitted(key,stored['object_version_id'] if stored else '')
+                except Exception:
+                    pass  # The read-only consistency checker reports any orphaned object.
             s.execute("UPDATE documents SET status='upload_failed',path='',parse_error=? WHERE id=?",('上传未完成',did))
             ingestion.record(did,'upload','failed',last_percent if last_percent>=0 else 0,'上传未完成')
         raise
 
 @app.get('/api/documents/{did}')
-def document_detail(did:int,user=Depends(current_user)):
+def document_detail(did:int,compact:bool=False,offset:int=0,limit:int=40,chunk_id:int|None=None,user=Depends(current_user)):
     doc=document(user,did)
-    chunks=s.rows('SELECT * FROM chunks WHERE document_id=? ORDER BY ordinal',(did,))
     versions=s.rows('SELECT id,version,sha256,created_at,status FROM documents WHERE name=? AND knowledge_base_id=? AND deleted=0 ORDER BY id DESC',(doc['name'],doc['knowledge_base_id']))
-    return {**safe_doc(doc),'structured':json.loads(doc['structured']),'chunks':chunks,'versions':versions}
+    if not compact:
+        chunks=s.rows('SELECT * FROM chunks WHERE document_id=? ORDER BY ordinal',(did,))
+        return {**safe_doc(doc),'structured':json.loads(doc['structured']),'chunks':chunks,'versions':versions}
+    if limit<1 or limit>100 or offset<0:raise HTTPException(422,'片段分页参数无效')
+    total=s.one('SELECT COUNT(*) AS count FROM chunks WHERE document_id=?',(did,))['count']
+    if chunk_id is not None:
+        target=s.one('SELECT ordinal FROM chunks WHERE id=? AND document_id=?',(chunk_id,did))
+        if not target:raise HTTPException(404,'引用片段不属于此文档版本')
+        before=s.one('SELECT COUNT(*) AS count FROM chunks WHERE document_id=? AND ordinal<?',(did,target['ordinal']))['count']
+        offset=min(max(0,before-limit//2),max(0,total-limit))
+    offset=min(offset,max(0,total-limit))
+    chunks=s.rows('SELECT * FROM chunks WHERE document_id=? ORDER BY ordinal LIMIT ? OFFSET ?',(did,limit,offset))
+    return {**safe_doc(doc),'chunks':chunks,'chunk_count':total,'chunk_offset':offset,'versions':versions}
 
 @app.get('/api/documents/{did}/processing')
 def document_processing(did:int,user=Depends(current_user)):
@@ -518,20 +546,21 @@ def document_processing(did:int,user=Depends(current_user)):
     return ingestion.details(doc)
 
 @app.get('/api/documents/{did}/original')
-def original(did:int,user=Depends(current_user)):
+def original(did:int,request:Request,user=Depends(current_user)):
     doc=document(user,did)
-    if not doc['path'] or not Path(doc['path']).is_file():
+    if not object_storage.exists(doc):
         raise HTTPException(404,'此历史演示记录未保存原文件，请上传真实文档')
-    return FileResponse(doc['path'],filename=doc['name'],content_disposition_type='inline')
+    return object_storage.original_response(doc,doc['name'],range_header=request.headers.get('range'))
 
 @app.post('/api/documents/{did}/extract-vision')
 async def extract_vision(did:int,user=Depends(current_user)):
     doc=document(user,did,True)
-    if doc['file_type'] not in {'png','jpg','jpeg','webp'} or not doc['path']:
+    if doc['file_type'] not in {'png','jpg','jpeg','webp'} or not object_storage.exists(doc):
         raise HTTPException(422,'此入口支持图片；扫描 PDF 请先转为逐页图片上传')
     rag.llm_config()
     try:
-        units=await rag.visual_extract(Path(doc['path']))
+        async with object_storage.async_local_path(doc) as source:
+            units=await rag.visual_extract(source)
     except RuntimeError as error:
         raise HTTPException(502,str(error)) from None
     prepared=rag.prepare_index(units)
@@ -540,8 +569,8 @@ async def extract_vision(did:int,user=Depends(current_user)):
     # A new immutable version is created; historical citations keep pointing at the original text.
     with s.connect() as c:
         count=c.execute('SELECT COUNT(*) FROM documents WHERE name=? AND knowledge_base_id=?',(doc['name'],doc['knowledge_base_id'])).fetchone()[0]
-        new_id=c.execute('''INSERT INTO documents(knowledge_base_id,name,file_type,modality,size,status,version,page_count,content,path,created_at,sha256)
-                  VALUES(?,?,?,?,?,?,?,?,?,?,?,?)''',(doc['knowledge_base_id'],doc['name'],doc['file_type'],doc['modality'],doc['size'],'processing',f'v{count+1}.0',1,'',doc['path'],s.now(),doc['sha256'])).lastrowid
+        new_id=c.execute('''INSERT INTO documents(knowledge_base_id,name,file_type,modality,size,status,version,page_count,content,path,created_at,sha256,storage_backend,storage_bucket,object_key,object_version_id)
+                  VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)''',(doc['knowledge_base_id'],doc['name'],doc['file_type'],doc['modality'],doc['size'],'processing',f'v{count+1}.0',1,'',doc['path'],s.now(),doc['sha256'],doc['storage_backend'],doc['storage_bucket'],doc['object_key'],doc['object_version_id'])).lastrowid
     rag.commit_index(new_id,prepared)
     s.audit(user,'视觉解析','文档',doc['name'])
     return safe_doc(s.one('SELECT * FROM documents WHERE id=?',(new_id,)))

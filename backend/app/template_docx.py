@@ -1,6 +1,7 @@
 """Bounded, offline OOXML template inspection. No Office, macros or external fetches."""
 import hashlib
 import io
+import asyncio
 import json
 import re
 import secrets
@@ -8,10 +9,10 @@ import zipfile
 from pathlib import Path
 from typing import Literal
 from xml.etree import ElementTree as ET
-from fastapi import Depends,File,HTTPException,UploadFile
+from fastapi import Depends,File,HTTPException,UploadFile,Request
 from fastapi.responses import FileResponse
 from pydantic import Field
-from . import blueprints,settings,store as s
+from . import blueprints,settings,store as s,object_storage
 
 W='{http://schemas.openxmlformats.org/wordprocessingml/2006/main}'
 PLACEHOLDER=re.compile(r'\{\{\s*([^{}\n]{1,100}?)\s*\}\}|\$\{\s*([^{}\n]{1,100}?)\s*\}|<<\s*([^<>\n]{1,100}?)\s*>>')
@@ -226,9 +227,19 @@ def install(app,auth,require,check_kb):
         data=await file.read(MAX_FILE+1)
         if len(data)>MAX_FILE:raise HTTPException(413,'模板不能超过20MB')
         structure=parse_docx(data)
-        path=s.UPLOADS/('template-'+secrets.token_hex(16)+'.docx');path.write_bytes(data)
-        iid=s.execute('INSERT INTO template_imports(user_id,filename,path,sha256,structure,created_at) VALUES(?,?,?,?,?,?)',
-                      (user['id'],Path(file.filename).name,str(path),hashlib.sha256(data).hexdigest(),json.dumps(structure,ensure_ascii=False),s.now()))
+        sha=hashlib.sha256(data).hexdigest()
+        key=object_storage.object_key('templates',sha[:16],'import','docx')
+        stored=await asyncio.to_thread(object_storage.save_bytes,data,key,sha)
+        try:
+            iid=s.execute('INSERT INTO template_imports(user_id,filename,path,sha256,structure,created_at,storage_backend,storage_bucket,object_key,object_version_id) VALUES(?,?,?,?,?,?,?,?,?,?)',
+                          (user['id'],Path(file.filename).name,stored['path'],sha,json.dumps(structure,ensure_ascii=False),s.now(),stored['storage_backend'],stored['storage_bucket'],stored['object_key'],stored['object_version_id']))
+        except Exception:
+            if stored['storage_backend']=='s3':
+                try:object_storage.remove_uncommitted(stored['object_key'],stored['object_version_id'])
+                except Exception:pass
+            else:
+                Path(stored['path']).unlink(missing_ok=True)
+            raise
         s.audit(user,'解析DOCX模板','报告模板',object_id=iid)
         return {'import_id':iid,'filename':Path(file.filename).name,'sha256':hashlib.sha256(data).hexdigest(),'structure':structure}
 
@@ -280,10 +291,10 @@ def install(app,auth,require,check_kb):
         return {k:json.loads(row[k]) for k in ('structure','field_mappings','knowledge_base_ids')}|{k:row[k] for k in ('id','name','description','version','import_id','parent_id')}|{'blueprint':blueprints.from_template(row).model_dump()}
 
     @app.get('/api/templates/{tid}/original')
-    def original(tid:int,user=Depends(auth)):
+    def original(tid:int,request:Request,user=Depends(auth)):
         require(user,'reports.generate');row=s.one('SELECT * FROM report_templates WHERE id=?',(tid,))
         if not row:raise HTTPException(404,'模板不存在')
         if not allowed(row,user):raise HTTPException(403,'无权访问此模板')
         source=s.one('SELECT * FROM template_imports WHERE id=?',(row['import_id'],))
-        if not source or not Path(source['path']).is_file():raise HTTPException(404,'此模板无可用原文件')
-        return FileResponse(source['path'],filename=source['filename'],media_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+        if not source or not object_storage.exists(source):raise HTTPException(404,'此模板无可用原文件')
+        return object_storage.original_response(source,source['filename'],'application/vnd.openxmlformats-officedocument.wordprocessingml.document',request.headers.get('range'))

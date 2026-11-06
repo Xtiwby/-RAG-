@@ -11,7 +11,7 @@ from urllib.parse import quote
 from fastapi import Depends,HTTPException,Query,Request
 from fastapi.responses import Response
 from pydantic import Field
-from . import blueprints,settings,store as s,rag,jobs,template_docx,report_grounding as g,report_layout,report_retrieval
+from . import blueprints,settings,store as s,rag,jobs,template_docx,report_grounding as g,report_layout,report_retrieval,object_storage
 
 def decoded(value,default=None):return report_layout.decode(value,{} if default is None else default)
 
@@ -54,8 +54,8 @@ def template_snapshot(row):
     structure=decoded(row.get('structure'))
     if row.get('import_id') and structure.get('schema_version',0)<3:
         original=s.one('SELECT * FROM template_imports WHERE id=?',(row['import_id'],))
-        if not original or not Path(original['path']).is_file():raise HTTPException(409,'旧模板原件缺失，请重新导入后发布')
-        data=Path(original['path']).read_bytes()
+        if not original or not object_storage.exists(original):raise HTTPException(409,'旧模板原件缺失，请重新导入后发布')
+        data=object_storage.read_bytes(original)
         if hashlib.sha256(data).hexdigest()!=original['sha256']:raise HTTPException(409,'模板原件校验失败，请重新导入')
         upgraded=template_docx.parse_docx(data);old={b['id']:b for b in structure.get('blocks',[])}
         for block in upgraded['blocks']:
@@ -157,33 +157,32 @@ def snapshot_report(report,sections,kb_name,decision=None):
     return {'report':report,'sections':sections,'knowledge_base_name':kb_name,
             'nodes':report_layout.nodes(report,sections,kb_name,draft=False),'decision':decision or {}}
 
-async def generate_section(instruction,evidence,authorize,kind='fact'):
+async def generate_section(instruction,evidence,authorize,kind='fact',coverage_question=None):
     if kind in ('fixed','container'):raise ValueError('固定结构不得调用生成模型')
-    content='';checks=[];buffer='';count=0
-    async def paragraph(text):
-        nonlocal count,content
-        units=g.grounding.sentences(text)
-        if not units:return []
-        if count+len(units)>128:raise ValueError('本节超过128个核验句段，请缩减目标字数')
-        accepted=[]
-        for offset in range(0,len(units),8):
-            group=units[offset:offset+8];authorize()
-            supported,batch=await g.grounding.check_batch(group,evidence,count+1,claim_kind=kind)
-            authorize();count+=len(group);checks.extend(batch);accepted.extend(supported)
-            for unit in supported:content+=unit+'\n'
-        return accepted
+    content='';checks=[];count=0
     if evidence:
-        extra={'fact':'只写事实句，不输出标题；每句末尾引用证据。','analysis':'仅给出有证据基础的分析，明确是推断，不冒充已发生事实，每句末尾引用依据。','recommendation':'仅提出有证据基础的建议，不冒充已经实施的事实，每句末尾引用依据。'}[kind]
+        extra={'fact':'只写连续事实句，不输出标题、编号或列表标记；每句末尾引用证据。','analysis':'仅给出有证据基础的分析，明确是推断，不冒充已发生事实，每句末尾引用依据。','recommendation':'仅提出有证据基础的建议，不冒充已经实施的事实，每句末尾引用依据。'}[kind]
+        candidate=''
         async for token in rag.llm_stream(rag.evidence_prompt(instruction+' '+extra,evidence)):
-            authorize();buffer+=token
-            if len(buffer)>16000:raise ValueError('候选段落过长，未发布未经核验内容')
-            while '\n' in buffer:
-                text,buffer=buffer.split('\n',1);await paragraph(text)
-        await paragraph(buffer)
+            authorize();candidate+=token
+            if len(candidate)>32000:raise ValueError('候选章节过长，未发布未经核验内容')
+        lines=[]
+        for line in candidate.splitlines():
+            if re.match(r'^\s*#{1,6}\s+',line) and not re.search(r'\[\d+\]',line):continue
+            line=re.sub(r'^\s*(?:[-*•]|\d+[.)、](?!\d))\s*','',line).strip()
+            if line:lines.append(line)
+        units=[unit for line in lines for unit in g.grounding.sentences(line)]
+        if len(units)>128:raise ValueError('本节超过128个核验句段，请缩减目标字数')
+        # Verify up to eight sentences per model call; never persist raw output.
+        for offset in range(0,len(units),8):
+            authorize()
+            supported,batch=await g.grounding.check_batch(units[offset:offset+8],evidence,count+1,claim_kind=kind)
+            authorize();count+=len(batch);checks.extend(batch)
+            for unit in supported:content+=unit+'\n'
     coverage={}
     if evidence and kind=='fact' and settings.get().answer_quality.enabled:
         from . import answer_quality
-        coverage,extra,batch=await answer_quality.assess(instruction,evidence,content.splitlines(),checks,count)
+        coverage,extra,batch=await answer_quality.assess(coverage_question or instruction,evidence,content.splitlines(),checks,count)
         authorize();checks.extend(batch)
         for text in extra:content+=text+'\n'
     if not content:content='【待补充】当前资料不足以支持本节内容，请补充证据后重新生成。'
@@ -225,7 +224,7 @@ def install(app,auth,require,check_kb,report_task,ReportBody,source_lines):
             if not user['system_admin']:raise HTTPException(403,'仅管理员可维护导入的DOCX')
             imported=s.one('SELECT * FROM template_imports WHERE id=?',(body.import_id,))
             if not imported:raise HTTPException(404,'导入文件不存在')
-            data=Path(imported['path']).read_bytes()
+            data=object_storage.read_bytes(imported)
             if hashlib.sha256(data).hexdigest()!=imported['sha256']:raise HTTPException(409,'模板原件校验失败')
             structure=template_docx.parse_docx(data);blocks={b['id']:b for b in structure['blocks'] if b['part']=='body' and not b['table']}
             ids=[sec.block_id for sec in plan.sections if sec.block_id]
@@ -294,7 +293,8 @@ def install(app,auth,require,check_kb,report_task,ReportBody,source_lines):
         plan=blueprints.from_template(row);results=[]
         for i,spec in enumerate(plan.sections):
             evidence,params=await report_retrieval.retrieve_section(body.knowledge_base_id,spec.model_dump(),purpose=plan.purpose,
-                report_title=body.title,requirements=body.requirements,period_start=body.period_start,period_end=body.period_end) if spec.kind not in ('fixed','container') else ([],{})
+                report_title=body.title,requirements=body.requirements,period_start=body.period_start,period_end=body.period_end,
+                template_structure=row.get('structure')) if spec.kind not in ('fixed','container') else ([],{})
             results.append({'ordinal':i,'title':spec.title,'kind':spec.kind,'required':spec.required,'evidence':evidence,'evidence_count':len(evidence),'retrieval':params,'ready':bool(evidence) or spec.kind in ('fixed','container')})
         fresh=auth(request.headers.get('authorization'))
         check_kb(fresh,body.knowledge_base_id)

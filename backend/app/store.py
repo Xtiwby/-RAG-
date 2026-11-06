@@ -26,6 +26,11 @@ def now():
 
 @contextmanager
 def connect():
+    if os.getenv('RAG_DATABASE_URL'):
+        from . import db_postgres
+        with db_postgres.connect() as conn:
+            yield conn
+        return
     conn = sqlite3.connect(DATA / 'rag_knowledge.db', timeout=30)
     conn.row_factory = sqlite3.Row
     conn.execute('PRAGMA foreign_keys=ON')
@@ -84,6 +89,8 @@ def revoke(user_id):
 
 def migrate():
     with connect() as c:
+        if os.getenv('RAG_DATABASE_URL'):
+            c.execute('SELECT pg_advisory_xact_lock(25102027)')
         c.executescript('''
         CREATE TABLE IF NOT EXISTS roles(id INTEGER PRIMARY KEY, name TEXT NOT NULL UNIQUE,
           permissions TEXT NOT NULL, system_admin INTEGER NOT NULL DEFAULT 0);
@@ -122,6 +129,7 @@ def migrate():
           attempts INTEGER NOT NULL DEFAULT 0,max_attempts INTEGER NOT NULL DEFAULT 3,result TEXT NOT NULL DEFAULT '{}',
           error TEXT NOT NULL DEFAULT '',cancel_requested INTEGER NOT NULL DEFAULT 0,created_at TEXT NOT NULL,started_at TEXT,finished_at TEXT);
         CREATE TABLE IF NOT EXISTS job_events(id INTEGER PRIMARY KEY,job_id INTEGER NOT NULL REFERENCES jobs(id),data TEXT NOT NULL,created_at TEXT NOT NULL);
+        CREATE TABLE IF NOT EXISTS worker_heartbeats(id INTEGER PRIMARY KEY CHECK(id=1),worker_id TEXT NOT NULL,seen_at TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS model_calls(id INTEGER PRIMARY KEY,kind TEXT NOT NULL,model TEXT NOT NULL,user_id INTEGER,job_id INTEGER,
           status TEXT NOT NULL,started_at TEXT NOT NULL,finished_at TEXT,latency_ms INTEGER,status_code INTEGER,error TEXT NOT NULL DEFAULT '',
           input_tokens INTEGER,output_tokens INTEGER,output_characters INTEGER NOT NULL DEFAULT 0);
@@ -145,7 +153,8 @@ def migrate():
             'report_sections': {'revision':'INTEGER NOT NULL DEFAULT 0','edited':'INTEGER NOT NULL DEFAULT 0','confirmed':'INTEGER NOT NULL DEFAULT 0','job_id':'INTEGER','generation_status':"TEXT NOT NULL DEFAULT ''",'generation_error':"TEXT NOT NULL DEFAULT ''",'updated_at':"TEXT NOT NULL DEFAULT ''",'verification':"TEXT NOT NULL DEFAULT '{}'"},
             'report_section_history': {'verification':"TEXT NOT NULL DEFAULT '{}'"},
             'audit_logs': {'user_id':'INTEGER','username':"TEXT NOT NULL DEFAULT ''",'result':"TEXT NOT NULL DEFAULT 'unknown'",'object_id':"TEXT NOT NULL DEFAULT ''",'status_code':'INTEGER','source':"TEXT NOT NULL DEFAULT 'legacy'"},
-            'documents': {'sha256': "TEXT NOT NULL DEFAULT ''", 'structured': "TEXT NOT NULL DEFAULT '[]'", 'deleted': 'INTEGER NOT NULL DEFAULT 0', 'parse_error': "TEXT NOT NULL DEFAULT ''", 'index_config':"TEXT NOT NULL DEFAULT '{}'", 'job_id':'INTEGER', 'processing_stage':"TEXT NOT NULL DEFAULT ''", 'processing_progress':'INTEGER NOT NULL DEFAULT 0'},
+            'documents': {'storage_backend': "TEXT NOT NULL DEFAULT 'local'", 'storage_bucket': "TEXT NOT NULL DEFAULT ''", 'object_key': "TEXT NOT NULL DEFAULT ''", 'object_version_id': "TEXT NOT NULL DEFAULT ''", 'sha256': "TEXT NOT NULL DEFAULT ''", 'structured': "TEXT NOT NULL DEFAULT '[]'", 'deleted': 'INTEGER NOT NULL DEFAULT 0', 'parse_error': "TEXT NOT NULL DEFAULT ''", 'index_config':"TEXT NOT NULL DEFAULT '{}'", 'job_id':'INTEGER', 'processing_stage':"TEXT NOT NULL DEFAULT ''", 'processing_progress':'INTEGER NOT NULL DEFAULT 0'},
+            'template_imports': {'storage_backend': "TEXT NOT NULL DEFAULT 'local'", 'storage_bucket': "TEXT NOT NULL DEFAULT ''", 'object_key': "TEXT NOT NULL DEFAULT ''", 'object_version_id': "TEXT NOT NULL DEFAULT ''"},
             'messages': {'verification':"TEXT NOT NULL DEFAULT '[]'",'retrieval':"TEXT NOT NULL DEFAULT '{}'",'coverage':"TEXT NOT NULL DEFAULT '{}'"},
         }.items():
             columns = {r['name'] for r in c.execute(f'PRAGMA table_info({table})')}
@@ -159,6 +168,19 @@ def migrate():
             columns={r['name'] for r in c.execute(f'PRAGMA table_info({table})')}
             for name,kind in additions.items():
                 if name not in columns:c.execute(f'ALTER TABLE {table} ADD COLUMN {name} {kind}')
+        if os.getenv('RAG_DATABASE_URL'):
+            c.execute('CREATE EXTENSION IF NOT EXISTS vector')
+            c.execute("""CREATE TABLE IF NOT EXISTS chunk_search(
+                chunk_id INTEGER PRIMARY KEY REFERENCES chunks(id) ON DELETE CASCADE,
+                document_id INTEGER NOT NULL, knowledge_base_id INTEGER NOT NULL,
+                search_terms TEXT NOT NULL, has_zh INTEGER NOT NULL DEFAULT 0, has_en INTEGER NOT NULL DEFAULT 0,
+                search_vector tsvector GENERATED ALWAYS AS (to_tsvector('simple', search_terms)) STORED,
+                embedding vector(1024))""")
+            c.execute('ALTER TABLE chunk_search ADD COLUMN IF NOT EXISTS has_zh INTEGER NOT NULL DEFAULT 0')
+            c.execute('ALTER TABLE chunk_search ADD COLUMN IF NOT EXISTS has_en INTEGER NOT NULL DEFAULT 0')
+            c.execute('CREATE INDEX IF NOT EXISTS chunk_search_terms_idx ON chunk_search USING GIN(search_vector)')
+            c.execute('CREATE INDEX IF NOT EXISTS chunk_search_vector_idx ON chunk_search USING hnsw(embedding vector_cosine_ops)')
+            c.execute('CREATE INDEX IF NOT EXISTS chunk_search_kb_idx ON chunk_search(knowledge_base_id,document_id)')
         if not c.execute('SELECT 1 FROM roles').fetchone():
             c.executemany('INSERT INTO roles(id,name,permissions,system_admin) VALUES(?,?,?,?)', [
                 (1,'系统管理员',json.dumps(list(PERMISSIONS)),1),
@@ -186,5 +208,7 @@ def migrate():
         c.execute("UPDATE report_tasks SET status='legacy',progress=0,error='旧版仅保存任务记录，请重新生成' WHERE user_id IS NULL AND content=''")
         c.execute("UPDATE report_tasks SET user_id=(SELECT id FROM users WHERE username='admin') WHERE user_id IS NULL")
         c.execute("UPDATE audit_logs SET username=COALESCE((SELECT username FROM users WHERE id=audit_logs.user_id),'') WHERE username='' AND user_id IS NOT NULL")
+        if os.getenv('RAG_DATABASE_URL'):
+            c.align_sequences()
 
 migrate()

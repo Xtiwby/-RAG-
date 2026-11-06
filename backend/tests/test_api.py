@@ -12,6 +12,10 @@ import threading
 
 _data=tempfile.TemporaryDirectory(prefix='rag-api-tests-')
 os.environ['RAG_DATA_DIR']=_data.name
+# Tests must never inherit the live PostgreSQL/S3 cutover from backend/.env.
+os.environ['RAG_DATABASE_URL']=''
+os.environ['RAG_FILE_STORAGE']='local'
+os.environ['RAG_WORKER_MODE']='embedded'
 os.environ['KIMI_API_KEY']='test-only-not-a-real-key'
 os.environ['EMBEDDING_BASE_URL']=''
 os.environ['EMBEDDING_MODEL']=''
@@ -68,6 +72,19 @@ def create_member(admin):
     response=client.post('/api/users',headers=admin,json={'username':name,'name':'新用户','password':'test123456','role_id':2})
     assert response.status_code==201,response.text
     return response.json(),login(name,'test123456')
+
+def test_document_compact_window_locates_cited_chunk(admin):
+    kid=kb(admin)
+    doc=upload(admin,kid,name='长文.md',text=' '.join(f'段落{i}说明检索定位。' for i in range(600)))
+    assert len(doc['chunks'])>5
+    target=doc['chunks'][4]['id']
+    response=client.get(f"/api/documents/{doc['id']}?compact=true&limit=3&chunk_id={target}",headers=admin)
+    assert response.status_code==200,response.text
+    page=response.json()
+    assert page['chunk_count']==len(doc['chunks']) and len(page['chunks'])==3
+    assert target in {part['id'] for part in page['chunks']}
+    assert 'structured' not in page
+    assert client.get(f"/api/documents/{doc['id']}?compact=true&limit=101",headers=admin).status_code==422
 
 def test_auth_acl_roles_and_revocation(admin):
     kid=kb(admin)
@@ -505,6 +522,16 @@ def test_kb_admin_edit_disable_archive_and_historical_scope(admin,monkeypatch):
     log=client.get('/api/audits',headers=admin,params={'action':'归档知识库','object_id':kid}).json()
     assert log['total']==1
 
+
+def test_invalid_docx_explains_reupload_in_processing_panel(admin):
+    kid=kb(admin)
+    response=client.post('/api/documents',headers=admin,data={'knowledge_base_id':kid},
+        files={'file':('损坏文档.docx',b'not-a-zip-file')})
+    assert response.status_code==201,response.text
+    doc=finish_upload(admin,response.json())
+    assert doc['status']=='parse_failed'
+    detail=client.get(f"/api/documents/{doc['id']}/processing",headers=admin).json()
+    assert '扩展名正确后重新上传' in detail['error']
 
 def test_document_stage_events_failure_retry_and_atomic_index(admin,monkeypatch):
     kid=kb(admin)

@@ -2,6 +2,8 @@
 import asyncio
 import json
 import time
+import os
+import socket
 from . import settings,store as s,telemetry
 
 handlers={}
@@ -25,7 +27,8 @@ def progress(jid,value):
 def claim():
     with s.connect() as c:
         c.execute('BEGIN IMMEDIATE')
-        row=c.execute("SELECT * FROM jobs WHERE status='queued' AND cancel_requested=0 ORDER BY id LIMIT 1").fetchone()
+        row=c.execute("SELECT * FROM jobs WHERE status='queued' AND cancel_requested=0 ORDER BY id LIMIT 1" +
+                      (' FOR UPDATE SKIP LOCKED' if os.getenv('RAG_DATABASE_URL') else '')).fetchone()
         if not row:
             return None
         c.execute("UPDATE jobs SET status='running',attempts=attempts+1,started_at=?,finished_at=NULL WHERE id=?",(s.now(),row['id']))
@@ -86,11 +89,19 @@ async def execute(row):
 
 async def run():
     global heartbeat
+    worker_id=f'{socket.gethostname()}:{os.getpid()}'
+    last_heartbeat=0
     settings.active.set(None)
     try:
         while True:
             heartbeat=time.monotonic()
+            if heartbeat-last_heartbeat>=1:
+                s.execute('INSERT INTO worker_heartbeats(id,worker_id,seen_at) VALUES(1,?,?) ON CONFLICT(id) DO UPDATE SET worker_id=excluded.worker_id,seen_at=excluded.seen_at',
+                          (worker_id,s.now()))
+                last_heartbeat=heartbeat
             for jid in list(active):
+                if s.one('SELECT cancel_requested FROM jobs WHERE id=?',(jid,))['cancel_requested']:
+                    active[jid].cancel()
                 if active[jid].done():
                     active.pop(jid)
             limit=settings.get().queue.concurrency
@@ -111,16 +122,21 @@ async def run():
 
 async def start():
     global supervisor
+    if os.getenv('RAG_WORKER_MODE','embedded')=='external' and os.getenv('RAG_WORKER_PROCESS')!='1':
+        return
     if supervisor is None or supervisor.done():
         # A queued job survives restart; a half-finished running attempt does not pretend to have completed.
         s.execute("UPDATE jobs SET status='interrupted',error='服务重启导致任务中断，可重试',finished_at=? WHERE status='running'",(s.now(),))
-        s.execute("UPDATE model_calls SET status='interrupted',error='服务重启导致调用中断',finished_at=? WHERE status='running'",(s.now(),))
+        s.execute("UPDATE model_calls SET status='interrupted',error='服务重启导致调用中断',finished_at=? WHERE status='running'" +
+                  (" AND job_id IS NOT NULL" if os.getenv('RAG_WORKER_MODE')=='external' else ''),(s.now(),))
         from . import ingestion
         for row in s.rows("SELECT j.* FROM jobs j JOIN documents d ON d.job_id=j.id WHERE j.kind='ingest' AND j.status IN ('failed','interrupted','cancelled') AND d.status='processing'"):
             ingestion.interrupted_job(row,row['error'] or '服务重启，任务可手动重试',row['status'])
         from . import report_drafts
         for row in s.rows("SELECT * FROM jobs WHERE kind='report_section' AND status IN ('failed','interrupted','cancelled')"):
             report_drafts.finish_failed(row,row['error'],row['status'])
+        s.execute("UPDATE report_tasks SET status='interrupted',error='工作进程重启导致生成中断' WHERE status='generating' AND job_id IN (SELECT id FROM jobs WHERE status='interrupted')")
+        s.execute("UPDATE report_sections SET status='interrupted' WHERE status='generating' AND task_id IN (SELECT id FROM report_tasks WHERE status='interrupted')")
         supervisor=asyncio.create_task(run())
 
 async def stop():

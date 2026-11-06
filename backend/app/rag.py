@@ -146,6 +146,8 @@ def commit_index(document_id,prepared):
         c.execute('UPDATE documents SET content=?,structured=?,page_count=?,status=?,parse_error=? WHERE id=?',
                   (prepared['content'],json.dumps(prepared['units'],ensure_ascii=False),prepared['page_count'],'ready' if prepared['chunks'] else 'needs_extraction','' if prepared['chunks'] else '未提取到可检索文本；扫描件或图片需执行视觉解析',document_id))
         c.execute('UPDATE documents SET index_config=? WHERE id=?',(prepared['config'],document_id))
+        from . import search_index
+        search_index.index_document(c,document_id)
 
 def index_units(document_id,units):
     commit_index(document_id,prepare_index(units))
@@ -153,7 +155,7 @@ def index_units(document_id,units):
 def backfill_legacy():
     for doc in s.rows("SELECT * FROM documents WHERE structured='[]' AND content<>'' AND deleted=0"):
         # Preserve existing text but never claim synthetic examples have an original file or true page number.
-        section='历史演示文本（无原文件）' if not doc['path'] else '历史解析文本（页码待重新解析）'
+        section='历史演示文本（无原文件）' if not (doc['path'] or doc.get('object_key')) else '历史解析文本（页码待重新解析）'
         index_units(doc['id'],[{'page':None,'section':section,'text':doc['content']}])
         if not doc['sha256']:
             s.execute('UPDATE documents SET sha256=? WHERE id=?',(hashlib.sha256(doc['content'].encode()).hexdigest(),doc['id']))
@@ -261,12 +263,12 @@ def lexical_rank(query,items):
         vectors.append(sum(qv[t]*vector.get(t,0) for t in q)/(qnorm*norm))
     return scores,vectors
 
-async def semantic_vectors(query,items):
+async def semantic_vectors(query,items,query_vector=None):
     config=settings.get().embedding
     if config.provider=='local':
         from . import local_models
         vectors=await cache_local_embeddings([item['text'] for item in items])
-        q=(await local_models.embed(config,[query]))[0]
+        q=query_vector if query_vector is not None else (await local_models.embed(config,[query]))[0]
         try:
             local_models.validate_vectors([q,*vectors],len(vectors)+1)
         except (TypeError,ValueError):
@@ -351,8 +353,8 @@ async def cache_local_embeddings(texts):
     except (RuntimeError,ValueError,KeyError,TypeError):
         raise HTTPException(503,'本地语义模型或向量缓存无效，请检查模型文件与缓存；未退回 TF-IDF') from None
 
-async def retrieve(query,kb_ids,mode=None,top_k=None,rerank=None):
-    from . import retrieval_planner
+async def retrieve(query,kb_ids,mode=None,top_k=None,rerank=None,expand_queries=True):
+    from . import retrieval_planner,search_index
     config=settings.get().retrieval
     mode=mode or config.mode
     top_k=top_k or config.top_k
@@ -360,16 +362,36 @@ async def retrieve(query,kb_ids,mode=None,top_k=None,rerank=None):
     if not kb_ids:
         return [],{'embedding':'none','rerank':'none'}
     marks=','.join('?' for _ in kb_ids)
-    items=s.rows(f'''SELECT c.*,d.id AS document_id,d.name,d.version,d.modality,d.knowledge_base_id,k.name AS knowledge_base_name
+    query_sql=f'''SELECT c.*,d.id AS document_id,d.name,d.version,d.modality,d.knowledge_base_id,k.name AS knowledge_base_name
         FROM chunks c JOIN documents d ON d.id=c.document_id JOIN knowledge_bases k ON k.id=d.knowledge_base_id
         WHERE d.deleted=0 AND d.status='ready' AND d.knowledge_base_id IN ({marks})
-        AND d.id=(SELECT MAX(d2.id) FROM documents d2 WHERE d2.name=d.name AND d2.knowledge_base_id=d.knowledge_base_id AND d2.deleted=0)''',kb_ids)
-    # Short factual statements (e.g. "pypdf is not OCR") are valid evidence.
-    # A fixed 6-token minimum disproportionately discarded short English facts.
+        AND d.id=(SELECT MAX(d2.id) FROM documents d2 WHERE d2.name=d.name AND d2.knowledge_base_id=d.knowledge_base_id AND d2.deleted=0)'''
+    indexed_ids=None
+    query_vectors={}
+    preplanned=None
+    if not expand_queries:
+        original=[{'query':query,'group':'question','weight':1.0,'language':'original'}]
+        preplanned=(original,{'policy':retrieval_planner.POLICY,'status':'explicit-template-topic',
+                              'corpus_languages':[],'queries':original,'warnings':[]})
+    if search_index.ready(mode):
+        if preplanned is None:
+            preplanned=await retrieval_planner.expand(query,kb_ids,search_index.language_samples(kb_ids))
+        candidate_result=await search_index.candidates(preplanned[0],kb_ids,mode,top_k)
+        if candidate_result is not None:
+            indexed_ids,query_vectors=candidate_result
+    if indexed_ids is not None:
+        if not indexed_ids:
+            return [],{'embedding':'none','rerank':'none','mode':mode,'search_index':'postgresql-fts-pgvector'}
+        ordered=sorted(indexed_ids)
+        id_marks=','.join('?' for _ in ordered)
+        items=s.rows(query_sql+f' AND c.id IN ({id_marks})',[*kb_ids,*ordered])
+    else:
+        items=s.rows(query_sql,kb_ids)
+    # Short factual statements are valid evidence; pure headings are not.
     items=[item for item in items if len(terms(item['text']))>=2 and not re.fullmatch(r'#{1,6}\s+[^\n]+',item['text'].strip())]
     if not items:
         return [],{'embedding':'none','rerank':'none'}
-    queries,expansion=await retrieval_planner.expand(query,kb_ids,items)
+    queries,expansion=preplanned if preplanned is not None else await retrieval_planner.expand(query,kb_ids,items)
     document_terms={}
     for item in items:
         document_terms.setdefault(item['document_id'],set()).update(terms(item['text']+' '+item['name'].replace('_',' ')))
@@ -392,7 +414,7 @@ async def retrieve(query,kb_ids,mode=None,top_k=None,rerank=None):
         language=variant['language'] if variant['language']!='original' else ('zh' if re.search(r'[\u4e00-\u9fff]',variant['query']) else 'en')
         route_weight=variant['weight']/language_counts[(variant['group'],language)]
         bm25,vectors=lexical_rank(variant['query'],items)
-        semantic=await semantic_vectors(variant['query'],items) if mode!='keyword' else None
+        semantic=await semantic_vectors(variant['query'],items,query_vectors.get(variant['query'])) if mode!='keyword' else None
         if semantic is not None:vectors=semantic;semantic_used=True
         vr=sorted(range(len(items)),key=lambda i:vectors[i],reverse=True)
         kr=sorted(range(len(items)),key=lambda i:bm25[i],reverse=True)
@@ -508,7 +530,8 @@ async def retrieve(query,kb_ids,mode=None,top_k=None,rerank=None):
         'policy':'multi-query-neural-v3' if model_rerank else 'multi-query-rrf-v2',
         'mode':mode,'top_k':top_k,'min_similarity':config.min_similarity,'min_coverage':config.min_coverage,
         'main_result_count':main_count,'context_result_count':len(out)-main_count,
-        'knowledge_base_ids':list(kb_ids),'query_expansion':expansion,
+        'knowledge_base_ids':list(kb_ids),'search_index':'postgresql-fts-pgvector' if indexed_ids is not None else 'application-scan',
+        'query_expansion':expansion,
         'topic_anchors':sorted(anchor_docs),'covered_topic_anchors':sorted(covered_anchors),
         'part_coverage':{group:sum(any(m['group']==group for m in item['matched_queries']) for item in out)
                          for group in group_scores if group.startswith('part-')}}
