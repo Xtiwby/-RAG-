@@ -26,7 +26,7 @@ load_dotenv(Path(__file__).resolve().parents[1] / '.env')
 from . import store as s
 from . import db_postgres
 from . import rag
-from . import settings,jobs,telemetry,blueprints,report_export,ingestion,grounding,template_docx,report_grounding,object_storage
+from . import settings,jobs,telemetry,blueprints,report_export,ingestion,grounding,template_docx,report_grounding,object_storage,presentation_preview
 
 @asynccontextmanager
 async def lifespan(app):
@@ -551,6 +551,13 @@ def original(did:int,request:Request,user=Depends(current_user)):
     if not object_storage.exists(doc):
         raise HTTPException(404,'此历史演示记录未保存原文件，请上传真实文档')
     return object_storage.original_response(doc,doc['name'],range_header=request.headers.get('range'))
+
+
+@app.get('/api/documents/{did}/presentation-preview')
+def preview_presentation(did:int,user=Depends(current_user)):
+    doc=document(user,did)
+    return Response(presentation_preview.render(doc), media_type='application/pdf',
+                    headers={'Cache-Control':'private, no-store'})
 
 @app.post('/api/documents/{did}/extract-vision')
 async def extract_vision(did:int,user=Depends(current_user)):

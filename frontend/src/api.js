@@ -108,9 +108,21 @@ export function uploadDocument(form,onProgress) {
   })
 }
 
-export async function originalBlob(id) {
-  const response=await fetch(`${API_BASE}/api/documents/${id}/original`,{headers:{Authorization:`Bearer ${getToken()}`}})
+async function documentFile(id, resource, signal) {
+  const response=await fetch(`${API_BASE}/api/documents/${id}/${resource}`,{headers:{Authorization:`Bearer ${getToken()}`},signal})
   if(!response.ok)throw new Error(errorMessage(await response.json().catch(()=>({}))))
-  return URL.createObjectURL(await response.blob())
+  return response.blob()
+}
+
+export function originalFile(id, signal) {
+  return documentFile(id, 'original', signal)
+}
+
+export function presentationPreviewFile(id, signal) {
+  return documentFile(id, 'presentation-preview', signal)
+}
+
+export async function originalBlob(id, signal) {
+  return URL.createObjectURL(await originalFile(id, signal))
 }
 

@@ -622,6 +622,32 @@ def test_powerpoint_text_slide_order_original_and_pipeline(admin,suffix,maker):
     assert bad['status']=='parse_failed' and bad['parse_error']
 
 
+def test_powerpoint_preview_requires_document_access_and_preserves_original(admin, monkeypatch):
+    from app import presentation_preview
+
+    kid = kb(admin)
+    original = make_pptx()
+    uploaded = client.post('/api/documents', headers=admin, data={'knowledge_base_id': kid},
+                           files={'file': ('演示.pptx', original)})
+    assert uploaded.status_code == 201, uploaded.text
+    document_id = finish_upload(admin, uploaded.json())['id']
+    url = f'/api/documents/{document_id}'
+    _, other = create_member(admin)
+    assert client.get(url + '/presentation-preview', headers=other).status_code == 403
+
+    def convert(command, directory):
+        assert (directory / 'slides.pptx').read_bytes() == original
+        (directory / 'slides.pdf').write_bytes(b'%PDF-1.7\npreview')
+        return 0
+
+    monkeypatch.setattr(presentation_preview, '_soffice', lambda: 'test-converter')
+    monkeypatch.setattr(presentation_preview, '_convert', convert)
+    preview = client.get(url + '/presentation-preview', headers=admin)
+    assert preview.status_code == 200 and preview.headers['content-type'] == 'application/pdf'
+    assert preview.content == b'%PDF-1.7\npreview'
+    assert client.get(url + '/original', headers=admin).content == original
+
+
 def test_grounding_uncited_false_and_forged_quotes_fail_closed(admin,monkeypatch):
     kid=kb(admin);upload(admin,kid,text='# 检索\n\n混合检索采用 BM25 和 RRF，样例评测召回率为 80%。')
     async def model(messages,max_tokens=4096):

@@ -239,6 +239,8 @@ RAG_S3_SECRET_KEY=change-me-local
 
 如果没有启动 worker，上传、索引和报告任务会保持排队。
 
+文档管理的 PPT/PPTX 原文预览由后端使用 LibreOffice 生成静态幻灯片。请在运行后端的机器上安装 [LibreOffice](https://www.libreoffice.org/download/)。如果安装在自定义位置，可在 `backend/.env` 中用 `RAG_SOFFICE_PATH` 指定 `soffice`（Windows 上为 `soffice.com`）的完整路径。页面上的「下载原文件」仍可获取 PowerPoint 原件。
+
 ### 6. 初始账户
 
 | 账号 | 初始密码 | 角色 |

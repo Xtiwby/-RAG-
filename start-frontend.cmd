@@ -8,14 +8,18 @@ if errorlevel 1 (
   pause
   exit /b 1
 )
-if not exist "node_modules\vite\bin\vite.js" (
+if not exist "node_modules\vite\bin\vite.js" goto install
+if not exist "node_modules\pdfjs-dist\build\pdf.mjs" goto install
+if not exist "node_modules\marked\lib\marked.esm.js" goto install
+goto build
+:install
   call pnpm install --node-linker=hoisted --package-import-method=copy
   if errorlevel 1 (
     echo Dependency installation failed. Check Node.js, pnpm and network access.
     pause
     exit /b 1
   )
-)
+:build
 node node_modules\vite\bin\vite.js build --configLoader runner
 if errorlevel 1 (
   pause
