@@ -87,34 +87,35 @@ def require(user,permission):
     if not user['system_admin'] and permission not in user['permissions']:
         raise HTTPException(403,'缺少权限：'+s.PERMISSIONS.get(permission,permission))
 
-def grant_level(user,kb_id,allow_inactive=False):
-    row=s.one("SELECT id,status FROM knowledge_bases WHERE id=? AND status<>'deleted'",(kb_id,))
-    if not row:
-        raise HTTPException(404,'知识库不存在')
+def grant_level(user,kb,explicit_only=False):
     if user['system_admin']:
         return 'write'
-    grant=s.one('SELECT access FROM kb_grants WHERE user_id=? AND kb_id=?',(user['id'],kb_id))
-    return grant['access'] if grant else None
+    return kb['grant_access'] or ('read' if kb['visibility']=='public' and not explicit_only else None)
 
-def check_kb(user,kb_id,write=False,allow_inactive=False):
+def check_kb(user,kb_id,write=False,allow_inactive=False,explicit_only=False):
     require(user,'kb.write' if write else 'kb.read')
-    access=grant_level(user,kb_id,allow_inactive)
+    kb=s.one("""SELECT k.status,k.visibility,g.access grant_access FROM knowledge_bases k
+                LEFT JOIN kb_grants g ON g.kb_id=k.id AND g.user_id=?
+                WHERE k.id=? AND k.status<>'deleted'""",(user['id'],kb_id))
+    if not kb:
+        raise HTTPException(404,'知识库不存在')
+    access=grant_level(user,kb,explicit_only)
     if not access or (write and access!='write'):
         raise HTTPException(403,'无此知识库的'+('维护' if write else '读取')+'授权')
-    if not allow_inactive and s.one('SELECT status FROM knowledge_bases WHERE id=?',(kb_id,))['status']!='active':
+    if not allow_inactive and kb['status']!='active':
         raise HTTPException(409,'知识库已停用或归档，不能用于新问答、上传或生成任务')
 
-def accessible_ids(user):
+def accessible_ids(user,include_inactive=False,explicit_only=False):
     require(user,'kb.read')
+    status_filter="k.status<>'deleted'" if include_inactive else "k.status='active'"
     if user['system_admin']:
-        return [r['id'] for r in s.rows("SELECT id FROM knowledge_bases WHERE status='active'")]
-    return [r['kb_id'] for r in s.rows("SELECT g.kb_id FROM kb_grants g JOIN knowledge_bases k ON k.id=g.kb_id WHERE g.user_id=? AND k.status='active'",(user['id'],))]
+        return [r['id'] for r in s.rows(f"SELECT k.id FROM knowledge_bases k WHERE {status_filter}")]
+    scope="g.user_id IS NOT NULL" if explicit_only else "(g.user_id IS NOT NULL OR k.visibility='public')"
+    return [r['id'] for r in s.rows(f"""SELECT k.id FROM knowledge_bases k
+        LEFT JOIN kb_grants g ON g.kb_id=k.id AND g.user_id=? WHERE {status_filter} AND {scope}""",(user['id'],))]
 
 def historical_ids(user):
-    require(user,'kb.read')
-    if user['system_admin']:
-        return [r['id'] for r in s.rows("SELECT id FROM knowledge_bases WHERE status<>'deleted'")]
-    return [r['kb_id'] for r in s.rows("SELECT g.kb_id FROM kb_grants g JOIN knowledge_bases k ON k.id=g.kb_id WHERE g.user_id=? AND k.status<>'deleted'",(user['id'],))]
+    return accessible_ids(user,include_inactive=True)
 
 def selected_ids(user,ids=None,single=None,required=False):
     selected=list(dict.fromkeys(ids or ([single] if single else [])))
@@ -182,6 +183,13 @@ class Grant(BaseModel):
 
 class GrantsBody(BaseModel):
     grants: list[Grant]
+
+class TeamMemberChange(BaseModel):
+    user_id: int
+    access: Literal['read','write'] | None
+
+class TeamMembersBody(BaseModel):
+    members: list[TeamMemberChange]
 
 class KnowledgeBody(BaseModel):
     name: str = Field(min_length=2,max_length=50)
@@ -397,15 +405,15 @@ def put_grants(uid:int,body:GrantsBody,user=Depends(current_user)):
         raise HTTPException(404,'用户不存在')
     if len({g.knowledge_base_id for g in body.grants})!=len(body.grants):
         raise HTTPException(422,'知识库授权重复')
-    for grant in body.grants:
-        if not s.one('SELECT id FROM knowledge_bases WHERE id=?',(grant.knowledge_base_id,)):
-            raise HTTPException(422,'知识库不存在')
-        # A delegated grant manager can only grant within their own scope.
-        if not user['system_admin']:
-            check_kb(user,grant.knowledge_base_id,grant.access=='write')
     with s.connect() as c:
+        c.execute('BEGIN IMMEDIATE')
+        for grant in body.grants:
+            if not c.execute('SELECT id FROM knowledge_bases WHERE id=?',(grant.knowledge_base_id,)).fetchone():
+                raise HTTPException(422,'知识库不存在')
+            if not user['system_admin']:
+                check_kb(user,grant.knowledge_base_id,grant.access=='write',explicit_only=True)
         if not user['system_admin']:
-            allowed=accessible_ids(user)
+            allowed=accessible_ids(user,explicit_only=True)
             existing=[r['kb_id'] for r in c.execute('SELECT kb_id FROM kb_grants WHERE user_id=?',(uid,))]
             if set(existing)-set(allowed):
                 raise HTTPException(403,'不能修改本人管理范围以外的授权')
@@ -418,15 +426,59 @@ def put_grants(uid:int,body:GrantsBody,user=Depends(current_user)):
 def knowledge_bases(include_inactive:bool=False,user=Depends(current_user)):
     if include_inactive and not user['system_admin']:
         raise HTTPException(403,'仅系统管理员可管理停用和归档知识库')
-    ids=accessible_ids(user)
-    if include_inactive:
-        ids=[r['id'] for r in s.rows("SELECT id FROM knowledge_bases WHERE status<>'deleted'")]
+    ids=accessible_ids(user,include_inactive=include_inactive)
     if not ids:
         return []
     marks=','.join('?' for _ in ids)
-    rows=s.rows(f'''SELECT k.*,COUNT(d.id) document_count,COALESCE(SUM(d.size),0) total_size FROM knowledge_bases k
-        LEFT JOIN documents d ON d.knowledge_base_id=k.id AND d.deleted=0 WHERE k.id IN ({marks}) GROUP BY k.id''',ids)
-    return [{**r,'access':grant_level(user,r['id'])} for r in rows]
+    rows=s.rows(f'''SELECT k.*,g.access grant_access,COUNT(d.id) document_count,COALESCE(SUM(d.size),0) total_size
+        FROM knowledge_bases k LEFT JOIN kb_grants g ON g.kb_id=k.id AND g.user_id=?
+        LEFT JOIN documents d ON d.knowledge_base_id=k.id AND d.deleted=0
+        WHERE k.id IN ({marks}) GROUP BY k.id,g.access''',[user['id'],*ids])
+    for row in rows:
+        row['access']=grant_level(user,row)
+        del row['grant_access']
+    return [row for row in rows if row['access']]
+
+def require_team_admin(user=Depends(current_user)):
+    if not user['system_admin']:
+        raise HTTPException(403,'仅系统管理员可管理团队成员')
+    return user
+
+def require_team_library(c,kid):
+    kb=c.execute("SELECT visibility FROM knowledge_bases WHERE id=? AND status<>'deleted'",(kid,)).fetchone()
+    if not kb:
+        raise HTTPException(404,'知识库不存在')
+    if kb['visibility']!='team':
+        raise HTTPException(409,'请先将知识库的可见范围设为团队')
+
+@app.get('/api/knowledge-bases/{kid}/members')
+def team_members(kid:int,user=Depends(require_team_admin)):
+    with s.connect() as c:
+        require_team_library(c,kid)
+        return [dict(row) for row in c.execute('''SELECT u.id,u.name,u.username,u.status,g.access
+            FROM users u JOIN roles r ON r.id=u.role_id
+            LEFT JOIN kb_grants g ON g.user_id=u.id AND g.kb_id=?
+            WHERE r.system_admin=0 ORDER BY u.name,u.id''',(kid,))]
+
+@app.patch('/api/knowledge-bases/{kid}/members')
+def update_team_members(kid:int,body:TeamMembersBody,user=Depends(require_team_admin)):
+    with s.connect() as c:
+        c.execute('BEGIN IMMEDIATE')
+        require_team_library(c,kid)
+        changes={member.user_id:member.access for member in body.members}
+        if len(changes)!=len(body.members):
+            raise HTTPException(422,'团队成员重复')
+        eligible={row['id'] for row in c.execute('''SELECT u.id FROM users u
+            JOIN roles r ON r.id=u.role_id WHERE r.system_admin=0''')}
+        if changes.keys()-eligible:
+            raise HTTPException(422,'团队成员必须是已有的非管理员用户')
+        c.executemany('DELETE FROM kb_grants WHERE user_id=? AND kb_id=?',
+                      [(uid,kid) for uid,access in changes.items() if access is None])
+        c.executemany('''INSERT INTO kb_grants(user_id,kb_id,access) VALUES(?,?,?)
+            ON CONFLICT(user_id,kb_id) DO UPDATE SET access=excluded.access''',
+                      [(uid,kid,access) for uid,access in changes.items() if access is not None])
+    s.audit(user,'更新团队成员','知识库',f'更新 {len(changes)} 位用户的访问权限',object_id=kid)
+    return {'ok':True}
 
 @app.patch('/api/knowledge-bases/{kid}')
 def update_kb(kid:int,body:KnowledgeUpdate,user=Depends(current_user)):

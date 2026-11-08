@@ -8,7 +8,16 @@ import {Plus,MoreHorizontal,Database,Search} from '../icons'
 const route=useRoute(),router=useRouter()
 const items=ref([]),show=ref(false),editing=ref(null),error=ref(''),busy=ref(false),loading=ref(true),query=ref(String(route.query.q||'')),statusFilter=ref(String(route.query.status||'')),baseline=ref('')
 const admin=computed(()=>!!sessionUser.value?.system_admin),blank=()=>({name:'',description:'',visibility:'team',status:'active'})
-const form=ref(blank()),names={active:'启用',disabled:'已停用',archived:'已归档'},visibilityNames={private:'私有',team:'团队',public:'公开标记'}
+const form=ref(blank()),names={active:'启用',disabled:'已停用',archived:'已归档'},visibilityNames={private:'私有',team:'团队',public:'公开'}
+const visibilityHelp={
+  private:'仅管理员及获明确授权的用户可访问。',
+  team:'团队范围按本库的成员名单划分。保存后，管理员可通过知识库菜单中的「团队成员」为用户分配权限。',
+  public:'有知识库读取权限的登录用户均可查看和检索。上传和移除文档需要维护授权。'
+}
+const team=ref(null),members=ref([])
+const memberChanges=computed(()=>members.value
+  .filter(member=>member.access!==member.savedAccess)
+  .map(member=>({user_id:member.id,access:member.access})))
 const filtered=computed(()=>items.value.filter(k=>(!query.value||(k.name+' '+k.description).toLowerCase().includes(query.value.toLowerCase()))&&(!statusFilter.value||k.status===statusFilter.value)))
 const columns=[{title:'知识库名称',key:'name',width:280},{title:'文档',dataIndex:'document_count',width:80,sorter:(a,b)=>a.document_count-b.document_count},{title:'可见范围',key:'visibility',width:110},{title:'状态',key:'status',width:100},{title:'访问权限',key:'access',width:110},{title:'操作',key:'actions',width:150}]
 async function load(){loading.value=true;error.value='';try{items.value=await api('/api/knowledge-bases'+(admin.value?'?include_inactive=true':''))}catch(e){error.value=e.message}finally{loading.value=false}}
@@ -18,17 +27,67 @@ async function close(){if(busy.value||closing)return;closing=true;try{if(JSON.st
 async function save(){busy.value=true;error.value='';try{await api(editing.value?'/api/knowledge-bases/'+editing.value:'/api/knowledge-bases',{method:editing.value?'PATCH':'POST',body:JSON.stringify(form.value)});show.value=false;message.success('知识库已保存');await load()}catch(e){error.value=e.message}finally{busy.value=false}}
 async function setStatus(item,value){if(value!=='active'&&!await confirmAction('停用或归档后不再用于新问答、上传和报告生成。原文与历史引用仍保留。',{title:value==='archived'?'归档此知识库？':'停用此知识库？',okText:'确认'+(value==='archived'?'归档':'停用')}))return;busy.value=true;try{await api('/api/knowledge-bases/'+item.id,{method:'PATCH',body:JSON.stringify({name:item.name,description:item.description,visibility:item.visibility,status:value})});message.success('知识库状态已更新');await load()}catch(e){error.value=e.message}finally{busy.value=false}}
 async function remove(item){if(!await confirmAction('确认删除空知识库“'+item.name+'”？已有文档的知识库不能直接删除。',{title:'删除空知识库',danger:true,okText:'确认删除'}))return;busy.value=true;try{await api('/api/knowledge-bases/'+item.id,{method:'DELETE'});message.success('空知识库已删除');await load()}catch(e){error.value=e.message}finally{busy.value=false}}
+async function openTeam(item){
+  if(busy.value)return
+  busy.value=true
+  error.value=''
+  try{
+    const rows=await api(`/api/knowledge-bases/${item.id}/members`)
+    members.value=rows.map(member=>({...member,savedAccess:member.access}))
+    team.value=item
+  }catch(e){error.value=e.message}
+  finally{busy.value=false}
+}
+async function closeTeam(){
+  if(busy.value||closing)return
+  closing=true
+  try{
+    if(memberChanges.value.length&&!await confirmAction('关闭后将丢弃本次成员修改。',{title:'放弃成员修改？',okText:'放弃修改'}))return
+    team.value=null
+    error.value=''
+  }finally{closing=false}
+}
+async function saveTeam(){
+  if(busy.value||!memberChanges.value.length)return
+  busy.value=true
+  error.value=''
+  try{
+    await api(`/api/knowledge-bases/${team.value.id}/members`,{method:'PATCH',body:JSON.stringify({members:memberChanges.value})})
+    team.value=null
+    message.success('团队成员已更新')
+  }catch(e){error.value=e.message}
+  finally{busy.value=false}
+}
 watch([query,statusFilter],()=>router.replace({path:'/knowledge',query:{...(query.value?{q:query.value}:{}),...(statusFilter.value?{status:statusFilter.value}:{})}}))
 onMounted(load)
 </script>
 <template><div class="page-stack">
  <div class="page-intro"><div><h2>知识库</h2><p>集中管理知识资料的组织方式与访问范围。</p></div><button v-if="can('kb.write')" class="primary-button" @click="edit(null)"><Plus :size="16"/>新建知识库</button></div>
- <div v-if="error&&!show" class="error-banner" role="alert">{{error}} <button class="text-button" @click="load">重新加载</button></div>
+ <div v-if="error&&!show&&!team" class="error-banner" role="alert">{{error}} <button class="text-button" @click="load">重新加载</button></div>
  <section class="card"><div class="filter-bar"><div class="search-field"><Search :size="16"/><input v-model="query" class="input" placeholder="搜索知识库名称或说明" aria-label="搜索知识库"/></div><select v-model="statusFilter" class="select" aria-label="知识库状态"><option value="">全部状态</option><option v-for="(name,key) in names" :key="key" :value="key">{{name}}</option></select><span class="muted">共 {{filtered.length}} 个</span><button class="text-button" @click="load">刷新</button></div>
  <Table :columns="columns" :data-source="filtered" row-key="id" :loading="loading" :scroll="{x:830}" :pagination="{pageSize:10,hideOnSinglePage:true,showSizeChanger:false}" size="middle">
-  <template #bodyCell="{column,record}"><template v-if="column.key==='name'"><div class="knowledge-name"><span class="file-tile"><Database :size="18"/></span><span><router-link v-if="record.status==='active'" :to="'/documents?kb='+record.id" class="table-title">{{record.name}}</router-link><strong v-else class="table-title">{{record.name}}</strong><small class="table-description">{{record.description||'暂无说明'}}</small></span></div></template><template v-else-if="column.key==='visibility'">{{visibilityNames[record.visibility]||record.visibility}}</template><template v-else-if="column.key==='status'"><span class="badge" :class="record.status==='active'?'green':'amber'">{{names[record.status]}}</span></template><template v-else-if="column.key==='access'">{{record.access==='write'?'可维护':'只读'}}</template><template v-else-if="column.key==='actions'"><div class="table-actions"><router-link v-if="record.status==='active'" :to="'/documents?kb='+record.id" class="text-button">查看文档</router-link><Dropdown v-if="admin||(record.status==='active'&&record.access==='write'&&can('kb.write'))" :trigger="['click']"><button class="icon-button" :aria-label="'管理知识库 '+record.name"><MoreHorizontal :size="18"/></button><template #overlay><Menu><MenuItem v-if="admin" key="edit" @click="edit(record)">编辑信息</MenuItem><MenuItem v-if="admin&&record.status!=='active'" key="enable" @click="setStatus(record,'active')">启用</MenuItem><MenuItem v-if="admin&&record.status==='active'" key="disable" @click="setStatus(record,'disabled')">停用</MenuItem><MenuItem v-if="admin&&record.status!=='archived'" key="archive" @click="setStatus(record,'archived')">归档</MenuItem><MenuItem v-if="record.status==='active'&&record.access==='write'&&can('kb.write')" key="delete" danger @click="remove(record)">删除空知识库</MenuItem></Menu></template></Dropdown></div></template></template>
+  <template #bodyCell="{column,record}"><template v-if="column.key==='name'"><div class="knowledge-name"><span class="file-tile"><Database :size="18"/></span><span><router-link v-if="record.status==='active'" :to="'/documents?kb='+record.id" class="table-title">{{record.name}}</router-link><strong v-else class="table-title">{{record.name}}</strong><small class="table-description">{{record.description||'暂无说明'}}</small></span></div></template><template v-else-if="column.key==='visibility'">{{visibilityNames[record.visibility]||record.visibility}}</template><template v-else-if="column.key==='status'"><span class="badge" :class="record.status==='active'?'green':'amber'">{{names[record.status]}}</span></template><template v-else-if="column.key==='access'">{{record.access==='write'?'可维护':'只读'}}</template><template v-else-if="column.key==='actions'"><div class="table-actions"><router-link v-if="record.status==='active'" :to="'/documents?kb='+record.id" class="text-button">查看文档</router-link><Dropdown v-if="admin||(record.status==='active'&&record.access==='write'&&can('kb.write'))" :trigger="['click']"><button class="icon-button" :aria-label="'管理知识库 '+record.name"><MoreHorizontal :size="18"/></button><template #overlay><Menu><MenuItem v-if="admin" key="edit" @click="edit(record)">编辑信息</MenuItem><MenuItem v-if="admin&&record.visibility==='team'" key="members" @click="openTeam(record)">团队成员</MenuItem><MenuItem v-if="admin&&record.status!=='active'" key="enable" @click="setStatus(record,'active')">启用</MenuItem><MenuItem v-if="admin&&record.status==='active'" key="disable" @click="setStatus(record,'disabled')">停用</MenuItem><MenuItem v-if="admin&&record.status!=='archived'" key="archive" @click="setStatus(record,'archived')">归档</MenuItem><MenuItem v-if="record.status==='active'&&record.access==='write'&&can('kb.write')" key="delete" danger @click="remove(record)">删除空知识库</MenuItem></Menu></template></Dropdown></div></template></template>
   <template #emptyText><div class="empty">{{query||statusFilter?'没有匹配的知识库，试试调整筛选条件。':'暂无授权知识库，可新建或联系管理员授权。'}}</div></template>
  </Table></section>
- <Drawer :open="show" :title="editing?'编辑知识库':'新建知识库'" width="min(520px,100vw)" :mask-closable="!busy" @close="close"><form class="drawer-form" @submit.prevent="save"><div v-if="error" class="error-banner" role="alert">{{error}}</div><label class="field">名称<input v-model="form.name" class="input" required minlength="2" maxlength="50" placeholder="例如：项目技术资料"/></label><label class="field">说明<textarea v-model="form.description" class="textarea" placeholder="说明收录内容与使用场景"/></label><label class="field">可见范围标记<select v-model="form.visibility" class="select"><option value="private">私有</option><option value="team">团队</option><option value="public">公开</option></select></label><p class="muted">可见标记不会绕过访问授权。实际权限由“用户与权限”中的知识库授权决定。</p><label v-if="editing" class="field">状态<select v-model="form.status" class="select"><option value="active">启用</option><option value="disabled">停用</option><option value="archived">归档</option></select></label><div class="drawer-actions"><button type="button" class="secondary-button" :disabled="busy" @click="close">取消</button><button class="primary-button" :disabled="busy">{{busy?'保存中…':'保存知识库'}}</button></div></form></Drawer>
+ <Drawer :open="show" :title="editing?'编辑知识库':'新建知识库'" width="min(520px,100vw)" :mask-closable="!busy" @close="close"><form class="drawer-form" @submit.prevent="save"><div v-if="error" class="error-banner" role="alert">{{error}}</div><label class="field">名称<input v-model="form.name" class="input" required minlength="2" maxlength="50" placeholder="例如：项目技术资料"/></label><label class="field">说明<textarea v-model="form.description" class="textarea" placeholder="说明收录内容与使用场景"/></label><label class="field">可见范围<select v-model="form.visibility" class="select"><option value="private">私有</option><option value="team">团队</option><option value="public">公开</option></select></label><p class="muted">{{visibilityHelp[form.visibility]}}</p><label v-if="editing" class="field">状态<select v-model="form.status" class="select"><option value="active">启用</option><option value="disabled">停用</option><option value="archived">归档</option></select></label><div class="drawer-actions"><button type="button" class="secondary-button" :disabled="busy" @click="close">取消</button><button class="primary-button" :disabled="busy">{{busy?'保存中…':'保存知识库'}}</button></div></form></Drawer>
+ <Drawer :open="!!team" :title="team?'团队成员 · '+team.name:'团队成员'" width="min(520px,100vw)" :mask-closable="!busy" @close="closeTeam">
+  <form v-if="team" class="drawer-form" @submit.prevent="saveTeam">
+   <p class="section-description">为本知识库选择成员。只读允许查看、下载和检索资料。可维护还允许上传及移除文档。成员角色也需具备相应权限。</p>
+   <div v-if="error" class="error-banner" role="alert">{{error}}</div>
+   <p v-if="!members.length" class="muted">请先在「用户与权限」中新建成员账号。</p>
+   <label v-for="member in members" :key="member.id" class="field">
+    {{member.name}}（{{member.username}}）{{member.status==='disabled'?' · 已停用':''}}
+    <select v-model="member.access" class="select" :disabled="busy">
+     <option :value="null">不在团队内</option>
+     <option value="read">只读</option>
+     <option value="write">可维护</option>
+    </select>
+   </label>
+   <div class="drawer-actions">
+    <button type="button" class="secondary-button" :disabled="busy" @click="closeTeam">取消</button>
+    <button class="primary-button" :disabled="busy||!memberChanges.length">{{busy?'保存中…':'保存团队成员'}}</button>
+   </div>
+  </form>
+ </Drawer>
 </div></template>
 <style scoped>.search-field{position:relative;width:280px;max-width:100%;display:flex;align-items:center}.search-field>.ui-icon{position:absolute;left:10px;color:#99a1ae}.search-field .input{width:100%;padding-left:34px}.knowledge-name{display:flex;gap:12px;align-items:center}.knowledge-name>span:last-child{min-width:0}.knowledge-name small{max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.file-tile{width:34px;height:36px;display:grid;place-items:center;background:#edf5ff;border-radius:6px;color:#6298e3;flex-shrink:0}@media(max-width:767px){.search-field{width:100%}}</style>

@@ -112,6 +112,78 @@ def test_auth_acl_roles_and_revocation(admin):
     assert client.get('/api/auth/me',headers=headers).status_code==401
     assert client.post('/api/auth/login',json={'username':user['username'],'password':'test123456'}).status_code==401
 
+def test_public_library_is_readable_without_grants(admin):
+    user,member=create_member(admin)
+    body={'name':'公开资料','visibility':'public'}
+    kid=client.post('/api/knowledge-bases',headers=admin,json=body).json()['id']
+    doc=upload(admin,kid)
+    path=f"/api/documents/{doc['id']}"
+    libraries=client.get('/api/knowledge-bases',headers=member).json()
+    assert {row['id']:row['access'] for row in libraries}[kid]=='read'
+    assert client.get('/api/documents',headers=member).json()[0]['id']==doc['id']
+    assert client.get(path+'/original',headers=member).status_code==200
+    assert client.get(path,headers=member).status_code==200
+    assert client.get(path).status_code==401
+    assert client.post('/api/documents',headers=member,data={'knowledge_base_id':kid},
+                       files={'file':('另一个文档.txt',b'test')}).status_code==403
+    assert client.delete(path,headers=member).status_code==403
+    search={'query':'混合检索','mode':'keyword','knowledge_base_ids':[kid]}
+    result=client.post('/api/search',headers=member,json=search)
+    assert result.status_code==200 and result.json()['results']
+
+    grants_path=f"/api/users/{user['id']}/grants"
+    assert client.put(grants_path,headers=admin,json={'grants':[{'knowledge_base_id':kid,'access':'write'}]}).status_code==200
+    assert upload(member,kid,name='授权后上传.md')['status']=='ready'
+    assert client.put(grants_path,headers=admin,json={'grants':[]}).status_code==200
+    assert client.patch(f'/api/knowledge-bases/{kid}',headers=admin,json={**body,'visibility':'team'}).status_code==200
+    assert client.get(path+'/original',headers=member).status_code==403
+    assert client.post('/api/search',headers=member,json=search).status_code==403
+
+
+def test_team_library_members_control_access(admin):
+    reader,read_headers=create_member(admin)
+    writer,write_headers=create_member(admin)
+    _,outsider=create_member(admin)
+    kid=client.post('/api/knowledge-bases',headers=admin,json={'name':'团队资料','visibility':'team'}).json()['id']
+    other=kb(admin,'其他资料')
+    assert client.put(f"/api/users/{reader['id']}/grants",headers=admin,
+                      json={'grants':[{'knowledge_base_id':other,'access':'read'}]}).status_code==200
+    path=f'/api/knowledge-bases/{kid}/members'
+    changes={'members':[{'user_id':reader['id'],'access':'read'},{'user_id':writer['id'],'access':'write'}]}
+    assert client.get(path,headers=outsider).status_code==403
+    assert client.patch(path,headers=outsider,json=changes).status_code==403
+    assert client.patch(path,headers=admin,json=changes).status_code==200
+    members={row['id']:row['access'] for row in client.get(path,headers=admin).json()}
+    assert members[reader['id']]=='read' and members[writer['id']]=='write'
+    doc=upload(write_headers,kid)
+    original=f"/api/documents/{doc['id']}/original"
+    assert client.get(original,headers=read_headers).status_code==200
+    assert client.get(original,headers=outsider).status_code==403
+    assert kid not in {row['id'] for row in client.get('/api/knowledge-bases',headers=outsider).json()}
+    assert client.patch(path,headers=admin,json={'members':[{'user_id':reader['id'],'access':None}]}).status_code==200
+    assert client.get(original,headers=read_headers).status_code==403
+    assert client.get(original,headers=write_headers).status_code==200
+    assert {row['id'] for row in client.get('/api/knowledge-bases',headers=read_headers).json()}=={other}
+
+
+def test_public_read_access_does_not_expand_delegated_grants(admin):
+    role=client.post('/api/roles',headers=admin,json={'name':'授权助理','permissions':['kb.read','roles.manage']}).json()
+    delegate,_=create_member(admin)
+    assert client.patch(f"/api/users/{delegate['id']}",headers=admin,
+                        json={'name':delegate['name'],'role_id':role['id'],'status':'active'}).status_code==200
+    headers=login(delegate['username'],'test123456')
+    target,_=create_member(admin)
+    kid=client.post('/api/knowledge-bases',headers=admin,json={'name':'只读公开资料','visibility':'public'}).json()['id']
+    path=f"/api/users/{target['id']}/grants"
+    grant={'grants':[{'knowledge_base_id':kid,'access':'read'}]}
+    assert client.put(path,headers=headers,json=grant).status_code==403
+    assert client.put(path,headers=admin,json=grant).status_code==200
+    assert client.put(path,headers=headers,json={'grants':[]}).status_code==403
+    assert client.get(path,headers=admin).json()==grant['grants']
+    assert client.patch(f'/api/knowledge-bases/{kid}',headers=admin,
+                        json={'name':'只读公开资料','visibility':'private'}).status_code==200
+
+
 def test_profile_password_and_reset(admin):
     user,headers=create_member(admin)
     response=client.patch('/api/auth/me',headers=headers,json={'name':'显示名更新'})
