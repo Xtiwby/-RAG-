@@ -9,6 +9,9 @@ import uuid
 import zipfile
 import time
 import threading
+from pathlib import Path
+from urllib.parse import quote
+from xml.etree import ElementTree
 
 _data=tempfile.TemporaryDirectory(prefix='rag-api-tests-')
 os.environ['RAG_DATA_DIR']=_data.name
@@ -209,6 +212,10 @@ def test_original_versions_chunks_search_and_archive(admin):
     assert original.content==content.encode()
     second=upload(admin,kid,text='# 新章节\n\n混合检索采用 RRF 最新版本。')
     assert second['version']=='v2.0'
+    first_path=Path(store.one('SELECT path FROM documents WHERE id=?',(first['id'],))['path'])
+    second_path=Path(store.one('SELECT path FROM documents WHERE id=?',(second['id'],))['path'])
+    assert first_path.name==second_path.name=='资料.md'
+    assert first_path.parent!=second_path.parent
     for mode in ('vector','keyword','hybrid'):
         result=client.post('/api/search',headers=admin,json={'query':'混合检索','mode':mode,'knowledge_base_ids':[kid]}).json()
         assert result['results'] and all(c['document_id']==second['id'] for c in result['results'])
@@ -229,9 +236,17 @@ async def fake_model(messages,max_tokens=4096):
 
 def test_rag_stream_history_citations_export_feedback_and_refusal(admin,monkeypatch):
     monkeypatch.setattr(rag,'llm_stream',fake_model)
+    retrieval_calls=[]
+    retrieve=rag.retrieve
+
+    async def track_retrieval(query,ids,mode,top_k,rerank):
+        retrieval_calls.append((query,ids,mode,rerank))
+        return await retrieve(query,ids,mode,top_k,rerank)
+
+    monkeypatch.setattr(rag,'retrieve',track_retrieval)
     kid=kb(admin)
     doc=upload(admin,kid)
-    body={'query':'混合检索采用什么方式？','knowledge_base_ids':[kid]}
+    body={'query':'混合检索采用什么方式？','knowledge_base_ids':[kid],'mode':'keyword','rerank':False}
     stream=events(client.post('/api/qa/stream',headers=admin,json=body))
     assert stream[-1]['type']=='done'
     meta=stream[0];cid=meta['conversation_id'];mid=meta['message_id']
@@ -240,17 +255,29 @@ def test_rag_stream_history_citations_export_feedback_and_refusal(admin,monkeypa
     assert ''.join(e['content'] for e in stream if e['type']=='token').strip().endswith('[1]')
     row=client.get(f'/api/conversations/{cid}',headers=admin).json()
     assert len(row['messages'])==2 and row['messages'][1]['status']=='complete'
+    assert row['retrieval_settings']=={'mode':'keyword','rerank':False}
     assert client.patch(f'/api/conversations/{cid}',headers=admin,json={'title':'新名字'}).status_code==200
     assert client.post(f'/api/messages/{mid}/feedback',headers=admin,json={'feedback':'helpful'}).status_code==200
-    more=events(client.post('/api/qa/stream',headers=admin,json={**body,'query':'它有什么作用？','conversation_id':cid}))
+    follow_up={'query':'它有什么作用？','conversation_id':cid}
+    more=events(client.post('/api/qa/stream',headers=admin,json=follow_up))
     assert more[-1]['type']=='done'
+    assert retrieval_calls[-1]==(rag.preprocess(body['query'])+' '+rag.preprocess(follow_up['query']),[kid],'keyword',False)
     assert len(client.get(f'/api/conversations/{cid}',headers=admin).json()['messages'])==4
-    assert '新名字' in client.get(f'/api/conversations/{cid}/export',headers=admin).text
-    word=client.get(f'/api/conversations/{cid}/export?format=docx',headers=admin)
-    assert zipfile.is_zipfile(io.BytesIO(word.content))
+    exported=client.get(f'/api/conversations/{cid}/export',headers=admin)
+    assert quote('新名字.docx') in exported.headers['content-disposition']
+    with zipfile.ZipFile(io.BytesIO(exported.content)) as package:
+        text=package.read('word/document.xml').decode()
+        assert '提问 02' in text and '回答 02' in text
+        assert '此引用暂无可用的原文页面。' in text
+        assert not any(name.startswith('word/media/') for name in package.namelist())
     empty=kb(admin,'空知识库')
-    refusal=events(client.post('/api/qa/stream',headers=admin,json={'query':'火星天气','knowledge_base_ids':[empty]}))
+    assert client.post('/api/qa/stream',headers=admin,json={**follow_up,'knowledge_base_ids':[empty]}).status_code==409
+    refusal=events(client.post('/api/qa/stream',headers=admin,json={'query':'火星天气','knowledge_base_ids':[empty],'mode':'keyword','rerank':False}))
     assert '证据不足' in ''.join(e.get('content','') for e in refusal)
+    empty_cid=refusal[0]['conversation_id']
+    retry=events(client.post('/api/qa/stream',headers=admin,json={'query':'继续介绍一下','conversation_id':empty_cid,'mode':'hybrid','rerank':True}))
+    assert retry[-1]['type']=='done'
+    assert retrieval_calls[-1][1:]==([empty],'keyword',False)
     assert client.post('/api/qa/stream',headers=admin,json={'query':'混合检索'}).status_code==422
     another,other=create_member(admin)
     assert client.get(f'/api/conversations/{cid}',headers=other).status_code==404
@@ -779,21 +806,57 @@ def test_verified_stream_cancel_retains_only_checked_units(monkeypatch):
     assert items[0]['type']=='verification' and items[0]['checks'][0]['status']=='supported'
     assert items[1]['content']=='混合检索采用 BM25 和 RRF。[1]\n'
 
-def test_export_contains_times_and_all_selected_kbs(admin,monkeypatch):
+def test_export_embeds_highlighted_original_page_without_links(admin,monkeypatch):
+    from PIL import Image
+    from reportlab.pdfgen.canvas import Canvas
+
     monkeypatch.setattr(rag,'llm_stream',fake_model)
-    first=kb(admin,'导出范围甲');second=kb(admin,'导出范围乙');upload(admin,first)
-    stream=events(client.post('/api/qa/stream',headers=admin,json={'query':'混合检索','knowledge_base_ids':[first,second]}))
+    first=kb(admin,'导出范围甲');second=kb(admin,'导出范围乙')
+
+    def upload_pdf(color):
+        file=io.BytesIO()
+        pdf=Canvas(file,pagesize=(300,400))
+        pdf.drawString(30,350,'Cover page')
+        pdf.showPage()
+        pdf.drawString(30,350,'Keyword retrieval uses BM25 ranking.')
+        pdf.setFillColorRGB(*color)
+        pdf.rect(30,100,240,160,fill=1,stroke=0)
+        pdf.save()
+        response=client.post('/api/documents',headers=admin,data={'knowledge_base_id':first},
+                             files={'file':('资料.pdf',file.getvalue(),'application/pdf')})
+        assert response.status_code==201
+        return finish_upload(admin,response.json())
+
+    doc=upload_pdf((0,0,1))
+    stream=events(client.post('/api/qa/stream',headers=admin,json={
+        'query':'BM25 ranking','knowledge_base_ids':[first,second],'mode':'keyword','rerank':False}))
     cid=stream[0]['conversation_id'];row=client.get(f'/api/conversations/{cid}',headers=admin).json()
-    for kind in ('md','docx'):
-        response=client.get(f'/api/conversations/{cid}/export?format={kind}',headers=admin)
-        if kind=='docx':
-            with zipfile.ZipFile(io.BytesIO(response.content)) as z:
-                content=z.read('word/document.xml').decode()
-        else:
-            content=response.text
-        assert '导出范围甲' in content and '导出范围乙' in content
-        assert row['created_at'] in content and all(msg['created_at'] in content for msg in row['messages'])
-        assert '完整知识库范围' in content and '消息时间' in content
+    citation=row['messages'][1]['citations'][0];chunk=citation['chunk_id']
+    assert citation['document_id']==doc['id'] and citation['page']==2
+    upload_pdf((1,0,0))
+    endpoint=f'/api/conversations/{cid}/export'
+    for kind in ('md','md-zip'):
+        assert client.get(endpoint,headers=admin,params={'format':kind}).status_code==422
+    response=client.get(endpoint,headers=admin,params={'format':'docx'})
+    assert response.status_code==200
+    with zipfile.ZipFile(io.BytesIO(response.content)) as z:
+        content=z.read('word/document.xml').decode()
+        document=ElementTree.fromstring(content)
+        assert document.find('.//{*}hyperlink') is None
+        assert document.find('.//{*}hlinkClick') is None
+        assert document.find('.//{*}drawing') is not None
+        rels=ElementTree.fromstring(z.read('word/_rels/document.xml.rels'))
+        assert all(rel.get('TargetMode')!='External' for rel in rels)
+        image=Image.open(io.BytesIO(z.read('word/media/citation-1.png'))).convert('RGB')
+        assert image.getpixel((image.width//2,image.height//2))==(0,0,255)
+        text_area=image.crop((0,0,image.width,image.height//4))
+        assert any(r>240 and 200<g<250 and 120<b<210 for _,(r,g,b) in text_area.getcolors(maxcolors=10000))
+    assert all(label in content for label in ('提问 01','回答 01','引用索引','资料.pdf','原版 PDF · 第 2 页'))
+    assert all(label not in content for label in ('导出范围甲','导出范围乙','消息时间','相关度','Keyword retrieval uses BM25'))
+    detail=client.get(f'/api/documents/{doc["id"]}',headers=admin,
+                      params={'compact':True,'chunk_id':chunk,'include_context':True}).json()
+    assert detail['citation_context']['before'].strip()=='Cover page'
+    assert any(c['id']==chunk and c['text']==citation['text'] for c in detail['chunks'])
 
 @pytest.mark.parametrize('text,expected',[
     ('第一句。[1] 第二句。[2]',2),('第一句[1]。第二句[2]。',2),

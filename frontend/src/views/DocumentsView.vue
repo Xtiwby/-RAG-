@@ -9,6 +9,7 @@ import ProcessingPanel from '../components/ProcessingPanel.vue'
 const route=useRoute(),router=useRouter(),docs=ref([]),kbs=ref([]),error=ref(''),loading=ref(true)
 const filter=ref(String(route.query.kb||'')),query=ref(String(route.query.q||'')),status=ref(String(route.query.status||''))
 const uploadKb=ref(''),file=ref(null),uploading=ref(false),uploadError=ref(''),progress=ref(null)
+const generateVectors=ref(null)
 const tracking=ref(null),showUpload=ref(route.query.upload==='1')
 const writable=computed(()=>kbs.value.filter(k=>k.access==='write'&&can('kb.write')))
 const filtered=computed(()=>docs.value.filter(d=>(!filter.value||String(d.knowledge_base_id)===String(filter.value))&&(!query.value||(d.name+' '+d.knowledge_base_name).toLowerCase().includes(query.value.toLowerCase()))&&(!status.value||d.status===status.value)))
@@ -44,6 +45,7 @@ async function upload(){
   const form=new FormData()
   form.append('knowledge_base_id',library.id)
   form.append('file',file.value)
+  if(generateVectors.value!==null)form.append('generate_vectors',String(generateVectors.value))
   uploading.value=true
   progress.value=0
   try{
@@ -75,6 +77,14 @@ onUnmounted(()=>clearInterval(timer))
       <option value="" disabled>选择可维护的知识库</option>
       <option v-for="kb in writable" :key="kb.id" :value="kb.id">{{kb.name}}</option>
      </select>
+    </label>
+    <label class="field">上传后生成语义向量
+     <select v-model="generateVectors" class="select" :disabled="uploading" @change="resetTransfer">
+      <option :value="null">按系统配置</option>
+      <option :value="true">生成 BGE-M3 语义向量</option>
+      <option :value="false">仅切分并建立文本索引</option>
+     </select>
+     <span class="help">上传时生成语义向量需要先下载 BGE-M3，并在系统配置中启用本地向量后端。</span>
     </label>
     <label class="upload-zone">
      <FileUp :size="24"/>

@@ -40,7 +40,7 @@ const router = createRouter({
 
 router.beforeEach((to) => {
   document.title = `${to.meta.title || '系统'} - RAG知识库管理系统`
-  if (!to.meta.public && !getToken()) return '/login'
+  if (!to.meta.public && !getToken()) return {path:'/login',query:{redirect:to.fullPath}}
   if (to.path === '/login' && getToken()) return '/'
 })
 

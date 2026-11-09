@@ -43,7 +43,7 @@ def scoped_requirements(requirements,title,hint=''):
     return ' '.join(result)[:2400]
 
 
-async def retrieve_section(kb_id,spec,*,purpose='',report_title='',requirements='',period_start='',period_end='',instructions='',template_structure=None):
+async def retrieve_section(kb_id,spec,*,mode=None,purpose='',report_title='',requirements='',period_start='',period_end='',instructions='',template_structure=None):
     title=spec['title'].strip()
     # Writing/format constraints remain in the generation prompt, not blindly
     # prepended to every section's search. Never include arbitrary user fields
@@ -54,13 +54,13 @@ async def retrieve_section(kb_id,spec,*,purpose='',report_title='',requirements=
     contextual=title in GENERIC and not spec.get('instructions','').strip()
     query=(focus+' '+context).strip() if contextual else focus
     anchored=bool(re.search(r'对应题目[：:]\s*[^。]*[A-Za-z][A-Za-z0-9_]*',hint))
-    evidence,params=await rag.retrieve(query,[kb_id],expand_queries=not anchored)
+    evidence,params=await rag.retrieve(query,[kb_id],mode=mode,expand_queries=not anchored)
     attempts=[{'query':query,'reason':'generic-section-context' if contextual else 'section-focus','retrieval':params}]
     # Fall back only if a focused search has no eligible evidence. A successful
     # focused result cannot be drowned out by the whole report's title/policy.
     if not evidence and context and not contextual:
         fallback=(focus+' '+context).strip()
-        evidence,params=await rag.retrieve(fallback,[kb_id],expand_queries=not anchored)
+        evidence,params=await rag.retrieve(fallback,[kb_id],mode=mode,expand_queries=not anchored)
         attempts.append({'query':fallback,'reason':'empty-focus-fallback','retrieval':params})
     return evidence,{'policy':POLICY,'section_title':title,'template_hint':hint,'attempts':attempts,
         'period_start':period_start,'period_end':period_end,

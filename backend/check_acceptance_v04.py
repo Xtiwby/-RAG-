@@ -59,8 +59,9 @@ def main():
             exported=client.get(f'/api/conversations/{cid}/export?format=docx');exported.raise_for_status()
             with zipfile.ZipFile(io.BytesIO(exported.content)) as package:
                 xml=package.read('word/document.xml').decode()
-                assert 'V0.4 功能验收' in xml and 'V0.4 导出范围' in xml
-                assert all(message['created_at'] in xml for message in conversation['messages'])
+                assert all(label in xml for label in ('提问 01','回答 01','引用索引'))
+                assert '完整知识库范围' not in xml and '消息时间' not in xml
+                assert '此引用暂无可用的原文页面。' in xml and '<w:hyperlink' not in xml
             result.update(conversation_id=cid,answer=answer['content'],verified_sentences=sum(check['status']=='supported' for check in answer['verification']),
                           export_bytes=len(exported.content),scope_count=len(scope))
         client.post('/api/auth/logout')

@@ -4,7 +4,7 @@ import json
 import threading
 from zipfile import BadZipFile
 from pathlib import Path
-from . import store as s,rag,jobs,object_storage
+from . import store as s,rag,jobs,object_storage,settings
 
 STAGES=('upload','parse','chunk','index')
 
@@ -90,8 +90,10 @@ async def run(row,payload,user,validate):
         prepared=await asyncio.to_thread(rag.prepare_index,units,measured('chunk','已切分'))
         validate(row)
         track('chunk','completed',100,f"已建立 {len(prepared['chunks'])} 个待索引片段")
+        if settings.get().embedding.provider=='local':
+            track('index','running',0,'正在生成或复用 BGE-M3 语义向量')
+            await rag.cache_local_embeddings([chunk[3] for chunk in prepared['chunks']])
         track('index','running',0,'事务写入片段索引、结构化文本与哈希')
-        await rag.cache_local_embeddings([chunk[3] for chunk in prepared['chunks']])
         validate(row)
         # Short atomic commit: no await and no partially visible ready index.
         rag.commit_index(did,prepared)

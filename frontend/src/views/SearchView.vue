@@ -4,17 +4,12 @@ import { api } from '../api'
 import { labelOf } from '../ui'
 import RetrievalDetails from '../components/RetrievalDetails.vue'
 import SearchOriginalPreview from '../components/SearchOriginalPreview.vue'
-import { embeddingLabel, rerankLabel } from '../retrieval'
+import { embeddingLabel, rerankLabel, retrievalModes } from '../retrieval'
 
-const modes = [
-  { value: 'vector', label: '向量检索' },
-  { value: 'keyword', label: '关键字检索（BM25）' },
-  { value: 'hybrid', label: '混合检索（RRF）' },
-]
 const query = ref('混合检索')
 const mode = ref('hybrid')
 const kbs = ref([])
-const selected = ref([])
+const knowledgeBaseId = ref(null)
 const rerank = ref(true)
 const data = ref(null)
 const activeChunk = ref(null)
@@ -39,7 +34,12 @@ async function run() {
   try {
     data.value = await api('/api/search', {
       method: 'POST',
-      body: JSON.stringify({ query: query.value, mode: mode.value, knowledge_base_ids: selected.value, rerank: rerank.value }),
+      body: JSON.stringify({
+        query: query.value,
+        mode: mode.value,
+        knowledge_base_ids: knowledgeBaseId.value === null ? [] : [knowledgeBaseId.value],
+        rerank: rerank.value,
+      }),
     })
     activeChunk.value = data.value.results[0]?.chunk_id ?? null
   } catch (err) {
@@ -60,19 +60,25 @@ async function run() {
         <input v-model="query" aria-label="检索测试问题" class="input" placeholder="输入测试问题或关键字" required />
         <button class="primary-button" :disabled="loading">{{ loading ? '检索中…' : '开始检索' }}</button>
       </div>
-      <div class="toolbar">
-        <label v-for="item in modes" :key="item.value">
-          <input v-model="mode" type="radio" :value="item.value" />{{ item.label }}
+      <div class="search-options">
+        <label class="field">检索模式
+          <select v-model="mode" class="select">
+            <option v-for="item in retrievalModes" :key="item.value" :value="item.value">{{ item.label }}</option>
+          </select>
+        </label>
+        <label class="field">知识库范围
+          <select v-model="knowledgeBaseId" class="select">
+            <option :value="null">全部授权知识库</option>
+            <option v-for="kb in kbs" :key="kb.id" :value="kb.id">{{ kb.name }}</option>
+          </select>
+        </label>
+        <label class="field">重排
+          <select v-model="rerank" class="select">
+            <option :value="true">启用重排（按系统配置）</option>
+            <option :value="false">关闭重排</option>
+          </select>
         </label>
       </div>
-      <details class="search-options">
-        <summary>知识范围与重排设置 · {{ selected.length ? '已选 ' + selected.length + ' 个知识库' : '全部授权知识库' }}</summary>
-        <div class="toolbar">
-          <label v-for="kb in kbs" :key="kb.id"><input v-model="selected" type="checkbox" :value="kb.id" />{{ kb.name }}</label>
-          <small>未选时搜索全部授权知识库</small>
-          <label><input v-model="rerank" type="checkbox" />启用重排（按系统配置）</label>
-        </div>
-      </details>
     </form>
     <div v-if="error" class="error-banner">{{ error }}</div>
     <div v-if="data" class="card">
@@ -107,11 +113,7 @@ async function run() {
 .search-row { display: flex; gap: 12px; }
 .search-row input { flex: 1; min-width: 0; }
 .search-row button { flex-shrink: 0; }
-.search-console label { font-size: 13px; }
-.search-console small { color: #657a88; }
-.search-options { font-size: 12px; color: var(--muted); }
-.search-options summary { cursor: pointer; }
-.search-options .toolbar { margin-top: 14px; }
+.search-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 .result-layout { display: grid; grid-template-columns: minmax(0, 240px) minmax(0, 1fr); align-items: start; gap: 14px; }
 .result-list { max-height: 70vh; overflow: auto; }
 .result-option { width: 100%; padding: 12px; gap: 4px; background: white; color: inherit; cursor: pointer; text-align: left; overflow-wrap: anywhere; }
@@ -121,9 +123,11 @@ async function run() {
   .result-layout { grid-template-columns: minmax(0, 1fr); }
   .result-list { max-height: 220px; }
 }
+@media (max-width: 680px) {
+  .search-options { grid-template-columns: minmax(0, 1fr); }
+}
 @media (max-width: 450px) {
   .search-console { padding: 16px; }
   .search-row { flex-direction: column; }
-  .search-console > .toolbar { align-items: flex-start; flex-direction: column; gap: 12px; }
 }
 </style>

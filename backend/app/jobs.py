@@ -12,8 +12,9 @@ supervisor=None
 active={}
 heartbeat=None
 
-def add(kind,payload,user,result=None,connection=None):
-    config=settings.get()
+def add(kind,payload,user,result=None,connection=None,*,config=None):
+    if config is None:
+        config=settings.get()
     values=(kind,user['id'],json.dumps(payload,ensure_ascii=False),config.model_dump_json(),config.queue.max_attempts,json.dumps(result or {}),s.now())
     sql='INSERT INTO jobs(kind,user_id,payload,config,max_attempts,result,created_at) VALUES(?,?,?,?,?,?,?)'
     return connection.execute(sql,values).lastrowid if connection is not None else s.execute(sql,values)

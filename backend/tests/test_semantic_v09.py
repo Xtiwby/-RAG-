@@ -1,7 +1,7 @@
 """Model adapters mocked here; real local GPU checks live in check_semantic_v09.py."""
 import pytest
 from fastapi import HTTPException
-from test_api import client,admin,application_lifespan,kb,upload,configured,save_config,create_member,wait_job
+from test_api import client,admin,application_lifespan,kb,upload,configured,save_config,create_member,wait_job,finish_upload
 from app import rag,local_models,settings,store,report_retrieval
 
 
@@ -9,6 +9,33 @@ def enable(admin,monkeypatch):
     monkeypatch.setattr(local_models,'namespace',lambda cfg:'test-v09|'+cfg.model+'|'+str(cfg.max_length))
     return save_config(admin,lambda cfg:(cfg['embedding'].update(provider='local',model='BAAI/bge-m3'),
         cfg['reranking'].update(provider='local'),cfg['retrieval'].update(cross_language=False)))
+
+
+def test_upload_can_request_or_skip_vector_generation(admin,configured,monkeypatch,tmp_path):
+    kid=kb(admin)
+    def submit(name,generate):
+        return client.post('/api/documents',headers=admin,data={
+            'knowledge_base_id':kid,'generate_vectors':generate,
+        },files={'file':(name,b'Vector generation for document indexing.')})
+
+    save_config(admin,lambda cfg:cfg['embedding'].update(provider='tfidf'))
+    assert submit('disabled.txt','true').status_code==422
+    enable(admin,monkeypatch)
+    monkeypatch.setattr(local_models,'MODEL_ROOT',tmp_path)
+    assert submit('missing.txt','true').status_code==422
+
+    calls=[]
+    async def embed(config,texts):
+        calls.extend(texts)
+        return [[1.,0.] for _ in texts]
+    monkeypatch.setattr(local_models,'embed',embed)
+    monkeypatch.setattr(local_models,'identity',lambda model:(tmp_path,'a'*40))
+    for name,generate in [('text.txt','false'),('vector.txt','true')]:
+        response=submit(name,generate)
+        assert response.status_code==201,response.text
+        assert finish_upload(admin,response.json())['status']=='ready'
+        assert len(calls)==int(generate=='true')
+    assert settings.get().embedding.provider=='local'
 
 
 @pytest.mark.parametrize('mode',['vector','hybrid'])

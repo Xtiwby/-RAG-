@@ -124,6 +124,10 @@ def install(app,auth,require,check_kb,report_task,source_lines):
             payload={'report_id':tid,'section_id':sid,'knowledge_base_id':report['knowledge_base_id'],'expected_revision':section['revision'],
                      'instructions':body.instructions,'title':report['title'],'requirements':report['requirements'],'section':spec,'purpose':plan.purpose if plan else '', 'mode':mode,'preview':body.preview,'workflow_version':report['workflow_version'] or int(body.preview),'period_start':report['period_start'],'period_end':report['period_end'],
                       'template_structure':json.loads(report['template_snapshot'] or '{}').get('structure','')}
+            if mode=='generate' and report['job_id']:
+                original=c.execute('SELECT payload FROM jobs WHERE id=?',(report['job_id'],)).fetchone()
+                if original:
+                    payload['retrieval_mode']=json.loads(original['payload']).get('mode')
             jid=jobs.add('report_section',payload,user,{'report_id':tid,'section_id':sid},c)
             c.execute("UPDATE report_sections SET job_id=?,generation_status='queued',generation_error='' WHERE id=?",(jid,sid))
         s.audit(user,'核验报告章节' if mode=='verify' else '重新生成报告单节','报告章节',f'报告#{tid}；任务#{jid}',object_id=sid)
@@ -165,7 +169,7 @@ def install(app,auth,require,check_kb,report_task,source_lines):
             else:verification=await report_grounding.verify_existing(content,evidence,fresh)
         else:
             evidence,retrieval=await report_retrieval.retrieve_section(payload['knowledge_base_id'],payload['section'],purpose=payload['purpose'],
-                report_title=payload['title'],requirements=payload['requirements'],instructions=payload['instructions'],
+                mode=payload.get('retrieval_mode'),report_title=payload['title'],requirements=payload['requirements'],instructions=payload['instructions'],
                 period_start=payload.get('period_start',''),period_end=payload.get('period_end',''),
                  template_structure=payload.get('template_structure'))
             jobs.emit(row['id'],'retrieval',section_id=sid,parameters=retrieval,chunk_ids=[e['chunk_id'] for e in evidence])

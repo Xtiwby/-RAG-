@@ -63,7 +63,7 @@ def language_samples(kb_ids):
             WHERE x.knowledge_base_id IN ({marks}) AND x.{flag}=1
             AND d.deleted=0 AND d.status='ready'
             AND d.id=(SELECT MAX(d2.id) FROM documents d2 WHERE d2.name=d.name
-                AND d2.knowledge_base_id=d.knowledge_base_id AND d2.deleted=0) LIMIT 1''',kb_ids)
+                AND d2.knowledge_base_id=d.knowledge_base_id AND d2.deleted=0 AND d2.status='ready') LIMIT 1''',kb_ids)
         if row:samples.append(row)
     return samples
 
@@ -78,7 +78,7 @@ async def candidates(queries,kb_ids,mode,top_k):
     scope=f'''FROM chunk_search x JOIN documents d ON d.id=x.document_id
         WHERE d.deleted=0 AND d.status='ready' AND x.knowledge_base_id IN ({marks})
         AND d.id=(SELECT MAX(d2.id) FROM documents d2 WHERE d2.name=d.name
-          AND d2.knowledge_base_id=d.knowledge_base_id AND d2.deleted=0)'''
+          AND d2.knowledge_base_id=d.knowledge_base_id AND d2.deleted=0 AND d2.status='ready')'''
     limit=max(200,top_k*40)
     result=set()
     query_vectors={}

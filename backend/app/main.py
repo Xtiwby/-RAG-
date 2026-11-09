@@ -11,7 +11,7 @@ import sqlite3
 import time
 import zipfile
 from datetime import datetime, timezone
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from typing import Literal
 from xml.sax.saxutils import escape
 
@@ -26,7 +26,7 @@ load_dotenv(Path(__file__).resolve().parents[1] / '.env')
 from . import store as s
 from . import db_postgres
 from . import rag
-from . import settings,jobs,telemetry,blueprints,report_export,ingestion,grounding,template_docx,report_grounding,object_storage,presentation_preview
+from . import settings,jobs,telemetry,blueprints,report_export,ingestion,grounding,template_docx,report_grounding,object_storage,presentation_preview,chat_export
 
 @asynccontextmanager
 async def lifespan(app):
@@ -230,6 +230,7 @@ class ReportBody(BaseModel):
     title: str = Field(min_length=1,max_length=100)
     template_id: int
     knowledge_base_id: int
+    mode: Literal['vector','keyword','hybrid']|None = None
     requirements: str = Field(default='',max_length=5000)
     workflow_version:Literal[0,1]=0
     field_values:dict[str,str]=Field(default_factory=dict)
@@ -523,22 +524,41 @@ def documents(knowledge_base_id:int|None=None,user=Depends(current_user)):
         JOIN knowledge_bases k ON k.id=d.knowledge_base_id WHERE d.deleted=0 AND d.knowledge_base_id IN ({marks}) ORDER BY d.id DESC''',ids)]
 
 @app.post('/api/documents',status_code=201)
-async def upload(knowledge_base_id:int=Form(...),modality:Literal['text','image','table']=Form('text'),file:UploadFile=File(...),user=Depends(current_user)):
+async def upload(knowledge_base_id:int=Form(...),modality:Literal['text','image','table']=Form('text'),file:UploadFile=File(...),
+                 generate_vectors:bool|None=Form(None),user=Depends(current_user)):
     check_kb(user,knowledge_base_id,True)
-    name=Path((file.filename or 'upload').replace('\\','/')).name
+    config=settings.get()
+    if generate_vectors is True:
+        from . import local_models
+        if config.embedding.provider!='local':
+            raise HTTPException(422,'请先在系统配置中启用本地 BGE-M3 向量后端')
+        try:
+            local_models.identity(config.embedding.model)
+        except RuntimeError as error:
+            raise HTTPException(422,str(error)) from None
+    elif generate_vectors is False and config.embedding.provider=='local':
+        config=config.model_copy(update={'embedding':settings.EmbeddingSettings()})
+    name=(file.filename or 'upload').replace('\\','/').rsplit('/',1)[-1]
     suffix=Path(name).suffix.lower().lstrip('.')
     if suffix not in {'pdf','docx','txt','md','csv','html','xlsx','ppt','pptx','png','jpg','jpeg','webp'}:
         raise HTTPException(415,'暂不支持此文件格式')
-    target=s.UPLOADS/(secrets.token_hex(16)+'.'+suffix)
+    if '\0' in name or (os.name=='nt' and (
+        PureWindowsPath(name).is_reserved() or re.search(r'[<>:"|?*\x00-\x1f]',name)
+    )):
+        raise HTTPException(422,'文件名包含系统不支持的字符或保留名称')
+    target=s.UPLOADS/secrets.token_hex(16)/name
     size=0
     sha=hashlib.sha256()
     did=ingestion.create_document(knowledge_base_id,name,suffix,modality,str(target))
     stored=None
     key=None
+    staging_created=False
     ingestion.record(did,'upload','running',0,'正在接收原文件')
     last_percent=-1
     try:
-        with target.open('wb') as handle:
+        target.parent.mkdir()
+        staging_created=True
+        with target.open('xb') as handle:
             while block:=await file.read(1024*1024):
                 size+=len(block)
                 if size>100*1024*1024:
@@ -553,10 +573,13 @@ async def upload(knowledge_base_id:int=Form(...),modality:Literal['text','image'
         stored=await asyncio.to_thread(object_storage.save_file,target,key,sha.hexdigest())
         s.execute("UPDATE documents SET size=?,sha256=?,status='processing',path=?,storage_backend=?,storage_bucket=?,object_key=?,object_version_id=? WHERE id=?",
                   (size,sha.hexdigest(),stored['path'],stored['storage_backend'],stored['storage_bucket'],stored['object_key'],stored['object_version_id'],did))
-        if stored['storage_backend']=='s3':target.unlink(missing_ok=True)
+        if stored['storage_backend']=='s3':
+            target.unlink()
+            target.parent.rmdir()
+            staging_created=False
         ingestion.record(did,'upload','completed',100,'原文件和 SHA-256 已保存')
         with s.connect() as c:
-            jid=jobs.add('ingest',{'document_id':did},user,{'document_id':did},c)
+            jid=jobs.add('ingest',{'document_id':did},user,{'document_id':did},c,config=config)
             c.execute('UPDATE documents SET job_id=? WHERE id=?',(jid,did))
         ingestion.record(did,'parse','queued',0,'等待解析工作槽位',jid)
         await jobs.start()
@@ -564,7 +587,9 @@ async def upload(knowledge_base_id:int=Form(...),modality:Literal['text','image'
         return safe_doc(s.one('SELECT * FROM documents WHERE id=?',(did,)))
     except BaseException as error:
         if not s.one('SELECT job_id FROM documents WHERE id=?',(did,))['job_id']:
-            target.unlink(missing_ok=True)
+            if staging_created:
+                target.unlink(missing_ok=True)
+                target.parent.rmdir()
             if key and os.getenv('RAG_FILE_STORAGE','local').lower()=='s3':
                 try:
                     object_storage.remove_uncommitted(key,stored['object_version_id'] if stored else '')
@@ -575,7 +600,7 @@ async def upload(knowledge_base_id:int=Form(...),modality:Literal['text','image'
         raise
 
 @app.get('/api/documents/{did}')
-def document_detail(did:int,compact:bool=False,offset:int=0,limit:int=40,chunk_id:int|None=None,user=Depends(current_user)):
+def document_detail(did:int,compact:bool=False,offset:int=0,limit:int=40,chunk_id:int|None=None,include_context:bool=False,user=Depends(current_user)):
     doc=document(user,did)
     versions=s.rows('SELECT id,version,sha256,created_at,status FROM documents WHERE name=? AND knowledge_base_id=? AND deleted=0 ORDER BY id DESC',(doc['name'],doc['knowledge_base_id']))
     if not compact:
@@ -590,7 +615,18 @@ def document_detail(did:int,compact:bool=False,offset:int=0,limit:int=40,chunk_i
         offset=min(max(0,before-limit//2),max(0,total-limit))
     offset=min(offset,max(0,total-limit))
     chunks=s.rows('SELECT * FROM chunks WHERE document_id=? ORDER BY ordinal LIMIT ? OFFSET ?',(did,limit,offset))
-    return {**safe_doc(doc),'chunks':chunks,'chunk_count':total,'chunk_offset':offset,'versions':versions}
+    result={**safe_doc(doc),'chunks':chunks,'chunk_count':total,'chunk_offset':offset,'versions':versions}
+    if include_context and chunk_id is not None:
+        chunk=next((item for item in chunks if item['id']==chunk_id),None)
+        if chunk:
+            start,end=chunk['char_start'],chunk['char_end']
+            content=doc['content']
+            if 0<=start<end<=len(content) and content[start:end]==chunk['text']:
+                result['citation_context']={
+                    'before':('…' if start>800 else '')+content[max(0,start-800):start],
+                    'after':content[end:end+800]+('…' if end+800<len(content) else ''),
+                }
+    return result
 
 @app.get('/api/documents/{did}/processing')
 def document_processing(did:int,user=Depends(current_user)):
@@ -686,7 +722,9 @@ def get_conversation(cid:int,user=Depends(current_user)):
         message['verification']=json.loads(message['verification'])
         message['retrieval']=json.loads(message['retrieval'])
         message['coverage']=json.loads(message['coverage'])
-    return {**row,'knowledge_base_ids':json.loads(row['knowledge_base_ids']),'messages':messages}
+    last_retrieval=next((m['retrieval'] for m in reversed(messages) if m['role']=='assistant'),{})
+    return {**row,'knowledge_base_ids':json.loads(row['knowledge_base_ids']),'messages':messages,
+            'retrieval_settings':question_retrieval_settings(last_retrieval)}
 
 @app.patch('/api/conversations/{cid}')
 def rename_conversation(cid:int,body:TitleBody,user=Depends(current_user)):
@@ -725,35 +763,47 @@ def source_lines(citations,used=None):
     return '\n'.join(f"[{i}] {c['source']} | 知识库#{c['knowledge_base_id']} {c['knowledge_base_name']} | 片段#{c['chunk_id']} | 相关度 {c['relevance']}\n> {c['text']}" for i,c in enumerate(citations,1) if used is None or i in used)
 
 @app.get('/api/conversations/{cid}/export')
-def export_conversation(cid:int,format:Literal['md','docx']='md',user=Depends(current_user)):
+def export_conversation(cid:int,format:Literal['docx']='docx',user=Depends(current_user)):
+    from urllib.parse import quote
     row=get_conversation(cid,user)
-    scope=[s.one('SELECT id,name,status FROM knowledge_bases WHERE id=?',(kid,)) for kid in row['knowledge_base_ids']]
-    text='# '+row['title']+'\n\n会话创建时间：'+row['created_at']+'\n最后更新时间：'+row['updated_at']+'\n导出时间：'+s.now()+'\n时间格式：ISO 8601，UTC（+00:00）\n\n## 完整知识库范围\n'
-    text+='\n'.join(f"- #{kb['id']} {kb['name']}（{kb['status']}）" for kb in scope)+'\n'
-    for message in row['messages']:
-        text+=f"\n## {'用户' if message['role']=='user' else '助手'} ({message['status']})\n\n消息时间：{message['created_at']}\n\n{message['content']}\n"
-        if message['citations']:
-            text+='\n'+source_lines(message['citations'],{int(n) for n in re.findall(r'\[(\d+)\]',message['content'])})+'\n'
-    return download_text(text,row['title'],format)
+    content=chat_export.export(row['messages'],lambda did:document(user,did))
+    return Response(content,media_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                    headers={'Content-Disposition':"attachment; filename*=UTF-8''"+quote(row['title']+'.docx',safe='')})
+
+def question_retrieval_settings(retrieval,mode=None,rerank=None):
+    defaults=settings.get().retrieval
+    return {'mode':retrieval.get('mode') or mode or defaults.mode,
+            'rerank':retrieval.get('rerank_enabled',defaults.rerank if rerank is None else rerank)}
+
 
 async def prepare_question(body,user):
     require(user,'qa.use')
-    ids=selected_ids(user,body.knowledge_base_ids,body.knowledge_base_id,True)
     query=rag.preprocess(body.query)
     if not query:
         raise HTTPException(422,'请输入有效问题')
     history=[]
+    last_retrieval={}
     if body.conversation_id:
         existing=conversation(user,body.conversation_id)
-        if set(ids)!=set(json.loads(existing['knowledge_base_ids'])):
+        scope=json.loads(existing['knowledge_base_ids'])
+        requested=body.knowledge_base_ids or ([body.knowledge_base_id] if body.knowledge_base_id else [])
+        if requested and set(requested)!=set(scope):
             raise HTTPException(409,'继续会话时知识库范围须保持一致，更换范围请新建会话')
+        ids=selected_ids(user,scope,required=True)
+        last=s.one("SELECT retrieval FROM messages WHERE conversation_id=? AND role='assistant' ORDER BY id DESC LIMIT 1",(body.conversation_id,))
+        if last:
+            last_retrieval=json.loads(last['retrieval'])
         prior=s.rows("SELECT role,content FROM messages WHERE conversation_id=? AND status='complete' ORDER BY id DESC LIMIT 8",(body.conversation_id,))
         history=list(reversed(prior))
+    else:
+        ids=selected_ids(user,body.knowledge_base_ids,body.knowledge_base_id,True)
     retrieval_query=query
     if history and (len(query)<15 or re.search('它|这个|上述|继续|那|其',query)):
         prev=next((m['content'] for m in reversed(history) if m['role']=='user'),'')
         retrieval_query=(prev+' '+query)[-4000:]
-    evidence,meta=await rag.retrieve(retrieval_query,ids,body.mode,body.top_k,body.rerank)
+    retrieval=question_retrieval_settings(last_retrieval,body.mode,body.rerank)
+    evidence,meta=await rag.retrieve(retrieval_query,ids,retrieval['mode'],body.top_k,retrieval['rerank'])
+    meta={**meta,'mode':retrieval['mode'],'rerank_enabled':retrieval['rerank']}
     if evidence:
         rag.llm_config()
     return ids,query,history,evidence,meta

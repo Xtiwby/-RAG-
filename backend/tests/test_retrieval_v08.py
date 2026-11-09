@@ -3,7 +3,7 @@ import asyncio
 import json
 import pytest
 from test_api import client,admin,application_lifespan,kb,upload,configured,save_config,create_member,wait_job,fake_model
-from app import rag,retrieval_planner,report_retrieval,store,settings
+from app import ingestion,rag,retrieval_planner,report_retrieval,store,settings
 
 def enable(admin):
     save_config(admin,lambda cfg:cfg['retrieval'].update(cross_language=True))
@@ -13,6 +13,26 @@ def clear_plans():
     retrieval_planner._cache.clear()
     yield
     retrieval_planner._cache.clear()
+
+def test_search_keeps_previous_ready_version_until_replacement_is_ready(admin):
+    kid = kb(admin)
+    original = upload(admin, kid, name='manual.txt', text='混合检索采用关键词和向量排名融合。')
+    replacement = ingestion.create_document(kid, 'manual.txt', 'txt', 'text', '')
+    body = {'query': '混合检索', 'knowledge_base_ids': [kid], 'mode': 'keyword'}
+
+    def search_document_ids():
+        response = client.post('/api/search', headers=admin, json=body)
+        assert response.status_code == 200, response.text
+        return {item['document_id'] for item in response.json()['results']}
+
+    for status in ('uploading', 'processing', 'parse_failed'):
+        store.execute('UPDATE documents SET status=? WHERE id=?', (status, replacement))
+        assert search_document_ids() == {original['id']}, status
+
+    rag.index_units(replacement, [
+        {'page': None, 'section': '正文', 'text': '混合检索采用改版后的排名融合策略。'}
+    ])
+    assert search_document_ids() == {replacement}
 
 @pytest.mark.parametrize('mode',['vector','keyword','hybrid'])
 def test_chinese_question_retrieves_english_fact_without_answer_leak(admin,configured,monkeypatch,mode):
@@ -113,20 +133,25 @@ def test_report_preflight_and_regeneration_share_section_focus(admin,configured,
     template=client.post('/api/report-templates',headers=admin,json={'blueprint':{'name':'接入报告','purpose':'文档接入',
         'sections':[{'title':'文件接收','instructions':'说明UploadFile'},
                     {'title':'Lumen解析器与视觉识别边界','instructions':'区分文字层与扫描图像'}]},'knowledge_base_ids':[kid],'lifecycle':'published'}).json()['id']
-    params={'title':'文件上传与接收机制报告','template_id':template,'knowledge_base_id':kid,'workflow_version':1,
+    params={'title':'文件上传与接收机制报告','template_id':template,'knowledge_base_id':kid,'workflow_version':1,'mode':'keyword',
         'requirements':'UploadFile文件接收上传内存磁盘，'+('只写两句，每句引用，不编造。'*30)}
     preflight=client.post('/api/reports/preflight',headers=admin,json=params).json()
+    assert preflight['mode']=='keyword'
+    assert all(attempt['retrieval']['mode']=='keyword' for sec in preflight['sections'] for attempt in sec['retrieval']['attempts'])
     second=preflight['sections'][1]
     assert optical['id'] in {e['document_id'] for e in second['evidence']}
     assert second['retrieval']['policy']=='section-focus-v4'
     focused=second['retrieval']['attempts'][0]['query']
     assert 'UploadFile' not in focused and '两句' not in focused
-    created=client.post('/api/report-tasks',headers=admin,json={**params,'preflight_id':preflight['preflight_id'],'allow_missing':True}).json()
+    generation={**params,'preflight_id':preflight['preflight_id'],'allow_missing':True}
+    assert client.post('/api/report-tasks',headers=admin,json={**generation,'mode':'hybrid'}).status_code==409
+    created=client.post('/api/report-tasks',headers=admin,json=generation).json()
     wait_job(admin,created['job_id'])
     report=client.get(f"/api/reports/{created['id']}",headers=admin).json();sec=report['sections'][1]
     job=client.post(f"/api/report-tasks/{report['id']}/sections/{sec['id']}/regenerate",headers=admin,json={'expected_revision':sec['revision'],'preview':True}).json()
     wait_job(admin,job['job_id'])
     assert seen[-1]['attempts'][0]['query']==focused
+    assert seen[-1]['attempts'][0]['retrieval']['mode']=='keyword'
     final=client.get(f"/api/reports/{created['id']}",headers=admin).json()
     assert final['sections'][0]['content']==report['sections'][0]['content']
     assert optical['id'] in {e['document_id'] for e in final['candidates'][0]['citations']}

@@ -362,10 +362,12 @@ async def retrieve(query,kb_ids,mode=None,top_k=None,rerank=None,expand_queries=
     if not kb_ids:
         return [],{'embedding':'none','rerank':'none'}
     marks=','.join('?' for _ in kb_ids)
+    # An unindexed replacement must not hide the last searchable version.
     query_sql=f'''SELECT c.*,d.id AS document_id,d.name,d.version,d.modality,d.knowledge_base_id,k.name AS knowledge_base_name
         FROM chunks c JOIN documents d ON d.id=c.document_id JOIN knowledge_bases k ON k.id=d.knowledge_base_id
         WHERE d.deleted=0 AND d.status='ready' AND d.knowledge_base_id IN ({marks})
-        AND d.id=(SELECT MAX(d2.id) FROM documents d2 WHERE d2.name=d.name AND d2.knowledge_base_id=d.knowledge_base_id AND d2.deleted=0)'''
+        AND d.id=(SELECT MAX(d2.id) FROM documents d2 WHERE d2.name=d.name
+            AND d2.knowledge_base_id=d.knowledge_base_id AND d2.deleted=0 AND d2.status='ready')'''
     indexed_ids=None
     query_vectors={}
     preplanned=None

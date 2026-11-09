@@ -40,7 +40,10 @@ export async function api(path, options = {}) {
   const response = await fetch(`${API_BASE}${path}`, { ...options, headers })
   if (response.status === 401) {
     clearSession()
-    if (!location.pathname.includes('/login')) location.href = '/login'
+    if (location.pathname !== '/login') {
+      const redirect=location.pathname+location.search+location.hash
+      location.replace(`/login?${new URLSearchParams({redirect})}`)
+    }
   }
   const data = await response.json().catch(() => ({}))
   if (!response.ok) throw new Error(errorMessage(data))

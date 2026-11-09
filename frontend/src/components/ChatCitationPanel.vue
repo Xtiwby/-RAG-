@@ -14,7 +14,8 @@ const fragment = ref(null)
 const loading = ref(false)
 const error = ref('')
 const closeButton = ref(null)
-const pdfPage = computed(() => doc.value?.file_type === 'pdf' && doc.value.has_original &&
+const presentation = computed(() => ['ppt', 'pptx'].includes(doc.value?.file_type))
+const pdfPage = computed(() => (doc.value?.file_type === 'pdf' || presentation.value) && doc.value.has_original &&
   Number.isInteger(fragment.value?.page) && fragment.value.page > 0)
 
 onMounted(() => closeButton.value?.focus({ preventScroll: true }))
@@ -35,7 +36,7 @@ watch([() => source.value?.document_id, () => source.value?.chunk_id], async ([d
   onCleanup(() => controller.abort())
   loading.value = true
   try {
-    const result = await api(`/api/documents/${Number(docId)}?compact=true&limit=1&chunk_id=${Number(chunkId)}`,
+    const result = await api(`/api/documents/${Number(docId)}?compact=true&limit=1&include_context=true&chunk_id=${Number(chunkId)}`,
       { signal: controller.signal })
     if (controller.signal.aborted) return
     const chunk = result.chunks.find(item => Number(item.id) === Number(chunkId))
@@ -66,10 +67,10 @@ watch([() => source.value?.document_id, () => source.value?.chunk_id], async ([d
         <p class="citation-name">[{{ source.number }}] {{ doc?.name || source.name }}</p>
         <p v-if="loading" class="muted" role="status">正在查找引用页…</p>
         <p v-else-if="error" class="error-banner" role="alert">{{ error }}</p>
-        <PdfCitationPreview v-else-if="pdfPage" :key="`${doc.id}:${fragment.id}`" :document-id="doc.id" :citation="fragment"/>
         <template v-else-if="fragment">
-          <p class="muted">此引用没有可预览的 PDF 页面。</p>
-          <blockquote class="citation-quote">{{ fragment.text }}</blockquote>
+          <router-link class="text-button" :to="{path:`/documents/${doc.id}`,query:{chunk:fragment.id,view:'original'}}">打开原文页面</router-link>
+          <PdfCitationPreview v-if="pdfPage" :key="`${doc.id}:${fragment.id}`" :document-id="doc.id" :citation="fragment" :presentation="presentation"/>
+          <p v-else class="citation-quote"><span>{{doc.citation_context?.before}}</span><mark>{{fragment.text}}</mark><span>{{doc.citation_context?.after}}</span></p>
         </template>
       </template>
       <p v-else class="muted">当前回答没有引用编号。</p>
@@ -85,5 +86,6 @@ watch([() => source.value?.document_id, () => source.value?.chunk_id], async ([d
 .citation-options [aria-pressed="true"] { border-color: var(--primary); background: var(--primary-soft); color: var(--primary); }
 .citation-body { min-height: 0; overflow: auto; padding: 12px 16px 16px; }
 .citation-name { font-weight: 600; margin: 0 0 6px; overflow-wrap: anywhere; }
-.citation-quote { margin: 12px 0 0; padding: 12px; border-left: 3px solid #d6a82c; background: #fff8da; white-space: pre-wrap; overflow-wrap: anywhere; }
+.citation-quote { margin: 12px 0 0; padding: 12px; background: #f6f8fa; white-space: pre-wrap; overflow-wrap: anywhere; }
+.citation-quote mark { background: #fff0a5; color: inherit; }
 </style>

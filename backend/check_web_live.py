@@ -196,8 +196,8 @@ def qa(c, ids):
         entry={'question_id':qid,'case':case,'request':body,'events':events,'conversation':conv,'latency_ms':round((time.perf_counter()-t)*1000)}
         results.append(entry);save('qa.json',results)
         if cid:
-            r=c.get(f'/api/conversations/{cid}/export',params={'format':'md'});r.raise_for_status()
-            (OUT/f'{qid}-conversation.md').write_bytes(r.content)
+            r=c.get(f'/api/conversations/{cid}/export');r.raise_for_status()
+            (OUT/f'{qid}-conversation.docx').write_bytes(r.content)
         answer=next((m for m in reversed((conv or {}).get('messages',[])) if m['role']=='assistant'),{})
         print('QA done',qid,answer.get('status'),answer.get('content','')[:500],flush=True)
 

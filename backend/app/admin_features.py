@@ -107,7 +107,7 @@ def install(app,auth,require,check_kb,document,ReportBody,source_lines):
             fresh_job_user(row)
             if body.workflow_version:
                 evidence=payload['preflight']['sections'][i]['evidence']
-            else:evidence,_=await report_retrieval.retrieve_section(body.knowledge_base_id,section.model_dump(),purpose=plan.purpose,
+            else:evidence,_=await report_retrieval.retrieve_section(body.knowledge_base_id,section.model_dump(),mode=body.mode,purpose=plan.purpose,
                 report_title=body.title,requirements=body.requirements,period_start=body.period_start,period_end=body.period_end,
                  template_structure=(payload.get('template_snapshot') or {}).get('structure'))
             sid=s.execute('INSERT INTO report_sections(task_id,ordinal,title,status,citations) VALUES(?,?,?,?,?)',
@@ -356,7 +356,7 @@ def install(app,auth,require,check_kb,document,ReportBody,source_lines):
         require(user,'ops.read')
         counts={r['status']:r['n'] for r in s.rows('SELECT status,COUNT(*) n FROM jobs GROUP BY status')}
         disk=shutil.disk_usage(s.DATA)
-        files=[p for p in s.UPLOADS.iterdir() if p.is_file()]
+        files=[p for p in s.UPLOADS.rglob('*') if p.is_file()]
         originals=s.rows("SELECT * FROM documents WHERE path<>'' OR object_key<>''")
         originals+=s.rows("SELECT * FROM template_imports WHERE path<>'' OR object_key<>''")
         db_path=s.DATA/'rag_knowledge.db'

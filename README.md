@@ -32,7 +32,7 @@
 - 候选回答按句段执行引用检查、原文引文检查、数字一致性检查和独立模型核验。
 - 证据不足时明确拒答或提示补充资料，不发布未通过校验的候选句段。
 - 通过 SSE 流式展示 `meta`、`token`、`citation`、`done` 和 `error` 事件。
-- 支持会话历史、重命名、继续、删除、反馈及 Markdown、DOCX 导出。
+- 支持会话历史、重命名、继续、删除、反馈及 Word 导出。导出按轮保留提问、回答和引用索引，内嵌原版页面图片，并在可定位的原页文字上高亮。引用编号和图片均为静态内容。
 
 ### 模板库与报告生成
 
@@ -240,6 +240,8 @@ RAG_S3_SECRET_KEY=change-me-local
 如果没有启动 worker，上传、索引和报告任务会保持排队。
 
 文档管理的 PPT/PPTX 原文预览由后端使用 LibreOffice 生成静态幻灯片。请在运行后端的机器上安装 [LibreOffice](https://www.libreoffice.org/download/)。如果安装在自定义位置，可在 `backend/.env` 中用 `RAG_SOFFICE_PATH` 指定 `soffice`（Windows 上为 `soffice.com`）的完整路径。页面上的「下载原文件」仍可获取 PowerPoint 原件。
+
+问答导出将 PDF 和幻灯片的原版页面渲染为图片，保留整页版式。引用文字有可靠坐标时会在原页标黄。没有可用原版页面的引用仅显示索引和缺页提示。
 
 ### 6. 初始账户
 

@@ -1,10 +1,11 @@
 <script setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { Bot, Database, FileSearch, ShieldCheck } from '../icons'
 import { api, saveSession } from '../api'
 
 const router = useRouter()
+const route = useRoute()
 const username = ref('admin')
 const password = ref('admin123')
 const error = ref('')
@@ -16,7 +17,9 @@ async function login() {
   try {
     const data = await api('/api/auth/login', { method: 'POST', body: JSON.stringify({ username: username.value, password: password.value }) })
     saveSession(data)
-    router.push('/')
+    const target=route.query.redirect
+    const internal=typeof target==='string' && /^\/(?![/\\])/.test(target) && !target.includes('\\')
+    router.replace(internal && router.resolve(target).matched.length ? target : '/')
   } catch (e) {
     error.value = e.message
   } finally {

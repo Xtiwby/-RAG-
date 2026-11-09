@@ -90,6 +90,8 @@ def validate_input(body,template):
 def signature(body,template):
     value={k:body.model_dump()[k] for k in ('title','template_id','knowledge_base_id','requirements','period_start','period_end','field_values')}
     value['template']=template_snapshot(template);value['retrieval']=settings.get().retrieval.model_dump()
+    if body.mode is not None:
+        value['retrieval']['mode']=body.mode
     value['embedding']=settings.get().embedding.model_dump()
     value['reranking']=settings.get().reranking.model_dump()
     value['answer_quality']=settings.get().answer_quality.model_dump()
@@ -291,16 +293,23 @@ def install(app,auth,require,check_kb,report_task,ReportBody,source_lines):
     async def preflight(body:ReportBody,request:Request,user=Depends(auth)):
         check_kb(user,body.knowledge_base_id);row=template(body.template_id,user);template_docx.ensure_template_scope(row,body.knowledge_base_id,user);validate_input(body,row)
         plan=blueprints.from_template(row);results=[]
-        for i,spec in enumerate(plan.sections):
-            evidence,params=await report_retrieval.retrieve_section(body.knowledge_base_id,spec.model_dump(),purpose=plan.purpose,
-                report_title=body.title,requirements=body.requirements,period_start=body.period_start,period_end=body.period_end,
-                template_structure=row.get('structure')) if spec.kind not in ('fixed','container') else ([],{})
-            results.append({'ordinal':i,'title':spec.title,'kind':spec.kind,'required':spec.required,'evidence':evidence,'evidence_count':len(evidence),'retrieval':params,'ready':bool(evidence) or spec.kind in ('fixed','container')})
+        config=settings.get()
+        mode=body.mode or config.retrieval.mode
+        token=settings.active.set(config)
+        try:
+            fingerprint=signature(body,row)
+            for i,spec in enumerate(plan.sections):
+                evidence,params=await report_retrieval.retrieve_section(body.knowledge_base_id,spec.model_dump(),mode=mode,purpose=plan.purpose,
+                    report_title=body.title,requirements=body.requirements,period_start=body.period_start,period_end=body.period_end,
+                    template_structure=row.get('structure')) if spec.kind not in ('fixed','container') else ([],{})
+                results.append({'ordinal':i,'title':spec.title,'kind':spec.kind,'required':spec.required,'evidence':evidence,'evidence_count':len(evidence),'retrieval':params,'ready':bool(evidence) or spec.kind in ('fixed','container')})
+        finally:
+            settings.active.reset(token)
         fresh=auth(request.headers.get('authorization'))
         check_kb(fresh,body.knowledge_base_id)
-        value={'sections':results,'missing':sum(not sec['ready'] and sec['required'] for sec in results),'warnings':['时间范围按业务语义参与检索与写作，不将文件上传时间当作业务日期；请审阅原文中的日期。'] if body.period_start or body.period_end else []}
+        value={'sections':results,'mode':mode,'missing':sum(not sec['ready'] and sec['required'] for sec in results),'warnings':['时间范围按业务语义参与检索与写作，不将文件上传时间当作业务日期；请审阅原文中的日期。'] if body.period_start or body.period_end else []}
         pid=secrets.token_urlsafe(24)
-        s.execute('INSERT INTO report_preflights VALUES(?,?,?,?,?)',(pid,user['id'],signature(body,row),json.dumps(value,ensure_ascii=False),s.now()))
+        s.execute('INSERT INTO report_preflights VALUES(?,?,?,?,?)',(pid,user['id'],fingerprint,json.dumps(value,ensure_ascii=False),s.now()))
         return {**value,'preflight_id':pid}
 
     @app.get('/api/reports/{tid}')
