@@ -2,12 +2,13 @@
 import { onMounted, onUnmounted, ref, shallowRef, watch } from 'vue'
 import { getDocument, GlobalWorkerOptions, TextLayer } from 'pdfjs-dist'
 import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url'
-import { originalBlob } from '../api'
+import { originalBlob, presentationPreviewFile } from '../api'
 import { citationTextRanges } from '../pdf-citation'
 
 const props = defineProps({
   documentId: { type: Number, required: true },
   citation: { type: Object, required: true },
+  presentation: Boolean,
 })
 
 GlobalWorkerOptions.workerSrc = workerUrl
@@ -28,7 +29,9 @@ onMounted(async () => {
   })
   observer.observe(viewer.value)
   try {
-    const url = await originalBlob(props.documentId, controller.signal)
+    const url = props.presentation
+      ? URL.createObjectURL(await presentationPreviewFile(props.documentId, controller.signal))
+      : await originalBlob(props.documentId, controller.signal)
     if (controller.signal.aborted) {
       URL.revokeObjectURL(url)
       return
@@ -45,15 +48,15 @@ onMounted(async () => {
     if (!controller.signal.aborted) {
       if (props.citation.page > pdfDocument.numPages) {
         loading.value = false
-        error.value = '原 PDF 中没有该引用页。'
+        error.value = props.presentation ? '原文件中没有对应的幻灯片。' : '原 PDF 中没有该引用页。'
         return
       }
       pdf.value = pdfDocument
     }
-  } catch {
+  } catch (err) {
     if (!controller.signal.aborted) {
       loading.value = false
-      error.value = '无法打开 PDF 原文件。'
+      error.value = props.presentation ? err.message || '无法打开幻灯片预览。' : '无法打开 PDF 原文件。'
     }
   }
 })
@@ -112,7 +115,8 @@ watch([pdf, width], async ([pdfDocument, available], _, onCleanup) => {
         fallback.value = true
         message.value = '已打开引用页，未能可靠匹配高亮位置。'
       } else {
-        message.value = partial ? '已标出能与 PDF 文字匹配的部分。' : '已在原 PDF 中标出引用文字。'
+        const format = props.presentation ? '幻灯片' : 'PDF'
+        message.value = partial ? `已标出能与 ${format} 文字匹配的部分。` : `已在原 ${format} 中标出引用文字。`
         viewer.value.scrollTop = Math.max(0, first - viewer.value.clientHeight / 3)
       }
     } catch {
@@ -122,7 +126,7 @@ watch([pdf, width], async ([pdfDocument, available], _, onCleanup) => {
       }
     }
   } catch {
-    if (active) error.value = '无法渲染 PDF 引用页。'
+    if (active) error.value = props.presentation ? '无法渲染幻灯片。' : '无法渲染 PDF 引用页。'
   } finally {
     if (active) loading.value = false
   }
@@ -158,11 +162,11 @@ function highlightRanges(container, textDivs, ranges) {
 </script>
 
 <template>
-  <section class="pdf-preview" aria-label="PDF 引用页">
-    <p class="pdf-page-number">PDF 第 {{ citation.page }} 页</p>
+  <section class="pdf-preview" :aria-label="presentation ? '引用幻灯片' : 'PDF 引用页'">
+    <p class="pdf-page-number">{{ presentation ? `第 ${citation.page} 张幻灯片` : `PDF 第 ${citation.page} 页` }}</p>
     <p v-if="error" class="error-banner" role="alert">{{ error }}</p>
-    <p v-else class="muted" role="status">{{ loading ? '正在加载 PDF 页面…' : message }}</p>
-    <div ref="viewer" class="pdf-scroll" tabindex="0" aria-label="PDF 页面">
+    <p v-else class="muted" role="status">{{ loading ? (presentation ? '正在加载幻灯片…' : '正在加载 PDF 页面…') : message }}</p>
+    <div ref="viewer" class="pdf-scroll" tabindex="0" :aria-label="presentation ? '幻灯片' : 'PDF 页面'">
       <div ref="sheet" class="pdf-sheet"></div>
     </div>
     <blockquote v-if="error || fallback" class="pdf-quote">{{ citation.text }}</blockquote>
