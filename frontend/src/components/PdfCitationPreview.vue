@@ -21,11 +21,15 @@ const error = ref('')
 const message = ref('')
 const fallback = ref(false)
 const controller = new AbortController()
-let task, fileUrl, observer
+let task, fileUrl, observer, resizeTimer
 
 onMounted(async () => {
   observer = new ResizeObserver(() => {
-    if (viewer.value) width.value = Math.max(0, viewer.value.clientWidth - 24)
+    clearTimeout(resizeTimer)
+    if (!viewer.value) return
+    const available = Math.min(900, Math.max(0, viewer.value.clientWidth - 24))
+    if (!width.value) width.value = available
+    else resizeTimer = setTimeout(() => { width.value = available }, 120)
   })
   observer.observe(viewer.value)
   try {
@@ -64,6 +68,7 @@ onMounted(async () => {
 onUnmounted(() => {
   controller.abort()
   observer?.disconnect()
+  clearTimeout(resizeTimer)
   if (task) task.destroy().catch(() => {})
   if (fileUrl) URL.revokeObjectURL(fileUrl)
 })
@@ -82,13 +87,12 @@ watch([pdf, width], async ([pdfDocument, available], _, onCleanup) => {
   error.value = ''
   message.value = ''
   fallback.value = false
-  sheet.value.replaceChildren()
   try {
     const page = await pdfDocument.getPage(props.citation.page)
     if (!active) return
 
     const natural = page.getViewport({ scale: 1 })
-    const viewport = page.getViewport({ scale: Math.min(available, 900) / natural.width })
+    const viewport = page.getViewport({ scale: available / natural.width })
     const density = Math.min(window.devicePixelRatio || 1, 2, 4096 / Math.max(viewport.width, viewport.height))
     const canvas = document.createElement('canvas')
     canvas.width = Math.max(1, Math.ceil(viewport.width * density))

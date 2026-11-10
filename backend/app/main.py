@@ -631,7 +631,26 @@ def document_detail(did:int,compact:bool=False,offset:int=0,limit:int=40,chunk_i
 @app.get('/api/documents/{did}/processing')
 def document_processing(did:int,user=Depends(current_user)):
     doc=document(user,did)
-    return ingestion.details(doc)
+    state=ingestion.details(doc)
+    state['can_continue_vision']=False
+    if ingestion.can_continue_vision(doc,state['job']) and safe_doc(doc)['has_original']:
+        try:
+            check_kb(user,doc['knowledge_base_id'],True)
+            state['can_continue_vision']=True
+        except HTTPException as error:
+            if error.status_code not in (403,404,409):
+                raise
+    return state
+
+@app.post('/api/documents/{did}/vision-processing',status_code=202)
+async def continue_vision(did:int,user=Depends(current_user)):
+    doc=document(user,did,True)
+    if doc['file_type'] not in ingestion.IMAGE_TYPES or not safe_doc(doc)['has_original']:
+        raise HTTPException(422,'视觉解析需要可读取的 PNG、JPEG 或 WebP 原图')
+    rag.llm_config()
+    jid=ingestion.enqueue_vision(did,user)
+    await jobs.start()
+    return {'document_id':did,'job_id':jid}
 
 @app.get('/api/documents/{did}/original')
 def original(did:int,request:Request,user=Depends(current_user)):
@@ -650,7 +669,7 @@ def preview_presentation(did:int,user=Depends(current_user)):
 @app.post('/api/documents/{did}/extract-vision')
 async def extract_vision(did:int,user=Depends(current_user)):
     doc=document(user,did,True)
-    if doc['file_type'] not in {'png','jpg','jpeg','webp'} or not object_storage.exists(doc):
+    if doc['file_type'] not in ingestion.IMAGE_TYPES or not object_storage.exists(doc):
         raise HTTPException(422,'此入口支持图片；扫描 PDF 请先转为逐页图片上传')
     rag.llm_config()
     try:

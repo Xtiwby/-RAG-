@@ -10,6 +10,11 @@ import {embeddingLabel,retrievalModes} from '../retrieval'
 const question=ref(''),mode=ref('hybrid'),selected=ref([]),kbs=ref([]),sessions=ref([]),active=ref(null),messages=ref([])
 const loading=ref(false),opening=ref(false),error=ref(''),model=ref(null),rerank=ref(true),scroll=ref(null),showSettings=ref(false)
 const citationPreview=ref(null)
+const chatSplit=ref(null)
+const citationWidth=ref(36)
+const minCitationWidth=30,maxCitationWidth=60
+let citationDrag=null
+const resizingCitation=ref(false)
 const exporting=ref(false)
 const settingsDropdown=ref(null)
 const historyOpen=ref(false)
@@ -50,10 +55,40 @@ function showSources(msg,number){
   citationPreview.value={sources,number:number??sources[0]?.number}
 }
 function closeCitation(restoreFocus=true){
+  endCitationResize()
   citationPreview.value=null
   const trigger=citationTrigger
   citationTrigger=null
   if(restoreFocus)nextTick(()=>{if(trigger?.isConnected)trigger.focus({preventScroll:true})})
+}
+function setCitationWidth(width){
+  citationWidth.value=Math.min(maxCitationWidth,Math.max(minCitationWidth,width))
+}
+function startCitationResize(event){
+  if(!event.isPrimary||event.button!==0)return
+  event.currentTarget.setPointerCapture(event.pointerId)
+  citationDrag={pointerId:event.pointerId,x:event.clientX,width:citationWidth.value}
+  resizingCitation.value=true
+}
+function moveCitationResize(event){
+  if(citationDrag?.pointerId!==event.pointerId||!chatSplit.value?.clientWidth)return
+  const delta=(citationDrag.x-event.clientX)*100/chatSplit.value.clientWidth
+  setCitationWidth(citationDrag.width+delta)
+}
+function endCitationResize(){
+  citationDrag=null
+  resizingCitation.value=false
+}
+function resizeCitationByKey(event){
+  const width={
+    ArrowLeft:citationWidth.value+2,
+    ArrowRight:citationWidth.value-2,
+    Home:minCitationWidth,
+    End:maxCitationWidth,
+  }[event.key]
+  if(typeof width!=='number')return
+  event.preventDefault()
+  setCitationWidth(width)
 }
 function resetRetrieval(){
   mode.value=model.value?.retrieval.mode??'hybrid'
@@ -135,7 +170,7 @@ async function ask(){
 }
 </script>
 <template>
-<div class="card chat-workspace" :class="{'with-history':historyOpen,'with-citation':citationPreview}">
+<div class="card chat-workspace" :class="{'with-history':historyOpen}">
 <aside v-show="historyOpen" id="chat-history" class="chat-history" aria-label="历史会话">
   <button class="new-chat" :disabled="busy" @click="newChat"><Plus :size="18"/>开启新对话</button>
   <div class="session-list">
@@ -153,6 +188,8 @@ async function ask(){
     </section>
   </div>
 </aside>
+<div ref="chatSplit" class="chat-split" :class="{'with-citation':citationPreview,'is-resizing':resizingCitation}"
+  :style="{'--citation-width':citationWidth+'%'}">
 <section class="chat-main" :class="{'is-empty':!messages.length}" @keydown.esc="citationPreview&&closeCitation()">
 <header class="chat-head">
   <div class="chat-heading">
@@ -217,8 +254,15 @@ async function ask(){
   </div>
 </footer>
 </section>
+<div v-if="citationPreview" class="citation-resizer" role="separator" tabindex="0"
+  aria-label="调整引用原文宽度" aria-orientation="vertical" aria-controls="chat-citation-panel"
+  :aria-valuemin="minCitationWidth" :aria-valuemax="maxCitationWidth" :aria-valuenow="Math.round(citationWidth)"
+  :aria-valuetext="Math.round(citationWidth)+'%'"
+  @pointerdown="startCitationResize" @pointermove="moveCitationResize" @lostpointercapture="endCitationResize"
+  @keydown="resizeCitationByKey" @keydown.esc.stop="closeCitation()"/>
 <ChatCitationPanel v-if="citationPreview" :sources="citationPreview.sources" :number="citationPreview.number"
   @select="citationPreview.number=$event" @close="closeCitation()"/>
+</div>
 </div></template>
 <style scoped>
 .chat-workspace {
@@ -228,6 +272,7 @@ async function ask(){
   height:calc(100dvh - 104px);
 }
 .chat-workspace.with-history {grid-template-columns:clamp(190px,18vw,248px) minmax(0,1fr)}
+.chat-split {display:grid;grid-template-columns:minmax(0,1fr);min-width:0;min-height:0}
 .chat-history {
   min-height:0;
   display:flex;
@@ -353,6 +398,7 @@ async function ask(){
 .composer-actions {display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px}
 .composer-actions small {font-size:11px;color:var(--muted)}
 .composer-actions button {flex-shrink:0}
+.citation-resizer {display:none}
 .with-citation > .citation-panel {
   position:fixed;
   inset:0 0 0 auto;
@@ -362,9 +408,22 @@ async function ask(){
   box-shadow:0 0 30px #172a4540;
 }
 @media(min-width:1350px) {
-  .with-citation {grid-template-columns:minmax(0,1fr) minmax(340px,36%)}
-  .with-history.with-citation {grid-template-columns:clamp(190px,18vw,248px) minmax(0,1fr) minmax(340px,36%)}
+  .chat-split.with-citation {grid-template-columns:minmax(0,1fr) 12px var(--citation-width)}
+  .with-citation .chat-head {flex-wrap:wrap}
+  .with-citation .chat-heading {flex:1 1 160px}
   .with-citation > .citation-panel {position:relative;inset:auto;width:auto;max-height:100%;box-shadow:none}
+  .citation-resizer {
+    display:grid;
+    place-items:center;
+    background:#f5f7fa;
+    cursor:col-resize;
+    touch-action:none;
+    outline-offset:-2px;
+  }
+  .citation-resizer::before {content:'';width:3px;height:32px;border-radius:3px;background:#b4c0d0}
+  .citation-resizer:is(:hover,:focus-visible),.is-resizing .citation-resizer {background:var(--primary-soft)}
+  .citation-resizer:is(:hover,:focus-visible)::before,.is-resizing .citation-resizer::before {background:var(--primary)}
+  .chat-split.is-resizing {cursor:col-resize;user-select:none}
 }
 @media(max-width:767px) {
   .chat-workspace {height:auto;min-height:calc(100dvh - 100px)}

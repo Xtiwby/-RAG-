@@ -25,7 +25,7 @@ const visibleStages=computed(()=>{
   ]
 })
 let timer=null,request=null
-async function load(){
+async function load(clearError=true){
   if(!props.documentId||loading.value)return
   const controller=new AbortController()
   request=controller
@@ -35,7 +35,7 @@ async function load(){
     if(controller.signal.aborted)return
     const statusChanged=data.value?.status!==next.status
     data.value=next
-    error.value=''
+    if(clearError)error.value=''
     if(statusChanged)emit('changed')
   }catch(e){
     if(!controller.signal.aborted)error.value=e.message
@@ -51,6 +51,15 @@ async function retry(){
   }catch(e){error.value=e.message}
   finally{busy.value=false}
 }
+async function continueVision(){
+  busy.value=true
+  error.value=''
+  try{
+    await api(`/api/documents/${props.documentId}/vision-processing`,{method:'POST'})
+    await load()
+  }catch(e){error.value=e.message}
+  finally{busy.value=false}
+}
 watch(()=>props.documentId,()=>{
   request?.abort()
   request=null
@@ -61,7 +70,7 @@ watch(()=>props.documentId,()=>{
 },{immediate:true})
 onMounted(()=>{
   timer=setInterval(()=>{
-    if(data.value?.status==='uploading'||['queued','running'].includes(data.value?.job?.status))load()
+    if(!busy.value&&(data.value?.status==='uploading'||['queued','running'].includes(data.value?.job?.status)))load(false)
   },1200)
 })
 onUnmounted(()=>{
@@ -74,9 +83,12 @@ onUnmounted(()=>{
   <div class="toolbar">
    <h3>文档处理进度</h3>
    <button v-if="documentId" type="button" class="secondary-button" :disabled="loading||busy" @click="load">刷新进度</button>
-   <button v-if="can('kb.write')&&data?.job&&failedStates.includes(data.job.status)" type="button" class="primary-button"
+   <button v-if="data?.can_continue_vision" type="button" class="primary-button"
+    :disabled="loading||busy" @click="continueVision">开始视觉解析</button>
+   <button v-else-if="can('kb.write')&&data?.job&&failedStates.includes(data.job.status)" type="button" class="primary-button"
     :disabled="loading||busy||data.job.attempts>=data.job.max_attempts" @click="retry">重试处理任务</button>
   </div>
+  <p v-if="data?.can_continue_vision" class="help">点击后会使用已保存的原图，发送到系统配置的模型服务。解析成功后会自动切分并建立索引。</p>
   <div v-if="error||uploadError" class="error-banner" role="alert">{{error||uploadError}}</div>
   <p v-if="data">总体 {{data.progress}}% · 后台任务 #{{data.job?.id||'—'}}<span v-if="data.job"> · 尝试 {{data.job.attempts}} / {{data.job.max_attempts}}</span></p>
   <p v-else-if="documentId&&loading" role="status">正在读取处理进度…</p>
@@ -98,7 +110,7 @@ onUnmounted(()=>{
     </table>
    </div>
   </details>
-  <div v-if="data?.error" class="error-banner" role="alert">{{data.error}}</div>
+  <div v-if="data?.error&&data.status!=='needs_extraction'" class="error-banner" role="alert">{{data.error}}</div>
  </section>
 </template>
 <style scoped>.processing-panel{padding:20px;background:#f5f8fb;border:1px solid #dae4ec;border-radius:6px}.processing-panel h3{margin:0}.processing-panel p,.help{font-size:12px;color:#657a88}.stage-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:15px 0}.stage-grid article{padding:15px;border:1px solid #dce6ed;border-radius:6px;background:white}.stage-grid strong{display:block;margin-bottom:9px}.stage-grid small{display:block;line-height:1.7;overflow-wrap:anywhere;color:#657a88}progress{display:block;width:100%;margin:12px 0;accent-color:#1677ff}.processing-panel summary{cursor:pointer;font-size:13px}td{font-size:12px}.table-wrap table{min-width:650px}@media(max-width:800px){.stage-grid{grid-template-columns:1fr 1fr}}</style>

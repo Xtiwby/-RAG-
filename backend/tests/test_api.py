@@ -893,6 +893,48 @@ def test_ingestion_reports_measured_intermediate_progress(admin):
     for stage in ('parse','chunk'):
         assert any(e['stage']==stage and e['status']=='running' and 0<e['progress']<100 for e in state['events'])
 
+def test_pending_image_can_continue_through_vision_and_index(admin,monkeypatch):
+    from PIL import Image
+    image=io.BytesIO()
+    Image.new('RGB',(16,16),'white').save(image,format='PNG')
+    kid=kb(admin)
+    response=client.post('/api/documents',headers=admin,data={'knowledge_base_id':kid},
+                         files={'file':('vision.png',image.getvalue(),'image/png')})
+    assert response.status_code==201,response.text
+    original=finish_upload(admin,response.json())
+    assert original['status']=='needs_extraction'
+    path=f"/api/documents/{original['id']}"
+    state=client.get(path+'/processing',headers=admin).json()
+    assert state['can_continue_vision']
+    assert state['stages'][1]['progress']==0
+
+    async def empty_vision(messages):
+        assert messages[1]['content'][1]['image_url']['url'].startswith('data:image/png;base64,')
+        yield ' '
+
+    monkeypatch.setattr(rag,'llm_stream',empty_vision)
+    submitted=client.post(path+'/vision-processing',headers=admin)
+    assert submitted.status_code==202,submitted.text
+    failed=wait_job(admin,submitted.json()['job_id'])
+    assert failed['status']=='failed'
+    assert client.get(path+'/processing',headers=admin).json()['can_continue_vision']
+
+    async def recognized(messages):
+        yield '视觉验收编号 OCR90217'
+
+    monkeypatch.setattr(rag,'llm_stream',recognized)
+    submitted=client.post(path+'/vision-processing',headers=admin)
+    assert submitted.status_code==202,submitted.text
+    assert client.post(path+'/vision-processing',headers=admin).status_code==409
+    assert wait_job(admin,submitted.json()['job_id'])['status']=='completed'
+    updated=client.get(path,headers=admin).json()
+    assert updated['status']=='ready' and updated['version']==original['version']
+    assert updated['sha256']==original['sha256'] and 'OCR90217' in updated['chunks'][0]['text']
+    state=client.get(path+'/processing',headers=admin).json()
+    assert state['progress']==100 and not state['can_continue_vision']
+    assert all(stage['status']=='completed' for stage in state['stages'])
+    assert client.post(f"/api/tasks/{failed['id']}/retry",headers=admin).status_code==409
+
 
 def generated_report(headers,monkeypatch,kid=None):
     monkeypatch.setattr(rag,'llm_stream',fake_model)

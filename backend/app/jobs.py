@@ -177,6 +177,10 @@ def retry(jid,user):
             raise HTTPException(409,'仅失败、中断或取消的任务可重试')
         if row['attempts']>=row['max_attempts']:
             raise HTTPException(409,'已达到此任务的最大尝试次数，请创建新任务')
+        if row['kind']=='ingest':
+            doc=c.execute('SELECT job_id FROM documents WHERE id=?',(json.loads(row['payload'])['document_id'],)).fetchone()
+            if not doc or doc['job_id']!=jid:
+                raise HTTPException(409,'文档已有更新的处理任务，请在文档进度中操作')
         if row['kind']=='report_section':
             from . import report_drafts
             report_drafts.retry_state(c,row)

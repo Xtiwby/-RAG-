@@ -4,26 +4,32 @@ import json
 import threading
 from zipfile import BadZipFile
 from pathlib import Path
+from fastapi import HTTPException
 from . import store as s,rag,jobs,object_storage,settings
 
 STAGES=('upload','parse','chunk','index')
+IMAGE_TYPES={'png','jpg','jpeg','webp'}
 
 def create_document(kid,name,suffix,modality,path):
-    modality='image' if suffix in {'png','jpg','jpeg','webp'} else 'table' if suffix in {'xlsx','csv'} else modality
+    modality='image' if suffix in IMAGE_TYPES else 'table' if suffix in {'xlsx','csv'} else modality
     with s.connect() as c:
         c.execute('BEGIN IMMEDIATE')
         count=c.execute('SELECT COUNT(*) FROM documents WHERE knowledge_base_id=? AND name=?',(kid,name)).fetchone()[0]
         return c.execute('''INSERT INTO documents(knowledge_base_id,name,file_type,modality,path,status,version,created_at)
             VALUES(?,?,?,?,?,'uploading',?,?)''',(kid,name,suffix,modality,path,f'v{count+1}.0',s.now())).lastrowid
 
-def record(did,stage,status,progress,message='',job_id=None,attempt=0):
+def write_event(c,did,stage,status,progress,message,job_id,attempt):
     overall=25 if status=='pending' else min(100,STAGES.index(stage)*25+round(progress/4))
+    c.execute('INSERT INTO document_events(document_id,job_id,attempt,stage,status,progress,overall_progress,message,created_at) VALUES(?,?,?,?,?,?,?,?,?)',
+              (did,job_id,attempt,stage,status,progress,overall,message,s.now()))
+    c.execute('UPDATE documents SET processing_stage=?,processing_progress=? WHERE id=?',(stage,overall,did))
+    if job_id:
+        c.execute('UPDATE jobs SET progress=? WHERE id=?',(overall,job_id))
+    return overall
+
+def record(did,stage,status,progress,message='',job_id=None,attempt=0):
     with s.connect() as c:
-        c.execute('INSERT INTO document_events(document_id,job_id,attempt,stage,status,progress,overall_progress,message,created_at) VALUES(?,?,?,?,?,?,?,?,?)',
-                  (did,job_id,attempt,stage,status,progress,overall,message,s.now()))
-        c.execute('UPDATE documents SET processing_stage=?,processing_progress=? WHERE id=?',(stage,overall,did))
-        if job_id:
-            c.execute('UPDATE jobs SET progress=? WHERE id=?',(overall,job_id))
+        overall=write_event(c,did,stage,status,progress,message,job_id,attempt)
     if job_id:
         jobs.emit(job_id,'document_stage',document_id=did,stage=stage,status=status,progress=progress,overall_progress=overall,message=message)
 
@@ -37,12 +43,35 @@ def details(doc):
     return {'document_id':doc['id'],'status':doc['status'],'progress':doc['processing_progress'],
             'stages':stages,'events':events,'job':job,'error':doc['parse_error']}
 
+def can_continue_vision(doc,job):
+    return (doc['file_type'] in IMAGE_TYPES and not doc['deleted']
+            and doc['status'] in ('needs_extraction','parse_failed','processing_failed')
+            and (not job or job['status'] not in ('queued','running')))
+
+def enqueue_vision(did,user):
+    config=settings.get()
+    with s.connect() as c:
+        c.execute('BEGIN IMMEDIATE')
+        doc=c.execute('SELECT * FROM documents WHERE id=?',(did,)).fetchone()
+        previous=c.execute('SELECT * FROM jobs WHERE id=?',(doc['job_id'],)).fetchone()
+        if not can_continue_vision(doc,previous):
+            raise HTTPException(409,'此文档当前无法继续视觉解析，请刷新处理进度')
+        if previous and previous['kind']=='ingest':
+            original=settings.RuntimeSettings.model_validate_json(previous['config'])
+            config=config.model_copy(update={'chunk':original.chunk,'embedding':original.embedding})
+        jid=jobs.add('ingest',{'document_id':did,'vision':True},user,{'document_id':did},c,config=config)
+        c.execute("UPDATE documents SET status='processing',parse_error='',job_id=? WHERE id=?",(jid,did))
+        for stage in ('chunk','index'):
+            write_event(c,did,stage,'pending',0,'等待视觉解析',jid,0)
+        write_event(c,did,'parse','queued',0,'等待视觉解析工作槽位',jid,0)
+    return jid
+
 def interrupted_job(row,message,status='failed'):
     if row['kind']!='ingest':
         return
     did=json.loads(row['payload'])['document_id']
     doc=s.one('SELECT * FROM documents WHERE id=?',(did,))
-    if not doc or doc['status'] not in ('processing','uploading'):
+    if not doc or doc['job_id']!=row['id'] or doc['status'] not in ('processing','uploading'):
         return
     stage=doc['processing_stage'] if doc['processing_stage'] in STAGES else 'parse'
     record(did,stage,status,0,message,row['id'],row['attempts'])
@@ -50,6 +79,7 @@ def interrupted_job(row,message,status='failed'):
 
 async def run(row,payload,user,validate):
     did=payload['document_id'];stage='parse';progress=0
+    vision=payload.get('vision',False)
     stopped=threading.Event();callback_lock=threading.Lock()
     doc=s.one('SELECT * FROM documents WHERE id=?',(did,))
     if doc['status']=='ready':
@@ -77,13 +107,22 @@ async def run(row,payload,user,validate):
             # New attempt resets pending downstream stages without erasing historical events.
             for name in ('chunk','index'):
                 record(did,name,'pending',0,'等待本次解析',row['id'],row['attempts'])
-        track('parse','running',0,'正在解析原文件')
+        track('parse','running',0,'正在通过已配置的模型转录图片' if vision else '正在解析原文件')
         async with object_storage.async_local_path(doc) as source:
-            units=await asyncio.to_thread(rag.parse_local,source,doc['file_type'],measured('parse','已解析'))
+            if vision:
+                validate(row)
+                units=await rag.visual_extract(source)
+            else:
+                units=await asyncio.to_thread(rag.parse_local,source,doc['file_type'],measured('parse','已解析'))
         validate(row)
         if not any(unit['text'].strip() for unit in units):
-            track('parse','needs_extraction',100,'未提取到文本；图片需视觉解析，扫描PDF需先转图片')
-            s.execute("UPDATE documents SET status='needs_extraction',parse_error=? WHERE id=?",('没有可索引文本，请完成视觉解析',did))
+            if vision:
+                raise ValueError('视觉模型没有返回可索引文本')
+            message=('原图已保存，请点击「开始视觉解析」提取文字' if doc['file_type'] in IMAGE_TYPES else
+                     '此 PDF 未提取到文本层；扫描件请转为逐页图片后上传' if doc['file_type']=='pdf' else
+                     '文件中没有可索引文本，请检查原件')
+            track('parse','needs_extraction',0,message)
+            s.execute("UPDATE documents SET status='needs_extraction',parse_error=? WHERE id=?",(message,did))
             return {'document_id':did,'status':'needs_review'}
         track('parse','completed',100,f'已解析 {len(units)} 个文本单元')
         track('chunk','running',0,'按任务提交时的长度和重叠参数切分')
