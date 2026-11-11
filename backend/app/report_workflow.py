@@ -255,11 +255,31 @@ def install(app,auth,require,check_kb,report_task,ReportBody,source_lines):
         s.audit(user,'保存报告模板版本','报告模板',version,object_id=tid)
         return {'id':tid,'version':version}
 
+    LIFECYCLE_TRANSITIONS = {
+        'draft': {'published', 'disabled', 'deleted'},
+        'published': {'disabled', 'deleted'},
+        'disabled': {'published', 'deleted'},
+        'deleted': set(),
+    }
+
     @app.patch('/api/report-templates/{tid}/lifecycle')
-    def lifecycle(tid:int,state:Literal['draft','published','disabled'],user=Depends(auth)):
-        require(user,'templates.manage');row=template(tid,user)
-        s.execute('UPDATE report_templates SET lifecycle=? WHERE id=?',(state,tid));s.audit(user,'变更模板状态','报告模板',state,object_id=tid)
-        return {'ok':True}
+    def lifecycle(tid: int, state: Literal['draft', 'published', 'disabled'], user=Depends(auth)):
+        require(user, 'templates.manage')
+        with s.connect() as c:
+            c.execute('BEGIN IMMEDIATE')
+            raw = c.execute('SELECT * FROM report_templates WHERE id=?', (tid,)).fetchone()
+            if not raw: raise HTTPException(404, '模板不存在')
+            row = dict(raw)
+            if not template_docx.allowed(row, user, include_deleted=True): raise HTTPException(403, '无权管理此模板')
+            current = row['lifecycle']
+            if current == 'deleted': raise HTTPException(409, '模板在回收站中，请使用恢复接口')
+            if state == current: return {'ok': True, 'lifecycle': current}  # 幂等
+            if state not in LIFECYCLE_TRANSITIONS.get(current, set()):
+                raise HTTPException(409, f'不允许从 {current} 变更为 {state}')
+            c.execute('UPDATE report_templates SET lifecycle=? WHERE id=?', (state, tid))
+        s.audit(user, '变更模板状态', '报告模板', f"{row['name']} · {row['version']}：{current} → {state}",
+                object_id=tid)
+        return {'ok': True, 'lifecycle': state}
 
     @app.delete('/api/report-templates/{tid}')
     def delete_template(tid:int,user=Depends(auth)):
