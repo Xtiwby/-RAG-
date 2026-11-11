@@ -11,7 +11,7 @@ const content=ref(props.section.content),revision=ref(props.section.revision),ed
 let timer=null,savePromise=null
 const running=computed(()=>['queued','running'].includes(props.section.generation_status)),locked=computed(()=>props.disabled||running.value||!!props.section.confirmed)
 const stale=computed(()=>props.section.revision>revision.value&&dirty.value)
-const v=computed(()=>props.section.verification||{}),qualityLabel=computed(()=>['fixed','container'].includes(props.kind)?'固定结构，需人工核对':({verified:'事实依据核验通过',partial:'生成时部分句段未通过',insufficient:'证据不足',unverified_manual:'正文有修改，可人工审阅或核验',legacy:'历史内容未核验',structure:'固定结构，需人工核对'}[v.value.state]||'尚未完成核验'))
+const v=computed(()=>props.section.verification||{}),qualityLabel=computed(()=>['fixed','container'].includes(props.kind)?'固定结构，需人工核对':({verified:'事实依据核验通过',partial:'生成时部分句段未通过',insufficient:'证据不足',unverified_manual:'正文有修改，可人工审阅或核验',synthesized:'基于证据综合生成（未逐句核验）',legacy:'历史内容未核验',structure:'固定结构，需人工核对'}[v.value.state]||'尚未完成核验'))
 const evidenceRisk=computed(()=>!['fixed','container'].includes(props.kind)&&v.value.state!=='verified'&&!(v.value.state==='partial'&&v.value.publishable))
 async function review(){if(evidenceRisk.value&&!await confirmAction('本节缺少证据或尚未通过核验。确认后可按人工审阅放行，保留现有内容或待补充标记并用于正式版本；模型核验结果不变。',{title:'审阅并接受证据风险？',okText:'确认审阅放行'}))return;await action(`/api/reports/${props.reportId}/sections/${props.section.id}/review`)}
 const authorRoot=ref(null),highlight=ref('')

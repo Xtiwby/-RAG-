@@ -6,15 +6,29 @@
 """
 import json
 import pytest
+from test_api import (
+    admin as admin_headers,
+    application_lifespan,
+    client as api_client,
+    create_member,
+    kb,
+    store as app_store,
+)
 
-LIFECYCLE_TRANSITIONS = {
-    'draft':     {'published', 'disabled', 'deleted'},
-    'published': {'disabled', 'deleted'},
-    'disabled':  {'published', 'deleted'},
-    'deleted':   set(),
-}
+@pytest.fixture
+def client():
+    return api_client
 
 
+@pytest.fixture
+def store():
+    return app_store
+
+
+@pytest.fixture
+def member_headers(admin_headers):
+    _, headers = create_member(admin_headers)
+    return headers
 
 def _make_template(store, *, name='测试模板', version='v1.0', lifecycle='draft',
                    family_id=None, parent_id=None, kb_ids=None):
@@ -70,9 +84,7 @@ def test_draft_to_published_ok(client, admin_headers, store):
 
 
 def test_published_cannot_revert_to_draft(client, admin_headers, store):
-    """2. published -> draft 必须 409（核心不变量：发布后不可回草稿）。
-    参数化覆盖所有非法转移，避免只测一条漏掉别的。
-    """
+    """禁止发布后回草稿，以及通过 PATCH 绕过删除和恢复入口。"""
     illegal = [
         ('published', 'draft'),
         ('disabled', 'draft'),
@@ -85,7 +97,8 @@ def test_published_cannot_revert_to_draft(client, admin_headers, store):
     for current, target in illegal:
         tid = _make_template(store, lifecycle=current, version=f'v-{current}-{target}')
         r = _patch_lifecycle(client, tid, target, admin_headers)
-        assert r.status_code == 409, (
+        expected_status = 422 if target == 'deleted' else 409
+        assert r.status_code == expected_status, (
             f'{current} -> {target} 应被拒绝，实际 {r.status_code}: {r.text}')
         # 状态不能被错误地改掉
         assert _get_lifecycle(store, tid) == current
@@ -164,11 +177,9 @@ def test_report_preflight_rejects_non_published_template(client, admin_headers, 
     """9. 与报告模块的接口契约：
        - disabled / draft 模板调 /api/reports/preflight 返回 409
        - deleted 模板返回 404
-       - published 模板通过模板校验（不要求检索成功，只验证不被 lifecycle 拦）
+       - published 模板可完成预检
     """
-    kb_id = store.execute(
-        '''INSERT INTO knowledge_bases(name, created_at, status)
-           VALUES (?,?,?)''', ('生命周期测试KB', store.now(), 'active'))
+    kb_id = kb(admin_headers, '生命周期测试KB')
     tid_pub = _make_template(store, lifecycle='published', kb_ids=[kb_id])
 
     def body(template_id):
@@ -177,15 +188,15 @@ def test_report_preflight_rejects_non_published_template(client, admin_headers, 
             'template_id': template_id,
             'knowledge_base_id': kb_id,
             'requirements': '',
-            'period_start': None,
-            'period_end': None,
+            'period_start': '',
+            'period_end': '',
             'field_values': {},
             'allow_missing': True,
         }
 
     r_pub = client.post('/api/reports/preflight', json=body(tid_pub),
                         headers=admin_headers)
-    assert r_pub.status_code in (200, 422), (
+    assert r_pub.status_code == 200, (
         f'published 模板不应因 lifecycle 被拒，实际 {r_pub.status_code}: {r_pub.text}')
 
     tid_dis = _make_template(store, lifecycle='disabled', kb_ids=[kb_id])

@@ -87,6 +87,7 @@ def install(app,auth,require,check_kb,document,ReportBody,source_lines):
         return {'blueprint':plan.model_dump()}
 
     def report_record(body,user,plan,job_id=None,connection=None,template_snapshot=None):
+        template_snapshot={**(template_snapshot or {}),'generation_mode':body.generation_mode}
         values=(body.title,body.template_id,body.knowledge_base_id,'queued',0,s.now(),user['id'],plan.model_dump_json(),job_id,body.requirements,body.workflow_version,json.dumps(template_snapshot or {},ensure_ascii=False),json.dumps(body.field_values,ensure_ascii=False),body.period_start,body.period_end)
         sql='''INSERT INTO report_tasks(title,template_id,knowledge_base_id,status,progress,created_at,user_id,blueprint,job_id,requirements,workflow_version,template_snapshot,field_values,period_start,period_end)
                VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'''
@@ -119,14 +120,16 @@ def install(app,auth,require,check_kb,document,ReportBody,source_lines):
             scoped=report_retrieval.scoped_requirements(body.requirements,section.title,hint)
             focus=f'{section.title}。{hint}。{section.instructions}'
             instructions=f'仅撰写报告《{body.title}》中的“{section.title}”正文，不重复报告和章节标题。本节定位：{hint}。本章要求：{section.instructions}。目标约 {section.target_words} 字。通用写作要求：{scoped}。只写本节对应的题目，其他章节的重点要求不得写入本节。每个事实句末必须有本轮证据引用，不编造项目进展。'
-            if body.workflow_version:
+            if body.workflow_version or body.generation_mode=='synthesis':
                 from . import report_workflow
-                s.execute("UPDATE report_sections SET stage='生成与独立核验' WHERE id=?",(sid,))
+                s.execute('UPDATE report_sections SET stage=? WHERE id=?',('基于证据综合生成' if body.generation_mode=='synthesis' else '生成与独立核验',sid))
                 if section.kind in ('fixed','container'):
                     content=section.fixed_content if section.kind=='fixed' else '';verification=report_grounding.record(content,[],'structure',evidence=[])
                 else:
                     instructions+=f'报告业务日期范围：{body.period_start} 至 {body.period_end}；只用来源明确支持的该期间事实，不将文档上传时间当作业务日期。业务字段：'+json.dumps(body.field_values,ensure_ascii=False)
-                    content,verification=await report_workflow.generate_section(instructions,evidence,lambda:fresh_job_user(row),section.kind,coverage_question=focus)
+                    if body.generation_mode=='synthesis':
+                        instructions=f'报告《{body.title}》；本节：{section.title}；本节定位：{hint}；本章要求：{section.instructions}；目标约{section.target_words}字；通用要求：{scoped}；业务期间：{body.period_start} 至 {body.period_end}；业务字段：'+json.dumps(body.field_values,ensure_ascii=False)
+                    content,verification=await report_workflow.generate_section(instructions,evidence,lambda:fresh_job_user(row),section.kind,coverage_question=focus,generation_mode=body.generation_mode)
                 jobs.emit(row['id'],'verification',section_id=sid,checks=verification['checks'])
                 jobs.emit(row['id'],'token',content=content)
             else:
@@ -189,6 +192,7 @@ def install(app,auth,require,check_kb,document,ReportBody,source_lines):
             from . import report_workflow
             preflight=report_workflow.use_preflight(body,template,user)
             snapshot=report_workflow.template_snapshot(template)
+        snapshot['generation_mode']=body.generation_mode
         with s.connect() as c:
             c.execute('BEGIN IMMEDIATE')
             current=dict(c.execute('SELECT * FROM report_templates WHERE id=?',(body.template_id,)).fetchone())

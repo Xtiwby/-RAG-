@@ -73,6 +73,10 @@ def nodes(report,sections,kb_name='',draft=True,diagnostics=False):
     result=[paragraph(report['title'],1)]
     if draft:result.append(paragraph('草稿：仅供编辑和审阅，不代表已定稿。未核验或未解决内容请勿作为正式结论。'))
     from . import report_grounding
+    if report_grounding.generation_mode(report)=='synthesis':
+        result.append(paragraph('生成模式：基于证据综合生成。正文由Kimi结合RAG资料撰写，可含明确标注的分析、方案及建议，未执行逐句事实核验，请人工审阅。'))
+    else:
+        result.append(paragraph('生成模式：严格事实证据。生成正文执行逐句证据核验，仍需人工审阅。'))
     risks=[]
     for i,section in enumerate(sections):
         spec=plan.sections[i] if i<len(plan.sections) else None

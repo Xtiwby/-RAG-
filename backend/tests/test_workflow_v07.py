@@ -200,7 +200,7 @@ def test_template_delete_permissions_trash_and_restore(admin,monkeypatch):
     assert client.get(f'/api/templates/{tid}/structure',headers=admin).status_code==403
     assert client.post('/api/reports/preflight',headers=admin,json=params).status_code==404
     assert client.post('/api/report-tasks',headers=admin,json={**params,'workflow_version':0}).status_code==403
-    assert client.patch(f'/api/report-templates/{tid}/lifecycle?state=published',headers=admin).status_code==404
+    assert client.patch(f'/api/report-templates/{tid}/lifecycle?state=published',headers=admin).status_code==409
     assert client.post('/api/report-templates',headers=admin,json={'blueprint':template['blueprint'],'parent_id':tid}).status_code==409
     assert client.post(f'/api/report-templates/{tid}/restore',headers=admin).status_code==200
     assert store.one('SELECT lifecycle FROM report_templates WHERE id=?',(tid,))['lifecycle']=='disabled'

@@ -124,6 +124,7 @@ def install(app,auth,require,check_kb,report_task,source_lines):
             payload={'report_id':tid,'section_id':sid,'knowledge_base_id':report['knowledge_base_id'],'expected_revision':section['revision'],
                      'instructions':body.instructions,'title':report['title'],'requirements':report['requirements'],'section':spec,'purpose':plan.purpose if plan else '', 'mode':mode,'preview':body.preview,'workflow_version':report['workflow_version'] or int(body.preview),'period_start':report['period_start'],'period_end':report['period_end'],
                       'template_structure':json.loads(report['template_snapshot'] or '{}').get('structure','')}
+            payload['generation_mode']=report_grounding.generation_mode(report)
             if mode=='generate' and report['job_id']:
                 original=c.execute('SELECT payload FROM jobs WHERE id=?',(report['job_id'],)).fetchone()
                 if original:
@@ -178,9 +179,11 @@ def install(app,auth,require,check_kb,report_task,source_lines):
             scoped=report_retrieval.scoped_requirements(payload['requirements'],payload['section']['title'],hint)
             focus=f"{payload['section']['title']}。{hint}。{payload['section']['instructions']}。{payload['instructions']}"
             instruction=f"仅重新撰写报告《{payload['title']}》的“{payload['section']['title']}”一节，不输出其他章节。本节定位：{hint}；本章要求：{payload['section']['instructions']}；目标约{payload['section']['target_words']}字；通用要求：{scoped}；本次要求：{payload['instructions']}。只写本节对应题目，每个事实句末必须引用本轮证据，不编造进展。"
-            if payload.get('workflow_version'):
+            if payload.get('workflow_version') or payload.get('generation_mode')=='synthesis':
                 from .report_workflow import generate_section
-                content,verification=await generate_section(instruction+f" 业务期间：{payload.get('period_start','')} 至 {payload.get('period_end','')}。",evidence,fresh,payload['section'].get('kind','fact'),coverage_question=focus)
+                if payload.get('generation_mode')=='synthesis':
+                    instruction=f"重新撰写报告《{payload['title']}》的“{payload['section']['title']}”一节。本节定位：{hint}；本章要求：{payload['section']['instructions']}；目标约{payload['section']['target_words']}字；通用要求：{scoped}；本次要求：{payload['instructions']}"
+                content,verification=await generate_section(instruction+f" 业务期间：{payload.get('period_start','')} 至 {payload.get('period_end','')}。",evidence,fresh,payload['section'].get('kind','fact'),coverage_question=focus,generation_mode=payload.get('generation_mode','strict'))
             else:
                 async for item in report_grounding.generate(instruction,evidence,fresh):
                     if item['type']=='result':content=item['content'];verification=item['verification']

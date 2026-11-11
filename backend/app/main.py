@@ -227,6 +227,7 @@ class TemplateBody(BaseModel):
     blueprint: blueprints.ReportBlueprint|None = None
 
 class ReportBody(BaseModel):
+    generation_mode:Literal['strict','synthesis']='strict'
     title: str = Field(min_length=1,max_length=100)
     template_id: int
     knowledge_base_id: int

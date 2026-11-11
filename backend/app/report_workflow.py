@@ -96,6 +96,7 @@ def signature(body,template):
     value['reranking']=settings.get().reranking.model_dump()
     value['answer_quality']=settings.get().answer_quality.model_dump()
     value['retrieval_policy']=report_retrieval.POLICY
+    value['generation_mode']=body.generation_mode
     return hashlib.sha256(json.dumps(value,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
 
 def use_preflight(body,template,user):
@@ -159,8 +160,10 @@ def snapshot_report(report,sections,kb_name,decision=None):
     return {'report':report,'sections':sections,'knowledge_base_name':kb_name,
             'nodes':report_layout.nodes(report,sections,kb_name,draft=False),'decision':decision or {}}
 
-async def generate_section(instruction,evidence,authorize,kind='fact',coverage_question=None):
+async def generate_section(instruction,evidence,authorize,kind='fact',coverage_question=None,generation_mode='strict'):
     if kind in ('fixed','container'):raise ValueError('固定结构不得调用生成模型')
+    if generation_mode=='synthesis':return await g.generate_synthesis(instruction,evidence,authorize)
+    if generation_mode!='strict':raise ValueError('未知的报告生成模式')
     content='';checks=[];count=0
     if evidence:
         extra={'fact':'只写连续事实句，不输出标题、编号或列表标记；每句末尾引用证据。','analysis':'仅给出有证据基础的分析，明确是推断，不冒充已发生事实，每句末尾引用依据。','recommendation':'仅提出有证据基础的建议，不冒充已经实施的事实，每句末尾引用依据。'}[kind]
@@ -201,6 +204,7 @@ def install(app,auth,require,check_kb,report_task,ReportBody,source_lines):
         return row
     def detail(tid,user):
         report=canonical(report_task(user,tid))
+        report['generation_mode']=g.generation_mode(report)
         sections=s.rows('SELECT * FROM report_sections WHERE task_id=? ORDER BY ordinal',(tid,))
         report['quality']=quality(report,sections)
         report['sections']=[{**section,'citations':decoded(section['citations'],[]),'verification':g.current(section)} for section in sections]
