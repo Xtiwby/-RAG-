@@ -108,7 +108,7 @@ def original_capture(document, chunk, presentation_pdf):
         if page and file_type in presentation_preview.POWERPOINT_TYPES:
             if path := presentation_pdf(document['id']):
                 return pdf_capture(path, page, chunk['text'], presentation=True)
-        if file_type in {'png', 'jpg', 'jpeg', 'webp'}:
+        if file_type in {'png', 'jpg', 'jpeg', 'webp', 'bmp', 'tif', 'tiff', 'gif'}:
             with object_storage.local_path(document) as path, Image.open(path) as original:
                 image = ImageOps.exif_transpose(original)
                 image.thumbnail((1800, 1800))

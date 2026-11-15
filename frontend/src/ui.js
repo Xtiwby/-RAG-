@@ -11,7 +11,7 @@ export function requestText(title, initial='', {maxLength=100}={}) {
     content:h('input',{class:'input',value,maxlength:maxLength,'aria-label':title,onInput:e=>{value=e.target.value},onVnodeMounted:vnode=>vnode.el?.focus()}),
     onOk:()=>{if(!value.trim()){message.warning('内容不能为空');return Promise.reject(new Error('empty'))}resolve(value.trim())},onCancel:()=>{resolve(null)}}))
 }
-export const statusNames={needs_extraction:'待视觉解析',ready:'已就绪',active:'启用',disabled:'已停用',archived:'已归档',deleted:'已删除',queued:'等待处理',running:'处理中',generating:'生成中',uploading:'上传中',processing:'处理中',processing_failed:'处理失败',parse_failed:'解析失败',failed:'失败',interrupted:'已中断',cancelled:'已取消',draft:'草稿',in_review:'待审阅',finalized:'已定稿',completed:'已完成',needs_review:'待审阅',success:'成功',failure:'失败',denied:'拒绝访问',unknown:'结果未知',legacy:'历史记录',text:'文本',image:'图片',table:'表格',hybrid:'混合检索',vector:'向量检索',keyword:'关键词检索'}
+export const statusNames={needs_extraction:'待视觉解析',ready:'已就绪',active:'启用',disabled:'已停用',archived:'已归档',deleted:'已删除',queued:'等待处理',running:'处理中',generating:'生成中',uploading:'上传中',processing:'处理中',processing_failed:'处理失败',parse_failed:'解析失败',failed:'失败',interrupted:'已中断',cancelled:'已取消',draft:'草稿',in_review:'待审阅',finalized:'已定稿',completed:'已完成',needs_review:'待审阅',success:'成功',failure:'失败',denied:'拒绝访问',unknown:'结果未知',legacy:'历史记录',text:'文本',image:'图片',table:'表格',audio:'语音',video:'视频',hybrid:'混合检索',vector:'向量检索',keyword:'关键词检索'}
 export const labelOf=value=>statusNames[value]||value||'—'
 export const dateTime=value=>value?new Date(value).toLocaleString('zh-CN',{hour12:false}):'—'
 export const fileSize=value=>value>=1048576?`${(value/1048576).toFixed(1)} MB`:`${Math.max(1,Math.round(value/1024))} KB`

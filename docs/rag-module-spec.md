@@ -49,24 +49,30 @@
 ```mermaid
 flowchart LR
     U["选择知识库和文件"] --> A["校验权限、格式与大小"]
+    D["数据源配置快照"] --> A
     A --> S["保存原件与 SHA-256"]
     S --> J["创建 ingest 任务"]
     J --> P["解析为文本单元"]
-    P -->|"无可用文本"| V["待视觉解析"]
-    P -->|"有可用文本"| C["按单元内滑窗切分"]
+    P -->|"图片"| O["视觉模型或本地 OCR"]
+    P -->|"音频/视频"| T["ffmpeg 音轨 + 语音转写"]
+    P -->|"无可用文本"| V["待补全解析"]
+    O --> C["按单元内滑窗切分"]
+    T --> C
+    P -->|"有可用文本"| C
     C --> E["本地模式计算或复用向量"]
     E --> I["事务写入片段和索引"]
     I --> R["ready"]
 ```
 
-1. **接收与保存。** 上传为 multipart 表单。后端检查库状态、维护权限、扩展名和大小，分块读取并计算原件哈希。在同一知识库内，同名上传创建独立文档版本。原件可落到本地目录，或保存到 S3 兼容对象存储。API 返回 `201` 表示已接收，客户端通过处理状态接口确认最终结果。
+1. **接收与保存。** 上传为 multipart 表单。后端检查库状态、维护权限、扩展名和大小，分块读取并计算原件哈希。在同一知识库内，同名上传创建独立文档版本。原件可落到本地目录，或保存到 S3 兼容对象存储。API 返回 `201` 表示已接收，客户端通过处理状态接口确认最终结果。数据源导入走同一入口，只把请求体换成 `POST /api/data-sources/import`。
 2. **调度与状态。** `embedded` 模式在 API 进程内运行任务循环，`external` 模式由独立 worker 执行。上传后记录 `parse: queued`，随后依次进入 `parse`、`chunk`、`index`。解析与切分放在线程中执行。解析错误为 `parse_failed`，切分或索引出错可进入 `processing_failed`。任务重试沿用提交时的参数，新增尝试事件。
-3. **按格式解析。** `parse_local()` 输出 `{page, section, text}` 单元。PDF 用 `pypdf` 按页提取文本层。DOCX 读取压缩包中的 XML 段落和标题样式。XLSX 用 `openpyxl` 只读遍历工作表行。PPT/PPTX 提取幻灯片文本。TXT、MD、CSV、HTML 先解码再分段，HTML 会去掉标签并解码实体。图片的普通解析返回空文本，可在有维护权时调用视觉接口。
+3. **按格式解析。** `parse_local()` 输出 `{page, section, text}` 单元。PDF 用 `pypdf` 按页提取文本层。DOCX 读取压缩包中的 XML 段落和标题样式。XLSX 用 `openpyxl` 只读遍历工作表行。PPT/PPTX 提取幻灯片文本。旧版 `.doc`/`.xls` 先用 LibreOffice 转为 `.docx`/`.xlsx` 再解析。TXT、MD、CSV 先解码再分段。HTML 走 `html_text.py`：丢弃 `script`/`style` 子树，标题成为章节名，表格行按 ` | ` 拼接，列表逐条成段，`img@alt` 保留，编码按 `<meta charset>`、UTF-8、GB18030 依次回退。JSON 按 `key: value` 展平。图片的普通解析返回空文本，可在有维护权时调用视觉接口；BMP、TIFF、GIF 会先转成 PNG 再送 OCR。音频和视频在配置了转写服务时进入 `media.py`：视频先用 ffmpeg 抽出 16 kHz 单声道音轨，再按 ASR 返回的分段生成 `00:01:23 – 00:02:10` 形式的章节名；未配置时状态为 `needs_extraction`，等待手动「开始语音转写」。
+8. **数据源接入。** 数据源由部署方在 `RAG_DATA_SOURCES_FILE` 指向的 JSON 中维护，凭据可用 `url_env`/`dsn_env`/`auth_env` 只写环境变量名。支持五类：网页（HTML）、API（JSON/CSV/文本）、对象存储（HTTP 或 `s3://bucket/key`）、企业网盘（WebDAV/分享链接 HTTP）、数据库（SQLite 只读或 PG 只读事务，结果转 CSV）。导入时下载到临时文件、计算 SHA-256、落对象存储，再创建 `ingest` 任务；单文件上限 100MB，不跟随重定向，配置错误返回 `503`，上游失败返回 `502`。
 4. **切分与定位。** `prepare_index()` 在每个单元内按字符切分。默认长度 800 字符，重叠 150 字符，步长 650。每片保存序号、页码、章节、文本、`char_start`、`char_end` 和片段 SHA-256。字符区间为文档结构化正文中的半开区间。页和段落之间保留单元边界。
 5. **向量与写库。** 使用本地 BGE-M3 时，`cache_local_embeddings()` 在索引提交前批量计算缺失向量。缓存以模型命名空间与片段文本哈希为键。API 模式在语义检索时生成查询向量及未缓存的片段向量。TF-IDF 模式在检索时计算词项匹配。
 6. **更新与追溯。** 重新切分和视觉解析会生成新文档版本。移除文档设置逻辑删除标记，保留原件和历史引用。当前工作区以同库同名的最新未移除 `ready` 版本参与新检索，因此正在处理或失败的新版本不会挡住上一可用版本。
 
-支持的上传扩展名为 `.pdf`、`.docx`、`.txt`、`.md`、`.csv`、`.xlsx`、`.html`、`.ppt`、`.pptx`、`.png`、`.jpg`、`.jpeg`、`.webp`。
+支持的上传扩展名为 `.pdf`、`.docx`、`.doc`、`.txt`、`.md`、`.csv`、`.json`、`.xlsx`、`.xls`、`.html`、`.htm`、`.ppt`、`.pptx`、`.png`、`.jpg`、`.jpeg`、`.webp`、`.bmp`、`.tif`、`.tiff`、`.gif`、`.mp3`、`.m4a`、`.wav`、`.ogg`、`.flac`、`.aac`、`.mp4`、`.mov`、`.mkv`、`.webm`、`.avi`。单文件上限 100MB。
 
 ### 2.3 检索
 
@@ -79,7 +85,7 @@ flowchart LR
 
 | 表或存储 | 主键或关联 | 保存内容 |
 | --- | --- | --- |
-| `documents` | `id`，属于 `knowledge_base_id` | 原件位置与哈希、版本、结构化正文、处理状态、索引参数快照、逻辑删除标记 |
+| `documents` | `id`，属于 `knowledge_base_id` | 原件位置与哈希、版本、结构化正文、处理状态、索引参数快照、逻辑删除标记、`media_meta`（时长/转写模型/抽帧数）、`source_ref`（数据源标识） |
 | `chunks` | `id`，`(document_id, ordinal)` 唯一 | 片段正文、页码、章节、字符区间和 SHA-256 |
 | `embedding_cache` | `(namespace, sha256)` | 片段向量。本地命名空间区分模型、模型提交、池化方式和输入上限 |
 | `chunk_search` | `chunk_id`，仅 PostgreSQL | 关键词词项、全文检索列、语言特征、可空的 1,024 维向量 |
@@ -99,6 +105,9 @@ flowchart LR
 | `retrieval.rerank` / `cross_language` | 开启 / 关闭 | 本地模型重排和查询改写可引入额外调用 |
 | `queue.concurrency` / `max_attempts` | 2 / 3 | 控制后台并发和单任务尝试上限。本地 Embedding 和重排仍共用推理锁 |
 | `answer_quality.enabled` / `answer_quality.context_neighbors` | 关闭 / 0 | 启用且邻接片段数大于 0 时，检索可附加同版本的相邻原文并单独标记 |
+| `asr.provider` / `asr.timeout_seconds` | `disabled`（无环境配置时）/ 300 秒 | 开启后每个音视频一次转写调用；超长文件按 `media.max_duration_seconds` 拒绝 |
+| `ocr.provider` | `vision` | `local` 需要额外安装 `rapidocr-onnxruntime`，首次加载模型较慢 |
+| `media.auto_transcribe` / `media.frame_ocr` | 开启 / 关闭 | 自动转写让上传即入库；帧 OCR 每帧一次视觉调用，费用随帧数增长 |
 
 ## 3. 接口定义
 
@@ -114,6 +123,10 @@ flowchart LR
 | `GET /api/documents/{did}/processing` | 路径 `did` | `200 {document_id,status,progress,stages,events,job,error}` | 文档读取权限。事件包含阶段、状态、尝试次数和时间 |
 | `GET /api/documents/{did}/original` | 路径 `did`，可选 `Range` 请求头 | 原文件 `200`，范围请求可返回 `206` | 文档读取权限，缺少原件返回 `404` |
 | `POST /api/documents/{did}/extract-vision` | 路径 `did` | `200` 新文档版本记录 | 文档维护权限、原图片可读、视觉模型可用 |
+| `POST /api/documents/{did}/vision-processing` | 路径 `did` | `202 {document_id,job_id}` | 图片维护权限、原图可读、`ocr.provider=vision` 时视觉模型须可用；重复提交 `409` |
+| `POST /api/documents/{did}/transcribe` | 路径 `did` | `202 {document_id,job_id}` | 音视频维护权限；转写服务未配置返回 `503`，重复提交 `409` |
+| `GET /api/data-sources` | `knowledge_base_id` | `200 [{id,label,kind}]` | 知识库读取权限；配置缺失或损坏返回 `503`，不返回 URL 与凭据 |
+| `POST /api/data-sources/import` | `{source_id,knowledge_base_id}` | `201` 文档记录，含 `id`、`version`、`status` | 目标库维护权限；跨库 `404`、扩展名不符 `422`、超过 100MB `413`、上游或重定向 `502` |
 | `DELETE /api/documents/{did}` | 路径 `did` | `200 {ok,message}` | 文档维护权限，逻辑移除 |
 
 ### 3.2 HTTP 检索

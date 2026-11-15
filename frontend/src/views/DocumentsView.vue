@@ -90,9 +90,9 @@ onUnmounted(()=>clearInterval(timer))
      <FileUp :size="24"/>
      <strong>{{file?file.name:'选择要上传的文件'}}</strong>
      <span>{{file?fileSize(file.size):'单个文件不超过100MB'}}</span>
-     <input type="file" aria-label="知识文件" accept=".pdf,.docx,.txt,.md,.csv,.xlsx,.html,.ppt,.pptx,.png,.jpg,.jpeg,.webp" :disabled="uploading" @change="selectFile"/>
+     <input type="file" aria-label="知识文件" accept=".pdf,.docx,.doc,.txt,.md,.csv,.json,.xlsx,.xls,.html,.htm,.ppt,.pptx,.png,.jpg,.jpeg,.webp,.bmp,.tif,.tiff,.gif,.mp3,.m4a,.wav,.ogg,.flac,.aac,.mp4,.mov,.mkv,.webm,.avi" :disabled="uploading" @change="selectFile"/>
     </label>
-    <details v-if="progress===null" class="muted"><summary>支持哪些格式？</summary><p>PDF、Word DOCX、TXT、Markdown、CSV、Excel、HTML、PPT/PPTX及图片。幻灯片中的图片需另行视觉解析，不执行宏。</p></details>
+    <details v-if="progress===null" class="muted"><summary>支持哪些格式？</summary><p>PDF、Word（DOCX/DOC）、TXT、Markdown、CSV、JSON、Excel（XLSX/XLS）、HTML、PPT/PPTX、图片、语音（MP3/M4A/WAV/OGG/FLAC/AAC）与视频（MP4/MOV/MKV/WEBM/AVI）。旧版 DOC/XLS 需要服务器安装 LibreOffice；图片需「开始视觉解析」，语音和视频需配置转写服务后自动转写。幻灯片中的图片需另行视觉解析，不执行宏。</p></details>
    </form>
    <dl v-if="tracking" class="document-summary">
     <div><dt>目标知识库</dt><dd>{{tracking.knowledge_base_name}}</dd></div>

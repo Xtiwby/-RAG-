@@ -6,15 +6,22 @@ const props = defineProps({
   documentId: { type: Number, required: true },
   fileType: { type: String, required: true },
   page: { type: Number, default: 1 },
+  startSeconds: { type: Number, default: 0 },
 })
 const mediaTypes = {
   pdf: 'application/pdf', png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', webp: 'image/webp',
+  bmp: 'image/bmp', tif: 'image/tiff', tiff: 'image/tiff', gif: 'image/gif',
+  mp3: 'audio/mpeg', m4a: 'audio/mp4', wav: 'audio/wav', ogg: 'audio/ogg', flac: 'audio/flac', aac: 'audio/aac',
+  mp4: 'video/mp4', mov: 'video/quicktime', mkv: 'video/x-matroska', webm: 'video/webm', avi: 'video/x-msvideo',
 }
 const isImage = mediaTypes[props.fileType]?.startsWith('image/')
 const isPresentation = ['ppt', 'pptx'].includes(props.fileType)
 const mediaType = isPresentation ? 'application/pdf' : mediaTypes[props.fileType]
-const isWeb = ['md', 'html'].includes(props.fileType)
-const supported = Boolean(mediaType || isWeb || ['txt', 'csv'].includes(props.fileType))
+const isAudio = Boolean(mediaType?.startsWith('audio/'))
+const isVideo = Boolean(mediaType?.startsWith('video/'))
+const isMedia = isAudio || isVideo
+const isWeb = ['md', 'html', 'htm'].includes(props.fileType)
+const supported = Boolean(mediaType || isWeb || ['txt', 'csv', 'json'].includes(props.fileType))
 const loading = ref(false)
 const error = ref('')
 const url = ref('')
@@ -62,6 +69,13 @@ async function load() {
   }
 }
 
+function seek(event) {
+  // Citations carry a timestamp section such as 00:01:23 – 00:02:10.
+  if (props.startSeconds > 0 && event.target.duration) {
+    event.target.currentTime = Math.min(props.startSeconds, Math.max(0, event.target.duration - 1))
+  }
+}
+
 function decodeText(bytes) {
   try {
     return new TextDecoder('utf-8', { fatal: true }).decode(bytes)
@@ -102,9 +116,11 @@ function isolatedPage(html, markdown) {
     </div>
     <template v-else-if="url">
       <div class="preview-actions">
-        <a :href="isImage ? url : url+'#page='+page" target="_blank" rel="noopener noreferrer" class="secondary-button">在新标签页打开</a>
+        <a :href="isImage||isMedia ? url : url+'#page='+page" target="_blank" rel="noopener noreferrer" class="secondary-button">在新标签页打开</a>
       </div>
-      <img v-if="isImage" :src="url" alt="文档原图" @error="error='无法显示原图，请下载原文件查看。'"/>
+      <video v-if="isVideo" :src="url" controls preload="metadata" @loadedmetadata="seek"/>
+      <audio v-else-if="isAudio" :src="url" controls preload="metadata" @loadedmetadata="seek"/>
+      <img v-else-if="isImage" :src="url" alt="文档原图" @error="error='无法显示原图，请下载原文件查看。'"/>
       <iframe v-else :src="url+'#page='+page" :title="isPresentation ? '幻灯片预览' : 'PDF 原文件'"/>
     </template>
     <iframe v-else-if="isWeb" :srcdoc="web" sandbox="" referrerpolicy="no-referrer" title="原文排版预览"/>
@@ -118,5 +134,7 @@ function isolatedPage(html, markdown) {
 .preview-actions { display: flex; justify-content: flex-end; padding: 10px 14px; border-bottom: 1px solid var(--border); }
 .original-preview iframe { display: block; width: 100%; height: max(400px, 72vh); border: 0; }
 .original-preview img { display: block; max-width: 100%; max-height: 80vh; height: auto; margin: 0 auto; }
+.original-preview video { display: block; width: 100%; max-height: 76vh; background: #0b1220; }
+.original-preview audio { display: block; width: 100%; padding: 18px; }
 .original-text { margin: 0; padding: 22px; max-height: 72vh; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.75; }
 </style>

@@ -2,7 +2,7 @@
 
 知源 RAG 是一个面向课程实践和内部知识管理场景的多模态知识库系统。系统以 Vue 3 和 FastAPI 为应用框架，使用 PostgreSQL、pgvector、MinIO 和独立 worker 构成服务端工程骨架，通过本地 BGE 模型完成语义向量与重排，并调用 Kimi 完成受证据约束的问答、事实核验和报告生成。
 
-当前版本：`v0.11.0`
+当前版本：`v0.12.0`
 
 > 本仓库不包含模型权重、运行数据库、对象存储数据、虚拟环境、前端依赖或 API 密钥。
 
@@ -11,7 +11,12 @@
 ### 知识库与多模态接入
 
 - 创建、编辑、停用和归档知识库，支持按用户授予读取或维护权限。
-- 接入 PDF、DOCX、TXT、Markdown、HTML、CSV、Excel、PPT、PPTX 和图片。
+- 接入 PDF、DOCX、DOC、TXT、Markdown、HTML、CSV、JSON、Excel、XLS、PPT、PPTX、图片、语音和视频。
+- 旧版 DOC/XLS 先经 LibreOffice 转为现代格式再解析；转换失败给出可读原因。
+- HTML 按结构解析：脚本与样式被丢弃，标题成为章节，表格按行拼接，图片保留说明文字，编码自动回退。
+- 图片支持 PNG、JPEG、WebP、BMP、TIFF、GIF，视觉模型 OCR 与本地 RapidOCR 可切换。
+- 语音支持 MP3、M4A、WAV、OGG、FLAC、AAC；视频支持 MP4、MOV、MKV、WEBM、AVI，先用 ffmpeg 抽音轨再转写，按时间段生成章节。
+- 网页、API、对象存储、企业网盘和数据库快照可由部署方配置后导入，导入与上传共用处理链路。
 - 文档按照“上传、解析、切分、索引”四个阶段处理，保存阶段进度、事件和失败原因。
 - 保存原文件、结构化文本、页码或章节、片段、SHA-256 和文档版本。
 - 引用可定位至相应文档版本、原文片段和上下文。
@@ -119,6 +124,10 @@ flowchart LR
 │  │  ├─ object_storage.py       本地目录和 S3/MinIO 存储抽象
 │  │  ├─ search_index.py         GIN 与 pgvector 索引读写
 │  │  ├─ rag.py                  文档处理和混合检索
+│  │  ├─ html_text.py            结构化 HTML 抽取
+│  │  ├─ media.py                音视频探测、抽音轨与语音转写
+│  │  ├─ ocr.py                  图片规范化与 OCR 提供方
+│  │  ├─ data_sources.py         数据源配置、快照下载与导入
 │  │  ├─ local_models.py         本地 BGE 推理
 │  │  ├─ grounding.py            问答逐句证据校验
 │  │  ├─ template_docx.py        DOCX 模板结构解析
@@ -204,6 +213,16 @@ RAG_S3_REGION=us-east-1
 RAG_S3_BUCKET=rag-originals
 RAG_S3_ACCESS_KEY=rag-local-dev
 RAG_S3_SECRET_KEY=change-me-local
+
+# 语音/视频转写（OpenAI 兼容 /audio/transcriptions），不配置则保留手动入口
+RAG_ASR_BASE_URL=
+RAG_ASR_MODEL=
+RAG_ASR_API_KEY=
+
+# 可选：数据源配置文件、OCR 引擎、ffmpeg 路径
+RAG_DATA_SOURCES_FILE=
+RAG_OCR_PROVIDER=vision
+RAG_FFMPEG_PATH=
 ```
 
 不要提交 `backend/.env`。前端不会读取或返回模型密钥。
@@ -241,7 +260,9 @@ RAG_S3_SECRET_KEY=change-me-local
 
 如果没有启动 worker，上传、索引和报告任务会保持排队。
 
-文档管理的 PPT/PPTX 原文预览由后端使用 LibreOffice 生成静态幻灯片。请在运行后端的机器上安装 [LibreOffice](https://www.libreoffice.org/download/)。如果安装在自定义位置，可在 `backend/.env` 中用 `RAG_SOFFICE_PATH` 指定 `soffice`（Windows 上为 `soffice.com`）的完整路径。页面上的「下载原文件」仍可获取 PowerPoint 原件。
+文档管理的 PPT/PPTX 原文预览由后端使用 LibreOffice 生成静态幻灯片。请在运行后端的机器上安装 [LibreOffice](https://www.libreoffice.org/download/)。如果安装在自定义位置，可在 `backend/.env` 中用 `RAG_SOFFICE_PATH` 指定 `soffice`（Windows 上为 `soffice.com`）的完整路径。页面上的「下载原文件」仍可获取 PowerPoint 原件。旧版 `.doc`、`.xls` 的解析也复用同一个 LibreOffice，缺少时会返回可读的 422 而不是解析错误。
+
+视频转写需要本机安装 [ffmpeg](https://ffmpeg.org/download.html)（或设置 `RAG_FFMPEG_PATH`）；音频格式在不装 ffmpeg 时仍可由转写服务直接解码。语音与视频的转写服务地址、模型和密钥分别通过 `RAG_ASR_BASE_URL`、`RAG_ASR_MODEL`、`RAG_ASR_API_KEY` 配置，未配置时上传后会停在「待转写」。
 
 问答导出将 PDF 和幻灯片的原版页面渲染为图片，保留整页版式。引用文字有可靠坐标时会在原页标黄。没有可用原版页面的引用仅显示索引和缺页提示。
 
@@ -314,10 +335,11 @@ pnpm build
 
 - 模型核验可能误判，不能等同于绝对无幻觉保证，正式内容仍需人工审阅。
 - 当前只支持单个独立 worker，多 worker 需要进一步完善任务租约和故障恢复。
-- 扫描 PDF 和图片需要显式执行视觉解析；未解析图片不会进入问答证据池。
+- 扫描 PDF 和图片需要显式执行视觉解析；未解析图片不会进入问答证据池。扫描版 PDF 仍不提供逐页自动 OCR。
+- 语音和视频依赖外部转写服务；视频还需要本机安装 ffmpeg（可用 `RAG_FFMPEG_PATH` 指定）。转写按时间段定位，不提供原版页面级高亮。
+- 数据源只支持配置文件维护的单对象导入：对象存储不做前缀批量，网盘只支持 HTTP/WebDAV 直链，未接入 OAuth 授权流。
 - PDF 可定位到页和结构化片段，当前不提供版面坐标级像素高亮。
 - 复杂 DOCX 图形、动态目录、特殊域和完全一致的分页无法保证无损保留。
-- 网页、数据库、企业网盘等通用连接器尚未纳入当前版本。
 
 ## 项目文档
 
@@ -326,6 +348,8 @@ pnpm build
 - [软件系统设计文档](docs/基于RAG的知识库管理系统_软件系统设计文档_V1.0.docx)
 - [软件详细设计文档](docs/基于RAG的知识库管理系统_软件详细设计文档_V1.0.docx)
 - [存储与工作进程升级指南](docs/storage-upgrade.md)
+- [多模态与数据源接入记录](docs/multimodal-datasource-v012.md)
+- [0.12.0 单元测试与回归报告](docs/testing/v0.12-test-report.md)
 - [本地语义检索升级说明](docs/semantic-retrieval-v09.md)
 - [中英召回与报告分章检索记录](docs/retrieval-v08.md)
 - [第一轮质量改进记录](docs/quality-v010.md)
@@ -335,6 +359,7 @@ pnpm build
 
 | 版本 | 主要变化 |
 | --- | --- |
+| 0.12.0 | 语音与视频转写、HTML 结构化解析、图片 OCR 扩展、网页/API/对象存储/网盘/数据库数据源导入 |
 | 0.11.0 | PostgreSQL、pgvector、MinIO、独立 worker 和服务端检索索引 |
 | 0.10.0 | 原文定位、数字门禁、问题关键点检查和质量改进 |
 | 0.9.0 | 本地 BGE-M3 Embedding 与 BGE Reranker |

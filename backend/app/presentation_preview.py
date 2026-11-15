@@ -5,6 +5,7 @@ import shutil
 import signal
 import subprocess
 import tempfile
+from contextlib import contextmanager
 from pathlib import Path
 from threading import BoundedSemaphore
 
@@ -14,6 +15,7 @@ from . import object_storage
 
 
 POWERPOINT_TYPES = {'ppt', 'pptx'}
+LEGACY_OFFICE_TYPES = {'doc': 'docx', 'xls': 'xlsx'}
 _slots = BoundedSemaphore(2)
 _profile_settings = '''<?xml version="1.0" encoding="UTF-8"?>
 <oor:items xmlns:oor="http://openoffice.org/2001/registry">
@@ -41,6 +43,35 @@ def _soffice():
         return shutil.which('soffice.com') or shutil.which('soffice.exe')
 
     return shutil.which('soffice') or shutil.which('libreoffice')
+
+
+def _convert_office(executable, staged, target):
+    """Convert one staged legacy Office file; the caller verifies the output file."""
+    options = ({'creationflags': subprocess.CREATE_NO_WINDOW} if os.name == 'nt'
+               else {'start_new_session': True})
+    result = subprocess.run(
+        [executable, '--headless', '--norestore', '--convert-to', target,
+         '--outdir', str(staged.parent), str(staged)],
+        cwd=str(staged.parent), stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL, timeout=120, **options)
+    return result.returncode
+
+
+@contextmanager
+def legacy_office(path, suffix):
+    """Yield a converted modern Office file for a .doc or .xls original."""
+    target = LEGACY_OFFICE_TYPES[suffix]
+    executable = _soffice()
+    if not executable:
+        raise ValueError('旧版 Office 文件需要安装 LibreOffice，或在 backend/.env 设置 RAG_SOFFICE_PATH')
+    with tempfile.TemporaryDirectory(prefix='rag-legacy-') as folder:
+        staged = Path(folder) / ('original.' + suffix)
+        staged.write_bytes(Path(path).read_bytes())
+        code = _convert_office(executable, staged, target)
+        converted = staged.with_suffix('.' + target)
+        if code != 0 or not converted.is_file():
+            raise ValueError('旧版 Office 文件转换失败，请用 Office 另存为 ' + target + ' 后重新上传')
+        yield converted, target
 
 
 def _convert(command, workdir):

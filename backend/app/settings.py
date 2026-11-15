@@ -87,6 +87,37 @@ class AnswerQualitySettings(Strict):
     timeout_seconds: int = Field(default=45,ge=10,le=120)
     context_neighbors: int = Field(default=0,ge=0,le=6)
 
+class AsrSettings(Strict):
+    # The API key stays in RAG_ASR_API_KEY; only address and model are stored here.
+    provider: Literal['api','disabled'] = 'api'
+    base_url: str = ''
+    model: str = ''
+    language: str = Field(default='zh',max_length=20)
+    timeout_seconds: int = Field(default=300,ge=30,le=1800)
+
+    @field_validator('base_url')
+    @classmethod
+    def asr_url(cls,value):
+        return ChatSettings.url(value) if value else value
+
+    @model_validator(mode='after')
+    def validate_api(self):
+        if self.provider=='api' and self.base_url and not self.model.strip():
+            raise ValueError('语音转写服务地址必须同时配置模型名')
+        if self.provider=='api' and self.model.strip() and not self.base_url:
+            raise ValueError('语音转写模型必须同时配置服务地址')
+        return self
+
+class OcrSettings(Strict):
+    provider: Literal['vision','local'] = 'vision'
+
+class MediaSettings(Strict):
+    auto_transcribe: bool = True
+    frame_ocr: bool = False
+    frame_interval_seconds: int = Field(default=60,ge=10,le=600)
+    max_frames: int = Field(default=8,ge=1,le=32)
+    max_duration_seconds: int = Field(default=7200,ge=60,le=36000)
+
 class RuntimeSettings(Strict):
     chat: ChatSettings = Field(default_factory=ChatSettings)
     embedding: EmbeddingSettings = Field(default_factory=EmbeddingSettings)
@@ -95,6 +126,9 @@ class RuntimeSettings(Strict):
     retrieval: RetrievalSettings = Field(default_factory=RetrievalSettings)
     queue: QueueSettings = Field(default_factory=QueueSettings)
     answer_quality: AnswerQualitySettings = Field(default_factory=AnswerQualitySettings)
+    asr: AsrSettings = Field(default_factory=AsrSettings)
+    ocr: OcrSettings = Field(default_factory=OcrSettings)
+    media: MediaSettings = Field(default_factory=MediaSettings)
 
 active: ContextVar[RuntimeSettings|None]=ContextVar('rag_configuration',default=None)
 
@@ -102,6 +136,11 @@ def defaults():
     return RuntimeSettings(chat=ChatSettings(base_url=os.getenv('KIMI_BASE_URL','https://api.moonshot.cn/v1'),model=os.getenv('KIMI_MODEL','kimi-k2.6')),
         embedding=EmbeddingSettings(provider='api' if os.getenv('EMBEDDING_BASE_URL') and os.getenv('EMBEDDING_MODEL') else 'tfidf',
           base_url=os.getenv('EMBEDDING_BASE_URL',''),model=os.getenv('EMBEDDING_MODEL','')),
+        asr=AsrSettings(provider='api' if os.getenv('RAG_ASR_BASE_URL') and os.getenv('RAG_ASR_MODEL') else 'disabled',
+          base_url=os.getenv('RAG_ASR_BASE_URL',''),model=os.getenv('RAG_ASR_MODEL','')),
+        ocr=OcrSettings(provider='local' if os.getenv('RAG_OCR_PROVIDER','').lower()=='local' else 'vision'),
+        media=MediaSettings(auto_transcribe=os.getenv('RAG_MEDIA_AUTO_TRANSCRIBE','1')!='0',
+          frame_ocr=os.getenv('RAG_VIDEO_FRAME_OCR','').lower() in {'1','true','yes'}),
         retrieval=RetrievalSettings(min_similarity=float(os.getenv('RAG_MIN_SIMILARITY','.3'))))
 
 def get():
@@ -115,7 +154,7 @@ def read():
     value=RuntimeSettings.model_validate_json(row['value']) if row else defaults()
     return {'settings':value.model_dump(),'revision':row['revision'] if row else 0,
             'updated_at':row['updated_at'] if row else None,
-            'credentials':{'chat':bool(os.getenv('KIMI_API_KEY','').strip() and not os.getenv('KIMI_API_KEY','').startswith('replace-')),'embedding':bool(os.getenv('EMBEDDING_API_KEY','').strip())}}
+            'credentials':{'chat':bool(os.getenv('KIMI_API_KEY','').strip() and not os.getenv('KIMI_API_KEY','').startswith('replace-')),'embedding':bool(os.getenv('EMBEDDING_API_KEY','').strip()),'asr':bool(os.getenv('RAG_ASR_API_KEY','').strip())}}
 
 def save(value,expected_revision,user):
     with s.connect() as c:

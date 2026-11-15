@@ -5,13 +5,24 @@ import threading
 from zipfile import BadZipFile
 from pathlib import Path
 from fastapi import HTTPException
-from . import store as s,rag,jobs,object_storage,settings
+from . import store as s,rag,jobs,object_storage,settings,media,ocr
 
 STAGES=('upload','parse','chunk','index')
-IMAGE_TYPES={'png','jpg','jpeg','webp'}
+IMAGE_TYPES={'png','jpg','jpeg','webp','bmp','tif','tiff','gif'}
+TABLE_TYPES={'xlsx','xls','csv'}
+SUPPORTED_TYPES={'pdf','docx','doc','xlsx','xls','txt','md','csv','json','html','htm','ppt','pptx',
+                 'png','jpg','jpeg','webp','bmp','tif','tiff','gif',
+                 'mp3','m4a','wav','ogg','flac','aac','mp4','mov','mkv','webm','avi'}
+
+def modality_of(suffix,declared):
+    if suffix in IMAGE_TYPES:
+        return 'image'
+    if suffix in TABLE_TYPES:
+        return 'table'
+    return media.media_type(suffix) or declared
 
 def create_document(kid,name,suffix,modality,path):
-    modality='image' if suffix in IMAGE_TYPES else 'table' if suffix in {'xlsx','csv'} else modality
+    modality=modality_of(suffix,modality)
     with s.connect() as c:
         c.execute('BEGIN IMMEDIATE')
         count=c.execute('SELECT COUNT(*) FROM documents WHERE knowledge_base_id=? AND name=?',(kid,name)).fetchone()[0]
@@ -48,22 +59,34 @@ def can_continue_vision(doc,job):
             and doc['status'] in ('needs_extraction','parse_failed','processing_failed')
             and (not job or job['status'] not in ('queued','running')))
 
+def can_continue_transcription(doc,job):
+    return (doc['file_type'] in media.MEDIA_TYPES and not doc['deleted']
+            and doc['status'] in ('needs_extraction','parse_failed','processing_failed')
+            and (not job or job['status'] not in ('queued','running')))
+
 def enqueue_vision(did,user):
+    return enqueue_extraction(did,user,{'vision':True},'等待视觉解析')
+
+def enqueue_transcription(did,user):
+    return enqueue_extraction(did,user,{'transcribe':True},'等待语音转写')
+
+def enqueue_extraction(did,user,extra,waiting):
     config=settings.get()
     with s.connect() as c:
         c.execute('BEGIN IMMEDIATE')
         doc=c.execute('SELECT * FROM documents WHERE id=?',(did,)).fetchone()
         previous=c.execute('SELECT * FROM jobs WHERE id=?',(doc['job_id'],)).fetchone()
-        if not can_continue_vision(doc,previous):
-            raise HTTPException(409,'此文档当前无法继续视觉解析，请刷新处理进度')
+        allowed=can_continue_transcription(doc,previous) if extra.get('transcribe') else can_continue_vision(doc,previous)
+        if not allowed:
+            raise HTTPException(409,'此文档当前无法继续解析，请刷新处理进度')
         if previous and previous['kind']=='ingest':
             original=settings.RuntimeSettings.model_validate_json(previous['config'])
             config=config.model_copy(update={'chunk':original.chunk,'embedding':original.embedding})
-        jid=jobs.add('ingest',{'document_id':did,'vision':True},user,{'document_id':did},c,config=config)
+        jid=jobs.add('ingest',{'document_id':did,**extra},user,{'document_id':did},c,config=config)
         c.execute("UPDATE documents SET status='processing',parse_error='',job_id=? WHERE id=?",(jid,did))
         for stage in ('chunk','index'):
-            write_event(c,did,stage,'pending',0,'等待视觉解析',jid,0)
-        write_event(c,did,'parse','queued',0,'等待视觉解析工作槽位',jid,0)
+            write_event(c,did,stage,'pending',0,waiting,jid,0)
+        write_event(c,did,'parse','queued',0,waiting+'工作槽位',jid,0)
     return jid
 
 def interrupted_job(row,message,status='failed'):
@@ -84,6 +107,11 @@ async def run(row,payload,user,validate):
     doc=s.one('SELECT * FROM documents WHERE id=?',(did,))
     if doc['status']=='ready':
         return {'document_id':did,'already_indexed':True}
+    transcribe=payload.get('transcribe',False)
+    if media.media_type(doc['file_type']) and not transcribe and not vision:
+        # Media uploads transcribe automatically once a service is configured; otherwise
+        # the user keeps the explicit 「开始语音转写」 action.
+        transcribe=bool(settings.get().media.auto_transcribe and media.asr_configured())
     def track(name,status,value,message):
         nonlocal stage,progress
         stage=name;progress=value
@@ -107,18 +135,26 @@ async def run(row,payload,user,validate):
             # New attempt resets pending downstream stages without erasing historical events.
             for name in ('chunk','index'):
                 record(did,name,'pending',0,'等待本次解析',row['id'],row['attempts'])
-        track('parse','running',0,'正在通过已配置的模型转录图片' if vision else '正在解析原文件')
+        track('parse','running',0,'正在通过已配置的模型转录图片' if vision else
+              '正在提取音轨并转写' if transcribe else '正在解析原文件')
         async with object_storage.async_local_path(doc) as source:
             if vision:
                 validate(row)
-                units=await rag.visual_extract(source)
+                units=await ocr.extract(source)
+            elif transcribe:
+                validate(row)
+                units,meta=await media.units(source,doc['file_type'],measured('parse','已转写'))
+                s.execute("UPDATE documents SET media_meta=? WHERE id=?",(json.dumps(meta,ensure_ascii=False),did))
             else:
                 units=await asyncio.to_thread(rag.parse_local,source,doc['file_type'],measured('parse','已解析'))
         validate(row)
         if not any(unit['text'].strip() for unit in units):
             if vision:
                 raise ValueError('视觉模型没有返回可索引文本')
+            if transcribe:
+                raise ValueError('语音转写没有返回可索引文本')
             message=('原图已保存，请点击「开始视觉解析」提取文字' if doc['file_type'] in IMAGE_TYPES else
+                     '原文件已保存，请点击「开始语音转写」提取文字' if doc['file_type'] in media.MEDIA_TYPES else
                      '此 PDF 未提取到文本层；扫描件请转为逐页图片后上传' if doc['file_type']=='pdf' else
                      '文件中没有可索引文本，请检查原件')
             track('parse','needs_extraction',0,message)

@@ -26,7 +26,7 @@ load_dotenv(Path(__file__).resolve().parents[1] / '.env')
 from . import store as s
 from . import db_postgres
 from . import rag
-from . import settings,jobs,telemetry,blueprints,report_export,ingestion,grounding,template_docx,report_grounding,object_storage,presentation_preview,chat_export
+from . import settings,jobs,telemetry,blueprints,report_export,ingestion,grounding,template_docx,report_grounding,object_storage,presentation_preview,chat_export,media
 
 @asynccontextmanager
 async def lifespan(app):
@@ -36,7 +36,7 @@ async def lifespan(app):
     finally:
         await jobs.stop()
 
-app = FastAPI(title='知源 RAG API', version='0.11.0',lifespan=lifespan)
+app = FastAPI(title='知源 RAG API', version='0.12.0',lifespan=lifespan)
 app.add_middleware(CORSMiddleware,allow_origins=['http://localhost:5173','http://127.0.0.1:5173','http://localhost:4173','http://127.0.0.1:4173','http://127.0.0.1:4174'],allow_credentials=True,allow_methods=['*'],allow_headers=['*'])
 if os.getenv('RAG_WORKER_PROCESS')!='1':
     rag.backfill_legacy()
@@ -146,7 +146,10 @@ def conversation(user,cid):
     return row
 
 def safe_doc(row):
-    return {k:v for k,v in row.items() if k not in {'path','content','structured','object_key','object_version_id','storage_bucket'}} | {'has_original':bool(row.get('object_key')) if row.get('storage_backend')=='s3' else bool(row.get('path') and Path(row['path']).is_file())}
+    values={k:v for k,v in row.items() if k not in {'path','content','structured','object_key','object_version_id','storage_bucket'}}
+    values['media_meta']=json.loads(row.get('media_meta') or '{}')
+    values['has_original']=bool(row.get('object_key')) if row.get('storage_backend')=='s3' else bool(row.get('path') and Path(row['path']).is_file())
+    return values
 
 class Login(BaseModel):
     username: str
@@ -541,7 +544,7 @@ async def upload(knowledge_base_id:int=Form(...),modality:Literal['text','image'
         config=config.model_copy(update={'embedding':settings.EmbeddingSettings()})
     name=(file.filename or 'upload').replace('\\','/').rsplit('/',1)[-1]
     suffix=Path(name).suffix.lower().lstrip('.')
-    if suffix not in {'pdf','docx','txt','md','csv','html','xlsx','ppt','pptx','png','jpg','jpeg','webp'}:
+    if suffix not in ingestion.SUPPORTED_TYPES:
         raise HTTPException(415,'暂不支持此文件格式')
     if '\0' in name or (os.name=='nt' and (
         PureWindowsPath(name).is_reserved() or re.search(r'[<>:"|?*\x00-\x1f]',name)
@@ -634,10 +637,14 @@ def document_processing(did:int,user=Depends(current_user)):
     doc=document(user,did)
     state=ingestion.details(doc)
     state['can_continue_vision']=False
-    if ingestion.can_continue_vision(doc,state['job']) and safe_doc(doc)['has_original']:
+    state['can_continue_transcription']=False
+    if safe_doc(doc)['has_original'] and (
+        ingestion.can_continue_vision(doc,state['job']) or ingestion.can_continue_transcription(doc,state['job'])
+    ):
         try:
             check_kb(user,doc['knowledge_base_id'],True)
-            state['can_continue_vision']=True
+            state['can_continue_vision']=ingestion.can_continue_vision(doc,state['job'])
+            state['can_continue_transcription']=ingestion.can_continue_transcription(doc,state['job'])
         except HTTPException as error:
             if error.status_code not in (403,404,409):
                 raise
@@ -647,9 +654,21 @@ def document_processing(did:int,user=Depends(current_user)):
 async def continue_vision(did:int,user=Depends(current_user)):
     doc=document(user,did,True)
     if doc['file_type'] not in ingestion.IMAGE_TYPES or not safe_doc(doc)['has_original']:
-        raise HTTPException(422,'视觉解析需要可读取的 PNG、JPEG 或 WebP 原图')
-    rag.llm_config()
+        raise HTTPException(422,'视觉解析需要可读取的图片原文件（PNG、JPEG、WebP、BMP、TIFF 或 GIF）')
+    if settings.get().ocr.provider=='vision':
+        rag.llm_config()
     jid=ingestion.enqueue_vision(did,user)
+    await jobs.start()
+    return {'document_id':did,'job_id':jid}
+
+@app.post('/api/documents/{did}/transcribe',status_code=202)
+async def continue_transcription(did:int,user=Depends(current_user)):
+    doc=document(user,did,True)
+    if doc['file_type'] not in media.MEDIA_TYPES or not safe_doc(doc)['has_original']:
+        raise HTTPException(422,'语音转写需要可读取的音频或视频原文件')
+    if not media.asr_configured():
+        raise HTTPException(503,'尚未配置语音转写服务，请在 backend/.env 设置 RAG_ASR_BASE_URL、RAG_ASR_MODEL 和 RAG_ASR_API_KEY')
+    jid=ingestion.enqueue_transcription(did,user)
     await jobs.start()
     return {'document_id':did,'job_id':jid}
 
@@ -672,7 +691,8 @@ async def extract_vision(did:int,user=Depends(current_user)):
     doc=document(user,did,True)
     if doc['file_type'] not in ingestion.IMAGE_TYPES or not object_storage.exists(doc):
         raise HTTPException(422,'此入口支持图片；扫描 PDF 请先转为逐页图片上传')
-    rag.llm_config()
+    if settings.get().ocr.provider=='vision':
+        rag.llm_config()
     try:
         async with object_storage.async_local_path(doc) as source:
             units=await rag.visual_extract(source)
@@ -700,8 +720,8 @@ def delete_document(did:int,user=Depends(current_user)):
 @app.get('/api/dashboard')
 def dashboard(user=Depends(current_user)):
     docs=documents(user=user)
-    counts={'knowledge_bases':len(accessible_ids(user)),'documents':len(docs),'images':sum(d['modality']=='image' for d in docs),'templates':len(s.rows('SELECT id FROM report_templates'))}
-    return {'counts':counts,'modalities':[{'name':m,'value':sum(d['modality']==m for d in docs)} for m in ('text','image','table')],
+    counts={'knowledge_bases':len(accessible_ids(user)),'documents':len(docs),'images':sum(d['modality']=='image' for d in docs),'media':sum(d['modality'] in {'audio','video'} for d in docs),'templates':len(s.rows('SELECT id FROM report_templates'))}
+    return {'counts':counts,'modalities':[{'name':m,'value':sum(d['modality']==m for d in docs)} for m in ('text','image','table','audio','video')],
             'recent_documents':docs[:5],'retrieval_metrics':None,'model':model_status(user)}
 
 @app.post('/api/search')
@@ -955,6 +975,8 @@ def export_report(tid:int,format:Literal['md','docx']='docx',user=Depends(curren
 
 from .admin_features import install
 install(app,current_user,require,check_kb,document,ReportBody,source_lines)
+from . import data_sources
+data_sources.install(app,current_user,require,check_kb,safe_doc)
 from .report_drafts import install as install_report_drafts
 install_report_drafts(app,current_user,require,check_kb,report_task,source_lines)
 template_docx.install(app,current_user,require,check_kb)

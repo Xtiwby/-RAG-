@@ -12,7 +12,7 @@ const backendInfo=ref(null),health=ref('checking'),user=sessionUser
 const oldBackend=computed(()=>backendInfo.value&&Number((backendInfo.value.version||'0.0').split('.')[1])<7)
 const isLogin=computed(()=>route.path==='/login')
 const groups=computed(()=>[
- {label:'工作空间',items:[{path:'/',label:'工作台',icon:LayoutDashboard},{path:'/knowledge',label:'知识库',icon:Database,point:'kb.read'},{path:'/documents',label:'文档管理',icon:FileText,point:'kb.read'}]},
+ {label:'工作空间',items:[{path:'/',label:'工作台',icon:LayoutDashboard},{path:'/knowledge',label:'知识库',icon:Database,point:'kb.read'},{path:'/documents',label:'文档管理',icon:FileText,point:'kb.read'},{path:'/data-sources',label:'数据源',icon:Database,point:'kb.read'}]},
  {label:'智能应用',items:[{path:'/chat',label:'知识问答',icon:Bot,point:'qa.use'},{path:'/reports',label:'报告中心',icon:BookOpen,point:'reports.generate'},{path:'/report-templates',label:'模板库',icon:LayoutTemplate,point:'reports.generate'}]},
  {label:'调试与运维',items:[{path:'/search',label:'检索测试',icon:FileSearch,point:'qa.use'},{path:'/operations',label:'任务与运行',icon:Activity,point:'ops.read'}]},
  {label:'系统管理',items:[{path:'/users',label:'用户与权限',icon:Users,visible:can('users.manage')||can('roles.manage')},{path:'/audit',label:'审计日志',icon:ShieldCheck,point:'audit.read'},{path:'/settings',label:'系统配置',icon:Settings,point:'settings.manage'}]},

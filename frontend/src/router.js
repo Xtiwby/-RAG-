@@ -6,6 +6,7 @@ const LoginView=()=>import('./views/LoginView.vue')
 const DashboardView=()=>import('./views/DashboardView.vue')
 const KnowledgeView=()=>import('./views/KnowledgeView.vue')
 const DocumentsView=()=>import('./views/DocumentsView.vue')
+const DataSourcesView=()=>import('./views/DataSourcesView.vue')
 const SearchView=()=>import('./views/SearchView.vue')
 const ChatView=()=>import('./views/ChatView.vue')
 const ReportsView=()=>import('./views/ReportsHome.vue')
@@ -21,6 +22,7 @@ const router = createRouter({
     { path: '/', component: DashboardView, meta: { title: '工作台' } },
     { path: '/knowledge', component: KnowledgeView, meta: { title: '知识库管理' } },
     { path: '/documents', component: DocumentsView, meta: { title: '文档与多模态内容' } },
+    { path: '/data-sources', component: DataSourcesView, meta: { title: '数据源接入' } },
     { path: '/documents/:id', component: DocumentView, meta: { title: '文档与引用定位' } },
     { path: '/profile', component: ProfileView, meta: { title: '个人账户' } },
     { path: '/search', component: SearchView, meta: { title: '检索测试' } },
