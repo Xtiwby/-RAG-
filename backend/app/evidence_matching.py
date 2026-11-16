@@ -2,6 +2,7 @@
 import hashlib
 import re
 import unicodedata
+from difflib import SequenceMatcher
 from decimal import Decimal,InvalidOperation
 
 
@@ -27,6 +28,29 @@ def locate(quote,source):
     actual=source[start:end]
     return {'quote':actual,'char_start':start,'char_end':end,
             'match':'exact' if actual==quote else 'layout-normalized',
+            'source_sha256':hashlib.sha256(source.encode()).hexdigest()}
+
+
+def locate_near_exact(quote,source,threshold=.92):
+    """Locate a quote with only minor OCR/punctuation errors.
+
+    This is intentionally much stricter than semantic similarity and is used
+    only by the low-latency citation-first path.  The returned quote is always
+    the unchanged source substring.
+    """
+    exact=locate(quote,source)
+    if exact:return exact
+    query,_=canonical(quote);text,spans=canonical(source)
+    if len(query)<8 or not text:return None
+    best=None
+    for size in range(max(8,len(query)-3),min(len(text),len(query)+3)+1):
+        for start in range(0,len(text)-size+1):
+            ratio=SequenceMatcher(None,query,text[start:start+size],autojunk=False).ratio()
+            if best is None or ratio>best[0]:best=(ratio,start,size)
+    if best is None or best[0]<threshold:return None
+    _,pos,size=best;start,end=spans[pos][0],spans[pos+size-1][1]
+    return {'quote':source[start:end],'char_start':start,'char_end':end,
+            'match':'near-exact','similarity':round(best[0],4),
             'source_sha256':hashlib.sha256(source.encode()).hexdigest()}
 
 

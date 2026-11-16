@@ -38,6 +38,26 @@ def languages(items):
         if len(found)==2:break
     return sorted(found)
 
+
+def explicit_parts(query):
+    """Split visibly separated requests without inventing terms or calling the model."""
+    segments = re.split(
+        r'[?？;；]+|[，,。]\s*(?=另列|另查|另按|再查|再按|再说明|以及(?:它|其)?(?:为什么|如何|怎样|是否))',
+        query,
+    )
+    parts = []
+    for segment in segments:
+        part = segment.strip(' ，,。')
+        if len(part) < 6 or re.match(r'^(?:请)?(?:分别给出|请给出|注明|注明一下|别把|不要|无需|只需给出|需不需要)', part):
+            continue
+        if part not in parts:
+            parts.append(part)
+    if not 2 <= len(parts) <= 3:
+        return []
+    return [{'query': part, 'group': f'part-{i}', 'weight': .8, 'language': 'original'}
+            for i, part in enumerate(parts, 1)]
+
+
 async def expand(query,kb_ids,items):
     from . import rag
     config=settings.get();langs=languages(items)

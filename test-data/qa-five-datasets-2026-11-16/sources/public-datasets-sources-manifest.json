@@ -1,0 +1,139 @@
+{
+  "miracl-labels": {
+    "repository": "https://huggingface.co/datasets/miracl/miracl",
+    "revision": "5be20db9509754dadad47689368639fcec739c00",
+    "files": [
+      {
+        "path": "sources/miracl-labels/miracl-v1.0-en/qrels/qrels.miracl-v1.0-en-dev.tsv",
+        "bytes": 167817,
+        "sha256": "a0af836c300e85088c4d73449492e2378280f967cac032853c9e11f3bc8a8d81"
+      },
+      {
+        "path": "sources/miracl-labels/miracl-v1.0-en/topics/topics.miracl-v1.0-en-dev.tsv",
+        "bytes": 36782,
+        "sha256": "25d9e6d17656674fd7aa3b67ee912c71545e664a842b147bfc17e9ff391db3da"
+      },
+      {
+        "path": "sources/miracl-labels/miracl-v1.0-zh/qrels/qrels.miracl-v1.0-zh-dev.tsv",
+        "bytes": 94140,
+        "sha256": "5546474d3dc8139014e6571e9f4041848bb0a314ca6d2d4bac708174d71c59eb"
+      },
+      {
+        "path": "sources/miracl-labels/miracl-v1.0-zh/topics/topics.miracl-v1.0-zh-dev.tsv",
+        "bytes": 16903,
+        "sha256": "5b284a9aabf08bb2d1c88ed7ea276025c9d23846457c5350dc8d391b5e0d0a13"
+      }
+    ]
+  },
+  "nomiracl": {
+    "repository": "https://huggingface.co/datasets/miracl/nomiracl",
+    "revision": "ecd08778d0426a5ca28ac99763b0c9ddc2c78e68",
+    "files": [
+      {
+        "path": "sources/nomiracl/data/chinese/corpus.jsonl.gz",
+        "bytes": 8657467,
+        "sha256": "d09a33559280fe5e7b4a6ce9330ff9e261906d1ef4bf991ea8c02d309657f9fa"
+      },
+      {
+        "path": "sources/nomiracl/data/english/corpus.jsonl.gz",
+        "bytes": 9692742,
+        "sha256": "f333c75491c8dac69f946b021511a67666318efb799dff3a6d927a841f8148eb"
+      },
+      {
+        "path": "sources/nomiracl/README.md",
+        "bytes": 8078,
+        "sha256": "0e09dcea3161e578a52ffab1eebd6478b2ae1dee16e1121cce7f1d2081b9d9e6"
+      }
+    ]
+  },
+  "bosch-delucionqa": {
+    "repository": "https://github.com/boschresearch/DelucionQA",
+    "revision": "22f6da252895f8c20e432f5e329bb875f0e8bfa2",
+    "files": [
+      {
+        "path": "sources/delucionqa/dev.csv",
+        "bytes": 519802,
+        "sha256": "35b8736eeef011695a85670e4fe81ce650088f036fbb7855018bcb33dac0f724"
+      },
+      {
+        "path": "sources/delucionqa/LICENSE-CC-BY-4.0-legalcode.txt",
+        "bytes": 20138,
+        "sha256": "28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5"
+      },
+      {
+        "path": "sources/delucionqa/README.md",
+        "bytes": 9280,
+        "sha256": "d889d3df760105c289764c8001ba6e397d18f5c04ce1b57818ec319d06187dca"
+      },
+      {
+        "path": "sources/delucionqa/single_url.txt",
+        "bytes": 124,
+        "sha256": "ec575d34687f4d69f2fb138dffd8dad871c33793a36288aefa111be9e4e4b1ec"
+      },
+      {
+        "path": "sources/delucionqa/test.csv",
+        "bytes": 1593152,
+        "sha256": "8cf73c07014e3dd91355d111a5cba612c69b0e8b57c92cdcf70da2dd7cf336c7"
+      }
+    ]
+  },
+  "ragbench-delucionqa": {
+    "repository": "https://huggingface.co/datasets/galileo-ai/ragbench",
+    "observed_revision": "97808f3e5fd16ede40bbff6c2949af8139b2eb7b",
+    "extraction": "dataset viewer API, delucionqa/test, offsets 0 and 100, ordered by row_idx",
+    "files": [
+      {
+        "path": "sources/ragbench-delucionqa/test.jsonl",
+        "bytes": 2578856,
+        "sha256": "c5aed3742a22f1ec6e3780926f736fc704d28df00404787ee90a0984ef170012"
+      }
+    ]
+  },
+  "ragtruth": {
+    "repository": "https://github.com/ParticleMedia/RAGTruth",
+    "revision": "c103204b9ce28d6bbad859304bf30de72b8ed8fe",
+    "files": [
+      {
+        "path": "sources/ragtruth/LICENSE",
+        "bytes": 1071,
+        "sha256": "b7fd7d6bdfe0cbba63c63a310914beb4a4acb8bf08da73849219f45385f5b244"
+      },
+      {
+        "path": "sources/ragtruth/response.jsonl",
+        "bytes": 21458735,
+        "sha256": "e4c2e4ac24fff676d8984cc61c35d791612fadc58015335d97dd632375e18073"
+      },
+      {
+        "path": "sources/ragtruth/source_info.jsonl",
+        "bytes": 15117971,
+        "sha256": "0dffc26ea9f3c1c3d7c7e8336b56ef1646e3cec876edffcca3c9c624d12d578b"
+      }
+    ]
+  },
+  "rgb": {
+    "repository": "https://github.com/chen700564/RGB",
+    "revision": "65ec39e40e7dc9abb50e9bf1b4f32be3f6f16615",
+    "files": [
+      {
+        "path": "sources/rgb/LICENSE.txt",
+        "bytes": 20848,
+        "sha256": "9e502ba75fd0fd30cea5497b438a4bc12f07f02bc932a7a6041fd6a18b8f46a0"
+      },
+      {
+        "path": "sources/rgb/readme.md",
+        "bytes": 3604,
+        "sha256": "e924a72f4b46718dde52cd3eb603a7f6496a9658e931e3269461a88bf6b86c8a"
+      },
+      {
+        "path": "sources/rgb/zh.json",
+        "bytes": 5855124,
+        "sha256": "7095ec1b833a6cb1ecf851066738037fa076d0bd2351a7af8a39a43ab809e336"
+      },
+      {
+        "path": "sources/rgb/zh_int.json",
+        "bytes": 3024012,
+        "sha256": "e2ddb0461e2130f4b006996a574a89d5898989ff8b15f51d900c17162c7d1b17"
+      }
+    ]
+  }
+}

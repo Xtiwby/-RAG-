@@ -200,3 +200,202 @@ def test_revocation_during_coverage_blocks_supplement_before_publish(admin,confi
     stream=events(client.post('/api/qa/stream',headers=headers,json={'query':'散热方式和材料','knowledge_base_ids':[kid]}))
     assert stream[-1]['type']=='error' and '陶瓷' not in response_text(stream)
     assert not any(e['type']=='coverage' for e in stream)
+
+
+def test_verified_stream_flushes_pending_claim_during_provider_pause(monkeypatch):
+    facts = ['设备需要断电后维护。', '设备采用被动通风。']
+    calls = []
+    closed = False
+
+    async def model(messages, max_tokens=None):
+        nonlocal closed
+        request = json.loads(messages[-1]['content'])
+        if 'verification_schema' in request:
+            claims = request['claims']
+            calls.append([claim['claim_id'] for claim in claims])
+            yield json.dumps({'verdicts': [
+                {'claim_id': claim['claim_id'], 'verdict': 'supported',
+                 'quotes': [{'reference': 1, 'quote': facts[claim['claim_id'] - 1]}]}
+                for claim in claims
+            ]})
+            return
+        try:
+            for fact in facts:
+                yield fact + '[1]\n'
+            await asyncio.Event().wait()
+        finally:
+            closed = True
+
+    async def run():
+        stream = grounding.verified_stream('设备如何维护与通风？', [
+            {'text': ''.join(facts), 'name': '设备手册', 'section': '操作', 'page': 1, 'version': 'v1'}
+        ])
+        try:
+            for index, fact in enumerate(facts, 1):
+                verification = await asyncio.wait_for(anext(stream), 2)
+                assert verification['checks'][0]['claim_id'] == index
+                assert verification['checks'][0]['status'] == 'supported'
+                assert (await anext(stream))['content'] == fact + '[1]\n'
+        finally:
+            await stream.aclose()
+
+    monkeypatch.setattr(rag, 'llm_stream', model)
+    monkeypatch.setattr(grounding, 'JUDGE_BATCH_WAIT', .01)
+    asyncio.run(run())
+    assert calls == [[1], [2]]
+    assert closed
+
+
+@pytest.mark.parametrize('cancel',[False, True])
+def test_parallel_judges_overlap_and_publish_in_order(monkeypatch, cancel):
+    facts = ['设备需要断电后维护。', '设备采用被动通风。']
+
+    async def run():
+        first_started = asyncio.Event()
+        second_started = asyncio.Event()
+        release_first = asyncio.Event()
+        release_second = asyncio.Event()
+        closed = set()
+
+        async def model(messages, max_tokens=None):
+            request = json.loads(messages[-1]['content'])
+            if 'verification_schema' not in request:
+                try:
+                    yield facts[0] + '[1]\n'
+                    await first_started.wait()
+                    yield facts[1] + '[1]\n'
+                    await asyncio.Event().wait()
+                finally:
+                    closed.add('generator')
+                return
+
+            claim = request['claims'][0]
+            number = claim['claim_id']
+            started = first_started if number == 1 else second_started
+            release = release_first if number == 1 else release_second
+            try:
+                started.set()
+                await release.wait()
+                yield json.dumps({'verdicts': [
+                    {'claim_id': number, 'verdict': 'supported',
+                     'quotes': [{'reference': 1, 'quote': facts[number - 1]}]}
+                ]})
+            finally:
+                closed.add(number)
+
+        monkeypatch.setattr(rag, 'llm_stream', model)
+        monkeypatch.setattr(grounding, 'JUDGE_BATCH_WAIT', .01)
+        stream = grounding.verified_stream('设备如何维护与通风？', [
+            {'text': ''.join(facts), 'name': '设备手册', 'section': '操作', 'page': 1, 'version': 'v1'}
+        ], judge_concurrency=2)
+        first_event = asyncio.create_task(anext(stream))
+        try:
+            await asyncio.wait_for(second_started.wait(), 2)
+            if cancel:
+                first_event.cancel()
+                with pytest.raises(asyncio.CancelledError):
+                    await first_event
+                return
+            release_second.set()
+            # The first verification must still be pending after the second ends.
+            async with asyncio.timeout(2):
+                while 2 not in closed:
+                    await asyncio.sleep(.001)
+            assert not first_event.done()
+            release_first.set()
+            first = await asyncio.wait_for(first_event, 2)
+            assert first['checks'][0]['claim_id'] == 1
+            assert (await anext(stream))['content'] == facts[0] + '[1]\n'
+            second = await asyncio.wait_for(anext(stream), 2)
+            assert second['checks'][0]['claim_id'] == 2
+            assert (await anext(stream))['content'] == facts[1] + '[1]\n'
+        finally:
+            if not first_event.done():
+                first_event.cancel()
+                await asyncio.gather(first_event, return_exceptions=True)
+            await stream.aclose()
+            assert closed == {'generator', 1, 2}
+
+    asyncio.run(run())
+
+
+def test_parallel_qa_rechecks_access_before_sending_second_batch(admin, configured, monkeypatch):
+    kid = kb(admin)
+    facts = ['控制器维护前必须断开电源。', '控制器采用被动通风。']
+    upload(admin, kid, text=''.join(facts))
+    member, headers = create_member(admin)
+    grant = client.put(f"/api/users/{member['id']}/grants", headers=admin, json={
+        'grants': [{'knowledge_base_id': kid, 'access': 'read'}]
+    })
+    assert grant.status_code == 200
+    calls = []
+
+    async def model(messages, max_tokens=None):
+        request = json.loads(messages[-1]['content'])
+        if 'verification_schema' not in request:
+            yield facts[0] + '[1]\n'
+            await asyncio.wait_for(first_started.wait(), 2)
+            store.execute('DELETE FROM kb_grants WHERE user_id=? AND kb_id=?', (member['id'], kid))
+            revoked.set()
+            yield facts[1] + '[1]\n'
+            return
+
+        claim = request['claims'][0]
+        number = claim['claim_id']
+        calls.append(number)
+        if number == 1:
+            first_started.set()
+            await asyncio.wait_for(revoked.wait(), 2)
+            await asyncio.sleep(.05)
+        yield json.dumps({'verdicts': [
+            {'claim_id': number, 'verdict': 'supported',
+             'quotes': [{'reference': 1, 'quote': facts[number - 1]}]}
+        ]})
+
+    first_started = asyncio.Event()
+    revoked = asyncio.Event()
+    monkeypatch.setattr(rag, 'llm_stream', model)
+    response = client.post('/api/qa/stream', headers=headers, json={
+        'query': '控制器维护与通风要求', 'knowledge_base_ids': [kid]
+    })
+    stream = events(response)
+    assert calls == [1]
+    assert stream[-1]['type'] == 'error'
+    assert not any(event['type'] in ('verification', 'token') for event in stream)
+
+
+def test_citation_first_uses_one_call_and_validates_quotes(configured, monkeypatch):
+    calls=[]
+    async def model(messages,max_tokens=None):
+        calls.append(json.loads(messages[-1]['content']))
+        yield json.dumps({'claims':[{
+            'text':'设备维护前必须断开电源。','references':[1],
+            'quotes':[{'reference':1,'quote':'维护前必须断开电源'}]
+        }],'insufficient':False},ensure_ascii=False)
+    monkeypatch.setenv('RAG_QA_VERIFICATION_MODE','citation-first')
+    monkeypatch.setattr(rag,'llm_stream',model)
+    async def collect():
+        return [item async for item in grounding.verified_stream('设备如何维护？',[{
+            'text':'操作要求：维护前必须断开电源。','name':'手册','section':'维护','page':1,'version':'v1'
+        }])]
+    stream=asyncio.run(collect())
+    assert len(calls)==1 and 'answer_schema' in calls[0]
+    assert stream[0]['checks'][0]['status']=='supported'
+    assert stream[1]['content']=='设备维护前必须断开电源。[1]\n'
+
+
+def test_citation_first_rejects_forged_quote(configured, monkeypatch):
+    async def model(messages,max_tokens=None):
+        yield json.dumps({'claims':[{
+            'text':'设备可以带电维护。','references':[1],
+            'quotes':[{'reference':1,'quote':'设备可以带电维护'}]
+        }],'insufficient':False},ensure_ascii=False)
+    monkeypatch.setenv('RAG_QA_VERIFICATION_MODE','citation-first')
+    monkeypatch.setattr(rag,'llm_stream',model)
+    async def collect():
+        return [item async for item in grounding.verified_stream('设备如何维护？',[{
+            'text':'操作要求：维护前必须断开电源。','name':'手册','section':'维护','page':1,'version':'v1'
+        }])]
+    stream=asyncio.run(collect())
+    assert stream[0]['checks'][0]['reason_code']=='quote_mismatch'
+    assert stream[1]['content']==grounding.REFUSAL

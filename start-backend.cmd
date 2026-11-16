@@ -1,6 +1,8 @@
 @echo off
 setlocal
 cd /d "%~dp0backend"
+if not defined RAG_QA_VERIFICATION_MODE set "RAG_QA_VERIFICATION_MODE=citation-first"
+if not defined RAG_QA_HEDGE_DELAY_SECONDS set "RAG_QA_HEDGE_DELAY_SECONDS=8"
 if not exist ".venv\Scripts\python.exe" (
   echo Backend virtual environment is missing. Run python -m venv .venv and install requirements.txt.
   pause

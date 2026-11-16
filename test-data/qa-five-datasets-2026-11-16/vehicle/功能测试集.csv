@@ -1,0 +1,60 @@
+﻿编号,问题,类型,难度,长度组,字符数,可回答,参考答案,证据定位
+F01,Q6 前雨刮片更换前应处于什么位置？,事实,,,18,是,前雨刮应处于雨刷更换位置。,Audi-Q6-说明书.pdf / 48 / 前提：雨刮位于雨刷更换位置
+F02,Q6 更换前雨刮片之前，雨刮操纵杆应先切到哪个位置？MMI 依次进入哪些菜单？,多要点,,,39,是,操作前关闭雨刮，置于位置 0。MMI 路径为车辆、设置和服务、雨刷更换位置。,Audi-Q6-说明书.pdf / 48 / 关闭雨刮（位置 0；Audi-Q6-说明书.pdf / 48 / 车辆>设置和服务>雨刷更换位置
+F03,Q6 前雨刮臂已经翻起，有哪两项禁止操作？,事实,,,21,是,雨刮臂翻起后不得移动车辆或操控雨刮操纵杆。,Audi-Q6-说明书.pdf / 48 / 不得运动车辆或操控雨刮操纵杆
+F04,按 2023 款 Civic Sedan Maintenance Minder 英文资料，机油寿命低于多少百分比时出现提醒？,跨语言,,,62,是,发动机机油寿命低于 15% 时显示保养提示。,Honda-Civic-2023-Maintenance-Minder.pdf / 1 / If the engine oil life is less than 15%
+F05,美国版 2023 Civic Sedan 的 Maintenance Minder 子项 1、5 和 7 分别是什么？,跨语言多要点,,,59,是,美国版保养子项 1 是轮胎换位。美国版保养子项 5 是更换发动机冷却液。美国版保养子项 7 是更换制动液。,Honda-Civic-2023-Maintenance-Minder.pdf / 7 / Rotate tires；Honda-Civic-2023-Maintenance-Minder.pdf / 7 / Replace engine coolant；Honda-Civic-2023-Maintenance-Minder.pdf / 7 / Replace brake fluid
+F06,NHTSA 胎压资料中的冷胎测量条件是什么？停驶至少多久？,事实,,,29,是,至少停驶 3 小时后按冷胎条件测量。,NHTSA-轮胎维护.pptx / 1 / 车停驶至少 3 小时后
+F07,NHTSA 建议多长时间检查一次胎压，备胎算不算？推荐胎压到哪里查？,多要点,,,34,是,至少每月检查一次所有轮胎的胎压，包括备胎。推荐胎压可查驾驶员侧车门边缘或门柱的标牌，或车辆用户手册。,NHTSA-轮胎维护.pptx / 1 / 至少每月检查一次所有轮胎的胎压，包括备胎；NHTSA-轮胎维护.pptx / 1 / 车辆推荐胎压见驾驶员侧车门边缘或门柱的轮胎与载重信息标牌，或车辆用户手册
+F08,NHTSA 轮胎资料的胎纹更换阈值是多少英寸？,事实,,,23,是,胎纹更换阈值为 2/32 英寸。,NHTSA-轮胎维护.pptx / 2 / 2/32 英寸为胎纹更换阈值
+F09,NHTSA 资料如何说明前后轮规格不同车辆的轮胎换位？,事实,,,27,是,前后轮规格不同的车辆可能无法换位，应以制造商说明为准。,NHTSA-轮胎维护.pptx / 3 / 前后轮规格不同的车辆可能无法进行轮胎换位
+F10,根据 AFDC 的维护资料，纯电动车为什么通常需要较少常规保养？,事实,,,32,是,纯电动车通常需要较少常规维护，因为活动部件和定期更换的液体较少。,AFDC-电动车维护.docx / 维护差异 / 活动部件及需要定期更换的液体更少
+F11,部分动力电池采用什么方法维持安全温度，需要检查吗？,事实,,,25,是,部分动力电池采用液冷，这些系统可能需要定期检查。,AFDC-电动车维护.docx / 动力电池冷却 / 此类系统可能需要定期检查
+F12,普通混动车 HEV 能外接电源充电吗？动力电池有哪些充电途径？,事实,,,31,是,HEV 不能外接充电，可通过内燃机和再生制动充电。,AFDC-混动与再生制动.md / 普通混合动力车充电 / 不能接外部电源充电。其动力电池可通过再生制动和内燃机充电
+F13,插电式混动车 PHEV 的动力电池有哪些充电途径？,事实,,,25,是,PHEV 可通过外部电源、内燃机或再生制动充电。,AFDC-混动与再生制动.md / 插电式混合动力车充电 / 外部电源、内燃机或再生制动充电
+F14,请同时说明再生制动如何回收能量，以及它为什么会影响制动部件的磨损，分别给出依据。,跨文档,,,40,是,电动机作为发电机回收能量，并储存在动力电池。再生制动可以减少制动磨损。,AFDC-混动与再生制动.md / 再生制动原理 / 电动机作为发电机回收减速能量，并将电能储存在动力电池中；AFDC-电动车维护.docx / 再生制动与磨损 / 再生制动可减少制动磨损
+F15,Q6 前雨刮臂翻起后的两项禁忌是什么？另列 NHTSA 建议的冷胎停驶时间和检查频率。请分别引用。,跨格式,,,49,是,雨刮臂翻起后不得移动车辆或操控雨刮操纵杆。至少停驶 3 小时后按冷胎条件测量。至少每月检查一次所有轮胎的胎压，包括备胎。,Audi-Q6-说明书.pdf / 48 / 不得运动车辆或操控雨刮操纵杆；NHTSA-轮胎维护.pptx / 1 / 车停驶至少 3 小时后；NHTSA-轮胎维护.pptx / 1 / 至少每月检查一次所有轮胎的胎压，包括备胎
+F16,这套资料有没有给出北京某维修店更换 Q6 前雨刮片的 2026 年 11 月 16 日实时报价？请给出精确人民币金额。,拒答,,,59,否,知识库缺少该问题所要求的证据，应明确拒答，不提供具体数值或型号。,
+F17,这套资料能证明我们系统跑 Honda 问答时线上真实达到多少 QPS 吗？请给出实测值。,拒答,,,44,否,知识库缺少该问题所要求的证据，应明确拒答，不提供具体数值或型号。,
+F18,Q6 雨刮不通过 MMI，直接拨杆怎样进入更换位置？,步骤,,,26,是,关闭点火开关，将雨刮操纵杆拨到位置 4，直至进入更换位置。,Audi-Q6-说明书.pdf / 48 / 关闭点火开关，将车窗玻璃雨刮器操纵杆置于位置 4
+F19,Q6 车速达到什么条件可退出前雨刮更换位置？,阈值,,,22,是,车速提高到 12 km/h 以上可使雨刮回到起始位置。,Audi-Q6-说明书.pdf / 48 / 将车速提高到 12km/h 以上
+F20,Q6 手册建议每年更换几次车窗雨刮片？,阈值,,,19,是,说明书建议前雨刮片每年换一到两次。,Audi-Q6-说明书.pdf / 48 / 每年应更换车窗玻璃雨刮片一次 到两次
+F21,Q6 更换前雨刮片时，按哪个按钮才能把旧雨刮片从支座拔出？,步骤,,,29,是,按雨刮片上的锁止按钮再从支座拔出。,Audi-Q6-说明书.pdf / 48 / 按雨刮片上的锁止按钮
+F22,奥迪 Q6 前挡慢刮和快刮分别是雨刮拨杆的哪个位置？,同源多要点,,,26,是,雨刮操纵杆位置 2 为慢刮水。雨刮操纵杆位置 3 为快刮水。,Audi-Q6-说明书.pdf / 47 / 2 慢刮水；Audi-Q6-说明书.pdf / 47 / 3 快刮水
+F23,Q6 的雨水感应开关 6 向哪个方向调，能让反应更早？,条件,,,27,是,把雨水感应开关 6 向右调会提升灵敏度，使雨刮反应提前。,Audi-Q6-说明书.pdf / 47 / 开关 6 向右
+F24,Q6 光线和雨水感应器失效后，还有哪些雨刮功能可以操作？,条件,,,28,是,光线和雨水感应器故障时仍能操作与雨水感应器无关的雨刮功能。,Audi-Q6-说明书.pdf / 49 / 与雨水感应器无关的功能
+F25,Audi Q6 的 7 座车第二排配多少个座位？,车型区分,,,24,是,7 座车型第二排配备 3 个座位。,Audi-Q6-说明书.pdf / 50 / 第二排座位 2 3
+F26,"When does TPMS warn drivers, according to the NHTSA tire maintenance slides?",跨语言,,,76,是,TPMS 在胎压明显偏低时会警告。,NHTSA-轮胎维护.pptx / 2 / TPMS 在胎压明显偏低时警告
+F27,TPMS 没有报警，还要按什么频率用胎压表检查？,反前提,,,24,是,TPMS 未亮灯时仍应每月实测胎压。,NHTSA-轮胎维护.pptx / 2 / 仍应每月实测胎压
+F28,在厂家建议换位的前提下，轮胎换位里程范围是多少英里？,阈值,,,26,是,"只有制造商建议换位时，可每 5,000 至 8,000 英里换位。","NHTSA-轮胎维护.pptx / 3 / 可每 5,000 至 8,000 英里换位一次"
+F29,NHTSA 资料里，轮胎花纹磨损不均时能否把换位提前？,条件,,,27,是,出现不均匀磨损可以提前换位。,NHTSA-轮胎维护.pptx / 3 / 如果出现不均匀磨损，可以提前
+F30,"According to the slides, how long must the vehicle sit before checking cold tire pressure?",跨语言,,,90,是,至少停驶 3 小时后按冷胎条件测量。,NHTSA-轮胎维护.pptx / 1 / 车停驶至少 3 小时后
+F31,胎压推荐值应以车辆门柱什么东西或哪份随车资料为准？,改述,,,25,是,推荐胎压可查驾驶员侧车门边缘或门柱的标牌，或车辆用户手册。,NHTSA-轮胎维护.pptx / 1 / 车辆推荐胎压见驾驶员侧车门边缘或门柱的轮胎与载重信息标牌，或车辆用户手册
+F32,已知前后轮尺寸不一样，可以无条件照常换位吗？,反前提,,,22,是,前后轮规格不同的车辆可能无法换位，应以制造商说明为准。,NHTSA-轮胎维护.pptx / 3 / 前后轮规格不同的车辆可能无法进行轮胎换位
+F33,动力电池液冷系统的具体维护要求到哪里核对？,来源核对,,,21,是,冷却系统具体要求应查用户手册或向经销商确认。,AFDC-电动车维护.docx / 动力电池冷却 / 具体要求见车辆用户手册或向经销商确认
+F34,为什么 HEV 和 PHEV 的常规维护需求仍与燃油车相似？,对比,,,30,是,HEV 和 PHEV 有内燃机，常规维护需求与传统燃油车相近。,AFDC-电动车维护.docx / 维护差异 / 有内燃机，其一般维护需求与传统燃油车相近
+F35,"Can a conventional HEV plug into an external source, and how is its battery charged?",跨语言,,,84,是,HEV 不能外接充电，可通过内燃机和再生制动充电。,AFDC-混动与再生制动.md / 普通混合动力车充电 / 不能接外部电源充电。其动力电池可通过再生制动和内燃机充电
+F36,插混能从市电补能吗？不用外部电源时，还有哪两种补能途径？,条件,,,28,是,PHEV 可通过外部电源、内燃机或再生制动充电。,AFDC-混动与再生制动.md / 插电式混合动力车充电 / 外部电源、内燃机或再生制动充电
+F37,制动时哪类部件变成发电机？；另说明再生制动对制动磨损的影响。,跨文档,,,30,是,电动机作为发电机回收能量，并储存在动力电池。再生制动可以减少制动磨损。,AFDC-混动与再生制动.md / 再生制动原理 / 电动机作为发电机回收减速能量，并将电能储存在动力电池中；AFDC-电动车维护.docx / 再生制动与磨损 / 再生制动可减少制动磨损
+F38,Honda Civic 美国版，重置后超过 12 个月仍无保养消息，应按什么周期更换机油？,跨语言,,,45,是,超过 12 个月仍未出现保养提示，应每年更换机油。,Honda-Civic-2023-Maintenance-Minder.pdf / 7 / change the engine oil every year
+F39,Honda 美国版什么情况下要每三年换制动液？请注明触发时间。,跨语言,,,31,是,子项 7 重置后超过 36 个月无提醒，每三年换制动液。,Honda-Civic-2023-Maintenance-Minder.pdf / 7 / change the brake fluid every 3 years
+F40,What oil-life percentages correspond to Maintenance Due Soon in the Honda Civic document?,阈值,,,89,是,Maintenance Due Soon 的剩余机油寿命范围是 15% 至 6%。,Honda-Civic-2023-Maintenance-Minder.pdf / 4 / The remaining engine oil life is 15 to 6 percent
+F41,What is the remaining engine oil life range for Maintenance Due Now on the Civic?,阈值,,,81,是,Maintenance Due Now 的剩余机油寿命范围是 5% 至 1%。,Honda-Civic-2023-Maintenance-Minder.pdf / 5 / The remaining engine oil life is 5 to 1 percent
+F42,Honda Civic 过期后，美国版与加拿大版分别行驶多远才出现负距离？别把单位混用。,适用范围,,,44,是,美国款超过 10 英里后显示负里程。加拿大款超过 10 公里后显示负里程。,Honda-Civic-2023-Maintenance-Minder.pdf / 5 / after driving over 10 miles (U.S. models)；Honda-Civic-2023-Maintenance-Minder.pdf / 5 / 10 km (Canadian models)
+F43,"In the US Honda chart, what oil-related work is listed for main item B?",代码定位,,,71,是,美国版主项 B 要更换机油和机油滤清器。,Honda-Civic-2023-Maintenance-Minder.pdf / 7 / and oil filter
+F44,Honda Civic A-type meter: how many seconds do you hold the left selector wheel to enter reset mode?,步骤,,,99,是,A 型仪表按住左选择轮约 10 秒进入重置模式。,Honda-Civic-2023-Maintenance-Minder.pdf / 9 / for about 10 seconds to enter the reset mode
+F45,"With the Honda B-type meter, which selector wheel is rolled to display the Maintenance Minder?",型号区分,,,94,是,B 型仪表滚动右侧选择轮至 Maintenance Minder 屏幕。,Honda-Civic-2023-Maintenance-Minder.pdf / 10 / Roll the right selector wheel until the Maintenance Minder screen is displayed
+F46,美国 Honda Civic 经常在多尘条件行驶，空气滤芯的更换里程是多少？,跨语言,,,38,是,"多尘条件每 15,000 英里或 24,000 公里更换空气滤芯。","Honda-Civic-2023-Maintenance-Minder.pdf / 7 / replace the air cleaner element every 15,000 miles"
+F47,请按 Honda 美国版说明机油和机滤属于哪个大项；再按 NHTSA 说明轮胎换位的建议里程区间。,跨文档,,,49,是,"美国版主项 B 要更换机油和机油滤清器。只有制造商建议换位时，可每 5,000 至 8,000 英里换位。","Honda-Civic-2023-Maintenance-Minder.pdf / 7 / and oil filter；NHTSA-轮胎维护.pptx / 3 / 可每 5,000 至 8,000 英里换位一次"
+F48,请按 Q6 说明更换雨刮时先按哪个按钮；再按 NHTSA 说明 TPMS 不报警时是否仍要按月检查。,跨文档,,,50,是,按雨刮片上的锁止按钮再从支座拔出。TPMS 未亮灯时仍应每月实测胎压。,Audi-Q6-说明书.pdf / 48 / 按雨刮片上的锁止按钮；NHTSA-轮胎维护.pptx / 2 / 仍应每月实测胎压
+F49,按 AFDC 说明液冷具体要求去哪里查；按 Honda 手册说明 A 型仪表按住左选择轮几秒进入重置。,跨文档,,,51,是,冷却系统具体要求应查用户手册或向经销商确认。A 型仪表按住左选择轮约 10 秒进入重置模式。,AFDC-电动车维护.docx / 动力电池冷却 / 具体要求见车辆用户手册或向经销商确认；Honda-Civic-2023-Maintenance-Minder.pdf / 9 / for about 10 seconds to enter the reset mode
+F50,Please give the Honda Civic Maintenance Due Soon oil-life range; then state what a low-pressure TPMS warning means in the NHTSA slides.,跨文档跨语言,,,135,是,Maintenance Due Soon 的剩余机油寿命范围是 15% 至 6%。TPMS 在胎压明显偏低时会警告。,Honda-Civic-2023-Maintenance-Minder.pdf / 4 / The remaining engine oil life is 15 to 6 percent；NHTSA-轮胎维护.pptx / 2 / TPMS 在胎压明显偏低时警告
+F51,雨刮手柄方式进入 Q6 更换位置要先操作点火和哪个位置？再查 NHTSA 冷胎停驶时间。,跨文档,,,44,是,关闭点火开关，将雨刮操纵杆拨到位置 4，直至进入更换位置。至少停驶 3 小时后按冷胎条件测量。,Audi-Q6-说明书.pdf / 48 / 关闭点火开关，将车窗玻璃雨刮器操纵杆置于位置 4；NHTSA-轮胎维护.pptx / 1 / 车停驶至少 3 小时后
+F52,Explain whether a HEV can plug in; then explain whether a PHEV can. Keep the two charging paths separate.,跨语言对比,,,105,是,HEV 不能外接充电，可通过内燃机和再生制动充电。PHEV 可通过外部电源、内燃机或再生制动充电。,AFDC-混动与再生制动.md / 普通混合动力车充电 / 不能接外部电源充电。其动力电池可通过再生制动和内燃机充电；AFDC-混动与再生制动.md / 插电式混合动力车充电 / 外部电源、内燃机或再生制动充电
+F53,Q6 原厂前雨刮片的零件编号是多少？按这批资料给出完整编号。,拒答,,,30,否,明确说明当前资料缺少该条件下的证据，不提供具体数值或型号。,
+F54,请填入这辆 Q6 在维修工单 31415 中的实际轮胎气压，单位 kPa。,拒答,,,37,否,明确说明当前资料缺少该条件下的证据，不提供具体数值或型号。,
+F55,2023 Honda Civic Sedan 的 2027 年某店实时换机油报价是多少美元？,拒答,,,46,否,明确说明当前资料缺少该条件下的证据，不提供具体数值或型号。,
+F56,按 NHTSA 通用资料，能确认这台车驾驶员侧铭牌写的具体胎压是多少 psi 吗？,拒答,,,41,否,明确说明当前资料缺少该条件下的证据，不提供具体数值或型号。,
+F57,AFDC 材料中这台指定车辆的电池包实际冷却流量是多少升每分钟？,拒答,,,32,否,明确说明当前资料缺少该条件下的证据，不提供具体数值或型号。,
+F58,给出本车 TPMS 上周二报警的确切时刻（几点几分）。,拒答,,,27,否,明确说明当前资料缺少该条件下的证据，不提供具体数值或型号。,
+F59,HEV 和 PHEV 两份资料能否给出本校 11 月车队的实测再生制动回收率？请给百分数。,拒答,,,45,否,明确说明当前资料缺少该条件下的证据，不提供具体数值或型号。,

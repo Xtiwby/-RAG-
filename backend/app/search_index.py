@@ -72,7 +72,7 @@ async def candidates(queries,kb_ids,mode,top_k):
     """Return indexed candidates already filtered by knowledge base and version."""
     if not ready(mode):
         return None
-    from . import rag, local_models
+    from . import rag
     config=settings.get().embedding
     marks=','.join('?' for _ in kb_ids)
     scope=f'''FROM chunk_search x JOIN documents d ON d.id=x.document_id
@@ -81,7 +81,7 @@ async def candidates(queries,kb_ids,mode,top_k):
           AND d2.knowledge_base_id=d.knowledge_base_id AND d2.deleted=0 AND d2.status='ready')'''
     limit=max(200,top_k*40)
     result=set()
-    query_vectors={}
+    query_vectors = await rag.local_query_embeddings(config, [variant['query'] for variant in queries]) if mode != 'keyword' else {}
     for variant in queries:
         if mode!='vector':
             words=list(dict.fromkeys(rag.terms(variant['query'])))[:64]
@@ -96,9 +96,7 @@ async def candidates(queries,kb_ids,mode,top_k):
                 ORDER BY x.chunk_id DESC LIMIT 40''', [*kb_ids,anchor])
             result.update(row['chunk_id'] for row in found)
         if mode!='keyword':
-            vector=(await local_models.embed(config,[variant['query']]))[0]
-            query_vectors[variant['query']]=vector
-            local_models.validate_vectors([vector],1)
+            vector=query_vectors[variant['query']]
             if len(vector)!=1024:
                 raise RuntimeError('pgvector 索引要求 BGE-M3 的 1024 维向量')
             with s.connect() as connection:

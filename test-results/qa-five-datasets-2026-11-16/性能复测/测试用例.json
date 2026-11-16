@@ -1,0 +1,1550 @@
+[
+  {
+    "id": "VEH-P-P01",
+    "question": "冷胎应停驶多久？",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少停驶 3 小时后按冷胎条件测量",
+        "pattern": "(?:至少|不少于|不低于|以上).{0,6}(?:3|三)\\s*小时|(?:3|三)\\s*小时(?:或更久|以上|及以上)",
+        "quote": "车停驶至少 3 小时后"
+      }
+    ],
+    "reference_answer": "至少停驶 3 小时后按冷胎条件测量。",
+    "refusal_target": "",
+    "question_chars": 8,
+    "length": "short",
+    "difficulty": "easy",
+    "dataset": "车辆维修自定义集",
+    "phase": "performance",
+    "expected_section": null,
+    "gold_kind": "vehicle"
+  },
+  {
+    "id": "VEH-P-P02",
+    "question": "按 NHTSA TireWise 的冷胎判定，测胎压之前车辆最少要停驶多长时间？",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少停驶 3 小时后按冷胎条件测量",
+        "pattern": "(?:至少|不少于|不低于|以上).{0,6}(?:3|三)\\s*小时|(?:3|三)\\s*小时(?:或更久|以上|及以上)",
+        "quote": "车停驶至少 3 小时后"
+      }
+    ],
+    "reference_answer": "至少停驶 3 小时后按冷胎条件测量。",
+    "refusal_target": "",
+    "question_chars": 40,
+    "length": "medium",
+    "difficulty": "easy",
+    "dataset": "车辆维修自定义集",
+    "phase": "performance",
+    "expected_section": null,
+    "gold_kind": "vehicle"
+  },
+  {
+    "id": "VEH-P-P03",
+    "question": "我在整理车辆保养资料，需要在维修接待表里填写一个客观的检查时间。请只查 NHTSA TireWise 关于冷胎测量胎压的内容，并用一句话告诉我，车辆至少停驶多长时间后可以按冷胎条件测量。不要扩展到胎纹、换位或具体车型的胎压。",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少停驶 3 小时后按冷胎条件测量",
+        "pattern": "(?:至少|不少于|不低于|以上).{0,6}(?:3|三)\\s*小时|(?:3|三)\\s*小时(?:或更久|以上|及以上)",
+        "quote": "车停驶至少 3 小时后"
+      }
+    ],
+    "reference_answer": "至少停驶 3 小时后按冷胎条件测量。",
+    "refusal_target": "",
+    "question_chars": 112,
+    "length": "long",
+    "difficulty": "easy",
+    "dataset": "车辆维修自定义集",
+    "phase": "performance",
+    "expected_section": null,
+    "gold_kind": "vehicle"
+  },
+  {
+    "id": "VEH-P-P04",
+    "question": "冷胎停多久？胎压多久查，含备胎吗？",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少停驶 3 小时后按冷胎条件测量",
+        "pattern": "(?:至少|不少于|不低于|以上).{0,6}(?:3|三)\\s*小时|(?:3|三)\\s*小时(?:或更久|以上|及以上)",
+        "quote": "车停驶至少 3 小时后"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少每月检查一次所有轮胎的胎压，包括备胎",
+        "pattern": "每月.{0,32}备胎|备胎.{0,32}每月",
+        "quote": "至少每月检查一次所有轮胎的胎压，包括备胎"
+      }
+    ],
+    "reference_answer": "至少停驶 3 小时后按冷胎条件测量。至少每月检查一次所有轮胎的胎压，包括备胎。",
+    "refusal_target": "",
+    "question_chars": 17,
+    "length": "short",
+    "difficulty": "medium",
+    "dataset": "车辆维修自定义集",
+    "phase": "performance",
+    "expected_section": null,
+    "gold_kind": "vehicle"
+  },
+  {
+    "id": "VEH-P-P05",
+    "question": "请根据轮胎维护资料说明冷胎测量所需的最短停车时长，以及每月胎压检查是否包括备胎。",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少停驶 3 小时后按冷胎条件测量",
+        "pattern": "(?:至少|不少于|不低于|以上).{0,6}(?:3|三)\\s*小时|(?:3|三)\\s*小时(?:或更久|以上|及以上)",
+        "quote": "车停驶至少 3 小时后"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少每月检查一次所有轮胎的胎压，包括备胎",
+        "pattern": "每月.{0,32}备胎|备胎.{0,32}每月",
+        "quote": "至少每月检查一次所有轮胎的胎压，包括备胎"
+      }
+    ],
+    "reference_answer": "至少停驶 3 小时后按冷胎条件测量。至少每月检查一次所有轮胎的胎压，包括备胎。",
+    "refusal_target": "",
+    "question_chars": 40,
+    "length": "medium",
+    "difficulty": "medium",
+    "dataset": "车辆维修自定义集",
+    "phase": "performance",
+    "expected_section": null,
+    "gold_kind": "vehicle"
+  },
+  {
+    "id": "VEH-P-P06",
+    "question": "请帮我核对轮胎保养记录里的两个字段。第一个字段是检查胎压时判定冷胎的最短停驶时间，第二个字段是常规胎压检查的最低频率及是否检查备胎。只依据 NHTSA 轮胎维护资料逐项回答并给出引用，不需要写更换建议、胎纹深度和具体胎压数值。",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少停驶 3 小时后按冷胎条件测量",
+        "pattern": "(?:至少|不少于|不低于|以上).{0,6}(?:3|三)\\s*小时|(?:3|三)\\s*小时(?:或更久|以上|及以上)",
+        "quote": "车停驶至少 3 小时后"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少每月检查一次所有轮胎的胎压，包括备胎",
+        "pattern": "每月.{0,32}备胎|备胎.{0,32}每月",
+        "quote": "至少每月检查一次所有轮胎的胎压，包括备胎"
+      }
+    ],
+    "reference_answer": "至少停驶 3 小时后按冷胎条件测量。至少每月检查一次所有轮胎的胎压，包括备胎。",
+    "refusal_target": "",
+    "question_chars": 113,
+    "length": "long",
+    "difficulty": "medium",
+    "dataset": "车辆维修自定义集",
+    "phase": "performance",
+    "expected_section": null,
+    "gold_kind": "vehicle"
+  },
+  {
+    "id": "VEH-P-P07",
+    "question": "Q6前雨刮禁忌？冷胎等多久、多久查胎压，含备胎吗？",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 48,
+        "answer": "雨刮臂翻起后不得移动车辆或操控雨刮操纵杆",
+        "pattern": "(?:不得|不能|禁止|不要).{0,18}(?:移动|运动|驾驶).{0,10}车辆.{0,20}(?:操控|操作|拨动).{0,8}雨刮操纵杆",
+        "quote": "不得运动车辆或操控雨刮操纵杆"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少停驶 3 小时后按冷胎条件测量",
+        "pattern": "(?:至少|不少于|不低于|以上).{0,6}(?:3|三)\\s*小时|(?:3|三)\\s*小时(?:或更久|以上|及以上)",
+        "quote": "车停驶至少 3 小时后"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少每月检查一次所有轮胎的胎压，包括备胎",
+        "pattern": "每月.{0,32}备胎|备胎.{0,32}每月",
+        "quote": "至少每月检查一次所有轮胎的胎压，包括备胎"
+      }
+    ],
+    "reference_answer": "雨刮臂翻起后不得移动车辆或操控雨刮操纵杆。至少停驶 3 小时后按冷胎条件测量。至少每月检查一次所有轮胎的胎压，包括备胎。",
+    "refusal_target": "",
+    "question_chars": 25,
+    "length": "short",
+    "difficulty": "hard",
+    "dataset": "车辆维修自定义集",
+    "phase": "performance",
+    "expected_section": null,
+    "gold_kind": "vehicle"
+  },
+  {
+    "id": "VEH-P-P08",
+    "question": "分别查 Q6 前雨刮臂翻起后的两项限制，以及 NHTSA 冷胎最短停驶时间和胎压检查频率、备胎。",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 48,
+        "answer": "雨刮臂翻起后不得移动车辆或操控雨刮操纵杆",
+        "pattern": "(?:不得|不能|禁止|不要).{0,18}(?:移动|运动|驾驶).{0,10}车辆.{0,20}(?:操控|操作|拨动).{0,8}雨刮操纵杆",
+        "quote": "不得运动车辆或操控雨刮操纵杆"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少停驶 3 小时后按冷胎条件测量",
+        "pattern": "(?:至少|不少于|不低于|以上).{0,6}(?:3|三)\\s*小时|(?:3|三)\\s*小时(?:或更久|以上|及以上)",
+        "quote": "车停驶至少 3 小时后"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少每月检查一次所有轮胎的胎压，包括备胎",
+        "pattern": "每月.{0,32}备胎|备胎.{0,32}每月",
+        "quote": "至少每月检查一次所有轮胎的胎压，包括备胎"
+      }
+    ],
+    "reference_answer": "雨刮臂翻起后不得移动车辆或操控雨刮操纵杆。至少停驶 3 小时后按冷胎条件测量。至少每月检查一次所有轮胎的胎压，包括备胎。",
+    "refusal_target": "",
+    "question_chars": 48,
+    "length": "medium",
+    "difficulty": "hard",
+    "dataset": "车辆维修自定义集",
+    "phase": "performance",
+    "expected_section": null,
+    "gold_kind": "vehicle"
+  },
+  {
+    "id": "VEH-P-P09",
+    "question": "我在核对一张车辆保养清单，清单有两个来自不同文件的条目。请先依据 Q6 说明书列出前雨刮臂已经翻起后的两项禁止操作，再依据 NHTSA TireWise 说明冷胎胎压测量前至少停驶多久，以及所有轮胎胎压的检查频率和备胎是否包含在内。两部分分别给出引用。",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 48,
+        "answer": "雨刮臂翻起后不得移动车辆或操控雨刮操纵杆",
+        "pattern": "(?:不得|不能|禁止|不要).{0,18}(?:移动|运动|驾驶).{0,10}车辆.{0,20}(?:操控|操作|拨动).{0,8}雨刮操纵杆",
+        "quote": "不得运动车辆或操控雨刮操纵杆"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少停驶 3 小时后按冷胎条件测量",
+        "pattern": "(?:至少|不少于|不低于|以上).{0,6}(?:3|三)\\s*小时|(?:3|三)\\s*小时(?:或更久|以上|及以上)",
+        "quote": "车停驶至少 3 小时后"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少每月检查一次所有轮胎的胎压，包括备胎",
+        "pattern": "每月.{0,32}备胎|备胎.{0,32}每月",
+        "quote": "至少每月检查一次所有轮胎的胎压，包括备胎"
+      }
+    ],
+    "reference_answer": "雨刮臂翻起后不得移动车辆或操控雨刮操纵杆。至少停驶 3 小时后按冷胎条件测量。至少每月检查一次所有轮胎的胎压，包括备胎。",
+    "refusal_target": "",
+    "question_chars": 126,
+    "length": "long",
+    "difficulty": "hard",
+    "dataset": "车辆维修自定义集",
+    "phase": "performance",
+    "expected_section": null,
+    "gold_kind": "vehicle"
+  },
+  {
+    "id": "VEH-P-P10",
+    "question": "TPMS何时报警？",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 2,
+        "answer": "TPMS 在胎压明显偏低时会警告",
+        "pattern": "(?:低|不足).{0,15}(?:警告|报警|预警|warn)",
+        "quote": "TPMS 在胎压明显偏低时警告"
+      }
+    ],
+    "reference_answer": "TPMS 在胎压明显偏低时会警告。",
+    "refusal_target": "",
+    "question_chars": 9,
+    "length": "short",
+    "difficulty": "easy",
+    "dataset": "车辆维修自定义集",
+    "phase": "performance",
+    "expected_section": null,
+    "gold_kind": "vehicle"
+  },
+  {
+    "id": "VEH-P-P11",
+    "question": "按 NHTSA 轮胎维护幻灯片，TPMS 出现警告通常表示胎压怎么了？",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 2,
+        "answer": "TPMS 在胎压明显偏低时会警告",
+        "pattern": "(?:低|不足).{0,15}(?:警告|报警|预警|warn)",
+        "quote": "TPMS 在胎压明显偏低时警告"
+      }
+    ],
+    "reference_answer": "TPMS 在胎压明显偏低时会警告。",
+    "refusal_target": "",
+    "question_chars": 35,
+    "length": "medium",
+    "difficulty": "easy",
+    "dataset": "车辆维修自定义集",
+    "phase": "performance",
+    "expected_section": null,
+    "gold_kind": "vehicle"
+  },
+  {
+    "id": "VEH-P-P12",
+    "question": "我在核对轮胎维护培训材料的报警栏，请依据 NHTSA 轮胎维护幻灯片，只回答 TPMS 在什么胎压条件下会发出警告。请给出明确条件和对应引用即可，后续的维修建议和具体压力数值都不属于本题。",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 2,
+        "answer": "TPMS 在胎压明显偏低时会警告",
+        "pattern": "(?:低|不足).{0,15}(?:警告|报警|预警|warn)",
+        "quote": "TPMS 在胎压明显偏低时警告"
+      }
+    ],
+    "reference_answer": "TPMS 在胎压明显偏低时会警告。",
+    "refusal_target": "",
+    "question_chars": 94,
+    "length": "long",
+    "difficulty": "easy",
+    "dataset": "车辆维修自定义集",
+    "phase": "performance",
+    "expected_section": null,
+    "gold_kind": "vehicle"
+  },
+  {
+    "id": "VEH-P-P13",
+    "question": "Civic左轮按几秒？",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Honda-Civic-2023-Maintenance-Minder.pdf",
+        "locator": 9,
+        "answer": "A 型仪表按住左选择轮约 10 秒进入重置模式",
+        "pattern": "(?:约|大约)?\\s*10\\s*(?:秒|second)",
+        "quote": "for about 10 seconds to enter the reset mode"
+      }
+    ],
+    "reference_answer": "A 型仪表按住左选择轮约 10 秒进入重置模式。",
+    "refusal_target": "",
+    "question_chars": 11,
+    "length": "short",
+    "difficulty": "easy",
+    "dataset": "车辆维修自定义集",
+    "phase": "performance",
+    "expected_section": null,
+    "gold_kind": "vehicle"
+  },
+  {
+    "id": "VEH-P-P14",
+    "question": "在 Honda Civic A 型仪表上，长按左侧选择轮几秒才会进入保养信息重置模式？",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Honda-Civic-2023-Maintenance-Minder.pdf",
+        "locator": 9,
+        "answer": "A 型仪表按住左选择轮约 10 秒进入重置模式",
+        "pattern": "(?:约|大约)?\\s*10\\s*(?:秒|second)",
+        "quote": "for about 10 seconds to enter the reset mode"
+      }
+    ],
+    "reference_answer": "A 型仪表按住左选择轮约 10 秒进入重置模式。",
+    "refusal_target": "",
+    "question_chars": 43,
+    "length": "medium",
+    "difficulty": "easy",
+    "dataset": "车辆维修自定义集",
+    "phase": "performance",
+    "expected_section": null,
+    "gold_kind": "vehicle"
+  },
+  {
+    "id": "VEH-P-P15",
+    "question": "我在复核 2023 款 Honda Civic 车主资料中 A 型仪表的保养信息操作卡。请定位进入重置模式的那一步，只告诉我在维护提示界面上应把左侧选择轮按住约多少秒，并给出对应位置的引用，无需叙述完整菜单。",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Honda-Civic-2023-Maintenance-Minder.pdf",
+        "locator": 9,
+        "answer": "A 型仪表按住左选择轮约 10 秒进入重置模式",
+        "pattern": "(?:约|大约)?\\s*10\\s*(?:秒|second)",
+        "quote": "for about 10 seconds to enter the reset mode"
+      }
+    ],
+    "reference_answer": "A 型仪表按住左选择轮约 10 秒进入重置模式。",
+    "refusal_target": "",
+    "question_chars": 104,
+    "length": "long",
+    "difficulty": "easy",
+    "dataset": "车辆维修自定义集",
+    "phase": "performance",
+    "expected_section": null,
+    "gold_kind": "vehicle"
+  },
+  {
+    "id": "VEH-P-P16",
+    "question": "换位跑几英里？偏磨能提前吗？",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 3,
+        "answer": "只有制造商建议换位时，可每 5,000 至 8,000 英里换位",
+        "pattern": "5[,，]?000.{0,15}8[,，]?000.{0,6}(?:英里|mile)",
+        "quote": "可每 5,000 至 8,000 英里换位一次"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 3,
+        "answer": "出现不均匀磨损可以提前换位",
+        "pattern": "提前|缩短|earlier|sooner",
+        "quote": "如果出现不均匀磨损，可以提前"
+      }
+    ],
+    "reference_answer": "只有制造商建议换位时，可每 5,000 至 8,000 英里换位。出现不均匀磨损可以提前换位。",
+    "refusal_target": "",
+    "question_chars": 14,
+    "length": "short",
+    "difficulty": "medium",
+    "dataset": "车辆维修自定义集",
+    "phase": "performance",
+    "expected_section": null,
+    "gold_kind": "vehicle"
+  },
+  {
+    "id": "VEH-P-P17",
+    "question": "按 NHTSA 资料，厂家建议换位时的英里区间，以及出现不均匀磨损能否提前？",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 3,
+        "answer": "只有制造商建议换位时，可每 5,000 至 8,000 英里换位",
+        "pattern": "5[,，]?000.{0,15}8[,，]?000.{0,6}(?:英里|mile)",
+        "quote": "可每 5,000 至 8,000 英里换位一次"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 3,
+        "answer": "出现不均匀磨损可以提前换位",
+        "pattern": "提前|缩短|earlier|sooner",
+        "quote": "如果出现不均匀磨损，可以提前"
+      }
+    ],
+    "reference_answer": "只有制造商建议换位时，可每 5,000 至 8,000 英里换位。出现不均匀磨损可以提前换位。",
+    "refusal_target": "",
+    "question_chars": 38,
+    "length": "medium",
+    "difficulty": "medium",
+    "dataset": "车辆维修自定义集",
+    "phase": "performance",
+    "expected_section": null,
+    "gold_kind": "vehicle"
+  },
+  {
+    "id": "VEH-P-P18",
+    "question": "我们在整理一张轮胎复检表，按照 NHTSA 轮胎资料填写两栏。在制造商建议换位的前提下，第一栏要填写建议的英里区间，第二栏要填写出现不均匀磨损时能否提前。请保留前提并给引用，暂时不用说明换位的具体排列方式。",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 3,
+        "answer": "只有制造商建议换位时，可每 5,000 至 8,000 英里换位",
+        "pattern": "5[,，]?000.{0,15}8[,，]?000.{0,6}(?:英里|mile)",
+        "quote": "可每 5,000 至 8,000 英里换位一次"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 3,
+        "answer": "出现不均匀磨损可以提前换位",
+        "pattern": "提前|缩短|earlier|sooner",
+        "quote": "如果出现不均匀磨损，可以提前"
+      }
+    ],
+    "reference_answer": "只有制造商建议换位时，可每 5,000 至 8,000 英里换位。出现不均匀磨损可以提前换位。",
+    "refusal_target": "",
+    "question_chars": 103,
+    "length": "long",
+    "difficulty": "medium",
+    "dataset": "车辆维修自定义集",
+    "phase": "performance",
+    "expected_section": null,
+    "gold_kind": "vehicle"
+  },
+  {
+    "id": "VEH-P-P19",
+    "question": "Q6慢刮、快刮是几挡？",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 47,
+        "answer": "雨刮操纵杆位置 2 为慢刮水",
+        "pattern": "(?:位置|档位|挡位)\\s*2|2\\s*[挡档]",
+        "quote": "2 慢刮水"
+      },
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 47,
+        "answer": "雨刮操纵杆位置 3 为快刮水",
+        "pattern": "(?:位置|档位|挡位)\\s*3|3\\s*[挡档]",
+        "quote": "3 快刮水"
+      }
+    ],
+    "reference_answer": "雨刮操纵杆位置 2 为慢刮水。雨刮操纵杆位置 3 为快刮水。",
+    "refusal_target": "",
+    "question_chars": 11,
+    "length": "short",
+    "difficulty": "medium",
+    "dataset": "车辆维修自定义集",
+    "phase": "performance",
+    "expected_section": null,
+    "gold_kind": "vehicle"
+  },
+  {
+    "id": "VEH-P-P20",
+    "question": "Q6 说明书中，前车窗玻璃雨刮拨杆的慢刮水、快刮水分别是哪个位置？",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 47,
+        "answer": "雨刮操纵杆位置 2 为慢刮水",
+        "pattern": "(?:位置|档位|挡位)\\s*2|2\\s*[挡档]",
+        "quote": "2 慢刮水"
+      },
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 47,
+        "answer": "雨刮操纵杆位置 3 为快刮水",
+        "pattern": "(?:位置|档位|挡位)\\s*3|3\\s*[挡档]",
+        "quote": "3 快刮水"
+      }
+    ],
+    "reference_answer": "雨刮操纵杆位置 2 为慢刮水。雨刮操纵杆位置 3 为快刮水。",
+    "refusal_target": "",
+    "question_chars": 33,
+    "length": "medium",
+    "difficulty": "medium",
+    "dataset": "车辆维修自定义集",
+    "phase": "performance",
+    "expected_section": null,
+    "gold_kind": "vehicle"
+  },
+  {
+    "id": "VEH-P-P21",
+    "question": "我需要核对 Q6 的雨刮培训卡片中的两个独立字段。请仅查 Q6 说明书车窗玻璃雨刮器操纵杆段落，分别填写慢刮水和快刮水所对应的位置编号，并给出引用。其余雨量感应、关闭雨刮和喷洗位置都可以省略。",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 47,
+        "answer": "雨刮操纵杆位置 2 为慢刮水",
+        "pattern": "(?:位置|档位|挡位)\\s*2|2\\s*[挡档]",
+        "quote": "2 慢刮水"
+      },
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 47,
+        "answer": "雨刮操纵杆位置 3 为快刮水",
+        "pattern": "(?:位置|档位|挡位)\\s*3|3\\s*[挡档]",
+        "quote": "3 快刮水"
+      }
+    ],
+    "reference_answer": "雨刮操纵杆位置 2 为慢刮水。雨刮操纵杆位置 3 为快刮水。",
+    "refusal_target": "",
+    "question_chars": 96,
+    "length": "long",
+    "difficulty": "medium",
+    "dataset": "车辆维修自定义集",
+    "phase": "performance",
+    "expected_section": null,
+    "gold_kind": "vehicle"
+  },
+  {
+    "id": "VEH-P-P22",
+    "question": "Q6雨刮按哪个钮？TPMS不亮多久查胎压？",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 48,
+        "answer": "按雨刮片上的锁止按钮再从支座拔出",
+        "pattern": "(?:锁止|锁定|解锁).{0,4}(?:按钮|按键)",
+        "quote": "按雨刮片上的锁止按钮"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 2,
+        "answer": "TPMS 未亮灯时仍应每月实测胎压",
+        "pattern": "(?:每月|monthly)",
+        "quote": "仍应每月实测胎压"
+      }
+    ],
+    "reference_answer": "按雨刮片上的锁止按钮再从支座拔出。TPMS 未亮灯时仍应每月实测胎压。",
+    "refusal_target": "",
+    "question_chars": 21,
+    "length": "short",
+    "difficulty": "hard",
+    "dataset": "车辆维修自定义集",
+    "phase": "performance",
+    "expected_section": null,
+    "gold_kind": "vehicle"
+  },
+  {
+    "id": "VEH-P-P23",
+    "question": "按 Q6 说明更换前雨刮的锁止按钮；按 NHTSA 说明 TPMS 不亮灯时胎压实测频率。",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 48,
+        "answer": "按雨刮片上的锁止按钮再从支座拔出",
+        "pattern": "(?:锁止|锁定|解锁).{0,4}(?:按钮|按键)",
+        "quote": "按雨刮片上的锁止按钮"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 2,
+        "answer": "TPMS 未亮灯时仍应每月实测胎压",
+        "pattern": "(?:每月|monthly)",
+        "quote": "仍应每月实测胎压"
+      }
+    ],
+    "reference_answer": "按雨刮片上的锁止按钮再从支座拔出。TPMS 未亮灯时仍应每月实测胎压。",
+    "refusal_target": "",
+    "question_chars": 45,
+    "length": "medium",
+    "difficulty": "hard",
+    "dataset": "车辆维修自定义集",
+    "phase": "performance",
+    "expected_section": null,
+    "gold_kind": "vehicle"
+  },
+  {
+    "id": "VEH-P-P24",
+    "question": "我在汇总来自两份文件的维护知识。首先请按 Q6 说明书说明拔出旧前雨刮片之前要按哪个按钮。其次请单独依据 NHTSA 轮胎幻灯片说明，即使胎压监测系统未亮灯，仍要按什么频率实测胎压。两个条目都分别附上证据即可。",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 48,
+        "answer": "按雨刮片上的锁止按钮再从支座拔出",
+        "pattern": "(?:锁止|锁定|解锁).{0,4}(?:按钮|按键)",
+        "quote": "按雨刮片上的锁止按钮"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 2,
+        "answer": "TPMS 未亮灯时仍应每月实测胎压",
+        "pattern": "(?:每月|monthly)",
+        "quote": "仍应每月实测胎压"
+      }
+    ],
+    "reference_answer": "按雨刮片上的锁止按钮再从支座拔出。TPMS 未亮灯时仍应每月实测胎压。",
+    "refusal_target": "",
+    "question_chars": 105,
+    "length": "long",
+    "difficulty": "hard",
+    "dataset": "车辆维修自定义集",
+    "phase": "performance",
+    "expected_section": null,
+    "gold_kind": "vehicle"
+  },
+  {
+    "id": "VEH-P-P25",
+    "question": "AFDC冷却查哪？Civic左轮按几秒？",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "AFDC-电动车维护.docx",
+        "locator": "动力电池冷却",
+        "answer": "冷却系统具体要求应查用户手册或向经销商确认",
+        "pattern": "手册|经销商|manual|dealer",
+        "quote": "具体要求见车辆用户手册或向经销商确认"
+      },
+      {
+        "document": "Honda-Civic-2023-Maintenance-Minder.pdf",
+        "locator": 9,
+        "answer": "A 型仪表按住左选择轮约 10 秒进入重置模式",
+        "pattern": "(?:约|大约)?\\s*10\\s*(?:秒|second)",
+        "quote": "for about 10 seconds to enter the reset mode"
+      }
+    ],
+    "reference_answer": "冷却系统具体要求应查用户手册或向经销商确认。A 型仪表按住左选择轮约 10 秒进入重置模式。",
+    "refusal_target": "",
+    "question_chars": 20,
+    "length": "short",
+    "difficulty": "hard",
+    "dataset": "车辆维修自定义集",
+    "phase": "performance",
+    "expected_section": null,
+    "gold_kind": "vehicle"
+  },
+  {
+    "id": "VEH-P-P26",
+    "question": "请按 AFDC 查液冷维护要求去哪里核对；按 Honda 查 A 型仪表左选择轮重置长按时间。",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "AFDC-电动车维护.docx",
+        "locator": "动力电池冷却",
+        "answer": "冷却系统具体要求应查用户手册或向经销商确认",
+        "pattern": "手册|经销商|manual|dealer",
+        "quote": "具体要求见车辆用户手册或向经销商确认"
+      },
+      {
+        "document": "Honda-Civic-2023-Maintenance-Minder.pdf",
+        "locator": 9,
+        "answer": "A 型仪表按住左选择轮约 10 秒进入重置模式",
+        "pattern": "(?:约|大约)?\\s*10\\s*(?:秒|second)",
+        "quote": "for about 10 seconds to enter the reset mode"
+      }
+    ],
+    "reference_answer": "冷却系统具体要求应查用户手册或向经销商确认。A 型仪表按住左选择轮约 10 秒进入重置模式。",
+    "refusal_target": "",
+    "question_chars": 47,
+    "length": "medium",
+    "difficulty": "hard",
+    "dataset": "车辆维修自定义集",
+    "phase": "performance",
+    "expected_section": null,
+    "gold_kind": "vehicle"
+  },
+  {
+    "id": "VEH-P-P27",
+    "question": "请分开核对两项维修资料。一项来自 AFDC 电动车维护文档，回答动力电池液冷系统具体要求去哪里查；另一项来自 Honda Civic 的 A 型仪表维护资料，回答进入重置模式长按左侧选择轮要持续约几秒。每个条目分别给出原件引用。",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "AFDC-电动车维护.docx",
+        "locator": "动力电池冷却",
+        "answer": "冷却系统具体要求应查用户手册或向经销商确认",
+        "pattern": "手册|经销商|manual|dealer",
+        "quote": "具体要求见车辆用户手册或向经销商确认"
+      },
+      {
+        "document": "Honda-Civic-2023-Maintenance-Minder.pdf",
+        "locator": 9,
+        "answer": "A 型仪表按住左选择轮约 10 秒进入重置模式",
+        "pattern": "(?:约|大约)?\\s*10\\s*(?:秒|second)",
+        "quote": "for about 10 seconds to enter the reset mode"
+      }
+    ],
+    "reference_answer": "冷却系统具体要求应查用户手册或向经销商确认。A 型仪表按住左选择轮约 10 秒进入重置模式。",
+    "refusal_target": "",
+    "question_chars": 114,
+    "length": "long",
+    "difficulty": "hard",
+    "dataset": "车辆维修自定义集",
+    "phase": "performance",
+    "expected_section": null,
+    "gold_kind": "vehicle"
+  },
+  {
+    "id": "MIRACL-zh-1034177#0",
+    "dataset": "MIRACL-zh",
+    "phase": "functional",
+    "question": "阿塞拜疆属于什么气候类型？",
+    "question_chars": 13,
+    "length": "short",
+    "difficulty": "public-benchmark",
+    "gold_kind": "miracl",
+    "positive_docids": [
+      "1666705#1"
+    ],
+    "expected_section": null
+  },
+  {
+    "id": "MIRACL-zh-6859522#0",
+    "dataset": "MIRACL-zh",
+    "phase": "functional",
+    "question": "坦克炮有哪些种类？",
+    "question_chars": 9,
+    "length": "short",
+    "difficulty": "public-benchmark",
+    "gold_kind": "miracl",
+    "positive_docids": [
+      "15583#29",
+      "19913#2",
+      "19913#12"
+    ],
+    "expected_section": null
+  },
+  {
+    "id": "MIRACL-zh-2942377#0",
+    "dataset": "MIRACL-zh",
+    "phase": "functional",
+    "question": "南沙群岛面积多大？",
+    "question_chars": 9,
+    "length": "short",
+    "difficulty": "public-benchmark",
+    "gold_kind": "miracl",
+    "positive_docids": [
+      "23119#4",
+      "23119#0",
+      "3508744#0"
+    ],
+    "expected_section": null
+  },
+  {
+    "id": "MIRACL-zh-202102#0",
+    "dataset": "MIRACL-zh",
+    "phase": "functional",
+    "question": "党的中央委员会每届任期多久？",
+    "question_chars": 14,
+    "length": "short",
+    "difficulty": "public-benchmark",
+    "gold_kind": "miracl",
+    "positive_docids": [
+      "7658#5",
+      "7658#6",
+      "10709#5",
+      "10312#12",
+      "1056980#6"
+    ],
+    "expected_section": null
+  },
+  {
+    "id": "MIRACL-zh-6930896#0",
+    "dataset": "MIRACL-zh",
+    "phase": "functional",
+    "question": "葡萄牙的邻国是哪个国家？",
+    "question_chars": 12,
+    "length": "short",
+    "difficulty": "public-benchmark",
+    "gold_kind": "miracl",
+    "positive_docids": [
+      "4880#12",
+      "4880#0"
+    ],
+    "expected_section": null
+  },
+  {
+    "id": "MIRACL-zh-5188801#0",
+    "dataset": "MIRACL-zh",
+    "phase": "functional",
+    "question": "参议院有哪些职责？",
+    "question_chars": 9,
+    "length": "short",
+    "difficulty": "public-benchmark",
+    "gold_kind": "miracl",
+    "positive_docids": [
+      "917281#30",
+      "134204#2",
+      "5485329#2",
+      "249180#4",
+      "5489950#3"
+    ],
+    "expected_section": null
+  },
+  {
+    "id": "MIRACL-zh-288698#0",
+    "dataset": "MIRACL-zh",
+    "phase": "functional",
+    "question": "马来西亚有哪些旅游景点？",
+    "question_chars": 12,
+    "length": "short",
+    "difficulty": "public-benchmark",
+    "gold_kind": "miracl",
+    "positive_docids": [
+      "33609#31",
+      "33609#32",
+      "1414605#41",
+      "5795028#20",
+      "7182460#24"
+    ],
+    "expected_section": null
+  },
+  {
+    "id": "MIRACL-zh-6038439#0",
+    "dataset": "MIRACL-zh",
+    "phase": "functional",
+    "question": "无线电视哪一年创立？",
+    "question_chars": 10,
+    "length": "short",
+    "difficulty": "public-benchmark",
+    "gold_kind": "miracl",
+    "positive_docids": [
+      "7085#48",
+      "7085#0"
+    ],
+    "expected_section": null
+  },
+  {
+    "id": "MIRACL-zh-962694#0",
+    "dataset": "MIRACL-zh",
+    "phase": "functional",
+    "question": "上海江南造船厂哪一年创立？",
+    "question_chars": 13,
+    "length": "short",
+    "difficulty": "public-benchmark",
+    "gold_kind": "miracl",
+    "positive_docids": [
+      "1677128#0",
+      "1677128#1"
+    ],
+    "expected_section": null
+  },
+  {
+    "id": "MIRACL-zh-1077527#0",
+    "dataset": "MIRACL-zh",
+    "phase": "functional",
+    "question": "卵生动物有哪些？",
+    "question_chars": 8,
+    "length": "short",
+    "difficulty": "public-benchmark",
+    "gold_kind": "miracl",
+    "positive_docids": [
+      "153894#1",
+      "556936#0",
+      "634074#1"
+    ],
+    "expected_section": null
+  },
+  {
+    "id": "MIRACL-en-1023",
+    "dataset": "MIRACL-en",
+    "phase": "functional",
+    "question": "Where did Sun Yat-sen study medicine?",
+    "question_chars": 37,
+    "length": "short",
+    "difficulty": "public-benchmark",
+    "gold_kind": "miracl",
+    "positive_docids": [
+      "11355965#6",
+      "11355965#5",
+      "88483#8",
+      "88483#10"
+    ],
+    "expected_section": null
+  },
+  {
+    "id": "MIRACL-en-908",
+    "dataset": "MIRACL-en",
+    "phase": "functional",
+    "question": "When was Mar Yohannan VIII Hormizd born?",
+    "question_chars": 40,
+    "length": "short",
+    "difficulty": "public-benchmark",
+    "gold_kind": "miracl",
+    "positive_docids": [
+      "21183206#5",
+      "21183206#0"
+    ],
+    "expected_section": null
+  },
+  {
+    "id": "MIRACL-en-3755",
+    "dataset": "MIRACL-en",
+    "phase": "functional",
+    "question": "How many islands are there in Florida?",
+    "question_chars": 38,
+    "length": "short",
+    "difficulty": "public-benchmark",
+    "gold_kind": "miracl",
+    "positive_docids": [
+      "18933066#5",
+      "15366580#0"
+    ],
+    "expected_section": null
+  },
+  {
+    "id": "MIRACL-en-2024",
+    "dataset": "MIRACL-en",
+    "phase": "functional",
+    "question": "Who was the last ruling monarch of Spain?",
+    "question_chars": 41,
+    "length": "short",
+    "difficulty": "public-benchmark",
+    "gold_kind": "miracl",
+    "positive_docids": [
+      "5756685#26"
+    ],
+    "expected_section": null
+  },
+  {
+    "id": "MIRACL-en-174",
+    "dataset": "MIRACL-en",
+    "phase": "functional",
+    "question": "What is the difference between a telenovela and a soap opera?",
+    "question_chars": 61,
+    "length": "medium",
+    "difficulty": "public-benchmark",
+    "gold_kind": "miracl",
+    "positive_docids": [
+      "27009#51",
+      "26536200#1",
+      "311067#42",
+      "26536200#78",
+      "27009#4"
+    ],
+    "expected_section": null
+  },
+  {
+    "id": "MIRACL-en-3798",
+    "dataset": "MIRACL-en",
+    "phase": "functional",
+    "question": "When was the Stuttgart US Army base created?",
+    "question_chars": 44,
+    "length": "short",
+    "difficulty": "public-benchmark",
+    "gold_kind": "miracl",
+    "positive_docids": [
+      "22776054#2",
+      "16958693#1",
+      "22776054#1",
+      "16853992#3",
+      "28565#35",
+      "26420615#2",
+      "6733634#1"
+    ],
+    "expected_section": null
+  },
+  {
+    "id": "MIRACL-en-2935",
+    "dataset": "MIRACL-en",
+    "phase": "functional",
+    "question": "What is the longest highway in Georgia?",
+    "question_chars": 39,
+    "length": "short",
+    "difficulty": "public-benchmark",
+    "gold_kind": "miracl",
+    "positive_docids": [
+      "5504541#1",
+      "7670231#0"
+    ],
+    "expected_section": null
+  },
+  {
+    "id": "MIRACL-en-839",
+    "dataset": "MIRACL-en",
+    "phase": "functional",
+    "question": "What year were specialty drugs designated?",
+    "question_chars": 42,
+    "length": "short",
+    "difficulty": "public-benchmark",
+    "gold_kind": "miracl",
+    "positive_docids": [
+      "48172434#0"
+    ],
+    "expected_section": null
+  },
+  {
+    "id": "MIRACL-en-1971",
+    "dataset": "MIRACL-en",
+    "phase": "functional",
+    "question": "What year did Kubo The Two Strings come out?",
+    "question_chars": 44,
+    "length": "short",
+    "difficulty": "public-benchmark",
+    "gold_kind": "miracl",
+    "positive_docids": [
+      "53011498#0",
+      "45062970#0",
+      "45062970#20",
+      "45062970#11"
+    ],
+    "expected_section": null
+  },
+  {
+    "id": "MIRACL-en-3421",
+    "dataset": "MIRACL-en",
+    "phase": "functional",
+    "question": "What does SIGINT stand for?",
+    "question_chars": 27,
+    "length": "short",
+    "difficulty": "public-benchmark",
+    "gold_kind": "miracl",
+    "positive_docids": [
+      "14863497#17",
+      "39603020#0",
+      "29122#0",
+      "29122#66"
+    ],
+    "expected_section": null
+  },
+  {
+    "id": "RAGTRUTH-15320",
+    "dataset": "RAGTruth-QA",
+    "phase": "functional",
+    "question": "when you have a bowel movement do you lose weight",
+    "question_chars": 49,
+    "length": "medium",
+    "difficulty": "public-benchmark",
+    "gold_kind": "reference",
+    "reference_answer": "While you may technically lose a small amount of weight after a bowel movement, this does not come from a loss of body fat. The decrease in body weight does not come from fat loss in stools, but rather from the elimination of undigested food and waste. Weight loss is primarily tied to your caloric intake and expenditure, not bowel movements. Unless your scale is highly accurate, you're unlikely to notice a difference in your body weight before and after a bowel movement.",
+    "expected_section": "RAGTRUTH-15320"
+  },
+  {
+    "id": "RAGTRUTH-12309",
+    "dataset": "RAGTruth-QA",
+    "phase": "functional",
+    "question": "vinegar uses for dogs",
+    "question_chars": 21,
+    "length": "medium",
+    "difficulty": "public-benchmark",
+    "gold_kind": "reference",
+    "reference_answer": "Vinegar can be used for dogs in several ways. It can be mixed with water and used as a final rinse to give a shiny, healthy coat and balance the skin's pH levels. Apple cider vinegar can be used to clean out a dog's ears, repel fleas, and soothe itchy ears when diluted with water. It can also be used in a bath with soap to fight fleas.",
+    "expected_section": "RAGTRUTH-12309"
+  },
+  {
+    "id": "RAGTRUTH-14458",
+    "dataset": "RAGTruth-QA",
+    "phase": "functional",
+    "question": "how to sew a zipper gusset",
+    "question_chars": 26,
+    "length": "medium",
+    "difficulty": "public-benchmark",
+    "gold_kind": "reference",
+    "reference_answer": "To sew a zipper gusset, start by tracing all patterns to the fabric and cutting it out. Start by making a zipper sandwich, which involves placing a piece of lining fabric face up, then the zipper, and then the outer fabric right side facing down. Line up all three edges. Then, using a zipper foot, sew across the top between the edge of your zipper sandwich and the zipper teeth. Repeat this for the other side of the zipper. Pin the zipper gusset to the zipper about 1/4\" away from the center with the right sides facing each other. Sew a line near the seam line to secure the position. Place the zipper gusset lining on top of them with the right side facing down and stitch on the seam line. Flip the lining to the bottom of the main zipper gusset and top stitch near the seam line. Repeat on the other side. The width of the zipper between the gussets should measure 1/2\". Change the presser foot back to a normal foot and stitch on the seam allowance around the zipper gusset. This should attach the main and lining fabric together nicely. Finally, place the zipper gusset onto the main body of the item you're sewing, aligning the ends to the center markings and sew from marking to marking at both ends. Place the lining on top of them with the right side facing down.",
+    "expected_section": "RAGTRUTH-14458"
+  },
+  {
+    "id": "RAGTRUTH-12423",
+    "dataset": "RAGTruth-QA",
+    "phase": "functional",
+    "question": "how do you process the air you breathe before it gets to your lungs?",
+    "question_chars": 68,
+    "length": "medium",
+    "difficulty": "public-benchmark",
+    "gold_kind": "reference",
+    "reference_answer": "The process of air reaching the lungs involves the diaphragm muscle, which is the principal muscle of breathing. When the diaphragm contracts, it moves down from the bottom of the rib cage towards the abdominal region, allowing air to enter the lungs. This is part of the ventilation component of breathing, which is the movement of oxygen into, and carbon dioxide out of the lungs. Additionally, increasing the volume of the thoracic cavity pulls the lungs along with it, increasing their volume and causing a decrease in air pressure. This forces air from the atmosphere into the lungs, causing inhalation.",
+    "expected_section": "RAGTRUTH-12423"
+  },
+  {
+    "id": "RAGTRUTH-12182",
+    "dataset": "RAGTruth-QA",
+    "phase": "functional",
+    "question": "what do i do if i got my sperrys wet",
+    "question_chars": 36,
+    "length": "medium",
+    "difficulty": "public-benchmark",
+    "gold_kind": "reference",
+    "reference_answer": "If your Sperrys get wet, it's usually not a big deal. However, if they are light tan, water might stain them. If you washed your Sperrys with detergent, it's important to use a leather conditioner afterwards as detergent can dry the leather out. The conditioner helps to revitalize the leather by infusing moisture back into it. For stains, you can use a suede bar & leather brush.",
+    "expected_section": "RAGTRUTH-12182"
+  },
+  {
+    "id": "RAGTRUTH-15332",
+    "dataset": "RAGTruth-QA",
+    "phase": "functional",
+    "question": "what political, economic and social effects have on the united states",
+    "question_chars": 69,
+    "length": "medium",
+    "difficulty": "public-benchmark",
+    "gold_kind": "reference",
+    "reference_answer": "The passages suggest that immigration and the Reconstruction period following the Civil War have had significant political, economic, and social effects on the United States. Immigration has largely shaped the nation as a whole. Reconstruction brought economic unity to the United States for the first time, with the South joining the market system and abandoning their semi-subsistence economy. It also led to industrialization and the establishment of large economic enterprises. Politically, this period carried vital changes and maintained national unity. However, it left many social issues unresolved, including segregation and the integration of African Americans into society and the economy. Despite their legal freedom, African Americans struggled to find work and often had to settle with their former masters under crop lien work contracts.",
+    "expected_section": "RAGTRUTH-15332"
+  },
+  {
+    "id": "RAGTRUTH-12300",
+    "dataset": "RAGTruth-QA",
+    "phase": "functional",
+    "question": "differences and similarities between red and white blood cells",
+    "question_chars": 62,
+    "length": "medium",
+    "difficulty": "public-benchmark",
+    "gold_kind": "reference",
+    "reference_answer": "Both red blood cells (RBCs) and white blood cells (WBCs) are found in the blood and are part of the circulatory system. They are both formed from pluripotent stem cells in the red bone marrow and contain cell membranes and cytoplasm. The main difference is their functions. RBCs are responsible for delivering oxygen from the lungs to the tissue in the body, while WBCs are part of the immune system and help the body combat diseases, viruses, etc.",
+    "expected_section": "RAGTRUTH-12300"
+  },
+  {
+    "id": "RAGTRUTH-15097",
+    "dataset": "RAGTruth-QA",
+    "phase": "functional",
+    "question": "what is psa levels mean",
+    "question_chars": 23,
+    "length": "medium",
+    "difficulty": "public-benchmark",
+    "gold_kind": "reference",
+    "reference_answer": "PSA, or Prostate-specific antigen, is a protein produced by cells of the prostate gland. The level of PSA in a man's blood is measured by the PSA test, which involves sending a blood sample to a laboratory for analysis. The results are usually reported as nanograms of PSA per milliliter (ng/mL) of blood. Elevated PSA levels may indicate conditions such as prostate cancer, a noncancerous condition like prostatitis, or an enlarged prostate. Total PSA levels between 4.0 ng/ml and 10.0 ng/ml may indicate prostate cancer, benign prostate hyperplasia, or inflammation of the prostate.",
+    "expected_section": "RAGTRUTH-15097"
+  },
+  {
+    "id": "RAGTRUTH-14375",
+    "dataset": "RAGTruth-QA",
+    "phase": "functional",
+    "question": "how to cook brats",
+    "question_chars": 17,
+    "length": "medium",
+    "difficulty": "public-benchmark",
+    "gold_kind": "reference",
+    "reference_answer": "Based on the passages provided, the steps to cook brats are as follows:\n\n1. Prick the bratwurst with a fork to prevent them from exploding as they cook. \n2. Combine beer and onions in a large pot and bring it to a boil. Submerge the bratwurst in the beer, adding red pepper flakes, garlic powder, salt, and pepper.\n3. Place the pot over medium heat and simmer for 15 to 20 minutes.\n4. In the meantime, preheat an outdoor grill for medium-high heat and lightly oil the grate.\n5. After simmering, remove the bratwurst from the beer mixture and reduce the heat to low, continuing to cook the onions.\n6. Cook the bratwurst on the preheated grill, turning occasionally, for about 10 to 14 minutes until they are browned evenly.\n7. Serve the bratwurst with the beer and onion mixture as a topping or side.",
+    "expected_section": "RAGTRUTH-14375"
+  },
+  {
+    "id": "RAGTRUTH-15420",
+    "dataset": "RAGTruth-QA",
+    "phase": "functional",
+    "question": "what is a upc description",
+    "question_chars": 25,
+    "length": "medium",
+    "difficulty": "public-benchmark",
+    "gold_kind": "reference",
+    "reference_answer": "A UPC description refers to the Universal Product Code, a barcode symbology used extensively in multiple countries including the United States, Canada, United Kingdom, Australia, New Zealand, and in Europe. It is used for tracking trade items in stores. UPC consists of 12 numeric digits that are uniquely assigned to each trade item. It is primarily used for scanning of trade items at the point of sale, as per GS1 specifications.",
+    "expected_section": "RAGTRUTH-15420"
+  },
+  {
+    "id": "DELUCION-251",
+    "dataset": "RAGBench-DelucionQA",
+    "phase": "functional",
+    "question": "How to activate automatic dimming?",
+    "question_chars": 34,
+    "length": "medium",
+    "difficulty": "public-benchmark",
+    "gold_kind": "reference",
+    "reference_answer": "The Automatic Dimming feature can be activated by using the Uconnect Controls button on the touchscreen.",
+    "expected_section": "DELUCION-251"
+  },
+  {
+    "id": "DELUCION-861",
+    "dataset": "RAGBench-DelucionQA",
+    "phase": "functional",
+    "question": "how to use the key fob to unlock all the doors?",
+    "question_chars": 47,
+    "length": "medium",
+    "difficulty": "public-benchmark",
+    "gold_kind": "reference",
+    "reference_answer": "To unlock all the doors using the key fob, you need to push and release the unlock button on the key fob twice. This action will unlock all the doors of the vehicle.",
+    "expected_section": "DELUCION-861"
+  },
+  {
+    "id": "DELUCION-212",
+    "dataset": "RAGBench-DelucionQA",
+    "phase": "functional",
+    "question": "What is the brake warning light used for?",
+    "question_chars": 41,
+    "length": "medium",
+    "difficulty": "public-benchmark",
+    "gold_kind": "reference",
+    "reference_answer": "The brake warning light is used to monitor various brake functions, including brake fluid level and parking brake application. It also indicates if the parking brake is applied, if the brake fluid level is low, or if there is a problem with the Anti-Lock Brake System reservoir. If the light remains on when the parking brake has been disengaged, and the fluid level is at the full mark on the master cylinder reservoir, it indicates a possible brake hydraulic system malfunction or a problem with the Brake Booster detected by the ABS/ESC system. The light remains on until the issue is corrected, signaling a need for immediate service.",
+    "expected_section": "DELUCION-212"
+  },
+  {
+    "id": "DELUCION-739",
+    "dataset": "RAGBench-DelucionQA",
+    "phase": "functional",
+    "question": "what's the possible damages E-15 may cause?",
+    "question_chars": 43,
+    "length": "medium",
+    "difficulty": "public-benchmark",
+    "gold_kind": "reference",
+    "reference_answer": "Some possible damages that E-15 may cause include starting and drivability problems, damage to critical fuel system components, emissions exceeding the applicable standard, and illumination of the Malfunction Indicator Light.",
+    "expected_section": "DELUCION-739"
+  },
+  {
+    "id": "DELUCION-682",
+    "dataset": "RAGBench-DelucionQA",
+    "phase": "functional",
+    "question": "what should I pay attention to when operating the jack or changing the wheel?",
+    "question_chars": 77,
+    "length": "medium",
+    "difficulty": "public-benchmark",
+    "gold_kind": "reference",
+    "reference_answer": "When operating the jack or changing the wheel, you should pay attention to the following:\n\n1. Do not remain in the vehicle when it is being jacked.\n2. Pull the vehicle far enough off the road to avoid the danger of being hit by moving traffic.\n3. Do not put any part of your body under a vehicle that is on a jack.\n4. Never start or run the engine while the vehicle is on a jack.\n5. Use the jack only for changing tires.\n6. Avoid jacking the vehicle on icy or slippery surfaces.\n7. Jack the vehicle on a firm level surface only.\n8. Do not use the jack to lift the vehicle for service purposes.",
+    "expected_section": "DELUCION-682"
+  },
+  {
+    "id": "DELUCION-380",
+    "dataset": "RAGBench-DelucionQA",
+    "phase": "functional",
+    "question": "What kind of safety features are implemented in this car?",
+    "question_chars": 57,
+    "length": "medium",
+    "difficulty": "public-benchmark",
+    "gold_kind": "reference",
+    "reference_answer": "The car has occupant restraint systems as its main safety feature. It also has safety settings accessible through the Safety/Driving Assistance button on the touchscreen, which may vary depending on the features equipped on the vehicle.",
+    "expected_section": "DELUCION-380"
+  },
+  {
+    "id": "DELUCION-575",
+    "dataset": "RAGBench-DelucionQA",
+    "phase": "functional",
+    "question": "Any tips for driving downhill?",
+    "question_chars": 30,
+    "length": "medium",
+    "difficulty": "public-benchmark",
+    "gold_kind": "reference",
+    "reference_answer": "When driving downhill, it is important to determine if the hill is too steep for a safe descent. Consider factors such as surface traction, grade steepness, obstacles, and the straightness of the descent. If you feel confident in your ability to proceed, make sure you are in 4L and proceed with caution. Use engine braking to control the descent and apply brakes if necessary, but do not allow the tires to lock. It is also recommended to downshift progressively to preserve brakes and provide better acceleration when needed. Never descend a steep grade in NEUTRAL, as using vehicle brakes in conjunction with engine braking is essential to maintaining control and preventing accidents.",
+    "expected_section": "DELUCION-575"
+  },
+  {
+    "id": "DELUCION-56",
+    "dataset": "RAGBench-DelucionQA",
+    "phase": "functional",
+    "question": "how to set up Android Auto?",
+    "question_chars": 27,
+    "length": "medium",
+    "difficulty": "public-benchmark",
+    "gold_kind": "reference",
+    "reference_answer": "To set up Android Auto, you need to follow these steps:\n\n1. Download the Android Auto™ app from the Google Play store on your Android™-powered smartphone.\n2. Connect your Android™-powered smartphone to one of the media USB ports in your vehicle using the factory-provided USB cable.\n3. Ensure that your vehicle is in PARK the first time you use the app.\n4. Make sure you are in an area with cellular coverage as Android Auto™ may use cellular data.\n5. Once the device is connected and recognized, the Phone icon on the drag & drop menu bar changes to the Android Auto™ icon.\n6. Launch Android Auto™ either by it set to launch immediately once a compatible device is connected or by pressing the Android Auto™ icon on the touchscreen.",
+    "expected_section": "DELUCION-56"
+  },
+  {
+    "id": "DELUCION-125",
+    "dataset": "RAGBench-DelucionQA",
+    "phase": "functional",
+    "question": "what should I do to prevent fuel system trouble?",
+    "question_chars": 48,
+    "length": "medium",
+    "difficulty": "public-benchmark",
+    "gold_kind": "reference",
+    "reference_answer": "To prevent fuel system trouble, drain the accumulated water from the fuel/water separator using the fuel/water separator drain provided on the fuel filter housing. Additionally, if you store quantities of fuel, ensure good maintenance of the stored fuel. Drain condensation from the supply tank and change the line filter on a regular basis. Fuel contaminated with water can promote the growth of “microbes” that can clog the fuel filtration system and lines.",
+    "expected_section": "DELUCION-125"
+  },
+  {
+    "id": "DELUCION-826",
+    "dataset": "RAGBench-DelucionQA",
+    "phase": "functional",
+    "question": "When will the Automatic SOS be triggered?",
+    "question_chars": 41,
+    "length": "medium",
+    "difficulty": "public-benchmark",
+    "gold_kind": "reference",
+    "reference_answer": "The Automatic SOS will be triggered in the event that your vehicle's airbags deploy.",
+    "expected_section": "DELUCION-826"
+  },
+  {
+    "id": "RGB-no-answer-256",
+    "dataset": "RGB",
+    "phase": "functional",
+    "question": "2023年女足世界杯总奖金",
+    "question_chars": 13,
+    "length": "short",
+    "difficulty": "no-answer",
+    "gold_kind": "rgb",
+    "expected": [],
+    "excluded_answer": [
+      "1.52亿美元"
+    ],
+    "expected_section": "RGB-no-answer-256"
+  },
+  {
+    "id": "RGB-no-answer-199",
+    "dataset": "RGB",
+    "phase": "functional",
+    "question": "知网垄断被罚了多少钱",
+    "question_chars": 10,
+    "length": "short",
+    "difficulty": "no-answer",
+    "gold_kind": "rgb",
+    "expected": [],
+    "excluded_answer": [
+      "8760万"
+    ],
+    "expected_section": "RGB-no-answer-199"
+  },
+  {
+    "id": "RGB-no-answer-215",
+    "dataset": "RGB",
+    "phase": "functional",
+    "question": "2023年国考计划招录多少人",
+    "question_chars": 14,
+    "length": "short",
+    "difficulty": "no-answer",
+    "gold_kind": "rgb",
+    "expected": [],
+    "excluded_answer": [
+      "3.71万"
+    ],
+    "expected_section": "RGB-no-answer-215"
+  },
+  {
+    "id": "RGB-no-answer-142",
+    "dataset": "RGB",
+    "phase": "functional",
+    "question": "泸定地震造成多少人遇难？",
+    "question_chars": 12,
+    "length": "short",
+    "difficulty": "no-answer",
+    "gold_kind": "rgb",
+    "expected": [],
+    "excluded_answer": [
+      "93人"
+    ],
+    "expected_section": "RGB-no-answer-142"
+  },
+  {
+    "id": "RGB-no-answer-57",
+    "dataset": "RGB",
+    "phase": "functional",
+    "question": "海底捞的新任首席执行官是谁？",
+    "question_chars": 14,
+    "length": "short",
+    "difficulty": "no-answer",
+    "gold_kind": "rgb",
+    "expected": [],
+    "excluded_answer": [
+      "杨利娟"
+    ],
+    "expected_section": "RGB-no-answer-57"
+  },
+  {
+    "id": "RGB-no-answer-144",
+    "dataset": "RGB",
+    "phase": "functional",
+    "question": "《海的尽头是草原》改编自什么真实事件？",
+    "question_chars": 19,
+    "length": "short",
+    "difficulty": "no-answer",
+    "gold_kind": "rgb",
+    "expected": [],
+    "excluded_answer": [
+      "三千孤儿入内蒙"
+    ],
+    "expected_section": "RGB-no-answer-144"
+  },
+  {
+    "id": "RGB-integration-85",
+    "dataset": "RGB",
+    "phase": "functional",
+    "question": "《心居》的主演有哪些",
+    "question_chars": 10,
+    "length": "short",
+    "difficulty": "integration",
+    "gold_kind": "rgb",
+    "expected": [
+      "海清",
+      "童瑶",
+      "张颂文"
+    ],
+    "excluded_answer": [],
+    "expected_section": "RGB-integration-85"
+  },
+  {
+    "id": "RGB-integration-16",
+    "dataset": "RGB",
+    "phase": "functional",
+    "question": "北京冬奥会和冬残奥会的开幕日期分别是什么时候?",
+    "question_chars": 23,
+    "length": "short",
+    "difficulty": "integration",
+    "gold_kind": "rgb",
+    "expected": [
+      "2022年2月4日",
+      "2022年3月4日"
+    ],
+    "excluded_answer": [],
+    "expected_section": "RGB-integration-16"
+  },
+  {
+    "id": "RGB-integration-17",
+    "dataset": "RGB",
+    "phase": "functional",
+    "question": "北京冬奥会的第一棒和最后一棒火炬手分别是谁？",
+    "question_chars": 22,
+    "length": "short",
+    "difficulty": "integration",
+    "gold_kind": "rgb",
+    "expected": [
+      "罗致焕",
+      "迪妮格尔·衣拉木江",
+      "赵嘉文"
+    ],
+    "excluded_answer": [],
+    "expected_section": "RGB-integration-17"
+  },
+  {
+    "id": "RGB-integration-77",
+    "dataset": "RGB",
+    "phase": "functional",
+    "question": "C919商业首飞路线和航班号",
+    "question_chars": 14,
+    "length": "short",
+    "difficulty": "integration",
+    "gold_kind": "rgb",
+    "expected": [
+      "上海",
+      "北京",
+      "MU9191"
+    ],
+    "excluded_answer": [],
+    "expected_section": "RGB-integration-77"
+  },
+  {
+    "id": "RGB-integration-90",
+    "dataset": "RGB",
+    "phase": "functional",
+    "question": "《摇滚狂花》的主演有哪些？",
+    "question_chars": 13,
+    "length": "short",
+    "difficulty": "integration",
+    "gold_kind": "rgb",
+    "expected": [
+      "姚晨",
+      "常远",
+      "庄达菲"
+    ],
+    "excluded_answer": [],
+    "expected_section": "RGB-integration-90"
+  },
+  {
+    "id": "RGB-integration-19",
+    "dataset": "RGB",
+    "phase": "functional",
+    "question": "北京冬奥会男子1500米速度滑冰和短道速滑中谁获得了金牌？",
+    "question_chars": 29,
+    "length": "short",
+    "difficulty": "integration",
+    "gold_kind": "rgb",
+    "expected": [
+      "凯尔·内斯",
+      "黄大宪"
+    ],
+    "excluded_answer": [],
+    "expected_section": "RGB-integration-19"
+  }
+]

@@ -51,7 +51,7 @@ class RerankingSettings(Strict):
     provider: Literal['lexical','local'] = 'lexical'
     model: Literal['BAAI/bge-reranker-v2-m3'] = 'BAAI/bge-reranker-v2-m3'
     device: Literal['auto','cpu','cuda'] = 'auto'
-    candidate_k: int = Field(default=40,ge=20,le=100)
+    candidate_k: int = Field(default=20,ge=8,le=100)
     batch_size: int = Field(default=4,ge=1,le=16)
     max_length: int = Field(default=1024,ge=128,le=8192)
     timeout_seconds: int = Field(default=120,ge=10,le=600)

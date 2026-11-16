@@ -1,0 +1,155 @@
+{
+  "functional": {
+    "overall": {
+      "planned": 111,
+      "valid_denominator": 110,
+      "passed": 105,
+      "rate": 0.9545454545454546,
+      "p50": 6941.86,
+      "p95": 16796.95,
+      "retrieval_p50": 1278,
+      "retrieval_p95": 1926
+    },
+    "datasets": {
+      "车辆维修自定义集": {
+        "planned": 59,
+        "valid_denominator": 59,
+        "passed": 57,
+        "rate": 0.9661016949152542,
+        "p50": 6639.57,
+        "p95": 15932.06,
+        "retrieval_p50": 1695,
+        "retrieval_p95": 2105
+      },
+      "MIRACL-zh": {
+        "planned": 10,
+        "valid_denominator": 10,
+        "passed": 10,
+        "rate": 1.0,
+        "p50": 8770.039999999999,
+        "p95": 21090.14,
+        "retrieval_p50": 775.5,
+        "retrieval_p95": 907
+      },
+      "MIRACL-en": {
+        "planned": 10,
+        "valid_denominator": 10,
+        "passed": 9,
+        "rate": 0.9,
+        "p50": 6588.15,
+        "p95": 16796.95,
+        "retrieval_p50": 921.5,
+        "retrieval_p95": 1029
+      },
+      "RAGTruth-QA": {
+        "planned": 10,
+        "valid_denominator": 10,
+        "passed": 10,
+        "rate": 1.0,
+        "p50": 11523.779999999999,
+        "p95": 24139.67,
+        "retrieval_p50": 698.5,
+        "retrieval_p95": 788
+      },
+      "RAGBench-DelucionQA": {
+        "planned": 10,
+        "valid_denominator": 10,
+        "passed": 10,
+        "rate": 1.0,
+        "p50": 11965.974999999999,
+        "p95": 19258.59,
+        "retrieval_p50": 778.5,
+        "retrieval_p95": 865
+      },
+      "RGB": {
+        "planned": 12,
+        "valid_denominator": 11,
+        "passed": 9,
+        "rate": 0.8181818181818182,
+        "p50": 6725.1900000000005,
+        "p95": 8645.94,
+        "retrieval_p50": 633.5,
+        "retrieval_p95": 721
+      }
+    }
+  },
+  "performance": {
+    "overall": {
+      "planned": 79,
+      "valid_denominator": 78,
+      "passed": 70,
+      "rate": 0.8974358974358975,
+      "p50": 6760.35,
+      "p95": 16640.77,
+      "retrieval_p50": 1133,
+      "retrieval_p95": 1962
+    },
+    "datasets": {
+      "车辆维修自定义集": {
+        "planned": 27,
+        "valid_denominator": 27,
+        "passed": 22,
+        "rate": 0.8148148148148148,
+        "p50": 5808.85,
+        "p95": 14306.79,
+        "retrieval_p50": 1123,
+        "retrieval_p95": 2096
+      },
+      "MIRACL-zh": {
+        "planned": 10,
+        "valid_denominator": 10,
+        "passed": 10,
+        "rate": 1.0,
+        "p50": 7228.735000000001,
+        "p95": 18579.66,
+        "retrieval_p50": 1199.5,
+        "retrieval_p95": 1317
+      },
+      "MIRACL-en": {
+        "planned": 10,
+        "valid_denominator": 10,
+        "passed": 10,
+        "rate": 1.0,
+        "p50": 6181.0,
+        "p95": 16123.59,
+        "retrieval_p50": 1267.5,
+        "retrieval_p95": 1359
+      },
+      "RAGTruth-QA": {
+        "planned": 10,
+        "valid_denominator": 10,
+        "passed": 10,
+        "rate": 1.0,
+        "p50": 13211.41,
+        "p95": 15138.26,
+        "retrieval_p50": 1007.0,
+        "retrieval_p95": 1157
+      },
+      "RAGBench-DelucionQA": {
+        "planned": 10,
+        "valid_denominator": 10,
+        "passed": 10,
+        "rate": 1.0,
+        "p50": 14200.1,
+        "p95": 19368.76,
+        "retrieval_p50": 1159.0,
+        "retrieval_p95": 1209
+      },
+      "RGB": {
+        "planned": 12,
+        "valid_denominator": 11,
+        "passed": 8,
+        "rate": 0.7272727272727273,
+        "p50": 5532.905,
+        "p95": 15717.64,
+        "retrieval_p50": 651.5,
+        "retrieval_p95": 860
+      }
+    }
+  },
+  "targets": {
+    "manual_pass_90": true,
+    "p50_8s": true,
+    "p95_15s": false
+  }
+}

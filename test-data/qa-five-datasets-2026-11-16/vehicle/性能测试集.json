@@ -1,0 +1,689 @@
+[
+  {
+    "id": "P01",
+    "question": "冷胎应停驶多久？",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少停驶 3 小时后按冷胎条件测量",
+        "pattern": "(?:至少|不少于|不低于|以上).{0,6}(?:3|三)\\s*小时|(?:3|三)\\s*小时(?:或更久|以上|及以上)",
+        "quote": "车停驶至少 3 小时后"
+      }
+    ],
+    "reference_answer": "至少停驶 3 小时后按冷胎条件测量。",
+    "refusal_target": "",
+    "question_chars": 8,
+    "length": "short",
+    "difficulty": "easy"
+  },
+  {
+    "id": "P02",
+    "question": "按 NHTSA TireWise 的冷胎判定，测胎压之前车辆最少要停驶多长时间？",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少停驶 3 小时后按冷胎条件测量",
+        "pattern": "(?:至少|不少于|不低于|以上).{0,6}(?:3|三)\\s*小时|(?:3|三)\\s*小时(?:或更久|以上|及以上)",
+        "quote": "车停驶至少 3 小时后"
+      }
+    ],
+    "reference_answer": "至少停驶 3 小时后按冷胎条件测量。",
+    "refusal_target": "",
+    "question_chars": 40,
+    "length": "medium",
+    "difficulty": "easy"
+  },
+  {
+    "id": "P03",
+    "question": "我在整理车辆保养资料，需要在维修接待表里填写一个客观的检查时间。请只查 NHTSA TireWise 关于冷胎测量胎压的内容，并用一句话告诉我，车辆至少停驶多长时间后可以按冷胎条件测量。不要扩展到胎纹、换位或具体车型的胎压。",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少停驶 3 小时后按冷胎条件测量",
+        "pattern": "(?:至少|不少于|不低于|以上).{0,6}(?:3|三)\\s*小时|(?:3|三)\\s*小时(?:或更久|以上|及以上)",
+        "quote": "车停驶至少 3 小时后"
+      }
+    ],
+    "reference_answer": "至少停驶 3 小时后按冷胎条件测量。",
+    "refusal_target": "",
+    "question_chars": 112,
+    "length": "long",
+    "difficulty": "easy"
+  },
+  {
+    "id": "P04",
+    "question": "冷胎停多久？胎压多久查，含备胎吗？",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少停驶 3 小时后按冷胎条件测量",
+        "pattern": "(?:至少|不少于|不低于|以上).{0,6}(?:3|三)\\s*小时|(?:3|三)\\s*小时(?:或更久|以上|及以上)",
+        "quote": "车停驶至少 3 小时后"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少每月检查一次所有轮胎的胎压，包括备胎",
+        "pattern": "每月.{0,32}备胎|备胎.{0,32}每月",
+        "quote": "至少每月检查一次所有轮胎的胎压，包括备胎"
+      }
+    ],
+    "reference_answer": "至少停驶 3 小时后按冷胎条件测量。至少每月检查一次所有轮胎的胎压，包括备胎。",
+    "refusal_target": "",
+    "question_chars": 17,
+    "length": "short",
+    "difficulty": "medium"
+  },
+  {
+    "id": "P05",
+    "question": "请根据轮胎维护资料说明冷胎测量所需的最短停车时长，以及每月胎压检查是否包括备胎。",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少停驶 3 小时后按冷胎条件测量",
+        "pattern": "(?:至少|不少于|不低于|以上).{0,6}(?:3|三)\\s*小时|(?:3|三)\\s*小时(?:或更久|以上|及以上)",
+        "quote": "车停驶至少 3 小时后"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少每月检查一次所有轮胎的胎压，包括备胎",
+        "pattern": "每月.{0,32}备胎|备胎.{0,32}每月",
+        "quote": "至少每月检查一次所有轮胎的胎压，包括备胎"
+      }
+    ],
+    "reference_answer": "至少停驶 3 小时后按冷胎条件测量。至少每月检查一次所有轮胎的胎压，包括备胎。",
+    "refusal_target": "",
+    "question_chars": 40,
+    "length": "medium",
+    "difficulty": "medium"
+  },
+  {
+    "id": "P06",
+    "question": "请帮我核对轮胎保养记录里的两个字段。第一个字段是检查胎压时判定冷胎的最短停驶时间，第二个字段是常规胎压检查的最低频率及是否检查备胎。只依据 NHTSA 轮胎维护资料逐项回答并给出引用，不需要写更换建议、胎纹深度和具体胎压数值。",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少停驶 3 小时后按冷胎条件测量",
+        "pattern": "(?:至少|不少于|不低于|以上).{0,6}(?:3|三)\\s*小时|(?:3|三)\\s*小时(?:或更久|以上|及以上)",
+        "quote": "车停驶至少 3 小时后"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少每月检查一次所有轮胎的胎压，包括备胎",
+        "pattern": "每月.{0,32}备胎|备胎.{0,32}每月",
+        "quote": "至少每月检查一次所有轮胎的胎压，包括备胎"
+      }
+    ],
+    "reference_answer": "至少停驶 3 小时后按冷胎条件测量。至少每月检查一次所有轮胎的胎压，包括备胎。",
+    "refusal_target": "",
+    "question_chars": 113,
+    "length": "long",
+    "difficulty": "medium"
+  },
+  {
+    "id": "P07",
+    "question": "Q6前雨刮禁忌？冷胎等多久、多久查胎压，含备胎吗？",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 48,
+        "answer": "雨刮臂翻起后不得移动车辆或操控雨刮操纵杆",
+        "pattern": "(?:不得|不能|禁止|不要).{0,18}(?:移动|运动|驾驶).{0,10}车辆.{0,20}(?:操控|操作|拨动).{0,8}雨刮操纵杆",
+        "quote": "不得运动车辆或操控雨刮操纵杆"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少停驶 3 小时后按冷胎条件测量",
+        "pattern": "(?:至少|不少于|不低于|以上).{0,6}(?:3|三)\\s*小时|(?:3|三)\\s*小时(?:或更久|以上|及以上)",
+        "quote": "车停驶至少 3 小时后"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少每月检查一次所有轮胎的胎压，包括备胎",
+        "pattern": "每月.{0,32}备胎|备胎.{0,32}每月",
+        "quote": "至少每月检查一次所有轮胎的胎压，包括备胎"
+      }
+    ],
+    "reference_answer": "雨刮臂翻起后不得移动车辆或操控雨刮操纵杆。至少停驶 3 小时后按冷胎条件测量。至少每月检查一次所有轮胎的胎压，包括备胎。",
+    "refusal_target": "",
+    "question_chars": 25,
+    "length": "short",
+    "difficulty": "hard"
+  },
+  {
+    "id": "P08",
+    "question": "分别查 Q6 前雨刮臂翻起后的两项限制，以及 NHTSA 冷胎最短停驶时间和胎压检查频率、备胎。",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 48,
+        "answer": "雨刮臂翻起后不得移动车辆或操控雨刮操纵杆",
+        "pattern": "(?:不得|不能|禁止|不要).{0,18}(?:移动|运动|驾驶).{0,10}车辆.{0,20}(?:操控|操作|拨动).{0,8}雨刮操纵杆",
+        "quote": "不得运动车辆或操控雨刮操纵杆"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少停驶 3 小时后按冷胎条件测量",
+        "pattern": "(?:至少|不少于|不低于|以上).{0,6}(?:3|三)\\s*小时|(?:3|三)\\s*小时(?:或更久|以上|及以上)",
+        "quote": "车停驶至少 3 小时后"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少每月检查一次所有轮胎的胎压，包括备胎",
+        "pattern": "每月.{0,32}备胎|备胎.{0,32}每月",
+        "quote": "至少每月检查一次所有轮胎的胎压，包括备胎"
+      }
+    ],
+    "reference_answer": "雨刮臂翻起后不得移动车辆或操控雨刮操纵杆。至少停驶 3 小时后按冷胎条件测量。至少每月检查一次所有轮胎的胎压，包括备胎。",
+    "refusal_target": "",
+    "question_chars": 48,
+    "length": "medium",
+    "difficulty": "hard"
+  },
+  {
+    "id": "P09",
+    "question": "我在核对一张车辆保养清单，清单有两个来自不同文件的条目。请先依据 Q6 说明书列出前雨刮臂已经翻起后的两项禁止操作，再依据 NHTSA TireWise 说明冷胎胎压测量前至少停驶多久，以及所有轮胎胎压的检查频率和备胎是否包含在内。两部分分别给出引用。",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 48,
+        "answer": "雨刮臂翻起后不得移动车辆或操控雨刮操纵杆",
+        "pattern": "(?:不得|不能|禁止|不要).{0,18}(?:移动|运动|驾驶).{0,10}车辆.{0,20}(?:操控|操作|拨动).{0,8}雨刮操纵杆",
+        "quote": "不得运动车辆或操控雨刮操纵杆"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少停驶 3 小时后按冷胎条件测量",
+        "pattern": "(?:至少|不少于|不低于|以上).{0,6}(?:3|三)\\s*小时|(?:3|三)\\s*小时(?:或更久|以上|及以上)",
+        "quote": "车停驶至少 3 小时后"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少每月检查一次所有轮胎的胎压，包括备胎",
+        "pattern": "每月.{0,32}备胎|备胎.{0,32}每月",
+        "quote": "至少每月检查一次所有轮胎的胎压，包括备胎"
+      }
+    ],
+    "reference_answer": "雨刮臂翻起后不得移动车辆或操控雨刮操纵杆。至少停驶 3 小时后按冷胎条件测量。至少每月检查一次所有轮胎的胎压，包括备胎。",
+    "refusal_target": "",
+    "question_chars": 126,
+    "length": "long",
+    "difficulty": "hard"
+  },
+  {
+    "id": "P10",
+    "question": "TPMS何时报警？",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 2,
+        "answer": "TPMS 在胎压明显偏低时会警告",
+        "pattern": "(?:低|不足).{0,15}(?:警告|报警|预警|warn)",
+        "quote": "TPMS 在胎压明显偏低时警告"
+      }
+    ],
+    "reference_answer": "TPMS 在胎压明显偏低时会警告。",
+    "refusal_target": "",
+    "question_chars": 9,
+    "length": "short",
+    "difficulty": "easy"
+  },
+  {
+    "id": "P11",
+    "question": "按 NHTSA 轮胎维护幻灯片，TPMS 出现警告通常表示胎压怎么了？",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 2,
+        "answer": "TPMS 在胎压明显偏低时会警告",
+        "pattern": "(?:低|不足).{0,15}(?:警告|报警|预警|warn)",
+        "quote": "TPMS 在胎压明显偏低时警告"
+      }
+    ],
+    "reference_answer": "TPMS 在胎压明显偏低时会警告。",
+    "refusal_target": "",
+    "question_chars": 35,
+    "length": "medium",
+    "difficulty": "easy"
+  },
+  {
+    "id": "P12",
+    "question": "我在核对轮胎维护培训材料的报警栏，请依据 NHTSA 轮胎维护幻灯片，只回答 TPMS 在什么胎压条件下会发出警告。请给出明确条件和对应引用即可，后续的维修建议和具体压力数值都不属于本题。",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 2,
+        "answer": "TPMS 在胎压明显偏低时会警告",
+        "pattern": "(?:低|不足).{0,15}(?:警告|报警|预警|warn)",
+        "quote": "TPMS 在胎压明显偏低时警告"
+      }
+    ],
+    "reference_answer": "TPMS 在胎压明显偏低时会警告。",
+    "refusal_target": "",
+    "question_chars": 94,
+    "length": "long",
+    "difficulty": "easy"
+  },
+  {
+    "id": "P13",
+    "question": "Civic左轮按几秒？",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Honda-Civic-2023-Maintenance-Minder.pdf",
+        "locator": 9,
+        "answer": "A 型仪表按住左选择轮约 10 秒进入重置模式",
+        "pattern": "(?:约|大约)?\\s*10\\s*(?:秒|second)",
+        "quote": "for about 10 seconds to enter the reset mode"
+      }
+    ],
+    "reference_answer": "A 型仪表按住左选择轮约 10 秒进入重置模式。",
+    "refusal_target": "",
+    "question_chars": 11,
+    "length": "short",
+    "difficulty": "easy"
+  },
+  {
+    "id": "P14",
+    "question": "在 Honda Civic A 型仪表上，长按左侧选择轮几秒才会进入保养信息重置模式？",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Honda-Civic-2023-Maintenance-Minder.pdf",
+        "locator": 9,
+        "answer": "A 型仪表按住左选择轮约 10 秒进入重置模式",
+        "pattern": "(?:约|大约)?\\s*10\\s*(?:秒|second)",
+        "quote": "for about 10 seconds to enter the reset mode"
+      }
+    ],
+    "reference_answer": "A 型仪表按住左选择轮约 10 秒进入重置模式。",
+    "refusal_target": "",
+    "question_chars": 43,
+    "length": "medium",
+    "difficulty": "easy"
+  },
+  {
+    "id": "P15",
+    "question": "我在复核 2023 款 Honda Civic 车主资料中 A 型仪表的保养信息操作卡。请定位进入重置模式的那一步，只告诉我在维护提示界面上应把左侧选择轮按住约多少秒，并给出对应位置的引用，无需叙述完整菜单。",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Honda-Civic-2023-Maintenance-Minder.pdf",
+        "locator": 9,
+        "answer": "A 型仪表按住左选择轮约 10 秒进入重置模式",
+        "pattern": "(?:约|大约)?\\s*10\\s*(?:秒|second)",
+        "quote": "for about 10 seconds to enter the reset mode"
+      }
+    ],
+    "reference_answer": "A 型仪表按住左选择轮约 10 秒进入重置模式。",
+    "refusal_target": "",
+    "question_chars": 104,
+    "length": "long",
+    "difficulty": "easy"
+  },
+  {
+    "id": "P16",
+    "question": "换位跑几英里？偏磨能提前吗？",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 3,
+        "answer": "只有制造商建议换位时，可每 5,000 至 8,000 英里换位",
+        "pattern": "5[,，]?000.{0,15}8[,，]?000.{0,6}(?:英里|mile)",
+        "quote": "可每 5,000 至 8,000 英里换位一次"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 3,
+        "answer": "出现不均匀磨损可以提前换位",
+        "pattern": "提前|缩短|earlier|sooner",
+        "quote": "如果出现不均匀磨损，可以提前"
+      }
+    ],
+    "reference_answer": "只有制造商建议换位时，可每 5,000 至 8,000 英里换位。出现不均匀磨损可以提前换位。",
+    "refusal_target": "",
+    "question_chars": 14,
+    "length": "short",
+    "difficulty": "medium"
+  },
+  {
+    "id": "P17",
+    "question": "按 NHTSA 资料，厂家建议换位时的英里区间，以及出现不均匀磨损能否提前？",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 3,
+        "answer": "只有制造商建议换位时，可每 5,000 至 8,000 英里换位",
+        "pattern": "5[,，]?000.{0,15}8[,，]?000.{0,6}(?:英里|mile)",
+        "quote": "可每 5,000 至 8,000 英里换位一次"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 3,
+        "answer": "出现不均匀磨损可以提前换位",
+        "pattern": "提前|缩短|earlier|sooner",
+        "quote": "如果出现不均匀磨损，可以提前"
+      }
+    ],
+    "reference_answer": "只有制造商建议换位时，可每 5,000 至 8,000 英里换位。出现不均匀磨损可以提前换位。",
+    "refusal_target": "",
+    "question_chars": 38,
+    "length": "medium",
+    "difficulty": "medium"
+  },
+  {
+    "id": "P18",
+    "question": "我们在整理一张轮胎复检表，按照 NHTSA 轮胎资料填写两栏。在制造商建议换位的前提下，第一栏要填写建议的英里区间，第二栏要填写出现不均匀磨损时能否提前。请保留前提并给引用，暂时不用说明换位的具体排列方式。",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 3,
+        "answer": "只有制造商建议换位时，可每 5,000 至 8,000 英里换位",
+        "pattern": "5[,，]?000.{0,15}8[,，]?000.{0,6}(?:英里|mile)",
+        "quote": "可每 5,000 至 8,000 英里换位一次"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 3,
+        "answer": "出现不均匀磨损可以提前换位",
+        "pattern": "提前|缩短|earlier|sooner",
+        "quote": "如果出现不均匀磨损，可以提前"
+      }
+    ],
+    "reference_answer": "只有制造商建议换位时，可每 5,000 至 8,000 英里换位。出现不均匀磨损可以提前换位。",
+    "refusal_target": "",
+    "question_chars": 103,
+    "length": "long",
+    "difficulty": "medium"
+  },
+  {
+    "id": "P19",
+    "question": "Q6慢刮、快刮是几挡？",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 47,
+        "answer": "雨刮操纵杆位置 2 为慢刮水",
+        "pattern": "(?:位置|档位|挡位)\\s*2|2\\s*[挡档]",
+        "quote": "2 慢刮水"
+      },
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 47,
+        "answer": "雨刮操纵杆位置 3 为快刮水",
+        "pattern": "(?:位置|档位|挡位)\\s*3|3\\s*[挡档]",
+        "quote": "3 快刮水"
+      }
+    ],
+    "reference_answer": "雨刮操纵杆位置 2 为慢刮水。雨刮操纵杆位置 3 为快刮水。",
+    "refusal_target": "",
+    "question_chars": 11,
+    "length": "short",
+    "difficulty": "medium"
+  },
+  {
+    "id": "P20",
+    "question": "Q6 说明书中，前车窗玻璃雨刮拨杆的慢刮水、快刮水分别是哪个位置？",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 47,
+        "answer": "雨刮操纵杆位置 2 为慢刮水",
+        "pattern": "(?:位置|档位|挡位)\\s*2|2\\s*[挡档]",
+        "quote": "2 慢刮水"
+      },
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 47,
+        "answer": "雨刮操纵杆位置 3 为快刮水",
+        "pattern": "(?:位置|档位|挡位)\\s*3|3\\s*[挡档]",
+        "quote": "3 快刮水"
+      }
+    ],
+    "reference_answer": "雨刮操纵杆位置 2 为慢刮水。雨刮操纵杆位置 3 为快刮水。",
+    "refusal_target": "",
+    "question_chars": 33,
+    "length": "medium",
+    "difficulty": "medium"
+  },
+  {
+    "id": "P21",
+    "question": "我需要核对 Q6 的雨刮培训卡片中的两个独立字段。请仅查 Q6 说明书车窗玻璃雨刮器操纵杆段落，分别填写慢刮水和快刮水所对应的位置编号，并给出引用。其余雨量感应、关闭雨刮和喷洗位置都可以省略。",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 47,
+        "answer": "雨刮操纵杆位置 2 为慢刮水",
+        "pattern": "(?:位置|档位|挡位)\\s*2|2\\s*[挡档]",
+        "quote": "2 慢刮水"
+      },
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 47,
+        "answer": "雨刮操纵杆位置 3 为快刮水",
+        "pattern": "(?:位置|档位|挡位)\\s*3|3\\s*[挡档]",
+        "quote": "3 快刮水"
+      }
+    ],
+    "reference_answer": "雨刮操纵杆位置 2 为慢刮水。雨刮操纵杆位置 3 为快刮水。",
+    "refusal_target": "",
+    "question_chars": 96,
+    "length": "long",
+    "difficulty": "medium"
+  },
+  {
+    "id": "P22",
+    "question": "Q6雨刮按哪个钮？TPMS不亮多久查胎压？",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 48,
+        "answer": "按雨刮片上的锁止按钮再从支座拔出",
+        "pattern": "(?:锁止|锁定|解锁).{0,4}(?:按钮|按键)",
+        "quote": "按雨刮片上的锁止按钮"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 2,
+        "answer": "TPMS 未亮灯时仍应每月实测胎压",
+        "pattern": "(?:每月|monthly)",
+        "quote": "仍应每月实测胎压"
+      }
+    ],
+    "reference_answer": "按雨刮片上的锁止按钮再从支座拔出。TPMS 未亮灯时仍应每月实测胎压。",
+    "refusal_target": "",
+    "question_chars": 21,
+    "length": "short",
+    "difficulty": "hard"
+  },
+  {
+    "id": "P23",
+    "question": "按 Q6 说明更换前雨刮的锁止按钮；按 NHTSA 说明 TPMS 不亮灯时胎压实测频率。",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 48,
+        "answer": "按雨刮片上的锁止按钮再从支座拔出",
+        "pattern": "(?:锁止|锁定|解锁).{0,4}(?:按钮|按键)",
+        "quote": "按雨刮片上的锁止按钮"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 2,
+        "answer": "TPMS 未亮灯时仍应每月实测胎压",
+        "pattern": "(?:每月|monthly)",
+        "quote": "仍应每月实测胎压"
+      }
+    ],
+    "reference_answer": "按雨刮片上的锁止按钮再从支座拔出。TPMS 未亮灯时仍应每月实测胎压。",
+    "refusal_target": "",
+    "question_chars": 45,
+    "length": "medium",
+    "difficulty": "hard"
+  },
+  {
+    "id": "P24",
+    "question": "我在汇总来自两份文件的维护知识。首先请按 Q6 说明书说明拔出旧前雨刮片之前要按哪个按钮。其次请单独依据 NHTSA 轮胎幻灯片说明，即使胎压监测系统未亮灯，仍要按什么频率实测胎压。两个条目都分别附上证据即可。",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 48,
+        "answer": "按雨刮片上的锁止按钮再从支座拔出",
+        "pattern": "(?:锁止|锁定|解锁).{0,4}(?:按钮|按键)",
+        "quote": "按雨刮片上的锁止按钮"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 2,
+        "answer": "TPMS 未亮灯时仍应每月实测胎压",
+        "pattern": "(?:每月|monthly)",
+        "quote": "仍应每月实测胎压"
+      }
+    ],
+    "reference_answer": "按雨刮片上的锁止按钮再从支座拔出。TPMS 未亮灯时仍应每月实测胎压。",
+    "refusal_target": "",
+    "question_chars": 105,
+    "length": "long",
+    "difficulty": "hard"
+  },
+  {
+    "id": "P25",
+    "question": "AFDC冷却查哪？Civic左轮按几秒？",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "AFDC-电动车维护.docx",
+        "locator": "动力电池冷却",
+        "answer": "冷却系统具体要求应查用户手册或向经销商确认",
+        "pattern": "手册|经销商|manual|dealer",
+        "quote": "具体要求见车辆用户手册或向经销商确认"
+      },
+      {
+        "document": "Honda-Civic-2023-Maintenance-Minder.pdf",
+        "locator": 9,
+        "answer": "A 型仪表按住左选择轮约 10 秒进入重置模式",
+        "pattern": "(?:约|大约)?\\s*10\\s*(?:秒|second)",
+        "quote": "for about 10 seconds to enter the reset mode"
+      }
+    ],
+    "reference_answer": "冷却系统具体要求应查用户手册或向经销商确认。A 型仪表按住左选择轮约 10 秒进入重置模式。",
+    "refusal_target": "",
+    "question_chars": 20,
+    "length": "short",
+    "difficulty": "hard"
+  },
+  {
+    "id": "P26",
+    "question": "请按 AFDC 查液冷维护要求去哪里核对；按 Honda 查 A 型仪表左选择轮重置长按时间。",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "AFDC-电动车维护.docx",
+        "locator": "动力电池冷却",
+        "answer": "冷却系统具体要求应查用户手册或向经销商确认",
+        "pattern": "手册|经销商|manual|dealer",
+        "quote": "具体要求见车辆用户手册或向经销商确认"
+      },
+      {
+        "document": "Honda-Civic-2023-Maintenance-Minder.pdf",
+        "locator": 9,
+        "answer": "A 型仪表按住左选择轮约 10 秒进入重置模式",
+        "pattern": "(?:约|大约)?\\s*10\\s*(?:秒|second)",
+        "quote": "for about 10 seconds to enter the reset mode"
+      }
+    ],
+    "reference_answer": "冷却系统具体要求应查用户手册或向经销商确认。A 型仪表按住左选择轮约 10 秒进入重置模式。",
+    "refusal_target": "",
+    "question_chars": 47,
+    "length": "medium",
+    "difficulty": "hard"
+  },
+  {
+    "id": "P27",
+    "question": "请分开核对两项维修资料。一项来自 AFDC 电动车维护文档，回答动力电池液冷系统具体要求去哪里查；另一项来自 Honda Civic 的 A 型仪表维护资料，回答进入重置模式长按左侧选择轮要持续约几秒。每个条目分别给出原件引用。",
+    "kind": "性能",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "AFDC-电动车维护.docx",
+        "locator": "动力电池冷却",
+        "answer": "冷却系统具体要求应查用户手册或向经销商确认",
+        "pattern": "手册|经销商|manual|dealer",
+        "quote": "具体要求见车辆用户手册或向经销商确认"
+      },
+      {
+        "document": "Honda-Civic-2023-Maintenance-Minder.pdf",
+        "locator": 9,
+        "answer": "A 型仪表按住左选择轮约 10 秒进入重置模式",
+        "pattern": "(?:约|大约)?\\s*10\\s*(?:秒|second)",
+        "quote": "for about 10 seconds to enter the reset mode"
+      }
+    ],
+    "reference_answer": "冷却系统具体要求应查用户手册或向经销商确认。A 型仪表按住左选择轮约 10 秒进入重置模式。",
+    "refusal_target": "",
+    "question_chars": 114,
+    "length": "long",
+    "difficulty": "hard"
+  }
+]

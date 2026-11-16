@@ -34,7 +34,8 @@
 
 - 用户可选择一个或多个已授权知识库进行自然语言提问。
 - Kimi 仅接收通过权限和阈值检查的检索证据。
-- 候选回答按句段执行引用检查、原文引文检查、数字一致性检查和独立模型核验。
+- 默认使用“引用先行”低延迟核验：Kimi在同一次调用中返回事实、引用和逐字引文，本地执行引文定位、OCR轻微容错及数字绑定；高风险场景可切换为第二次Kimi独立核验。
+- 回答最多保留4条核心事实；单次生成超过8秒时才启动一个可取消的备援请求，用受控调用开销降低模型长尾。
 - 证据不足时明确拒答或提示补充资料，不发布未通过校验的候选句段。
 - 通过 SSE 流式展示 `meta`、`token`、`citation`、`done` 和 `error` 事件。
 - 支持会话历史、重命名、继续、删除、反馈及 Word 导出。导出按轮保留提问、回答和引用索引，内嵌原版页面图片，并在可定位的原页文字上高亮。引用编号和图片均为静态内容。
@@ -203,6 +204,8 @@ Copy-Item .env.example .env
 KIMI_API_KEY=请填写重新生成的有效密钥
 KIMI_BASE_URL=https://api.moonshot.cn/v1
 KIMI_MODEL=kimi-k2.6
+RAG_QA_VERIFICATION_MODE=citation-first
+RAG_QA_HEDGE_DELAY_SECONDS=8
 
 RAG_DATABASE_URL=postgresql://rag:rag-local-dev@127.0.0.1:5432/rag
 RAG_WORKER_MODE=external
@@ -322,6 +325,8 @@ pnpm build
 
 真实 Kimi、真实 MinIO 和 PostgreSQL 联调可能产生模型费用或写入测试记录，应在隔离知识库或测试环境中执行。
 
+五数据集端到端知识问答评测见[`test-results/qa-five-datasets-2026-11-16`](test-results/qa-five-datasets-2026-11-16)：功能人工通过率95.45%，完整响应P50为6.76秒，P95为16.64秒。P50达到8秒目标，P95仍高于15秒目标；报告保留了失败题、人工改判原因和模型调用开销，未将检索召回率冒充问答准确率。
+
 ## 安全说明
 
 - 不要把 Kimi 密钥、对象存储密钥或生产数据库口令提交到 Git。
@@ -350,6 +355,7 @@ pnpm build
 - [存储与工作进程升级指南](docs/storage-upgrade.md)
 - [多模态与数据源接入记录](docs/multimodal-datasource-v012.md)
 - [0.12.0 单元测试与回归报告](docs/testing/v0.12-test-report.md)
+- [五数据集知识问答功能与性能测试报告](test-results/qa-five-datasets-2026-11-16/知识问答模块五数据集功能与性能测试报告_V2.0.md)
 - [本地语义检索升级说明](docs/semantic-retrieval-v09.md)
 - [中英召回与报告分章检索记录](docs/retrieval-v08.md)
 - [第一轮质量改进记录](docs/quality-v010.md)

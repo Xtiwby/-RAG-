@@ -1,0 +1,1104 @@
+[
+  {
+    "id": "F01",
+    "question": "Q6 前雨刮片更换前应处于什么位置？",
+    "kind": "事实",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 48,
+        "answer": "前雨刮应处于雨刷更换位置",
+        "pattern": "雨刷更换位置|雨刮更换位置",
+        "quote": "前提：雨刮位于雨刷更换位置"
+      }
+    ],
+    "reference_answer": "前雨刮应处于雨刷更换位置。",
+    "refusal_target": "",
+    "question_chars": 18
+  },
+  {
+    "id": "F02",
+    "question": "Q6 更换前雨刮片之前，雨刮操纵杆应先切到哪个位置？MMI 依次进入哪些菜单？",
+    "kind": "多要点",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 48,
+        "answer": "操作前关闭雨刮，置于位置 0",
+        "pattern": "(?:位置|挡位|档位)\\s*[0０]|[0０]\\s*[挡档]",
+        "quote": "关闭雨刮（位置 0"
+      },
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 48,
+        "answer": "MMI 路径为车辆、设置和服务、雨刷更换位置",
+        "pattern": "车辆.{0,15}设置和服务.{0,15}雨[刷刮]更换位置",
+        "quote": "车辆>设置和服务>雨刷更换位置"
+      }
+    ],
+    "reference_answer": "操作前关闭雨刮，置于位置 0。MMI 路径为车辆、设置和服务、雨刷更换位置。",
+    "refusal_target": "",
+    "question_chars": 39
+  },
+  {
+    "id": "F03",
+    "question": "Q6 前雨刮臂已经翻起，有哪两项禁止操作？",
+    "kind": "事实",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 48,
+        "answer": "雨刮臂翻起后不得移动车辆或操控雨刮操纵杆",
+        "pattern": "(?:不得|不能|禁止|不要).{0,18}(?:移动|运动|驾驶).{0,10}车辆.{0,20}(?:操控|操作|拨动).{0,8}雨刮操纵杆",
+        "quote": "不得运动车辆或操控雨刮操纵杆"
+      }
+    ],
+    "reference_answer": "雨刮臂翻起后不得移动车辆或操控雨刮操纵杆。",
+    "refusal_target": "",
+    "question_chars": 21
+  },
+  {
+    "id": "F04",
+    "question": "按 2023 款 Civic Sedan Maintenance Minder 英文资料，机油寿命低于多少百分比时出现提醒？",
+    "kind": "跨语言",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Honda-Civic-2023-Maintenance-Minder.pdf",
+        "locator": 1,
+        "answer": "发动机机油寿命低于 15% 时显示保养提示",
+        "pattern": "(?:低于|小于|不足|<)\\s*15\\s*%",
+        "quote": "If the engine oil life is less than 15%"
+      }
+    ],
+    "reference_answer": "发动机机油寿命低于 15% 时显示保养提示。",
+    "refusal_target": "",
+    "question_chars": 62
+  },
+  {
+    "id": "F05",
+    "question": "美国版 2023 Civic Sedan 的 Maintenance Minder 子项 1、5 和 7 分别是什么？",
+    "kind": "跨语言多要点",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Honda-Civic-2023-Maintenance-Minder.pdf",
+        "locator": 7,
+        "answer": "美国版保养子项 1 是轮胎换位",
+        "pattern": "轮胎换位|轮胎调位|轮胎轮换|rotate tires",
+        "quote": "Rotate tires"
+      },
+      {
+        "document": "Honda-Civic-2023-Maintenance-Minder.pdf",
+        "locator": 7,
+        "answer": "美国版保养子项 5 是更换发动机冷却液",
+        "pattern": "更换.{0,10}(?:发动机)?冷却液|replace engine coolant",
+        "quote": "Replace engine coolant"
+      },
+      {
+        "document": "Honda-Civic-2023-Maintenance-Minder.pdf",
+        "locator": 7,
+        "answer": "美国版保养子项 7 是更换制动液",
+        "pattern": "更换.{0,8}(?:制动液|刹车油)|replace brake fluid",
+        "quote": "Replace brake fluid"
+      }
+    ],
+    "reference_answer": "美国版保养子项 1 是轮胎换位。美国版保养子项 5 是更换发动机冷却液。美国版保养子项 7 是更换制动液。",
+    "refusal_target": "",
+    "question_chars": 59
+  },
+  {
+    "id": "F06",
+    "question": "NHTSA 胎压资料中的冷胎测量条件是什么？停驶至少多久？",
+    "kind": "事实",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少停驶 3 小时后按冷胎条件测量",
+        "pattern": "(?:至少|不少于|不低于|以上).{0,6}(?:3|三)\\s*小时|(?:3|三)\\s*小时(?:或更久|以上|及以上)",
+        "quote": "车停驶至少 3 小时后"
+      }
+    ],
+    "reference_answer": "至少停驶 3 小时后按冷胎条件测量。",
+    "refusal_target": "",
+    "question_chars": 29
+  },
+  {
+    "id": "F07",
+    "question": "NHTSA 建议多长时间检查一次胎压，备胎算不算？推荐胎压到哪里查？",
+    "kind": "多要点",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少每月检查一次所有轮胎的胎压，包括备胎",
+        "pattern": "每月.{0,32}备胎|备胎.{0,32}每月",
+        "quote": "至少每月检查一次所有轮胎的胎压，包括备胎"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "推荐胎压可查驾驶员侧车门边缘或门柱的标牌，或车辆用户手册",
+        "pattern": "标牌|铭牌|标签|用户手册|车主手册",
+        "quote": "车辆推荐胎压见驾驶员侧车门边缘或门柱的轮胎与载重信息标牌，或车辆用户手册"
+      }
+    ],
+    "reference_answer": "至少每月检查一次所有轮胎的胎压，包括备胎。推荐胎压可查驾驶员侧车门边缘或门柱的标牌，或车辆用户手册。",
+    "refusal_target": "",
+    "question_chars": 34
+  },
+  {
+    "id": "F08",
+    "question": "NHTSA 轮胎资料的胎纹更换阈值是多少英寸？",
+    "kind": "事实",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 2,
+        "answer": "胎纹更换阈值为 2/32 英寸",
+        "pattern": "2\\s*/\\s*32\\s*英寸|1\\s*/\\s*16\\s*英寸|1[.．]6\\s*毫米",
+        "quote": "2/32 英寸为胎纹更换阈值"
+      }
+    ],
+    "reference_answer": "胎纹更换阈值为 2/32 英寸。",
+    "refusal_target": "",
+    "question_chars": 23
+  },
+  {
+    "id": "F09",
+    "question": "NHTSA 资料如何说明前后轮规格不同车辆的轮胎换位？",
+    "kind": "事实",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 3,
+        "answer": "前后轮规格不同的车辆可能无法换位，应以制造商说明为准",
+        "pattern": "前后.{0,11}(?:规格|尺寸).{0,9}不同.{0,15}(?:无法|不宜|不能|不适合).{0,5}换位",
+        "quote": "前后轮规格不同的车辆可能无法进行轮胎换位"
+      }
+    ],
+    "reference_answer": "前后轮规格不同的车辆可能无法换位，应以制造商说明为准。",
+    "refusal_target": "",
+    "question_chars": 27
+  },
+  {
+    "id": "F10",
+    "question": "根据 AFDC 的维护资料，纯电动车为什么通常需要较少常规保养？",
+    "kind": "事实",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "AFDC-电动车维护.docx",
+        "locator": "维护差异",
+        "answer": "纯电动车通常需要较少常规维护，因为活动部件和定期更换的液体较少",
+        "pattern": "(?:活动部件|运动部件|移动部件).{0,30}(?:液体|油液|流体)|(?:液体|油液|流体).{0,30}(?:活动部件|运动部件|移动部件)",
+        "quote": "活动部件及需要定期更换的液体更少"
+      }
+    ],
+    "reference_answer": "纯电动车通常需要较少常规维护，因为活动部件和定期更换的液体较少。",
+    "refusal_target": "",
+    "question_chars": 32
+  },
+  {
+    "id": "F11",
+    "question": "部分动力电池采用什么方法维持安全温度，需要检查吗？",
+    "kind": "事实",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "AFDC-电动车维护.docx",
+        "locator": "动力电池冷却",
+        "answer": "部分动力电池采用液冷，这些系统可能需要定期检查",
+        "pattern": "(?=.*(?:液冷|液体冷却))(?=.*定期检查)",
+        "quote": "此类系统可能需要定期检查"
+      }
+    ],
+    "reference_answer": "部分动力电池采用液冷，这些系统可能需要定期检查。",
+    "refusal_target": "",
+    "question_chars": 25
+  },
+  {
+    "id": "F12",
+    "question": "普通混动车 HEV 能外接电源充电吗？动力电池有哪些充电途径？",
+    "kind": "事实",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "AFDC-混动与再生制动.md",
+        "locator": "普通混合动力车充电",
+        "answer": "HEV 不能外接充电，可通过内燃机和再生制动充电",
+        "pattern": "(?=.*(?:不能|不可|无法).{0,13}(?:外部|外接|插电))(?=.*内燃机)(?=.*再生制动)",
+        "quote": "不能接外部电源充电。其动力电池可通过再生制动和内燃机充电"
+      }
+    ],
+    "reference_answer": "HEV 不能外接充电，可通过内燃机和再生制动充电。",
+    "refusal_target": "",
+    "question_chars": 31
+  },
+  {
+    "id": "F13",
+    "question": "插电式混动车 PHEV 的动力电池有哪些充电途径？",
+    "kind": "事实",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "AFDC-混动与再生制动.md",
+        "locator": "插电式混合动力车充电",
+        "answer": "PHEV 可通过外部电源、内燃机或再生制动充电",
+        "pattern": "(?=.*(?:外部电源|外接|插电))(?=.*内燃机)(?=.*再生制动)",
+        "quote": "外部电源、内燃机或再生制动充电"
+      }
+    ],
+    "reference_answer": "PHEV 可通过外部电源、内燃机或再生制动充电。",
+    "refusal_target": "",
+    "question_chars": 25
+  },
+  {
+    "id": "F14",
+    "question": "请同时说明再生制动如何回收能量，以及它为什么会影响制动部件的磨损，分别给出依据。",
+    "kind": "跨文档",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "AFDC-混动与再生制动.md",
+        "locator": "再生制动原理",
+        "answer": "电动机作为发电机回收能量，并储存在动力电池",
+        "pattern": "(?=.*发电机)(?=.*电池)(?=.*(?:回收|储存|充电))",
+        "quote": "电动机作为发电机回收减速能量，并将电能储存在动力电池中"
+      },
+      {
+        "document": "AFDC-电动车维护.docx",
+        "locator": "再生制动与磨损",
+        "answer": "再生制动可以减少制动磨损",
+        "pattern": "(?:减少|降低).{0,8}(?:制动|刹车).{0,5}磨损",
+        "quote": "再生制动可减少制动磨损"
+      }
+    ],
+    "reference_answer": "电动机作为发电机回收能量，并储存在动力电池。再生制动可以减少制动磨损。",
+    "refusal_target": "",
+    "question_chars": 40
+  },
+  {
+    "id": "F15",
+    "question": "Q6 前雨刮臂翻起后的两项禁忌是什么？另列 NHTSA 建议的冷胎停驶时间和检查频率。请分别引用。",
+    "kind": "跨格式",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 48,
+        "answer": "雨刮臂翻起后不得移动车辆或操控雨刮操纵杆",
+        "pattern": "(?:不得|不能|禁止|不要).{0,18}(?:移动|运动|驾驶).{0,10}车辆.{0,20}(?:操控|操作|拨动).{0,8}雨刮操纵杆",
+        "quote": "不得运动车辆或操控雨刮操纵杆"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少停驶 3 小时后按冷胎条件测量",
+        "pattern": "(?:至少|不少于|不低于|以上).{0,6}(?:3|三)\\s*小时|(?:3|三)\\s*小时(?:或更久|以上|及以上)",
+        "quote": "车停驶至少 3 小时后"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少每月检查一次所有轮胎的胎压，包括备胎",
+        "pattern": "每月.{0,32}备胎|备胎.{0,32}每月",
+        "quote": "至少每月检查一次所有轮胎的胎压，包括备胎"
+      }
+    ],
+    "reference_answer": "雨刮臂翻起后不得移动车辆或操控雨刮操纵杆。至少停驶 3 小时后按冷胎条件测量。至少每月检查一次所有轮胎的胎压，包括备胎。",
+    "refusal_target": "",
+    "question_chars": 49
+  },
+  {
+    "id": "F16",
+    "question": "这套资料有没有给出北京某维修店更换 Q6 前雨刮片的 2026 年 11 月 16 日实时报价？请给出精确人民币金额。",
+    "kind": "拒答",
+    "answerable": false,
+    "facts": [],
+    "reference_answer": "知识库缺少该问题所要求的证据，应明确拒答，不提供具体数值或型号。",
+    "refusal_target": "(?:人民币|￥|¥)\\s*\\d|\\d+(?:\\.\\d+)?\\s*元",
+    "question_chars": 59
+  },
+  {
+    "id": "F17",
+    "question": "这套资料能证明我们系统跑 Honda 问答时线上真实达到多少 QPS 吗？请给出实测值。",
+    "kind": "拒答",
+    "answerable": false,
+    "facts": [],
+    "reference_answer": "知识库缺少该问题所要求的证据，应明确拒答，不提供具体数值或型号。",
+    "refusal_target": "\\d+(?:\\.\\d+)?\\s*(?:QPS|次/秒)",
+    "question_chars": 44
+  },
+  {
+    "id": "F18",
+    "question": "Q6 雨刮不通过 MMI，直接拨杆怎样进入更换位置？",
+    "kind": "步骤",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 48,
+        "answer": "关闭点火开关，将雨刮操纵杆拨到位置 4，直至进入更换位置",
+        "pattern": "关闭.{0,4}点火.{0,65}(?:位置|档位|挡位)\\s*4",
+        "quote": "关闭点火开关，将车窗玻璃雨刮器操纵杆置于位置 4"
+      }
+    ],
+    "reference_answer": "关闭点火开关，将雨刮操纵杆拨到位置 4，直至进入更换位置。",
+    "refusal_target": "",
+    "question_chars": 26
+  },
+  {
+    "id": "F19",
+    "question": "Q6 车速达到什么条件可退出前雨刮更换位置？",
+    "kind": "阈值",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 48,
+        "answer": "车速提高到 12 km/h 以上可使雨刮回到起始位置",
+        "pattern": "12\\s*(?:km/h|公里.{0,2}小时|千米.{0,2}小时)",
+        "quote": "将车速提高到 12km/h 以上"
+      }
+    ],
+    "reference_answer": "车速提高到 12 km/h 以上可使雨刮回到起始位置。",
+    "refusal_target": "",
+    "question_chars": 22
+  },
+  {
+    "id": "F20",
+    "question": "Q6 手册建议每年更换几次车窗雨刮片？",
+    "kind": "阈值",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 48,
+        "answer": "说明书建议前雨刮片每年换一到两次",
+        "pattern": "(?:每年|一年).{0,16}[一1]\\s*(?:到|至|—|–|-|～|~)\\s*[二两2]\\s*次",
+        "quote": "每年应更换车窗玻璃雨刮片一次 到两次"
+      }
+    ],
+    "reference_answer": "说明书建议前雨刮片每年换一到两次。",
+    "refusal_target": "",
+    "question_chars": 19
+  },
+  {
+    "id": "F21",
+    "question": "Q6 更换前雨刮片时，按哪个按钮才能把旧雨刮片从支座拔出？",
+    "kind": "步骤",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 48,
+        "answer": "按雨刮片上的锁止按钮再从支座拔出",
+        "pattern": "(?:锁止|锁定|解锁).{0,4}(?:按钮|按键)",
+        "quote": "按雨刮片上的锁止按钮"
+      }
+    ],
+    "reference_answer": "按雨刮片上的锁止按钮再从支座拔出。",
+    "refusal_target": "",
+    "question_chars": 29
+  },
+  {
+    "id": "F22",
+    "question": "奥迪 Q6 前挡慢刮和快刮分别是雨刮拨杆的哪个位置？",
+    "kind": "同源多要点",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 47,
+        "answer": "雨刮操纵杆位置 2 为慢刮水",
+        "pattern": "(?:位置|档位|挡位)\\s*2|2\\s*[挡档]",
+        "quote": "2 慢刮水"
+      },
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 47,
+        "answer": "雨刮操纵杆位置 3 为快刮水",
+        "pattern": "(?:位置|档位|挡位)\\s*3|3\\s*[挡档]",
+        "quote": "3 快刮水"
+      }
+    ],
+    "reference_answer": "雨刮操纵杆位置 2 为慢刮水。雨刮操纵杆位置 3 为快刮水。",
+    "refusal_target": "",
+    "question_chars": 26
+  },
+  {
+    "id": "F23",
+    "question": "Q6 的雨水感应开关 6 向哪个方向调，能让反应更早？",
+    "kind": "条件",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 47,
+        "answer": "把雨水感应开关 6 向右调会提升灵敏度，使雨刮反应提前",
+        "pattern": "向右.{0,20}(?:提高|灵敏度|提前)|灵敏度.{0,30}向右",
+        "quote": "开关 6 向右"
+      }
+    ],
+    "reference_answer": "把雨水感应开关 6 向右调会提升灵敏度，使雨刮反应提前。",
+    "refusal_target": "",
+    "question_chars": 27
+  },
+  {
+    "id": "F24",
+    "question": "Q6 光线和雨水感应器失效后，还有哪些雨刮功能可以操作？",
+    "kind": "条件",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 49,
+        "answer": "光线和雨水感应器故障时仍能操作与雨水感应器无关的雨刮功能",
+        "pattern": "(?:无关|不依赖|不涉及).{0,20}(?:功能|雨刮)|雨水感应器.{0,20}无关",
+        "quote": "与雨水感应器无关的功能"
+      }
+    ],
+    "reference_answer": "光线和雨水感应器故障时仍能操作与雨水感应器无关的雨刮功能。",
+    "refusal_target": "",
+    "question_chars": 28
+  },
+  {
+    "id": "F25",
+    "question": "Audi Q6 的 7 座车第二排配多少个座位？",
+    "kind": "车型区分",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 50,
+        "answer": "7 座车型第二排配备 3 个座位",
+        "pattern": "(?:第二排|中排).{0,20}[3三]\\s*(?:个|座)",
+        "quote": "第二排座位 2 3"
+      }
+    ],
+    "reference_answer": "7 座车型第二排配备 3 个座位。",
+    "refusal_target": "",
+    "question_chars": 24
+  },
+  {
+    "id": "F26",
+    "question": "When does TPMS warn drivers, according to the NHTSA tire maintenance slides?",
+    "kind": "跨语言",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 2,
+        "answer": "TPMS 在胎压明显偏低时会警告",
+        "pattern": "(?:低|不足).{0,15}(?:警告|报警|预警|warn)",
+        "quote": "TPMS 在胎压明显偏低时警告"
+      }
+    ],
+    "reference_answer": "TPMS 在胎压明显偏低时会警告。",
+    "refusal_target": "",
+    "question_chars": 76
+  },
+  {
+    "id": "F27",
+    "question": "TPMS 没有报警，还要按什么频率用胎压表检查？",
+    "kind": "反前提",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 2,
+        "answer": "TPMS 未亮灯时仍应每月实测胎压",
+        "pattern": "(?:每月|monthly)",
+        "quote": "仍应每月实测胎压"
+      }
+    ],
+    "reference_answer": "TPMS 未亮灯时仍应每月实测胎压。",
+    "refusal_target": "",
+    "question_chars": 24
+  },
+  {
+    "id": "F28",
+    "question": "在厂家建议换位的前提下，轮胎换位里程范围是多少英里？",
+    "kind": "阈值",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 3,
+        "answer": "只有制造商建议换位时，可每 5,000 至 8,000 英里换位",
+        "pattern": "5[,，]?000.{0,15}8[,，]?000.{0,6}(?:英里|mile)",
+        "quote": "可每 5,000 至 8,000 英里换位一次"
+      }
+    ],
+    "reference_answer": "只有制造商建议换位时，可每 5,000 至 8,000 英里换位。",
+    "refusal_target": "",
+    "question_chars": 26
+  },
+  {
+    "id": "F29",
+    "question": "NHTSA 资料里，轮胎花纹磨损不均时能否把换位提前？",
+    "kind": "条件",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 3,
+        "answer": "出现不均匀磨损可以提前换位",
+        "pattern": "提前|缩短|earlier|sooner",
+        "quote": "如果出现不均匀磨损，可以提前"
+      }
+    ],
+    "reference_answer": "出现不均匀磨损可以提前换位。",
+    "refusal_target": "",
+    "question_chars": 27
+  },
+  {
+    "id": "F30",
+    "question": "According to the slides, how long must the vehicle sit before checking cold tire pressure?",
+    "kind": "跨语言",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少停驶 3 小时后按冷胎条件测量",
+        "pattern": "(?:至少|不少于|不低于|以上).{0,6}(?:3|三)\\s*小时|(?:3|三)\\s*小时(?:或更久|以上|及以上)",
+        "quote": "车停驶至少 3 小时后"
+      }
+    ],
+    "reference_answer": "至少停驶 3 小时后按冷胎条件测量。",
+    "refusal_target": "",
+    "question_chars": 90
+  },
+  {
+    "id": "F31",
+    "question": "胎压推荐值应以车辆门柱什么东西或哪份随车资料为准？",
+    "kind": "改述",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "推荐胎压可查驾驶员侧车门边缘或门柱的标牌，或车辆用户手册",
+        "pattern": "标牌|铭牌|标签|用户手册|车主手册",
+        "quote": "车辆推荐胎压见驾驶员侧车门边缘或门柱的轮胎与载重信息标牌，或车辆用户手册"
+      }
+    ],
+    "reference_answer": "推荐胎压可查驾驶员侧车门边缘或门柱的标牌，或车辆用户手册。",
+    "refusal_target": "",
+    "question_chars": 25
+  },
+  {
+    "id": "F32",
+    "question": "已知前后轮尺寸不一样，可以无条件照常换位吗？",
+    "kind": "反前提",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 3,
+        "answer": "前后轮规格不同的车辆可能无法换位，应以制造商说明为准",
+        "pattern": "前后.{0,11}(?:规格|尺寸).{0,9}不同.{0,15}(?:无法|不宜|不能|不适合).{0,5}换位",
+        "quote": "前后轮规格不同的车辆可能无法进行轮胎换位"
+      }
+    ],
+    "reference_answer": "前后轮规格不同的车辆可能无法换位，应以制造商说明为准。",
+    "refusal_target": "",
+    "question_chars": 22
+  },
+  {
+    "id": "F33",
+    "question": "动力电池液冷系统的具体维护要求到哪里核对？",
+    "kind": "来源核对",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "AFDC-电动车维护.docx",
+        "locator": "动力电池冷却",
+        "answer": "冷却系统具体要求应查用户手册或向经销商确认",
+        "pattern": "手册|经销商|manual|dealer",
+        "quote": "具体要求见车辆用户手册或向经销商确认"
+      }
+    ],
+    "reference_answer": "冷却系统具体要求应查用户手册或向经销商确认。",
+    "refusal_target": "",
+    "question_chars": 21
+  },
+  {
+    "id": "F34",
+    "question": "为什么 HEV 和 PHEV 的常规维护需求仍与燃油车相似？",
+    "kind": "对比",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "AFDC-电动车维护.docx",
+        "locator": "维护差异",
+        "answer": "HEV 和 PHEV 有内燃机，常规维护需求与传统燃油车相近",
+        "pattern": "内燃机.{0,55}(?:相近|相似|类似)|(?:相近|相似|类似).{0,55}内燃机",
+        "quote": "有内燃机，其一般维护需求与传统燃油车相近"
+      }
+    ],
+    "reference_answer": "HEV 和 PHEV 有内燃机，常规维护需求与传统燃油车相近。",
+    "refusal_target": "",
+    "question_chars": 30
+  },
+  {
+    "id": "F35",
+    "question": "Can a conventional HEV plug into an external source, and how is its battery charged?",
+    "kind": "跨语言",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "AFDC-混动与再生制动.md",
+        "locator": "普通混合动力车充电",
+        "answer": "HEV 不能外接充电，可通过内燃机和再生制动充电",
+        "pattern": "(?=.*(?:不能|不可|无法).{0,13}(?:外部|外接|插电))(?=.*内燃机)(?=.*再生制动)",
+        "quote": "不能接外部电源充电。其动力电池可通过再生制动和内燃机充电"
+      }
+    ],
+    "reference_answer": "HEV 不能外接充电，可通过内燃机和再生制动充电。",
+    "refusal_target": "",
+    "question_chars": 84
+  },
+  {
+    "id": "F36",
+    "question": "插混能从市电补能吗？不用外部电源时，还有哪两种补能途径？",
+    "kind": "条件",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "AFDC-混动与再生制动.md",
+        "locator": "插电式混合动力车充电",
+        "answer": "PHEV 可通过外部电源、内燃机或再生制动充电",
+        "pattern": "(?=.*(?:外部电源|外接|插电))(?=.*内燃机)(?=.*再生制动)",
+        "quote": "外部电源、内燃机或再生制动充电"
+      }
+    ],
+    "reference_answer": "PHEV 可通过外部电源、内燃机或再生制动充电。",
+    "refusal_target": "",
+    "question_chars": 28
+  },
+  {
+    "id": "F37",
+    "question": "制动时哪类部件变成发电机？；另说明再生制动对制动磨损的影响。",
+    "kind": "跨文档",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "AFDC-混动与再生制动.md",
+        "locator": "再生制动原理",
+        "answer": "电动机作为发电机回收能量，并储存在动力电池",
+        "pattern": "(?=.*发电机)(?=.*电池)(?=.*(?:回收|储存|充电))",
+        "quote": "电动机作为发电机回收减速能量，并将电能储存在动力电池中"
+      },
+      {
+        "document": "AFDC-电动车维护.docx",
+        "locator": "再生制动与磨损",
+        "answer": "再生制动可以减少制动磨损",
+        "pattern": "(?:减少|降低).{0,8}(?:制动|刹车).{0,5}磨损",
+        "quote": "再生制动可减少制动磨损"
+      }
+    ],
+    "reference_answer": "电动机作为发电机回收能量，并储存在动力电池。再生制动可以减少制动磨损。",
+    "refusal_target": "",
+    "question_chars": 30
+  },
+  {
+    "id": "F38",
+    "question": "Honda Civic 美国版，重置后超过 12 个月仍无保养消息，应按什么周期更换机油？",
+    "kind": "跨语言",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Honda-Civic-2023-Maintenance-Minder.pdf",
+        "locator": 7,
+        "answer": "超过 12 个月仍未出现保养提示，应每年更换机油",
+        "pattern": "(?:12\\s*个月|一年).{0,80}(?:每年|一年一次|年更换).{0,12}(?:机油|油)",
+        "quote": "change the engine oil every year"
+      }
+    ],
+    "reference_answer": "超过 12 个月仍未出现保养提示，应每年更换机油。",
+    "refusal_target": "",
+    "question_chars": 45
+  },
+  {
+    "id": "F39",
+    "question": "Honda 美国版什么情况下要每三年换制动液？请注明触发时间。",
+    "kind": "跨语言",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Honda-Civic-2023-Maintenance-Minder.pdf",
+        "locator": 7,
+        "answer": "子项 7 重置后超过 36 个月无提醒，每三年换制动液",
+        "pattern": "(?:3|三)\\s*年.{0,14}(?:制动液|刹车油)|(?:制动液|刹车油).{0,20}(?:3|三)\\s*年",
+        "quote": "change the brake fluid every 3 years"
+      }
+    ],
+    "reference_answer": "子项 7 重置后超过 36 个月无提醒，每三年换制动液。",
+    "refusal_target": "",
+    "question_chars": 31
+  },
+  {
+    "id": "F40",
+    "question": "What oil-life percentages correspond to Maintenance Due Soon in the Honda Civic document?",
+    "kind": "阈值",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Honda-Civic-2023-Maintenance-Minder.pdf",
+        "locator": 4,
+        "answer": "Maintenance Due Soon 的剩余机油寿命范围是 15% 至 6%",
+        "pattern": "15\\s*%?\\s*(?:至|到|—|–|-|~|～|to)\\s*6\\s*%|6\\s*%?\\s*(?:至|到|—|–|-|~|～|to)\\s*15\\s*%",
+        "quote": "The remaining engine oil life is 15 to 6 percent"
+      }
+    ],
+    "reference_answer": "Maintenance Due Soon 的剩余机油寿命范围是 15% 至 6%。",
+    "refusal_target": "",
+    "question_chars": 89
+  },
+  {
+    "id": "F41",
+    "question": "What is the remaining engine oil life range for Maintenance Due Now on the Civic?",
+    "kind": "阈值",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Honda-Civic-2023-Maintenance-Minder.pdf",
+        "locator": 5,
+        "answer": "Maintenance Due Now 的剩余机油寿命范围是 5% 至 1%",
+        "pattern": "5\\s*%?\\s*(?:至|到|—|–|-|~|～|to)\\s*1\\s*%|1\\s*%?\\s*(?:至|到|—|–|-|~|～|to)\\s*5\\s*%",
+        "quote": "The remaining engine oil life is 5 to 1 percent"
+      }
+    ],
+    "reference_answer": "Maintenance Due Now 的剩余机油寿命范围是 5% 至 1%。",
+    "refusal_target": "",
+    "question_chars": 81
+  },
+  {
+    "id": "F42",
+    "question": "Honda Civic 过期后，美国版与加拿大版分别行驶多远才出现负距离？别把单位混用。",
+    "kind": "适用范围",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Honda-Civic-2023-Maintenance-Minder.pdf",
+        "locator": 5,
+        "answer": "美国款超过 10 英里后显示负里程",
+        "pattern": "10\\s*(?:英里|mile)",
+        "quote": "after driving over 10 miles (U.S. models)"
+      },
+      {
+        "document": "Honda-Civic-2023-Maintenance-Minder.pdf",
+        "locator": 5,
+        "answer": "加拿大款超过 10 公里后显示负里程",
+        "pattern": "10\\s*(?:公里|千米|km)",
+        "quote": "10 km (Canadian models)"
+      }
+    ],
+    "reference_answer": "美国款超过 10 英里后显示负里程。加拿大款超过 10 公里后显示负里程。",
+    "refusal_target": "",
+    "question_chars": 44
+  },
+  {
+    "id": "F43",
+    "question": "In the US Honda chart, what oil-related work is listed for main item B?",
+    "kind": "代码定位",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Honda-Civic-2023-Maintenance-Minder.pdf",
+        "locator": 7,
+        "answer": "美国版主项 B 要更换机油和机油滤清器",
+        "pattern": "机油.{0,18}(?:滤清器|滤芯|滤器)|oil.{0,12}filter",
+        "quote": "and oil filter"
+      }
+    ],
+    "reference_answer": "美国版主项 B 要更换机油和机油滤清器。",
+    "refusal_target": "",
+    "question_chars": 71
+  },
+  {
+    "id": "F44",
+    "question": "Honda Civic A-type meter: how many seconds do you hold the left selector wheel to enter reset mode?",
+    "kind": "步骤",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Honda-Civic-2023-Maintenance-Minder.pdf",
+        "locator": 9,
+        "answer": "A 型仪表按住左选择轮约 10 秒进入重置模式",
+        "pattern": "(?:约|大约)?\\s*10\\s*(?:秒|second)",
+        "quote": "for about 10 seconds to enter the reset mode"
+      }
+    ],
+    "reference_answer": "A 型仪表按住左选择轮约 10 秒进入重置模式。",
+    "refusal_target": "",
+    "question_chars": 99
+  },
+  {
+    "id": "F45",
+    "question": "With the Honda B-type meter, which selector wheel is rolled to display the Maintenance Minder?",
+    "kind": "型号区分",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Honda-Civic-2023-Maintenance-Minder.pdf",
+        "locator": 10,
+        "answer": "B 型仪表滚动右侧选择轮至 Maintenance Minder 屏幕",
+        "pattern": "右.{0,12}(?:选择轮|滚轮)|right selector wheel",
+        "quote": "Roll the right selector wheel until the Maintenance Minder screen is displayed"
+      }
+    ],
+    "reference_answer": "B 型仪表滚动右侧选择轮至 Maintenance Minder 屏幕。",
+    "refusal_target": "",
+    "question_chars": 94
+  },
+  {
+    "id": "F46",
+    "question": "美国 Honda Civic 经常在多尘条件行驶，空气滤芯的更换里程是多少？",
+    "kind": "跨语言",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Honda-Civic-2023-Maintenance-Minder.pdf",
+        "locator": 7,
+        "answer": "多尘条件每 15,000 英里或 24,000 公里更换空气滤芯",
+        "pattern": "15[,，]?000\\s*(?:英里|mile)|24[,，]?000\\s*(?:公里|千米|km)",
+        "quote": "replace the air cleaner element every 15,000 miles"
+      }
+    ],
+    "reference_answer": "多尘条件每 15,000 英里或 24,000 公里更换空气滤芯。",
+    "refusal_target": "",
+    "question_chars": 38
+  },
+  {
+    "id": "F47",
+    "question": "请按 Honda 美国版说明机油和机滤属于哪个大项；再按 NHTSA 说明轮胎换位的建议里程区间。",
+    "kind": "跨文档",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Honda-Civic-2023-Maintenance-Minder.pdf",
+        "locator": 7,
+        "answer": "美国版主项 B 要更换机油和机油滤清器",
+        "pattern": "机油.{0,18}(?:滤清器|滤芯|滤器)|oil.{0,12}filter",
+        "quote": "and oil filter"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 3,
+        "answer": "只有制造商建议换位时，可每 5,000 至 8,000 英里换位",
+        "pattern": "5[,，]?000.{0,15}8[,，]?000.{0,6}(?:英里|mile)",
+        "quote": "可每 5,000 至 8,000 英里换位一次"
+      }
+    ],
+    "reference_answer": "美国版主项 B 要更换机油和机油滤清器。只有制造商建议换位时，可每 5,000 至 8,000 英里换位。",
+    "refusal_target": "",
+    "question_chars": 49
+  },
+  {
+    "id": "F48",
+    "question": "请按 Q6 说明更换雨刮时先按哪个按钮；再按 NHTSA 说明 TPMS 不报警时是否仍要按月检查。",
+    "kind": "跨文档",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 48,
+        "answer": "按雨刮片上的锁止按钮再从支座拔出",
+        "pattern": "(?:锁止|锁定|解锁).{0,4}(?:按钮|按键)",
+        "quote": "按雨刮片上的锁止按钮"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 2,
+        "answer": "TPMS 未亮灯时仍应每月实测胎压",
+        "pattern": "(?:每月|monthly)",
+        "quote": "仍应每月实测胎压"
+      }
+    ],
+    "reference_answer": "按雨刮片上的锁止按钮再从支座拔出。TPMS 未亮灯时仍应每月实测胎压。",
+    "refusal_target": "",
+    "question_chars": 50
+  },
+  {
+    "id": "F49",
+    "question": "按 AFDC 说明液冷具体要求去哪里查；按 Honda 手册说明 A 型仪表按住左选择轮几秒进入重置。",
+    "kind": "跨文档",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "AFDC-电动车维护.docx",
+        "locator": "动力电池冷却",
+        "answer": "冷却系统具体要求应查用户手册或向经销商确认",
+        "pattern": "手册|经销商|manual|dealer",
+        "quote": "具体要求见车辆用户手册或向经销商确认"
+      },
+      {
+        "document": "Honda-Civic-2023-Maintenance-Minder.pdf",
+        "locator": 9,
+        "answer": "A 型仪表按住左选择轮约 10 秒进入重置模式",
+        "pattern": "(?:约|大约)?\\s*10\\s*(?:秒|second)",
+        "quote": "for about 10 seconds to enter the reset mode"
+      }
+    ],
+    "reference_answer": "冷却系统具体要求应查用户手册或向经销商确认。A 型仪表按住左选择轮约 10 秒进入重置模式。",
+    "refusal_target": "",
+    "question_chars": 51
+  },
+  {
+    "id": "F50",
+    "question": "Please give the Honda Civic Maintenance Due Soon oil-life range; then state what a low-pressure TPMS warning means in the NHTSA slides.",
+    "kind": "跨文档跨语言",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Honda-Civic-2023-Maintenance-Minder.pdf",
+        "locator": 4,
+        "answer": "Maintenance Due Soon 的剩余机油寿命范围是 15% 至 6%",
+        "pattern": "15\\s*%?\\s*(?:至|到|—|–|-|~|～|to)\\s*6\\s*%|6\\s*%?\\s*(?:至|到|—|–|-|~|～|to)\\s*15\\s*%",
+        "quote": "The remaining engine oil life is 15 to 6 percent"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 2,
+        "answer": "TPMS 在胎压明显偏低时会警告",
+        "pattern": "(?:低|不足).{0,15}(?:警告|报警|预警|warn)",
+        "quote": "TPMS 在胎压明显偏低时警告"
+      }
+    ],
+    "reference_answer": "Maintenance Due Soon 的剩余机油寿命范围是 15% 至 6%。TPMS 在胎压明显偏低时会警告。",
+    "refusal_target": "",
+    "question_chars": 135
+  },
+  {
+    "id": "F51",
+    "question": "雨刮手柄方式进入 Q6 更换位置要先操作点火和哪个位置？再查 NHTSA 冷胎停驶时间。",
+    "kind": "跨文档",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "Audi-Q6-说明书.pdf",
+        "locator": 48,
+        "answer": "关闭点火开关，将雨刮操纵杆拨到位置 4，直至进入更换位置",
+        "pattern": "关闭.{0,4}点火.{0,65}(?:位置|档位|挡位)\\s*4",
+        "quote": "关闭点火开关，将车窗玻璃雨刮器操纵杆置于位置 4"
+      },
+      {
+        "document": "NHTSA-轮胎维护.pptx",
+        "locator": 1,
+        "answer": "至少停驶 3 小时后按冷胎条件测量",
+        "pattern": "(?:至少|不少于|不低于|以上).{0,6}(?:3|三)\\s*小时|(?:3|三)\\s*小时(?:或更久|以上|及以上)",
+        "quote": "车停驶至少 3 小时后"
+      }
+    ],
+    "reference_answer": "关闭点火开关，将雨刮操纵杆拨到位置 4，直至进入更换位置。至少停驶 3 小时后按冷胎条件测量。",
+    "refusal_target": "",
+    "question_chars": 44
+  },
+  {
+    "id": "F52",
+    "question": "Explain whether a HEV can plug in; then explain whether a PHEV can. Keep the two charging paths separate.",
+    "kind": "跨语言对比",
+    "answerable": true,
+    "facts": [
+      {
+        "document": "AFDC-混动与再生制动.md",
+        "locator": "普通混合动力车充电",
+        "answer": "HEV 不能外接充电，可通过内燃机和再生制动充电",
+        "pattern": "(?=.*(?:不能|不可|无法).{0,13}(?:外部|外接|插电))(?=.*内燃机)(?=.*再生制动)",
+        "quote": "不能接外部电源充电。其动力电池可通过再生制动和内燃机充电"
+      },
+      {
+        "document": "AFDC-混动与再生制动.md",
+        "locator": "插电式混合动力车充电",
+        "answer": "PHEV 可通过外部电源、内燃机或再生制动充电",
+        "pattern": "(?=.*(?:外部电源|外接|插电))(?=.*内燃机)(?=.*再生制动)",
+        "quote": "外部电源、内燃机或再生制动充电"
+      }
+    ],
+    "reference_answer": "HEV 不能外接充电，可通过内燃机和再生制动充电。PHEV 可通过外部电源、内燃机或再生制动充电。",
+    "refusal_target": "",
+    "question_chars": 105
+  },
+  {
+    "id": "F53",
+    "question": "Q6 原厂前雨刮片的零件编号是多少？按这批资料给出完整编号。",
+    "kind": "拒答",
+    "answerable": false,
+    "facts": [],
+    "reference_answer": "明确说明当前资料缺少该条件下的证据，不提供具体数值或型号。",
+    "refusal_target": "\\b[A-Z0-9]{8,}\\b",
+    "question_chars": 30
+  },
+  {
+    "id": "F54",
+    "question": "请填入这辆 Q6 在维修工单 31415 中的实际轮胎气压，单位 kPa。",
+    "kind": "拒答",
+    "answerable": false,
+    "facts": [],
+    "reference_answer": "明确说明当前资料缺少该条件下的证据，不提供具体数值或型号。",
+    "refusal_target": "\\d+(?:\\.\\d+)?\\s*kPa",
+    "question_chars": 37
+  },
+  {
+    "id": "F55",
+    "question": "2023 Honda Civic Sedan 的 2027 年某店实时换机油报价是多少美元？",
+    "kind": "拒答",
+    "answerable": false,
+    "facts": [],
+    "reference_answer": "明确说明当前资料缺少该条件下的证据，不提供具体数值或型号。",
+    "refusal_target": "\\$\\s*\\d|\\d+\\s*(?:美元|USD)",
+    "question_chars": 46
+  },
+  {
+    "id": "F56",
+    "question": "按 NHTSA 通用资料，能确认这台车驾驶员侧铭牌写的具体胎压是多少 psi 吗？",
+    "kind": "拒答",
+    "answerable": false,
+    "facts": [],
+    "reference_answer": "明确说明当前资料缺少该条件下的证据，不提供具体数值或型号。",
+    "refusal_target": "\\d+(?:\\.\\d+)?\\s*psi",
+    "question_chars": 41
+  },
+  {
+    "id": "F57",
+    "question": "AFDC 材料中这台指定车辆的电池包实际冷却流量是多少升每分钟？",
+    "kind": "拒答",
+    "answerable": false,
+    "facts": [],
+    "reference_answer": "明确说明当前资料缺少该条件下的证据，不提供具体数值或型号。",
+    "refusal_target": "\\d+(?:\\.\\d+)?\\s*(?:L|升)\\s*/?\\s*(?:min|分)",
+    "question_chars": 32
+  },
+  {
+    "id": "F58",
+    "question": "给出本车 TPMS 上周二报警的确切时刻（几点几分）。",
+    "kind": "拒答",
+    "answerable": false,
+    "facts": [],
+    "reference_answer": "明确说明当前资料缺少该条件下的证据，不提供具体数值或型号。",
+    "refusal_target": "\\b\\d{1,2}:\\d{2}\\b|\\d+\\s*点\\s*\\d+\\s*分",
+    "question_chars": 27
+  },
+  {
+    "id": "F59",
+    "question": "HEV 和 PHEV 两份资料能否给出本校 11 月车队的实测再生制动回收率？请给百分数。",
+    "kind": "拒答",
+    "answerable": false,
+    "facts": [],
+    "reference_answer": "明确说明当前资料缺少该条件下的证据，不提供具体数值或型号。",
+    "refusal_target": "\\d+(?:\\.\\d+)?\\s*%",
+    "question_chars": 45
+  }
+]

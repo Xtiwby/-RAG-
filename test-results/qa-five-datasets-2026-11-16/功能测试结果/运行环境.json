@@ -1,0 +1,163 @@
+{
+  "database": "PostgreSQL",
+  "postgresql_version": "16.15 (Debian 16.15-1.pgdg12+2)",
+  "database_name": "qa_five_20261116185633582d",
+  "object_storage": "MinIO/S3",
+  "object_bucket": "qa-five-20261116185633582d",
+  "worker_mode": "external",
+  "verification_mode": "citation-first",
+  "endpoint": "http://127.0.0.1:18086",
+  "api_health": {
+    "status": "ok",
+    "service": "rag-knowledge-api",
+    "version": "0.12.0",
+    "data_scope": "local",
+    "database": "postgresql",
+    "original_storage": "s3",
+    "worker_mode": "external"
+  },
+  "pgvector_version": "0.8.7",
+  "indexed_chunks": 826,
+  "vector_chunks": 826,
+  "documents": [
+    {
+      "dataset": "车辆维修自定义集",
+      "id": 1,
+      "file": "AFDC-混动与再生制动.md",
+      "chunks": 10,
+      "sha256": "ea7347ed204a24cad57439bbd542a8fa3896764d0aeff92f0e5c23b524ee58f8"
+    },
+    {
+      "dataset": "车辆维修自定义集",
+      "id": 2,
+      "file": "AFDC-电动车维护.docx",
+      "chunks": 10,
+      "sha256": "5f12164d070493f023471e2f3f6a72654f93f057632e051de3746466c0131a91"
+    },
+    {
+      "dataset": "车辆维修自定义集",
+      "id": 4,
+      "file": "Honda-Civic-2023-Maintenance-Minder.pdf",
+      "chunks": 20,
+      "sha256": "cd3dcd4fbf6ad47e9582a67b875317647d08172f6ddf573cb154a76f4d7a2cd2"
+    },
+    {
+      "dataset": "车辆维修自定义集",
+      "id": 5,
+      "file": "NHTSA-轮胎维护.pptx",
+      "chunks": 3,
+      "sha256": "9c6708824625c929515e0492ee39adc2f5da55b5456f2d046a5a3a3e60ffea8f"
+    },
+    {
+      "dataset": "车辆维修自定义集",
+      "id": 3,
+      "file": "Audi-Q6-说明书.pdf",
+      "chunks": 404,
+      "sha256": "43b52aaa0848edad69de06c03c2f3f15e702cdae8133d26846006397991341f6"
+    },
+    {
+      "dataset": "MIRACL-zh",
+      "id": 6,
+      "file": "MIRACL-zh.md",
+      "chunks": 101,
+      "sha256": "029ce7688eb5104304b83b2972694df69290ac5912ee614141bd9b8a218e879c"
+    },
+    {
+      "dataset": "MIRACL-en",
+      "id": 7,
+      "file": "MIRACL-en.md",
+      "chunks": 148,
+      "sha256": "8111ea31870c621989b2df7138581ab8ccaf7aa51cc6f2a8694f48175bd23940"
+    },
+    {
+      "dataset": "RAGTruth-QA",
+      "id": 8,
+      "file": "RAGTruth-QA.md",
+      "chunks": 32,
+      "sha256": "ce0ddf6a3edf84571c328bd2d3f543231aab0cce3b236992277a4b02eaa6180d"
+    },
+    {
+      "dataset": "RAGBench-DelucionQA",
+      "id": 9,
+      "file": "RAGBench-DelucionQA.md",
+      "chunks": 85,
+      "sha256": "7e2de8822ae8f06edca4065f5e60e669c15b4c6932d7571a59706fe4da204a48"
+    },
+    {
+      "dataset": "RGB",
+      "id": 10,
+      "file": "RGB.md",
+      "chunks": 13,
+      "sha256": "737f027a51d8f7145c3a876fed338b8219949a3c90040daf84d30689061c4682"
+    }
+  ],
+  "configuration": {
+    "chat": {
+      "base_url": "https://api.moonshot.cn/v1",
+      "model": "kimi-k2.6",
+      "timeout_seconds": 45,
+      "max_tokens": 1400
+    },
+    "embedding": {
+      "provider": "local",
+      "base_url": "",
+      "model": "BAAI/bge-m3",
+      "timeout_seconds": 90,
+      "device": "cuda",
+      "batch_size": 16,
+      "max_length": 1024
+    },
+    "reranking": {
+      "provider": "local",
+      "model": "BAAI/bge-reranker-v2-m3",
+      "device": "cuda",
+      "candidate_k": 16,
+      "batch_size": 16,
+      "max_length": 256,
+      "timeout_seconds": 120
+    },
+    "chunk": {
+      "size": 800,
+      "overlap": 150
+    },
+    "retrieval": {
+      "mode": "hybrid",
+      "top_k": 8,
+      "min_similarity": 0.3,
+      "min_coverage": 0.12,
+      "rerank": true,
+      "cross_language": false,
+      "query_rewrite_timeout_seconds": 20
+    },
+    "queue": {
+      "concurrency": 2,
+      "max_attempts": 3
+    },
+    "answer_quality": {
+      "enabled": false,
+      "repair": true,
+      "max_supplements": 4,
+      "timeout_seconds": 45,
+      "context_neighbors": 2
+    },
+    "asr": {
+      "provider": "disabled",
+      "base_url": "",
+      "model": "",
+      "language": "zh",
+      "timeout_seconds": 300
+    },
+    "ocr": {
+      "provider": "vision"
+    },
+    "media": {
+      "auto_transcribe": true,
+      "frame_ocr": false,
+      "frame_interval_seconds": 60,
+      "max_frames": 8,
+      "max_duration_seconds": 7200
+    }
+  },
+  "case_count": 138,
+  "seed": 336
+}

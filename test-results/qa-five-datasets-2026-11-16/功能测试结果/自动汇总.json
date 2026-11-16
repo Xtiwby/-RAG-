@@ -1,0 +1,86 @@
+{
+  "全部": {
+    "planned": 138,
+    "completed": 138,
+    "screen_pass": 119,
+    "screen_pass_rate": 0.8623,
+    "retrieval_p50_ms": 1417.5,
+    "retrieval_p95_ms": 2039,
+    "first_token_p50_ms": 6775.8,
+    "first_token_p95_ms": 16676.13,
+    "total_p50_ms": 6828.62,
+    "total_p95_ms": 16796.95
+  },
+  "MIRACL-en": {
+    "planned": 10,
+    "completed": 10,
+    "screen_pass": 9,
+    "screen_pass_rate": 0.9,
+    "retrieval_p50_ms": 921.5,
+    "retrieval_p95_ms": 1029,
+    "first_token_p50_ms": 6545.47,
+    "first_token_p95_ms": 16676.13,
+    "total_p50_ms": 6588.15,
+    "total_p95_ms": 16796.95
+  },
+  "MIRACL-zh": {
+    "planned": 10,
+    "completed": 10,
+    "screen_pass": 10,
+    "screen_pass_rate": 1.0,
+    "retrieval_p50_ms": 775.5,
+    "retrieval_p95_ms": 907,
+    "first_token_p50_ms": 8631.42,
+    "first_token_p95_ms": 20961.54,
+    "total_p50_ms": 8770.04,
+    "total_p95_ms": 21090.14
+  },
+  "RAGBench-DelucionQA": {
+    "planned": 10,
+    "completed": 10,
+    "screen_pass": 10,
+    "screen_pass_rate": 1.0,
+    "retrieval_p50_ms": 778.5,
+    "retrieval_p95_ms": 865,
+    "first_token_p50_ms": 11804.97,
+    "first_token_p95_ms": 19091.49,
+    "total_p50_ms": 11965.97,
+    "total_p95_ms": 19258.59
+  },
+  "RAGTruth-QA": {
+    "planned": 10,
+    "completed": 10,
+    "screen_pass": 10,
+    "screen_pass_rate": 1.0,
+    "retrieval_p50_ms": 698.5,
+    "retrieval_p95_ms": 788,
+    "first_token_p50_ms": 11374.67,
+    "first_token_p95_ms": 23965.85,
+    "total_p50_ms": 11523.78,
+    "total_p95_ms": 24139.67
+  },
+  "RGB": {
+    "planned": 12,
+    "completed": 12,
+    "screen_pass": 8,
+    "screen_pass_rate": 0.6667,
+    "retrieval_p50_ms": 633.5,
+    "retrieval_p95_ms": 721,
+    "first_token_p50_ms": 6597.11,
+    "first_token_p95_ms": 8549.71,
+    "total_p50_ms": 6725.19,
+    "total_p95_ms": 8645.94
+  },
+  "车辆维修自定义集": {
+    "planned": 86,
+    "completed": 86,
+    "screen_pass": 72,
+    "screen_pass_rate": 0.8372,
+    "retrieval_p50_ms": 1695.0,
+    "retrieval_p95_ms": 2105,
+    "first_token_p50_ms": 6622.97,
+    "first_token_p95_ms": 15929.24,
+    "total_p50_ms": 6649.48,
+    "total_p95_ms": 15932.06
+  }
+}

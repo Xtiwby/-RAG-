@@ -1,0 +1,272 @@
+﻿id,dataset,phase,manual_status,manual_reason,screen_pass,response_ok,retrieval_ms,first_token_ms,total_ms,question,reference_answer,answer
+VEH-P-P01,车辆维修自定义集,performance,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1164,5013.97,5014.42,冷胎应停驶多久？,至少停驶 3 小时后按冷胎条件测量。,"冷胎条件下测量胎压前，车辆应停驶至少3小时。[1]
+"
+VEH-P-P02,车辆维修自定义集,performance,通过,回答至少停驶3小时，与参考答案一致。,False,True,887,4202.64,4202.96,按 NHTSA TireWise 的冷胎判定，测胎压之前车辆最少要停驶多长时间？,至少停驶 3 小时后按冷胎条件测量。,"按 NHTSA TireWise 的冷胎判定，测胎压之前车辆最少要停驶 3 小时。[1]
+"
+VEH-P-P03,车辆维修自定义集,performance,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,896,3394.34,3394.71,我在整理车辆保养资料，需要在维修接待表里填写一个客观的检查时间。请只查 NHTSA TireWise 关于冷胎测量胎压的内容，并用一句话告诉我，车辆至少停驶多长时间后可以按冷胎条件测量。不要扩展到胎纹、换位或具体车型的胎压。,至少停驶 3 小时后按冷胎条件测量。,"NHTSA TireWise 建议车辆停驶至少 3 小时后，可按冷胎条件测量胎压。[1]
+"
+VEH-P-P04,车辆维修自定义集,performance,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1084,6574.37,6687.18,冷胎停多久？胎压多久查，含备胎吗？,至少停驶 3 小时后按冷胎条件测量。至少每月检查一次所有轮胎的胎压，包括备胎。,"冷胎检查需车辆停驶至少3小时后进行。[1]
+NHTSA建议至少每月检查一次所有轮胎的胎压，包括备胎。[1]
+
+部分候选句未通过引用或证据支撑校验，已过滤；上述仅展示通过校验的内容。"
+VEH-P-P05,车辆维修自定义集,performance,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1024,5546.46,5622.8,请根据轮胎维护资料说明冷胎测量所需的最短停车时长，以及每月胎压检查是否包括备胎。,至少停驶 3 小时后按冷胎条件测量。至少每月检查一次所有轮胎的胎压，包括备胎。,"冷胎测量所需的最短停车时长为至少3小时。[1]
+每月胎压检查包括备胎。[1]
+"
+VEH-P-P06,车辆维修自定义集,performance,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,934,5692.52,5772.56,请帮我核对轮胎保养记录里的两个字段。第一个字段是检查胎压时判定冷胎的最短停驶时间，第二个字段是常规胎压检查的最低频率及是否检查备胎。只依据 NHTSA 轮胎维护资料逐项回答并给出引用，不需要写更换建议、胎纹深度和具体胎压数值。,至少停驶 3 小时后按冷胎条件测量。至少每月检查一次所有轮胎的胎压，包括备胎。,"判定冷胎的最短停驶时间为至少3小时。[1]
+常规胎压检查的最低频率为至少每月一次，且检查范围包括备胎。[1]
+"
+VEH-P-P07,车辆维修自定义集,performance,不通过,未找到指定的前雨刮臂两项限制，且漏答3小时冷胎条件。,False,True,1290,16485.19,16640.77,Q6前雨刮禁忌？冷胎等多久、多久查胎压，含备胎吗？,雨刮臂翻起后不得移动车辆或操控雨刮操纵杆。至少停驶 3 小时后按冷胎条件测量。至少每月检查一次所有轮胎的胎压，包括备胎。,"前雨刮禁忌：冰冻时需检查雨刮片是否冻住，开启冻住的雨刮器会损坏雨刮片；洗车前须关闭车窗玻璃清洗装置（操纵杆处于位置0），防止无意间开启损坏装置；不得使用防水涂层材料处理前挡风玻璃。[2]
+冷胎检查胎压：只在轮胎冷态时检查轮胎压力，请勿在轮胎热态时减小已提高的轮胎压力。[1]
+胎压检查周期：应至少每月检查一次轮胎的充气压力，在每次长途行车之前还要另外检查一次。[1]
+备胎胎压检查：需要检查备用车轮的压力，务必遵守轮胎规定的最高压力。[1]
+"
+VEH-P-P08,车辆维修自定义集,performance,不通过,回答了胎压部分，但漏答Q6前雨刮臂两项限制。,False,True,1123,8070.78,8150.29,分别查 Q6 前雨刮臂翻起后的两项限制，以及 NHTSA 冷胎最短停驶时间和胎压检查频率、备胎。,雨刮臂翻起后不得移动车辆或操控雨刮操纵杆。至少停驶 3 小时后按冷胎条件测量。至少每月检查一次所有轮胎的胎压，包括备胎。,"NHTSA建议车停驶至少3小时后按冷胎条件测量胎压，至少每月检查一次所有轮胎的胎压，包括备胎。[1]
+Q6备胎若规格不同于在用轮胎则只可短时间使用，应尽快换回标准轮胎，且车速不得高于所装轮胎的最高允许车速。[3]
+"
+VEH-P-P09,车辆维修自定义集,performance,不通过,回答了胎压部分，但Q6部分错误拒答。,False,True,1081,11803.93,11963.43,我在核对一张车辆保养清单，清单有两个来自不同文件的条目。请先依据 Q6 说明书列出前雨刮臂已经翻起后的两项禁止操作，再依据 NHTSA TireWise 说明冷胎胎压测量前至少停驶多久，以及所有轮胎胎压的检查频率和备胎是否包含在内。两部分分别给出引用。,雨刮臂翻起后不得移动车辆或操控雨刮操纵杆。至少停驶 3 小时后按冷胎条件测量。至少每月检查一次所有轮胎的胎压，包括备胎。,"当前知识库证据不足：Q6说明书中未找到关于前雨刮臂翻起后的两项禁止操作的内容。[4][8][10]
+冷胎胎压测量前车辆应停驶至少3小时。[1]
+NHTSA建议至少每月检查一次所有轮胎的胎压。[1]
+胎压检查包括备胎在内。[1]
+"
+VEH-P-P10,车辆维修自定义集,performance,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,827,3984.45,3984.88,TPMS何时报警？,TPMS 在胎压明显偏低时会警告。,"TPMS在胎压明显偏低时发出警告。[1]
+"
+VEH-P-P11,车辆维修自定义集,performance,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,895,4107.16,4107.49,按 NHTSA 轮胎维护幻灯片，TPMS 出现警告通常表示胎压怎么了？,TPMS 在胎压明显偏低时会警告。,"TPMS 在胎压明显偏低时发出警告。[1]
+"
+VEH-P-P12,车辆维修自定义集,performance,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,931,3670.9,3671.24,我在核对轮胎维护培训材料的报警栏，请依据 NHTSA 轮胎维护幻灯片，只回答 TPMS 在什么胎压条件下会发出警告。请给出明确条件和对应引用即可，后续的维修建议和具体压力数值都不属于本题。,TPMS 在胎压明显偏低时会警告。,"TPMS 在胎压明显偏低时发出警告。[1]
+"
+VEH-P-P13,车辆维修自定义集,performance,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1039,4705.69,4706.07,Civic左轮按几秒？,A 型仪表按住左选择轮约 10 秒进入重置模式。,"对于配备A型仪表盘的Civic车型，在Maintenance Minder重置流程中，需按住左选择轮约10秒以进入重置模式。[1]
+"
+VEH-P-P14,车辆维修自定义集,performance,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1153,5152.86,5153.2,在 Honda Civic A 型仪表上，长按左侧选择轮几秒才会进入保养信息重置模式？,A 型仪表按住左选择轮约 10 秒进入重置模式。,"在 Honda Civic A 型仪表上，长按左侧选择轮约 10 秒可进入保养信息重置模式。[1]
+"
+VEH-P-P15,车辆维修自定义集,performance,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1047,4516.98,4517.29,我在复核 2023 款 Honda Civic 车主资料中 A 型仪表的保养信息操作卡。请定位进入重置模式的那一步，只告诉我在维护提示界面上应把左侧选择轮按住约多少秒，并给出对应位置的引用，无需叙述完整菜单。,A 型仪表按住左选择轮约 10 秒进入重置模式。,"在维护提示界面上，应把左侧选择轮按住约10秒以进入重置模式。[2]
+"
+VEH-P-P16,车辆维修自定义集,performance,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1163,5878.03,5953.59,换位跑几英里？偏磨能提前吗？,"只有制造商建议换位时，可每 5,000 至 8,000 英里换位。出现不均匀磨损可以提前换位。","轮胎换位可每5,000至8,000英里进行一次。[1]
+如果出现不均匀磨损，轮胎换位可以提前。[1]
+"
+VEH-P-P17,车辆维修自定义集,performance,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,899,5728.22,5808.85,按 NHTSA 资料，厂家建议换位时的英里区间，以及出现不均匀磨损能否提前？,"只有制造商建议换位时，可每 5,000 至 8,000 英里换位。出现不均匀磨损可以提前换位。","按NHTSA资料，如制造商建议换位，可每5,000至8,000英里换位一次。[1]
+如果出现不均匀磨损，可以提前换位。[1]
+"
+VEH-P-P18,车辆维修自定义集,performance,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,895,6353.42,6438.19,我们在整理一张轮胎复检表，按照 NHTSA 轮胎资料填写两栏。在制造商建议换位的前提下，第一栏要填写建议的英里区间，第二栏要填写出现不均匀磨损时能否提前。请保留前提并给引用，暂时不用说明换位的具体排列方式。,"只有制造商建议换位时，可每 5,000 至 8,000 英里换位。出现不均匀磨损可以提前换位。","在制造商建议换位的前提下，建议的英里区间为每 5,000 至 8,000 英里换位一次。[1]
+在制造商建议换位的前提下，如果出现不均匀磨损，可以提前换位。[1]
+"
+VEH-P-P19,车辆维修自定义集,performance,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1222,14306.23,14306.79,Q6慢刮、快刮是几挡？,雨刮操纵杆位置 2 为慢刮水。雨刮操纵杆位置 3 为快刮水。,"Q6的慢刮水对应操纵杆位置2，快刮水对应操纵杆位置3。[3]
+"
+VEH-P-P20,车辆维修自定义集,performance,通过,回答慢刮水位置2、快刮水位置3，与参考答案一致。,False,True,1130,5595.04,5676.25,Q6 说明书中，前车窗玻璃雨刮拨杆的慢刮水、快刮水分别是哪个位置？,雨刮操纵杆位置 2 为慢刮水。雨刮操纵杆位置 3 为快刮水。,"前车窗玻璃雨刮拨杆的慢刮水位置是2。[1]
+前车窗玻璃雨刮拨杆的快刮水位置是3。[1]
+"
+VEH-P-P21,车辆维修自定义集,performance,通过,回答慢刮水位置2、快刮水位置3，与参考答案一致。,False,True,1252,5839.75,5945.83,我需要核对 Q6 的雨刮培训卡片中的两个独立字段。请仅查 Q6 说明书车窗玻璃雨刮器操纵杆段落，分别填写慢刮水和快刮水所对应的位置编号，并给出引用。其余雨量感应、关闭雨刮和喷洗位置都可以省略。,雨刮操纵杆位置 2 为慢刮水。雨刮操纵杆位置 3 为快刮水。,"Q6 车窗玻璃雨刮器操纵杆的慢刮水对应位置编号为 2。[2]
+Q6 车窗玻璃雨刮器操纵杆的快刮水对应位置编号为 3。[2]
+"
+VEH-P-P22,车辆维修自定义集,performance,不通过,把雨刮片锁止按钮误答为操纵杆位置。,False,True,1962,7945.34,8065.63,Q6雨刮按哪个钮？TPMS不亮多久查胎压？,按雨刮片上的锁止按钮再从支座拔出。TPMS 未亮灯时仍应每月实测胎压。,"Audi Q6雨刮器通过操纵杆控制，位置4为单次刮水，位置5为清洁前挡风玻璃。[2]
+即使TPMS未亮灯，仍应每月实测胎压。[1]
+"
+VEH-P-P23,车辆维修自定义集,performance,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,2096,7750.36,7848.12,按 Q6 说明更换前雨刮的锁止按钮；按 NHTSA 说明 TPMS 不亮灯时胎压实测频率。,按雨刮片上的锁止按钮再从支座拔出。TPMS 未亮灯时仍应每月实测胎压。,"Audi Q6 更换前雨刮片时，需按雨刮片上的锁止按钮 1，将雨刮片从雨刮臂 2 的支座中拔出。[2]
+NHTSA 指出即使 TPMS 未亮灯，仍应每月实测胎压。[1]
+"
+VEH-P-P24,车辆维修自定义集,performance,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1875,7597.91,7690.73,我在汇总来自两份文件的维护知识。首先请按 Q6 说明书说明拔出旧前雨刮片之前要按哪个按钮。其次请单独依据 NHTSA 轮胎幻灯片说明，即使胎压监测系统未亮灯，仍要按什么频率实测胎压。两个条目都分别附上证据即可。,按雨刮片上的锁止按钮再从支座拔出。TPMS 未亮灯时仍应每月实测胎压。,"按 Q6 说明书，拔出旧前雨刮片之前要按雨刮片上的锁止按钮 1。[3]
+即使胎压监测系统未亮灯，仍应每月实测胎压。[5]
+"
+VEH-P-P25,车辆维修自定义集,performance,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1950,7988.39,8091.42,AFDC冷却查哪？Civic左轮按几秒？,冷却系统具体要求应查用户手册或向经销商确认。A 型仪表按住左选择轮约 10 秒进入重置模式。,"AFDC关于动力电池冷却的说明为：部分动力电池系统使用液体冷却来维持安全的工作温度，此类系统可能需要定期检查，具体要求见车辆用户手册或向经销商确认。[5]
+Honda Civic 2023的右选择轮（right selector wheel）需按住约10秒进入重置模式，而非左轮。[4]
+"
+VEH-P-P26,车辆维修自定义集,performance,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,2112,7664.41,7769.59,请按 AFDC 查液冷维护要求去哪里核对；按 Honda 查 A 型仪表左选择轮重置长按时间。,冷却系统具体要求应查用户手册或向经销商确认。A 型仪表按住左选择轮约 10 秒进入重置模式。,"按 AFDC 资料，液冷动力电池系统的维护要求需核对车辆用户手册或向经销商确认。[2]
+Honda A 型仪表左选择轮重置长按时间约为 10 秒。[7]
+"
+VEH-P-P27,车辆维修自定义集,performance,不通过,只回答AFDC部分，遗漏Honda约10秒。,False,True,2072,5713.83,5714.58,请分开核对两项维修资料。一项来自 AFDC 电动车维护文档，回答动力电池液冷系统具体要求去哪里查；另一项来自 Honda Civic 的 A 型仪表维护资料，回答进入重置模式长按左侧选择轮要持续约几秒。每个条目分别给出原件引用。,冷却系统具体要求应查用户手册或向经销商确认。A 型仪表按住左选择轮约 10 秒进入重置模式。,"AFDC电动车维护文档指出，动力电池液冷系统的具体要求需见车辆用户手册或向经销商确认。[1]
+"
+MIRACL-zh-1034177#0,MIRACL-zh,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1185,11191.87,11336.61,阿塞拜疆属于什么气候类型？,,"阿塞拜疆境内气候多样，平原、低地为亚热带气候，山地为高山气候。[1]
+阿塞拜疆中部与东部为干燥型气候，东南部降雨较为充沛。[2]
+阿塞拜疆东南部和北部的气候与湿润的亚热带气候相似，属于海洋性气候/湿润亚热带气候的临界情况。[5]
+"
+MIRACL-zh-6859522#0,MIRACL-zh,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1292,12122.91,12352.82,坦克炮有哪些种类？,,"坦克炮主要分为滑膛式和线膛式两类。[1]
+历史上大多数坦克炮是线膛炮，但多数现代坦克装备的是滑膛炮；冷战后期至现代的坦克炮多以滑膛式为主。[4]
+现代主流坦克炮口径可分为北约的120毫米及苏联/俄罗斯的125毫米。[2]
+英国及印度是少数仍然采用线膛炮坦克的国家，英国发展了120毫米线膛战车炮L11型和L30型。[3]
+"
+MIRACL-zh-2942377#0,MIRACL-zh,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1234,5921.62,6023.84,南沙群岛面积多大？,,"南沙群岛海域总面积约90万平方公里。[1]
+南沙群岛总陆地面积约17.06平方公里。[1]
+"
+MIRACL-zh-202102#0,MIRACL-zh,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1185,4293.29,4398.46,党的中央委员会每届任期多久？,,"党的中央委员会每届任期五年。[1]
+中国共产党全国代表大会如果提前或延期举行，中央委员会的任期相应地改变。[1]
+"
+MIRACL-zh-6930896#0,MIRACL-zh,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1154,4312.32,4313.32,葡萄牙的邻国是哪个国家？,,"葡萄牙唯一的邻国是西班牙。[1]
+"
+MIRACL-zh-5188801#0,MIRACL-zh,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1214,13067.85,13301.49,参议院有哪些职责？,,"法国参议院有监督政府工作的义务，主要通过讨论政府工作报告、向政府口头或书面提问并要求回答等方式。[2]
+阿根廷国家参议院拥有宣战权、任命总统提名的法官、驻外大使、军队高级将领，推动联邦性税务法，以及弹劾众议员等特别权利。[3]
+澳大利亚参议院拥有与众议院相同的立法权力，可投票通过或否决财政法案，但不能修改财政法案。[4]
+
+部分候选句未通过引用或证据支撑校验，已过滤；上述仅展示通过校验的内容。"
+MIRACL-zh-288698#0,MIRACL-zh,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1133,18393.87,18579.66,马来西亚有哪些旅游景点？,,"雪兰莪州的主要旅游景点包括莎亚南的i-City智能商业零售枢纽、安邦的国家动物园、雪邦国际赛道、双威镇的双威水上乐园等。[1]
+雪兰莪州其他旅游景点包括黑风洞、雪邦黄金海岸、萤火虫公园、马来西亚农业公园等生态旅游景点。[3]
+清水岩庙位于马来西亚吉隆坡附近的云顶高原，是马来西亚著名的旅游景点。[4]
+槟城国家公园及直落巴巷设有虫鸣大地、世外逃源冒险乐园、热带香料园和槟城玩具博物馆等旅游景点。[6]
+"
+MIRACL-zh-6038439#0,MIRACL-zh,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1317,6759.55,6760.35,无线电视哪一年创立？,,"無綫電視（電視廣播有限公司）成立於1967年11月19日，有限公司註冊日期為1965年7月26日。[6]
+"
+MIRACL-zh-962694#0,MIRACL-zh,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1144,7586.38,7697.12,上海江南造船厂哪一年创立？,,"上海江南造船厂成立于2008年。[2]
+上海江南造船厂是2008年江南造船集团整体搬迁入上海长兴岛时，拆分出的一小部分搬入吴淞口黄浦江西岸逸仙路3901号（原东海船厂）而形成的。[7]
+"
+MIRACL-zh-1077527#0,MIRACL-zh,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1280,5048.35,5160.4,卵生动物有哪些？,,"爬行类、两栖类、鸟类、鱼类中的动物全部都是卵生动物。[1]
+目前尚存的卵生哺乳动物只有单孔目一类。[3]
+"
+MIRACL-en-1023,MIRACL-en,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1287,8101.74,8311.13,Where did Sun Yat-sen study medicine?,,"Sun Yat-sen studied medicine at the Guangzhou Boji Hospital in 1886.[1]
+Sun Yat-sen earned his medical license from the Hong Kong College of Medicine for Chinese in 1892.[1]
+Sun Yat-sen studied Western Medicine at the Hong Kong College of Medicine for Chinese while attending To Tsai Church.[4]
+Sun Yat-sen once studied at Boji Medical College, which originated from the Canton Hospital.[5]
+"
+MIRACL-en-908,MIRACL-en,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1326,4891.85,4892.22,When was Mar Yohannan VIII Hormizd born?,,"Mar Yohannan VIII Hormizd was born in 1760.[1]
+"
+MIRACL-en-3755,MIRACL-en,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1198,5083.9,5084.59,How many islands are there in Florida?,,"Florida has a total of 4,510 islands that are ten acres or larger.[1]
+"
+MIRACL-en-2024,MIRACL-en,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1259,5142.8,5143.56,Who was the last ruling monarch of Spain?,,"Juan Carlos I was the last ruling monarch of Spain until his abdication in 2014.[3]
+"
+MIRACL-en-174,MIRACL-en,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1276,15967.96,16123.59,What is the difference between a telenovela and a soap opera?,,"The chief difference between a telenovela and a soap opera is the length of the series: telenovelas have a central story arc with a prescribed ending within a year or two, while soap operas usually have indefinite runs.[1]
+Telenovelas typically focus on a rivalry between two or more people or families in romance or business, while English-language soaps have a different type of story structure.[4]
+
+部分候选句未通过引用或证据支撑校验，已过滤；上述仅展示通过校验的内容。"
+MIRACL-en-3798,MIRACL-en,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1359,5668.05,5668.54,When was the Stuttgart US Army base created?,,"The US Army established a unit and Headquarters at Kurmärker Kaserne (later Patch Barracks) in Stuttgart in March 1946.[1]
+"
+MIRACL-en-2935,MIRACL-en,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1300,5745.99,5845.62,What is the longest highway in Georgia?,,"I-75 is the longest Interstate Highway within Georgia.[1]
+
+部分候选句未通过引用或证据支撑校验，已过滤；上述仅展示通过校验的内容。"
+MIRACL-en-839,MIRACL-en,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1179,6515.87,6516.38,What year were specialty drugs designated?,,"Specialty drugs were designated in 2007 under the Food and Drug Administration Amendments Act (FDAAA), which authorized the FDA to require Risk Evaluation and Mitigation Strategies (REMS) on medications designated as specialty drugs.[3]
+"
+MIRACL-en-1971,MIRACL-en,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1248,6923.35,7010.75,What year did Kubo The Two Strings come out?,,"Kubo and the Two Strings was released in 2016.[1]
+The film was theatrically released in the United States on August 19, 2016.[3]
+"
+MIRACL-en-3421,MIRACL-en,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1176,6676.25,6773.34,What does SIGINT stand for?,,"SIGINT stands for signals intelligence.[1]
+SIGINT involves interception of communications between people (COMINT) and electronic signals not directly used in communication (ELINT).[1]
+"
+RAGTRUTH-15320,RAGTruth-QA,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,977,8967.86,9065.27,when you have a bowel movement do you lose weight,"While you may technically lose a small amount of weight after a bowel movement, this does not come from a loss of body fat. The decrease in body weight does not come from fat loss in stools, but rather from the elimination of undigested food and waste. Weight loss is primarily tied to your caloric intake and expenditure, not bowel movements. Unless your scale is highly accurate, you're unlikely to notice a difference in your body weight before and after a bowel movement.","Weight loss is tied to caloric intake and expenditure rather than bowel movements, and any weight change after a bowel movement is unlikely to be noticeable on a standard scale.[1]
+Any decrease in body weight after a bowel movement does not come from loss of body fat in stools; body fat loss requires a calorie deficit.[2]
+"
+RAGTRUTH-12309,RAGTruth-QA,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1037,10927.02,11070.92,vinegar uses for dogs,"Vinegar can be used for dogs in several ways. It can be mixed with water and used as a final rinse to give a shiny, healthy coat and balance the skin's pH levels. Apple cider vinegar can be used to clean out a dog's ears, repel fleas, and soothe itchy ears when diluted with water. It can also be used in a bath with soap to fight fleas.","Vinegar can be used as a final rinse for dogs to improve coat shine and balance skin pH levels.[1]
+Diluted apple cider vinegar can soothe dogs' itchy ears when applied with a cotton swab or gauze pad.[2]
+
+部分候选句未通过引用或证据支撑校验，已过滤；上述仅展示通过校验的内容。"
+RAGTRUTH-14458,RAGTruth-QA,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,965,13697.82,13900.25,how to sew a zipper gusset,"To sew a zipper gusset, start by tracing all patterns to the fabric and cutting it out. Start by making a zipper sandwich, which involves placing a piece of lining fabric face up, then the zipper, and then the outer fabric right side facing down. Line up all three edges. Then, using a zipper foot, sew across the top between the edge of your zipper sandwich and the zipper teeth. Repeat this for the other side of the zipper. Pin the zipper gusset to the zipper about 1/4"" away from the center with the right sides facing each other. Sew a line near the seam line to secure the position. Place the zipper gusset lining on top of them with the right side facing down and stitch on the seam line. Flip the lining to the bottom of the main zipper gusset and top stitch near the seam line. Repeat on the other side. The width of the zipper between the gussets should measure 1/2"". Change the presser foot back to a normal foot and stitch on the seam allowance around the zipper gusset. This should attach the main and lining fabric together nicely. Finally, place the zipper gusset onto the main body of the item you're sewing, aligning the ends to the center markings and sew from marking to marking at both ends. Place the lining on top of them with the right side facing down.","Pin the zipper gusset to the zipper 1/4″ away from the center with right sides facing each other, then use a zipper foot to sew near the seam line to secure.[1]
+Place the zipper gusset lining on top with right side facing down, stitch on the seam line, then flip the lining to the bottom and top stitch near the seam line.[1]
+The width of the zipper between the gusset should measure 1/2″, then stitch around the seam allowance with a normal foot to attach main and lining fabric together.[1]
+Align the zipper gusset ends to the center markings on the pencil case body and sew from marking to marking at both ends.[2]
+"
+RAGTRUTH-12423,RAGTruth-QA,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1157,13691.45,13853.3,how do you process the air you breathe before it gets to your lungs?,"The process of air reaching the lungs involves the diaphragm muscle, which is the principal muscle of breathing. When the diaphragm contracts, it moves down from the bottom of the rib cage towards the abdominal region, allowing air to enter the lungs. This is part of the ventilation component of breathing, which is the movement of oxygen into, and carbon dioxide out of the lungs. Additionally, increasing the volume of the thoracic cavity pulls the lungs along with it, increasing their volume and causing a decrease in air pressure. This forces air from the atmosphere into the lungs, causing inhalation.","The diaphragm muscle contracts to take air into the lungs and relaxes to let it out.[2]
+When the diaphragm contracts, it moves down from the bottom of the rib cage towards the abdominal region.[2]
+Increasing the volume of the thoracic cavity increases lung volume, decreasing air pressure in the lungs below atmospheric pressure and forcing air from the atmosphere into the lungs.[3]
+"
+RAGTRUTH-12182,RAGTruth-QA,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1109,7581.59,7675.22,what do i do if i got my sperrys wet,"If your Sperrys get wet, it's usually not a big deal. However, if they are light tan, water might stain them. If you washed your Sperrys with detergent, it's important to use a leather conditioner afterwards as detergent can dry the leather out. The conditioner helps to revitalize the leather by infusing moisture back into it. For stains, you can use a suede bar & leather brush.","Getting Sperry topsiders wet is generally not a problem, especially for regular dark brown ones; light tan ones may potentially stain but it is unlikely.[2]
+If Sperry shoes are washed with detergent, using a leather conditioner is especially important to revitalize the leather and restore moisture.[1]
+"
+RAGTRUTH-15332,RAGTruth-QA,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,902,12353.32,12569.52,"what political, economic and social effects have on the united states","The passages suggest that immigration and the Reconstruction period following the Civil War have had significant political, economic, and social effects on the United States. Immigration has largely shaped the nation as a whole. Reconstruction brought economic unity to the United States for the first time, with the South joining the market system and abandoning their semi-subsistence economy. It also led to industrialization and the establishment of large economic enterprises. Politically, this period carried vital changes and maintained national unity. However, it left many social issues unresolved, including segregation and the integration of African Americans into society and the economy. Despite their legal freedom, African Americans struggled to find work and often had to settle with their former masters under crop lien work contracts.","After the Civil War, the United States faced political, economic, and social issues including crop lien work contracts, segregation, and unresolved problems with seceded states during Reconstruction.[1]
+African Americans were technically free after the Civil War but faced economic hardship as no one wanted to hire them, leading to crop lien work contracts with former masters.[1]
+The Civil War brought economic unity to the United States as the South joined the market system and abandoned their semi-subsistence economy, with industrialization and large economic enterprises becoming permanent.[2]
+Politically, important changes accompanied the maintenance of national unity after the Civil War.[2]
+"
+RAGTRUTH-12300,RAGTruth-QA,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1137,14874.78,15078.3,differences and similarities between red and white blood cells,"Both red blood cells (RBCs) and white blood cells (WBCs) are found in the blood and are part of the circulatory system. They are both formed from pluripotent stem cells in the red bone marrow and contain cell membranes and cytoplasm. The main difference is their functions. RBCs are responsible for delivering oxygen from the lungs to the tissue in the body, while WBCs are part of the immune system and help the body combat diseases, viruses, etc.","Similarities: both red blood cells and white blood cells are formed elements of blood and are formed from pluripotent stem cells in red bone marrow.[1]
+Similarities: both are found in blood, can be carried by blood throughout the body, are found in the circulatory system, and both have cell membrane and cytoplasm.[3]
+Differences: red blood cells are responsible for oxygen delivery from lungs to body tissues, while white blood cells are part of the immune system.[2]
+Differences: white blood cells help the body combat disease and viruses, while red blood cells carry oxygen throughout the body as part of the circulatory system.[3]
+"
+RAGTRUTH-15097,RAGTruth-QA,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,972,13797.92,14011.46,what is psa levels mean,"PSA, or Prostate-specific antigen, is a protein produced by cells of the prostate gland. The level of PSA in a man's blood is measured by the PSA test, which involves sending a blood sample to a laboratory for analysis. The results are usually reported as nanograms of PSA per milliliter (ng/mL) of blood. Elevated PSA levels may indicate conditions such as prostate cancer, a noncancerous condition like prostatitis, or an enlarged prostate. Total PSA levels between 4.0 ng/ml and 10.0 ng/ml may indicate prostate cancer, benign prostate hyperplasia, or inflammation of the prostate.","PSA (prostate-specific antigen) is a protein produced by cells of the prostate gland.[2]
+PSA levels are measured through a blood test, with results reported as nanograms of PSA per milliliter (ng/mL) of blood.[2]
+Elevated PSA levels may indicate prostate cancer, prostatitis, or an enlarged prostate.[1]
+Total PSA levels between 4.0 ng/ml and 10.0 ng/ml may indicate prostate cancer, benign prostate hyperplasia, or inflammation of the prostate.[3]
+"
+RAGTRUTH-14375,RAGTruth-QA,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1061,15040.94,15138.26,how to cook brats,"Based on the passages provided, the steps to cook brats are as follows:
+
+1. Prick the bratwurst with a fork to prevent them from exploding as they cook. 
+2. Combine beer and onions in a large pot and bring it to a boil. Submerge the bratwurst in the beer, adding red pepper flakes, garlic powder, salt, and pepper.
+3. Place the pot over medium heat and simmer for 15 to 20 minutes.
+4. In the meantime, preheat an outdoor grill for medium-high heat and lightly oil the grate.
+5. After simmering, remove the bratwurst from the beer mixture and reduce the heat to low, continuing to cook the onions.
+6. Cook the bratwurst on the preheated grill, turning occasionally, for about 10 to 14 minutes until they are browned evenly.
+7. Serve the bratwurst with the beer and onion mixture as a topping or side.","Prick bratwurst with a fork to prevent exploding, then simmer in a pot with onions, butter, and beer over medium heat for 15 to 20 minutes before grilling.[1]
+
+部分候选句未通过引用或证据支撑校验，已过滤；上述仅展示通过校验的内容。"
+RAGTRUTH-15420,RAGTruth-QA,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,731,7247.44,7391.77,what is a upc description,"A UPC description refers to the Universal Product Code, a barcode symbology used extensively in multiple countries including the United States, Canada, United Kingdom, Australia, New Zealand, and in Europe. It is used for tracking trade items in stores. UPC consists of 12 numeric digits that are uniquely assigned to each trade item. It is primarily used for scanning of trade items at the point of sale, as per GS1 specifications.","UPC stands for Universal Product Code, a barcode symbology widely used for tracking trade items in stores.[1]
+UPC-A consists of 12 numeric digits uniquely assigned to each trade item.[1]
+UPC is mainly used for scanning trade items at the point of sale per GS1 specifications.[1]
+"
+DELUCION-251,RAGBench-DelucionQA,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1051,7357.28,7457.19,How to activate automatic dimming?,The Automatic Dimming feature can be activated by using the Uconnect Controls button on the touchscreen.,"The Automatic Dimming feature can be turned on or off through the Uconnect Controls button on the touchscreen.[1]
+The Automatic Dimming Mirror feature is disabled when the vehicle is in REVERSE to improve the driver's rear view.[1]
+"
+DELUCION-861,RAGBench-DelucionQA,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1201,5624.72,5625.08,how to use the key fob to unlock all the doors?,"To unlock all the doors using the key fob, you need to push and release the unlock button on the key fob twice. This action will unlock all the doors of the vehicle.","Push and release the unlock button on the key fob twice to unlock all the doors.[1]
+"
+DELUCION-212,RAGBench-DelucionQA,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1085,13772.85,13973.77,What is the brake warning light used for?,"The brake warning light is used to monitor various brake functions, including brake fluid level and parking brake application. It also indicates if the parking brake is applied, if the brake fluid level is low, or if there is a problem with the Anti-Lock Brake System reservoir. If the light remains on when the parking brake has been disengaged, and the fluid level is at the full mark on the master cylinder reservoir, it indicates a possible brake hydraulic system malfunction or a problem with the Brake Booster detected by the ABS/ESC system. The light remains on until the issue is corrected, signaling a need for immediate service.","The brake warning light monitors various brake functions, including brake fluid level and parking brake application.[1]
+If the brake light turns on, it may indicate that the parking brake is applied, that the brake fluid level is low, or that there is a problem with the Anti-Lock Brake System reservoir.[1]
+If the light remains on when the parking brake has been disengaged and fluid level is full, it indicates a possible brake hydraulic system malfunction or a problem with the Brake Booster detected by the ABS/ESC system.[1]
+A leak in either half of the dual brake system is indicated by the Brake Warning Light, which will turn on when the brake fluid level in the master cylinder has dropped below a specified level.[6]
+"
+DELUCION-739,RAGBench-DelucionQA,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1183,11272.38,11494.12,what's the possible damages E-15 may cause?,"Some possible damages that E-15 may cause include starting and drivability problems, damage to critical fuel system components, emissions exceeding the applicable standard, and illumination of the Malfunction Indicator Light.","E-15 may cause starting and drivability problems.[1]
+E-15 may damage critical fuel system components.[1]
+E-15 may cause emissions to exceed the applicable standard.[1]
+E-15 may cause the Malfunction Indicator Light to illuminate.[1]
+"
+DELUCION-682,RAGBench-DelucionQA,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1014,19176.71,19368.76,what should I pay attention to when operating the jack or changing the wheel?,"When operating the jack or changing the wheel, you should pay attention to the following:
+
+1. Do not remain in the vehicle when it is being jacked.
+2. Pull the vehicle far enough off the road to avoid the danger of being hit by moving traffic.
+3. Do not put any part of your body under a vehicle that is on a jack.
+4. Never start or run the engine while the vehicle is on a jack.
+5. Use the jack only for changing tires.
+6. Avoid jacking the vehicle on icy or slippery surfaces.
+7. Jack the vehicle on a firm level surface only.
+8. Do not use the jack to lift the vehicle for service purposes.","Passengers should not remain in the vehicle when it is being jacked in position.[1]
+Do not change a tire on the side close to moving traffic; pull far enough off the road to avoid being hit when operating the jack or changing the wheel.[2]
+Never put any part of your body under a vehicle that is on a jack, as the vehicle could slip off and crush you.[2]
+Never start or run the engine while the vehicle is on a jack, and jack only on a firm level surface while avoiding ice or slippery areas.[6]
+"
+DELUCION-380,RAGBench-DelucionQA,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1153,14220.8,14426.43,What kind of safety features are implemented in this car?,"The car has occupant restraint systems as its main safety feature. It also has safety settings accessible through the Safety/Driving Assistance button on the touchscreen, which may vary depending on the features equipped on the vehicle.","The vehicle has a Safety/Driving Assistance button on the touchscreen that displays safety settings options, which vary depending on equipped features.[1]
+The vehicle includes occupant restraint systems as important safety features.[3]
+The vehicle is equipped with FOBIK-Safe key fob protection that detects if a Passive Entry key fob is left inside and alerts the customer.[5]
+The vehicle has an SOS call system that can transmit vehicle information including GPS coordinates to an SOS operator.[6]
+"
+DELUCION-575,RAGBench-DelucionQA,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1209,18973.89,19210.57,Any tips for driving downhill?,"When driving downhill, it is important to determine if the hill is too steep for a safe descent. Consider factors such as surface traction, grade steepness, obstacles, and the straightness of the descent. If you feel confident in your ability to proceed, make sure you are in 4L and proceed with caution. Use engine braking to control the descent and apply brakes if necessary, but do not allow the tires to lock. It is also recommended to downshift progressively to preserve brakes and provide better acceleration when needed. Never descend a steep grade in NEUTRAL, as using vehicle brakes in conjunction with engine braking is essential to maintaining control and preventing accidents.","When proceeding downhill, use 4L, allow engine braking to control the descent, and apply brakes if necessary without allowing the tires to lock.[1]
+Downshift progressively from a high gear to a lower gear to preserve brakes and provide better acceleration when resuming speed; do not skip gears to avoid overspeeding the engine and clutch.[1]
+Do not descend a steep grade in NEUTRAL; use vehicle brakes in conjunction with engine braking.[4]
+
+部分候选句未通过引用或证据支撑校验，已过滤；上述仅展示通过校验的内容。"
+DELUCION-56,RAGBench-DelucionQA,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1192,14826.87,15079.99,how to set up Android Auto?,"To set up Android Auto, you need to follow these steps:
+
+1. Download the Android Auto™ app from the Google Play store on your Android™-powered smartphone.
+2. Connect your Android™-powered smartphone to one of the media USB ports in your vehicle using the factory-provided USB cable.
+3. Ensure that your vehicle is in PARK the first time you use the app.
+4. Make sure you are in an area with cellular coverage as Android Auto™ may use cellular data.
+5. Once the device is connected and recognized, the Phone icon on the drag & drop menu bar changes to the Android Auto™ icon.
+6. Launch Android Auto™ either by it set to launch immediately once a compatible device is connected or by pressing the Android Auto™ icon on the touchscreen.","Download the Android Auto™ app from the Google Play store on your Android™-powered smartphone.[4]
+Connect your Android™-powered smartphone to one of the media USB ports in your vehicle using the factory-provided USB cable.[4]
+You need an Android™ phone running Android™ 6.0 or higher, an active data plan, and the Android Auto™ app.[7]
+Android Auto™ launches immediately once a compatible device is connected, or can be launched by pressing the Android Auto™ icon on the touchscreen.[5]
+"
+DELUCION-125,RAGBench-DelucionQA,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1165,14353.12,14555.6,what should I do to prevent fuel system trouble?,"To prevent fuel system trouble, drain the accumulated water from the fuel/water separator using the fuel/water separator drain provided on the fuel filter housing. Additionally, if you store quantities of fuel, ensure good maintenance of the stored fuel. Drain condensation from the supply tank and change the line filter on a regular basis. Fuel contaminated with water can promote the growth of “microbes” that can clog the fuel filtration system and lines.","Drain the accumulated water from the fuel/water separator using the fuel/water separator drain provided on the fuel filter housing to prevent fuel system trouble.[1]
+Use good quality fuel and follow cold weather recommendations so fuel conditioners are not required.[1]
+For extreme cold conditions below 20°F or -7°C, use climatized Number 2 diesel fuel or dilute Number 2 diesel fuel with 50% Number 1 diesel fuel to prevent fuel gelling or wax-plugging of fuel filters.[2]
+Do not use biodiesel mixture in excess of 20% as it can negatively impact the fuel filter's ability to separate water from fuel, resulting in high pressure fuel system corrosion or damage.[2][5]
+"
+DELUCION-826,RAGBench-DelucionQA,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,1106,4693.05,4693.5,When will the Automatic SOS be triggered?,The Automatic SOS will be triggered in the event that your vehicle's airbags deploy.,"Automatic SOS is triggered when the vehicle's airbags deploy.[1]
+"
+RGB-no-answer-256,RGB,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,860,6157.6,6158.15,2023年女足世界杯总奖金,,当前知识库证据不足：没有通过逐句引用与证据支撑校验的回答。请补充资料或缩小问题范围。
+RGB-no-answer-199,RGB,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,754,2129.31,2130.83,知网垄断被罚了多少钱,,当前知识库证据不足：没有通过逐句引用与证据支撑校验的回答。请补充资料或缩小问题范围。
+RGB-no-answer-215,RGB,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,625,4466.21,4466.9,2023年国考计划招录多少人,,当前知识库证据不足：没有通过逐句引用与证据支撑校验的回答。请补充资料或缩小问题范围。
+RGB-no-answer-142,RGB,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,663,2131.07,2132.51,泸定地震造成多少人遇难？,,当前知识库证据不足：没有通过逐句引用与证据支撑校验的回答。请补充资料或缩小问题范围。
+RGB-no-answer-57,RGB,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,465,1650.54,1651.92,海底捞的新任首席执行官是谁？,,当前知识库证据不足：没有通过逐句引用与证据支撑校验的回答。请补充资料或缩小问题范围。
+RGB-no-answer-144,RGB,functional,无效,所选“负证据”正文直接包含标准答案，发生标签泄漏；不计入有效分母。,False,True,451,4004.93,4005.33,《海的尽头是草原》改编自什么真实事件？,,"《海的尽头是草原》改编自""三千上海孤儿入内蒙古""的真实历史事件。[1]
+"
+RGB-integration-85,RGB,functional,不通过,只列出海清、童瑶，遗漏公开样本要求的张颂文。,False,True,619,6226.1,6313.54,《心居》的主演有哪些,,"《心居》由海清和童瑶领衔主演[1]
+海清在《心居》中饰演冯晓琴[1]
+"
+RGB-integration-16,RGB,functional,不通过,只回答冬残奥会日期，遗漏冬奥会日期。,False,True,617,4911.43,4911.87,北京冬奥会和冬残奥会的开幕日期分别是什么时候?,,"北京2022年冬残奥会开幕式于2022年3月4日晚在国家体育场举行。[1]
+"
+RGB-integration-17,RGB,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,653,6061.41,6153.94,北京冬奥会的第一棒和最后一棒火炬手分别是谁？,,"北京冬奥会的第一棒火炬手是罗致焕。[1]
+北京冬奥会的最后一棒火炬手是迪妮格尔·衣拉木江和赵嘉文。[1]
+"
+RGB-integration-77,RGB,functional,不通过,给出航班号但没有回答商业首飞上海至北京的路线。,False,True,660,15606.57,15717.64,C919商业首飞路线和航班号,,"C919商业首飞航班号为MU9191，由中国东方航空公司执飞，首飞时间为2023年5月28日。[1]
+C919首个定期航班为MU9197，航线为上海虹桥至成都天府。[1]
+"
+RGB-integration-90,RGB,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,700,6647.02,6862.05,《摇滚狂花》的主演有哪些？,,"《摇滚狂花》中灵魂人物彭莱由姚晨饰演。[1]
+庄达菲是《摇滚狂花》的主演之一。[1]
+常远在《摇滚狂花》中饰演女主角的经纪人。[1]
+赵子琪饰演前狂花乐队的贝斯手，代乐乐饰演前狂花乐队的鼓手。[1]
+"
+RGB-integration-19,RGB,functional,通过,自动规则通过；人工核对回答、引用内容与问题一致。,True,True,650,6699.29,6798.0,北京冬奥会男子1500米速度滑冰和短道速滑中谁获得了金牌？,,"北京冬奥会速度滑冰男子1500米金牌由荷兰选手凯尔·内斯获得。[1]
+北京冬奥会短道速滑男子1500米金牌由韩国选手黄大宪获得。[1]
+"

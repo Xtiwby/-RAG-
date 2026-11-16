@@ -95,6 +95,32 @@ def test_compound_question_covers_both_subtopics_and_latest_authorized_versions(
     assert a['id'] not in {d['document_id'] for d in result['results']}
     assert new['id'] in {d['document_id'] for d in result['results']}
 
+
+def test_qa_splits_explicit_topics_without_paying_for_query_rewrite(admin, configured, monkeypatch):
+    kid = kb(admin)
+    a = upload(admin, kid, name='Atlas.txt', text='Atlas 控制器用陶瓷散热片进行被动散热。')
+    b = upload(admin, kid, name='Vega.txt', text='Vega 传感器用电容探头测量环境湿度。')
+    hidden = kb(admin)
+    upload(admin, hidden, name='Vega.txt', text='Vega 传感器用气压探头测量环境压力。')
+    model_calls = []
+
+    async def no_supported_answer(messages, max_tokens=None):
+        model_calls.append(json.loads(messages[-1]['content']))
+        yield '当前知识库证据不足。'
+
+    monkeypatch.setattr(rag, 'llm_stream', no_supported_answer)
+    response = client.post('/api/qa/stream', headers=admin, json={
+        'query': 'Atlas 控制器如何散热？Vega 传感器如何测量湿度？',
+        'knowledge_base_ids': [kid],
+        'top_k': 2,
+    })
+    assert response.status_code == 200
+    meta = json.loads(response.text.splitlines()[0].removeprefix('data: '))
+    assert meta['pipeline']['query_expansion']['local_split']
+    assert {row['document_id'] for row in meta['citations']} == {a['id'], b['id']}
+    assert len(model_calls) == 1 and 'evidence_json' in model_calls[0]
+
+
 def test_rewrite_timeout_falls_back_without_disabling_gates(admin,configured,monkeypatch):
     enable(admin);save_config(admin,lambda cfg:cfg['retrieval'].update(query_rewrite_timeout_seconds=2))
     kid=kb(admin);upload(admin,kid,text='The Orion technical manual describes a calibrated measurement system using a ceramic controller and passive thermal cooling for the sensor enclosure during normal operation.')
