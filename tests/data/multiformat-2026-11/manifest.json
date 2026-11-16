@@ -1,0 +1,29 @@
+{
+  "dataset_id": "multiformat-2026-11",
+  "created_at": "2026-11-16T00:00:00+00:00",
+  "purpose": "多格式接入边界回归；不包含项目运行数据或密钥",
+  "synthetic": true,
+  "sample_status": "samples-not-committed",
+  "sample_note": "本轮未落盘 corpus/ 二进制样本；test_multiformat_v013.py 中可内存构造的用例照常运行，PDF/DOCX/PPTX/XLSX/图片用例标记 skip 或手工执行。见 README.md「样本状态」一节。",
+  "corpus": [
+    {"id": "M01", "path": "corpus/md/simple.md", "kind": "markdown", "sha256": null, "include_in_baseline": true, "sample": "not-committed"},
+    {"id": "M02", "path": "corpus/docx/chapter.docx", "kind": "docx", "sha256": null, "include_in_baseline": true, "sample": "not-committed"},
+    {"id": "M03", "path": "corpus/pdf/pages.pdf", "kind": "pdf", "sha256": null, "include_in_baseline": true, "sample": "not-committed"},
+    {"id": "M04", "path": "corpus/xlsx/evaluation.xlsx", "kind": "xlsx", "sha256": null, "include_in_baseline": true, "sample": "not-committed"},
+    {"id": "M05", "path": "corpus/pptx/demo.pptx", "kind": "pptx", "sha256": null, "include_in_baseline": true, "sample": "not-committed"},
+    {"id": "M06", "path": "corpus/ppt/demo.ppt", "kind": "ppt", "sha256": null, "include_in_baseline": true, "sample": "not-committed"},
+    {"id": "M07", "path": "corpus/html/page.html", "kind": "html", "sha256": null, "include_in_baseline": true, "sample": "not-committed"},
+    {"id": "M08", "path": "corpus/txt/gb18030.txt", "kind": "txt-gb18030", "sha256": null, "include_in_baseline": true, "sample": "not-committed"},
+    {"id": "M09", "path": "corpus/json/data.json", "kind": "json", "sha256": null, "include_in_baseline": true, "sample": "not-committed"},
+    {"id": "M10", "path": "corpus/csv/table.csv", "kind": "csv", "sha256": null, "include_in_baseline": true, "sample": "not-committed"},
+    {"id": "M11", "path": "corpus/image/vision.png", "kind": "image", "sha256": null, "include_in_baseline": true, "sample": "not-committed"},
+    {"id": "M12", "path": "corpus/audio/sample.wav", "kind": "audio", "sha256": null, "include_in_baseline": false, "note": "需 ASR mock，默认不参与基线"},
+    {"id": "M13", "path": "corpus/video/sample.mp4", "kind": "video", "sha256": null, "include_in_baseline": false, "note": "需 ffmpeg + ASR mock"}
+  ],
+  "broken": [
+    {"id": "B01", "path": "broken/invalid.docx", "kind": "docx", "expect": "parse_failed"},
+    {"id": "B02", "path": "broken/encrypted.ppt", "kind": "ppt", "expect": "parse_failed_or_422"},
+    {"id": "B03", "path": "broken/entity.docx", "kind": "docx", "expect": "422_dtd_entity"}
+  ],
+  "warning": "Do not ingest broken/ or expected.json. 第三方摘编仅短引文并保留许可说明。"
+}

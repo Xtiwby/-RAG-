@@ -1,0 +1,16 @@
+{
+  "corpus/md/simple.md": {"status": "ready", "page_count": 0, "sections": ["混合检索"], "contains": ["RRF"]},
+  "corpus/docx/chapter.docx": {"status": "ready", "page_count": 0, "sections": ["技术章节"], "contains": ["混合检索证据"]},
+  "corpus/pdf/pages.pdf": {"status": "ready", "page_count": 2, "sections": ["第 1 页", "第 2 页"], "contains": ["Alpha", "Beta"]},
+  "corpus/xlsx/evaluation.xlsx": {"status": "ready", "page_count": 0, "sections": ["召回指标 / 行 2"], "contains": ["0.95"]},
+  "corpus/pptx/demo.pptx": {"status": "ready", "page_count": 2, "contains": ["第一页", "第二页"], "excludes": ["已删除幻灯片"]},
+  "corpus/ppt/demo.ppt": {"status": "ready", "page_count": 2, "contains": ["第一页"]},
+  "corpus/html/page.html": {"status": "ready", "page_count": 0, "excludes": ["<script", "alert("], "contains": ["标题"]},
+  "corpus/txt/gb18030.txt": {"status": "ready", "page_count": 0, "contains": ["中文内容"]},
+  "corpus/json/data.json": {"status": "ready", "page_count": 0, "contains": ["a.b: 1", "[1]: x"]},
+  "corpus/csv/table.csv": {"status": "ready", "page_count": 0, "contains": ["检索模式"]},
+  "corpus/image/vision.png": {"status": "needs_extraction", "page_count": 0, "can_continue_vision": true},
+  "broken/invalid.docx": {"status": "parse_failed", "error_contains": "重新上传"},
+  "broken/encrypted.ppt": {"status": "parse_failed", "error_contains": "加密"},
+  "broken/entity.docx": {"http_status": 422, "error_contains": "DTD"}
+}
