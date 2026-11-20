@@ -55,7 +55,7 @@ def details(doc):
             'stages':stages,'events':events,'job':job,'error':doc['parse_error']}
 
 def can_continue_vision(doc,job):
-    return (doc['file_type'] in IMAGE_TYPES and not doc['deleted']
+    return (doc['file_type'] in IMAGE_TYPES | {'pdf'} and not doc['deleted']
             and doc['status'] in ('needs_extraction','parse_failed','processing_failed')
             and (not job or job['status'] not in ('queued','running')))
 
@@ -138,7 +138,7 @@ async def run(row,payload,user,validate):
         track('parse','running',0,'正在通过已配置的模型转录图片' if vision else
               '正在提取音轨并转写' if transcribe else '正在解析原文件')
         async with object_storage.async_local_path(doc) as source:
-            if vision:
+            if vision and doc['file_type']!='pdf':
                 validate(row)
                 units=await ocr.extract(source)
             elif transcribe:
@@ -147,6 +147,15 @@ async def run(row,payload,user,validate):
                 s.execute("UPDATE documents SET media_meta=? WHERE id=?",(json.dumps(meta,ensure_ascii=False),did))
             else:
                 units=await asyncio.to_thread(rag.parse_local,source,doc['file_type'],measured('parse','已解析'))
+                if doc['file_type']=='pdf' and any(not unit['text'].strip() for unit in units):
+                    if vision or (settings.get().ocr.provider=='local' and settings.get().ocr.pdf_auto_local):
+                        from . import pdf_ocr
+                        units=await pdf_ocr.extract(source,units,lambda:validate(row),measured('parse','已识别 PDF 页'))
+                    else:
+                        message='PDF 包含扫描页面，请点击「开始视觉解析」逐页识别；也可配置本地 OCR 自动识别'
+                        track('parse','needs_extraction',0,message)
+                        s.execute("UPDATE documents SET status='needs_extraction',parse_error=? WHERE id=?",(message,did))
+                        return {'document_id':did,'status':'needs_review'}
         validate(row)
         if not any(unit['text'].strip() for unit in units):
             if vision:
@@ -155,7 +164,7 @@ async def run(row,payload,user,validate):
                 raise ValueError('语音转写没有返回可索引文本')
             message=('原图已保存，请点击「开始视觉解析」提取文字' if doc['file_type'] in IMAGE_TYPES else
                      '原文件已保存，请点击「开始语音转写」提取文字' if doc['file_type'] in media.MEDIA_TYPES else
-                     '此 PDF 未提取到文本层；扫描件请转为逐页图片后上传' if doc['file_type']=='pdf' else
+                     '此 PDF 未提取到文本层，请点击「开始视觉解析」逐页识别' if doc['file_type']=='pdf' else
                      '文件中没有可索引文本，请检查原件')
             track('parse','needs_extraction',0,message)
             s.execute("UPDATE documents SET status='needs_extraction',parse_error=? WHERE id=?",(message,did))

@@ -76,19 +76,21 @@ async function probe(target){probing.value=target;error.value='';success.value='
     <label class="field">覆盖检查超时秒数<input v-model.number="config.answer_quality.timeout_seconds" class="input" type="number" min="10" max="120" required/></label>
    </div><p>主检索TopK之外可补相邻原文，总证据最多20条；相邻片段保留独立ID、版本和哈希，不伪装成主检索得分。增加一次模型覆盖评估；需要补充时再增加一次事实核验，因此有额外费用和等待。失败保留已核验答案并提示未能确认完整性。旧任务保持提交时配置。</p></div></details>
    <details class="card settings-card"><summary>多模态与语音转写</summary><div class="settings-body"><div class="form-grid">
-    <label class="field">语音转写方式<select v-model="config.asr.provider" class="select"><option value="api">OpenAI 兼容 /audio/transcriptions</option><option value="disabled">关闭（仅保留手动转写入口）</option></select></label>
-    <label class="field">转写服务地址<input v-model="config.asr.base_url" class="input" type="url" :disabled="config.asr.provider==='disabled'" :required="config.asr.provider==='api'" placeholder="https://api.openai.com/v1"/></label>
+     <label class="field">语音转写方式<select v-model="config.asr.provider" class="select" @change="config.asr.model=config.asr.provider==='local'?'Systran/faster-whisper-tiny':''"><option value="api">OpenAI 兼容 /audio/transcriptions</option><option value="local">本地 Whisper（离线 CPU）</option><option value="disabled">关闭（仅保留手动转写入口）</option></select></label>
+     <label class="field">转写服务地址<input v-model="config.asr.base_url" class="input" type="url" :disabled="config.asr.provider!=='api'" :required="config.asr.provider==='api'" placeholder="https://api.openai.com/v1"/></label>
     <label class="field">转写模型<input v-model="config.asr.model" class="input" :disabled="config.asr.provider==='disabled'" :required="config.asr.provider==='api'" placeholder="whisper-1"/></label>
     <label class="field">识别语言<input v-model="config.asr.language" class="input" maxlength="20" placeholder="zh"/></label>
     <label class="field">转写超时秒数<input v-model.number="config.asr.timeout_seconds" class="input" type="number" min="30" max="1800" required/></label>
     <label class="field">图片 OCR 引擎<select v-model="config.ocr.provider" class="select"><option value="vision">视觉模型（Kimi，默认）</option><option value="local">本地 RapidOCR（需额外安装）</option></select></label>
+     <label class="check-line"><input v-model="config.ocr.pdf_auto_local" type="checkbox"/>本地 OCR 模式下自动识别 PDF 扫描页</label>
+     <label class="field">单次 PDF OCR 页数上限<input v-model.number="config.ocr.pdf_max_pages" class="input" type="number" min="1" max="500" required/></label>
     <label class="check-line"><input v-model="config.media.auto_transcribe" type="checkbox"/>上传后自动转写语音和视频</label>
     <label class="check-line"><input v-model="config.media.frame_ocr" type="checkbox"/>视频额外抽样画面做 OCR</label>
     <label class="field">画面抽帧间隔（秒）<input v-model.number="config.media.frame_interval_seconds" class="input" type="number" min="10" max="600" :disabled="!config.media.frame_ocr" required/></label>
     <label class="field">最多抽帧数<input v-model.number="config.media.max_frames" class="input" type="number" min="1" max="32" :disabled="!config.media.frame_ocr" required/></label>
     <label class="field">音视频时长上限（秒）<input v-model.number="config.media.max_duration_seconds" class="input" type="number" min="60" max="36000" required/></label>
    </div>
-   <p>转写密钥只从 backend/.env 的 RAG_ASR_API_KEY 读取，界面不显示；密钥状态：{{credentials.asr?'已配置':'未配置'}}。关闭自动转写后，音频和视频上传后需要手动点击「开始语音转写」。视频依赖本机 ffmpeg，可用 RAG_FFMPEG_PATH 指定；画面 OCR 每帧一次视觉调用，默认关闭。本地 OCR 需要安装 rapidocr-onnxruntime，未安装时接口返回可读错误。</p></div></details>
+    <p>本地转写无需密钥，需先准备离线 Whisper 模型。服务转写密钥状态：{{credentials.asr?'已配置':'未配置'}}。关闭自动转写后，可在处理详情中手动开始。视频需要 ffmpeg；本地 OCR 与转写的安装包可提供便携版本。画面 OCR 默认关闭，本地 OCR 缺少依赖时会提示安装。</p></div></details>
    <details class="card settings-card"><summary>文档切分</summary><div class="settings-body"><div class="form-grid">
     <label class="field">片段长度（字符）<input v-model.number="config.chunk.size" class="input" type="number" min="100" max="8000" required/></label>
     <label class="field">重叠长度（字符）<input v-model.number="config.chunk.overlap" class="input" type="number" min="0" :max="Math.min(2000,config.chunk.size-1)" required/></label>

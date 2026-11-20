@@ -3,6 +3,7 @@
     "admin": {"system_admin": true},
     "member": {"permissions": ["kb.read","kb.write","qa.use","reports.generate"]},
     "reviewer": {"permissions": ["kb.read","qa.use","reports.generate"]},
+    "reader": {"permissions": ["kb.read","qa.use"]},
     "assistant": {"permissions": ["kb.read","roles.manage"]}
   },
   "visibility": ["private","team","public"],
@@ -18,7 +19,8 @@
     {"role":"member","visibility":"public","grant":"none","ownership":"other","action":"upload_document","expect":403},
     {"role":"reviewer","visibility":"public","grant":"none","ownership":"other","action":"search","expect":200},
     {"role":"reviewer","visibility":"public","grant":"none","ownership":"other","action":"qa_stream","expect":200},
-    {"role":"reviewer","visibility":"public","grant":"none","ownership":"other","action":"report_create","expect":403},
+    {"role":"reviewer","visibility":"public","grant":"none","ownership":"other","action":"report_create","expect":201},
+    {"role":"reader","visibility":"public","grant":"none","ownership":"other","action":"report_create","expect":403},
     {"role":"assistant","visibility":"public","grant":"none","ownership":"other","action":"put_grants","expect":403},
     {"role":"admin","visibility":"private","grant":"none","ownership":"other","action":"put_grants","expect":200}
   ]

@@ -3,7 +3,7 @@ import io
 import struct
 import zipfile
 import pytest
-from test_api import client, admin, application_lifespan, kb, upload, finish_upload, create_member
+from test_api import client, admin, application_lifespan, kb, upload, finish_upload, create_member, configured
 from app import rag, ingestion, settings
 from pathlib import Path
 import pytest
@@ -78,26 +78,34 @@ def test_invalid_json_reports_readable_error(admin):
     assert 'JSON' in detail['error']
 
 
-def test_video_frame_ocr_failure_keeps_transcript(admin, monkeypatch):
+def test_video_frame_ocr_failure_keeps_transcript(admin, configured, monkeypatch):
     """视频帧 OCR 全部失败时，转写片段仍应保留并 ready。"""
     kid = kb(admin)
-    # 直接调用 ingestion 的媒体分支，避免依赖真实 ffmpeg：mock media.units
-    from app import media
-
-    async def fake_units(path, suffix, progress=None):
-        return [{'page': 1, 'section': '00:00:00', 'text': '转写文本'}], {'kind': 'video', 'audio_extracted': True, 'frames': 2}
+    from app import media, ocr
+    from test_api import save_config
+    save_config(admin, lambda cfg: cfg['media'].update(frame_ocr=True))
+    seen = []
+    async def transcribe(path):
+        return '转写文本', [{'start': 0, 'end': 1, 'text': '转写文本'}], 'mock-asr'
 
     async def failing_ocr(path, section='', page=1):
+        seen.append(path)
         raise RuntimeError('帧 OCR 失败')
 
-    monkeypatch.setattr(media, 'units', fake_units)
-    monkeypatch.setattr(media, 'ocr', type('O', (), {'extract': staticmethod(failing_ocr)}), raising=False)
+    monkeypatch.setattr(media, 'asr_configured', lambda: True)
+    monkeypatch.setattr(media, 'extract_audio', lambda path, folder: path)
+    monkeypatch.setattr(media, 'probe', lambda path: 1.0)
+    monkeypatch.setattr(media, 'transcribe', transcribe)
+    monkeypatch.setattr(media, 'frames', lambda *args: ['frame-1.png', 'frame-2.png'])
+    monkeypatch.setattr(ocr, 'extract', failing_ocr)
     # 用视频后缀走 media 分支；文档最终应 ready 且片段来自转写
     resp = _upload_raw(admin, kid, 'sample.mp4', b'\0' * 16, 'video/mp4')
     assert resp.status_code == 201
     doc = finish_upload(admin, resp.json())
-    # 若 media 路径未触发，至少不应崩溃；断言状态可读
-    assert doc['status'] in ('ready', 'needs_extraction', 'parse_failed')
+    assert doc['status'] == 'ready', doc
+    assert seen == ['frame-1.png', 'frame-2.png']
+    assert doc['media_meta']['frames'] == 2
+    assert any('转写文本' in chunk['text'] for chunk in doc['chunks'])
 
 # 以下为"依赖磁盘样本"的用例模板，样本落盘后取消注释并改 _sample() 路径。
 #

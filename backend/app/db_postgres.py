@@ -4,6 +4,7 @@ Enabled only when RAG_DATABASE_URL is set. psycopg is an optional dependency.
 """
 import os
 import re
+import threading
 from contextlib import contextmanager
 
 try:
@@ -19,6 +20,16 @@ ID_TABLES = {'roles','users','knowledge_bases','documents','chunks','conversatio
              'report_templates','report_tasks','report_sections','audit_logs','jobs','job_events',
              'model_calls','document_events','report_section_history','template_imports',
              'report_candidates','report_releases'}
+
+_pools={}
+_pool_lock=threading.Lock()
+
+
+def close_pools():
+    with _pool_lock:
+        pools=list(_pools.values());_pools.clear()
+    for pool in pools:
+        pool.close()
 
 
 class Row(dict):
@@ -78,7 +89,9 @@ class Connection:
         statement = statement.replace('?', '%s')
         params = tuple(int(value) if isinstance(value, bool) else value for value in params)
         cur = self.inner.execute(statement, params)
-        lastrowid = cur.fetchone()['id'] if returns_id else None
+        # ON CONFLICT DO NOTHING returns no row when an existing key is ignored.
+        returned = cur.fetchone() if returns_id else None
+        lastrowid = returned['id'] if returned is not None else None
         return Cursor(cur, lastrowid)
 
     def executemany(self, sql, values):
@@ -106,5 +119,16 @@ class Connection:
 def connect():
     if psycopg is None:
         raise RuntimeError('PostgreSQL 模式需安装 requirements-server.txt')
-    with psycopg.connect(os.environ['RAG_DATABASE_URL'], row_factory=dict_row) as raw:
+    try:
+        from psycopg_pool import ConnectionPool
+    except ImportError:
+        raise RuntimeError('PostgreSQL 连接池需安装 requirements-server.txt') from None
+    url=os.environ['RAG_DATABASE_URL']
+    with _pool_lock:
+        pool=_pools.get(url)
+        if pool is None:
+            pool=ConnectionPool(url,min_size=1,max_size=12,timeout=30,
+                                kwargs={'row_factory':dict_row},check=ConnectionPool.check_connection,open=True)
+            _pools[url]=pool
+    with pool.connection() as raw:
         yield Connection(raw)

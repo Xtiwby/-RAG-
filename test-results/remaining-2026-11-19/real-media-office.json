@@ -1,0 +1,52 @@
+{
+  "pass": true,
+  "media": [
+    {
+      "file": "speech.wav",
+      "units": [
+        {
+          "page": 1,
+          "section": "00:00:00 – 00:00:02",
+          "text": "The controller uses passive cooling."
+        },
+        {
+          "page": 2,
+          "section": "00:00:03 – 00:00:05",
+          "text": "Disconnect the power before opening the case."
+        }
+      ],
+      "meta": {
+        "kind": "audio",
+        "duration_seconds": 5.94,
+        "asr_model": "Systran/faster-whisper-tiny"
+      },
+      "seconds": 4.673520600001211,
+      "pass": true
+    },
+    {
+      "file": "speech.mp4",
+      "units": [
+        {
+          "page": 1,
+          "section": "00:00:00 – 00:00:02",
+          "text": "The controller uses passive cooling."
+        },
+        {
+          "page": 2,
+          "section": "00:00:03 – 00:00:05",
+          "text": "Disconnect the power before opening the case."
+        }
+      ],
+      "meta": {
+        "kind": "video",
+        "audio_extracted": true,
+        "duration_seconds": 5.94,
+        "asr_model": "Systran/faster-whisper-tiny"
+      },
+      "seconds": 1.5033652999991318,
+      "pass": true
+    }
+  ],
+  "libreoffice_pdf_pass": true,
+  "office_pages": 1
+}

@@ -1,5 +1,6 @@
 """Quality gates are deterministic here; real-model results are reported separately."""
 import asyncio
+import anyio
 import hashlib
 import json
 import pytest
@@ -298,7 +299,7 @@ def test_parallel_judges_overlap_and_publish_in_order(monkeypatch, cancel):
                 return
             release_second.set()
             # The first verification must still be pending after the second ends.
-            async with asyncio.timeout(2):
+            with anyio.fail_after(2):
                 while 2 not in closed:
                     await asyncio.sleep(.001)
             assert not first_event.done()

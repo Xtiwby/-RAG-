@@ -47,7 +47,7 @@ def test_final_export_requires_release(admin, monkeypatch):
     assert final.status_code == 201, final.text
     resp = client.get(f"/api/reports/{report['id']}/export?format=md&mode=final", headers=admin)
     assert resp.status_code == 200
-    assert '核验记录' in resp.text
+    assert '参考来源' in resp.text and report['title'] in resp.text
 
 
 def test_candidate_accept_conflict(admin, monkeypatch):
@@ -58,11 +58,11 @@ def test_candidate_accept_conflict(admin, monkeypatch):
     # 生成候选（preview）
     job = client.post(path + '/regenerate', headers=admin,
                       json={'expected_revision': 0, 'preview': True}).json()
-    wait_job(admin, job['job_id'])
-    row = client.get(f"/api/report-tasks/{report['id']}", headers=admin).json()
+    assert wait_job(admin, job['job_id'])['status'] == 'completed'
+    row = client.get(f"/api/reports/{report['id']}", headers=admin).json()
     cand = row['candidates'][0]
     # 先改正文
-    client.patch(path, headers=admin, json={'expected_revision': 0, 'content': '人工修改。[1]'})
+    assert client.patch(path, headers=admin, json={'expected_revision': 0, 'content': '人工修改。[1]'}).status_code == 200
     resp = client.post(f"/api/reports/{report['id']}/candidates/{cand['id']}",
                        headers=admin, json={'expected_revision': 1, 'action': 'accept'})
     assert resp.status_code == 409, resp.text

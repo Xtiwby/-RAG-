@@ -89,7 +89,7 @@ class AnswerQualitySettings(Strict):
 
 class AsrSettings(Strict):
     # The API key stays in RAG_ASR_API_KEY; only address and model are stored here.
-    provider: Literal['api','disabled'] = 'api'
+    provider: Literal['api','local','disabled'] = 'api'
     base_url: str = ''
     model: str = ''
     language: str = Field(default='zh',max_length=20)
@@ -102,6 +102,8 @@ class AsrSettings(Strict):
 
     @model_validator(mode='after')
     def validate_api(self):
+        if self.provider=='local' and self.model not in ('','Systran/faster-whisper-tiny'):
+            raise ValueError('本地转写目前支持 Systran/faster-whisper-tiny')
         if self.provider=='api' and self.base_url and not self.model.strip():
             raise ValueError('语音转写服务地址必须同时配置模型名')
         if self.provider=='api' and self.model.strip() and not self.base_url:
@@ -110,6 +112,8 @@ class AsrSettings(Strict):
 
 class OcrSettings(Strict):
     provider: Literal['vision','local'] = 'vision'
+    pdf_auto_local: bool = True
+    pdf_max_pages: int = Field(default=100,ge=1,le=500)
 
 class MediaSettings(Strict):
     auto_transcribe: bool = True
@@ -133,11 +137,12 @@ class RuntimeSettings(Strict):
 active: ContextVar[RuntimeSettings|None]=ContextVar('rag_configuration',default=None)
 
 def defaults():
+    asr_provider=os.getenv('RAG_ASR_PROVIDER','').lower() or ('api' if os.getenv('RAG_ASR_BASE_URL') and os.getenv('RAG_ASR_MODEL') else 'disabled')
     return RuntimeSettings(chat=ChatSettings(base_url=os.getenv('KIMI_BASE_URL','https://api.moonshot.cn/v1'),model=os.getenv('KIMI_MODEL','kimi-k2.6')),
         embedding=EmbeddingSettings(provider='api' if os.getenv('EMBEDDING_BASE_URL') and os.getenv('EMBEDDING_MODEL') else 'tfidf',
           base_url=os.getenv('EMBEDDING_BASE_URL',''),model=os.getenv('EMBEDDING_MODEL','')),
-        asr=AsrSettings(provider='api' if os.getenv('RAG_ASR_BASE_URL') and os.getenv('RAG_ASR_MODEL') else 'disabled',
-          base_url=os.getenv('RAG_ASR_BASE_URL',''),model=os.getenv('RAG_ASR_MODEL','')),
+        asr=AsrSettings(provider=asr_provider,
+          base_url=os.getenv('RAG_ASR_BASE_URL',''),model=os.getenv('RAG_ASR_MODEL','Systran/faster-whisper-tiny' if asr_provider=='local' else '')),
         ocr=OcrSettings(provider='local' if os.getenv('RAG_OCR_PROVIDER','').lower()=='local' else 'vision'),
         media=MediaSettings(auto_transcribe=os.getenv('RAG_MEDIA_AUTO_TRANSCRIBE','1')!='0',
           frame_ocr=os.getenv('RAG_VIDEO_FRAME_OCR','').lower() in {'1','true','yes'}),

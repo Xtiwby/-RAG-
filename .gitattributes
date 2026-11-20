@@ -1,0 +1,2 @@
+# Preserve PDF bytes, offsets and hashes, including ASCII-only generated PDFs.
+*.pdf binary

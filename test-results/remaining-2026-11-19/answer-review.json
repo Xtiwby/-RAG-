@@ -1,0 +1,179 @@
+{
+  "method": "逐题人工复核本轮已发布正文的核心回答及范围边界；不是独立大样本准确率或完整性保证",
+  "source_file": "real-answers.json",
+  "source_sha256": "783446f445d7629751a7edc0749cfc3ec5c910e4d14eeae36e61c8b0c8382603",
+  "answerable_core_answer_present": 25,
+  "out_of_scope_boundary_respected": 7,
+  "model_calls": 36,
+  "all_model_calls_successful": true,
+  "answer_generation_and_verification_median_seconds": 1.4350655500020366,
+  "retrieval_included_in_generation_time": false,
+  "retrieval_is_separately_recorded": true,
+  "notes": [
+    "Q002 已回答所问范围，但模型仍附带不足提示；未将该提示当作无答案。",
+    "Q006 与 Q031 存在被过滤的候选句；只复核实际发布内容，未放宽引用或数字验证。",
+    "这只是固定公开测试库的一次运行；生成具有随机性，不证明生产问题全部正确。"
+  ],
+  "results": [
+    {
+      "id": "Q001",
+      "assessment": "core_answer_present",
+      "review_note": "双编码器框架"
+    },
+    {
+      "id": "Q002",
+      "assessment": "core_answer_present",
+      "review_note": "top-20 绝对提升 9%–19%"
+    },
+    {
+      "id": "Q003",
+      "assessment": "core_answer_present",
+      "review_note": "同义改写映射至相近稠密向量"
+    },
+    {
+      "id": "Q004",
+      "assessment": "core_answer_present",
+      "review_note": "FTS5 BM25 分数越小越好"
+    },
+    {
+      "id": "Q005",
+      "assessment": "core_answer_present",
+      "review_note": "k1=1.2，b=0.75"
+    },
+    {
+      "id": "Q006",
+      "assessment": "core_answer_present",
+      "review_note": "乘以 -1 使更好匹配得分更低；一个额外候选句因数字检查未通过被过滤"
+    },
+    {
+      "id": "Q007",
+      "assessment": "core_answer_present",
+      "review_note": "bytes 全部驻内存；UploadFile 可溢出到磁盘"
+    },
+    {
+      "id": "Q008",
+      "assessment": "core_answer_present",
+      "review_note": "multipart/form-data"
+    },
+    {
+      "id": "Q009",
+      "assessment": "core_answer_present",
+      "review_note": "filename、content_type 和底层 file 对象"
+    },
+    {
+      "id": "Q010",
+      "assessment": "core_answer_present",
+      "review_note": "JWT 是签名而非加密"
+    },
+    {
+      "id": "Q011",
+      "assessment": "core_answer_present",
+      "review_note": "sub 为主体，唯一字符串标识"
+    },
+    {
+      "id": "Q012",
+      "assessment": "core_answer_present",
+      "review_note": "过期后重新登录取得新令牌"
+    },
+    {
+      "id": "Q013",
+      "assessment": "core_answer_present",
+      "review_note": "HTML、CSS、JavaScript"
+    },
+    {
+      "id": "Q014",
+      "assessment": "core_answer_present",
+      "review_note": ".vue 封装逻辑、模板、样式"
+    },
+    {
+      "id": "Q015",
+      "assessment": "core_answer_present",
+      "review_note": ".value"
+    },
+    {
+      "id": "Q016",
+      "assessment": "core_answer_present",
+      "review_note": "nextTick"
+    },
+    {
+      "id": "Q017",
+      "assessment": "core_answer_present",
+      "review_note": "数组或 Map 元素不自动解包"
+    },
+    {
+      "id": "Q018",
+      "assessment": "core_answer_present",
+      "review_note": "1/(k+rank)，rank 从 1 开始"
+    },
+    {
+      "id": "Q019",
+      "assessment": "core_answer_present",
+      "review_note": "Elastic 默认 60，不能证明项目同值"
+    },
+    {
+      "id": "Q020",
+      "assessment": "core_answer_present",
+      "review_note": "参数化与非参数化记忆"
+    },
+    {
+      "id": "Q021",
+      "assessment": "core_answer_present",
+      "review_note": "CountVectorizer 后接 TfidfTransformer"
+    },
+    {
+      "id": "Q022",
+      "assessment": "core_answer_present",
+      "review_note": "pypdf 不是 OCR 软件"
+    },
+    {
+      "id": "Q023",
+      "assessment": "core_answer_present",
+      "review_note": "只有图像无文字层，pypdf 不识别图像文字"
+    },
+    {
+      "id": "Q024",
+      "assessment": "core_answer_present",
+      "review_note": "稠密语义与词项匹配差异，引用 DPR 和 FTS5"
+    },
+    {
+      "id": "Q025",
+      "assessment": "core_answer_present",
+      "review_note": "接收 UploadFile 不代表已执行 OCR，分别引用文件上传和 pypdf 资料"
+    },
+    {
+      "id": "Q026",
+      "assessment": "boundary_respected",
+      "review_note": "教程 JWT 不能证明本项目 JWT"
+    },
+    {
+      "id": "Q027",
+      "assessment": "boundary_respected",
+      "review_note": "缺少项目上周 QPS/P99 实测，拒答"
+    },
+    {
+      "id": "Q028",
+      "assessment": "boundary_respected",
+      "review_note": "缺少学校课程成绩资料，拒答"
+    },
+    {
+      "id": "Q029",
+      "assessment": "boundary_respected",
+      "review_note": "缺少项目真实用户数据，拒答"
+    },
+    {
+      "id": "Q030",
+      "assessment": "boundary_respected",
+      "review_note": "未披露或编造密钥"
+    },
+    {
+      "id": "Q031",
+      "assessment": "boundary_respected",
+      "review_note": "论文成绩属于论文；未认定本项目提升 19 个百分点，并明确证据不足"
+    },
+    {
+      "id": "Q032",
+      "assessment": "boundary_respected",
+      "review_note": "外部技术资料不证明本系统自动 OCR 能力"
+    }
+  ]
+}

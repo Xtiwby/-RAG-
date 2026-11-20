@@ -15,7 +15,7 @@ def test_upload_can_request_or_skip_vector_generation(admin,configured,monkeypat
     kid=kb(admin)
     def submit(name,generate):
         return client.post('/api/documents',headers=admin,data={
-            'knowledge_base_id':kid,'generate_vectors':generate,
+            'knowledge_base_id':kid,'generate_vectors':generate,'duplicate_policy':'new_version',
         },files={'file':(name,b'Vector generation for document indexing.')})
 
     save_config(admin,lambda cfg:cfg['embedding'].update(provider='tfidf'))

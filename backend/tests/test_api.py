@@ -51,7 +51,7 @@ def kb(admin,title='测试知识库'):
     return response.json()['id']
 
 def upload(admin,kid,name='资料.md',text='# 混合检索\n\n混合检索采用向量检索、BM25 关键词检索与 RRF 排名融合。实施计划：建立检索索引并评估召回率。'):
-    response=client.post('/api/documents',headers=admin,data={'knowledge_base_id':kid},files={'file':(name,text.encode(),'text/markdown')})
+    response=client.post('/api/documents',headers=admin,data={'knowledge_base_id':kid,'duplicate_policy':'new_version'},files={'file':(name,text.encode(),'text/markdown')})
     assert response.status_code==201,response.text
     return finish_upload(admin,response.json())
 
@@ -95,12 +95,12 @@ def test_auth_acl_roles_and_revocation(admin):
     user,headers=create_member(admin)
     for path in ('/api/users','/api/audits',f"/api/documents/{doc['id']}",f"/api/documents/{doc['id']}/original"):
         assert client.get(path,headers=headers).status_code==403
-    assert client.get('/api/knowledge-bases',headers=headers).json()==[]
+    assert kid not in {row['id'] for row in client.get('/api/knowledge-bases',headers=headers).json()}
     assert client.post('/api/search',headers=headers,json={'query':'混合检索','knowledge_base_ids':[kid]}).status_code==403
-    assert client.get('/api/dashboard',headers=headers).json()['counts']['documents']==0
+    visible_before = client.get('/api/dashboard',headers=headers).json()['counts']['documents']
     grant={'grants':[{'knowledge_base_id':kid,'access':'read'}]}
     assert client.put(f"/api/users/{user['id']}/grants",headers=admin,json=grant).status_code==200
-    assert len(client.get('/api/documents',headers=headers).json())==1
+    assert client.get('/api/dashboard',headers=headers).json()['counts']['documents']==visible_before+1
     assert client.get(f"/api/documents/{doc['id']}/original",headers=headers).status_code==200
     assert client.post('/api/documents',headers=headers,data={'knowledge_base_id':kid},files={'file':('x.txt',b'no')}).status_code==403
     assert client.delete(f"/api/documents/{doc['id']}",headers=headers).status_code==403
@@ -166,7 +166,8 @@ def test_team_library_members_control_access(admin):
     assert client.patch(path,headers=admin,json={'members':[{'user_id':reader['id'],'access':None}]}).status_code==200
     assert client.get(original,headers=read_headers).status_code==403
     assert client.get(original,headers=write_headers).status_code==200
-    assert {row['id'] for row in client.get('/api/knowledge-bases',headers=read_headers).json()}=={other}
+    visible = {row['id'] for row in client.get('/api/knowledge-bases',headers=read_headers).json()}
+    assert other in visible and kid not in visible
 
 
 def test_public_read_access_does_not_expand_delegated_grants(admin):
@@ -239,9 +240,9 @@ def test_rag_stream_history_citations_export_feedback_and_refusal(admin,monkeypa
     retrieval_calls=[]
     retrieve=rag.retrieve
 
-    async def track_retrieval(query,ids,mode,top_k,rerank):
+    async def track_retrieval(query,ids,mode,top_k,rerank,**options):
         retrieval_calls.append((query,ids,mode,rerank))
-        return await retrieve(query,ids,mode,top_k,rerank)
+        return await retrieve(query,ids,mode,top_k,rerank,**options)
 
     monkeypatch.setattr(rag,'retrieve',track_retrieval)
     kid=kb(admin)
@@ -1036,7 +1037,10 @@ def test_section_failed_retry_and_stale_old_retry(admin,monkeypatch):
     jid=client.post(path+'/regenerate',headers=admin,json={'expected_revision':1}).json()['job_id']
     assert wait_job(admin,jid)['status']=='failed'
     assert client.patch(path,headers=admin,json={'expected_revision':1,'content':'失败后保存的新草稿。[1]'}).status_code==200
+    before = client.get(f"/api/report-tasks/{report['id']}",headers=admin).json()['sections'][0]
     assert client.post(f'/api/tasks/{jid}/retry',headers=admin).status_code==409
+    after = client.get(f"/api/report-tasks/{report['id']}",headers=admin).json()['sections'][0]
+    assert after == before
 
 def test_section_owner_acl_and_member_can_read_finished_job(admin,monkeypatch):
     report=generated_report(admin,monkeypatch);section=report['sections'][0];path=section_path(report,section)

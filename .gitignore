@@ -1,6 +1,7 @@
 backend/.venv/
 backend/models/
 backend/.model-tools/
+backend/.integration-tools/
 backend/data/
 backend/data-acceptance-v04/
 frontend/node_modules/

@@ -1,5 +1,6 @@
 """One bounded completeness review; any supplement gets the same fact gate."""
 import asyncio
+import anyio
 import json
 import re
 from typing import Literal
@@ -35,7 +36,7 @@ async def assess(question,evidence,published,checks,count):
     tag=telemetry.call_kind.set('coverage_review')
     try:
         raw=''
-        async with asyncio.timeout(config.timeout_seconds):
+        with anyio.fail_after(config.timeout_seconds):
             async for token in rag.llm_stream(messages,max_tokens=2300):
                 raw+=token
                 if len(raw)>24000:raise ValueError('覆盖检查响应过大')

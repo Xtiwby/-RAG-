@@ -2,16 +2,70 @@
 from contextlib import contextmanager, asynccontextmanager
 import asyncio
 from pathlib import Path
-from urllib.parse import quote
 import hashlib
+import json
 import mimetypes
 import os
-import re
 import secrets
 import tempfile
+import threading
+import shutil
 
-from fastapi.responses import FileResponse, StreamingResponse
+from fastapi.responses import FileResponse
+from fastapi import HTTPException
+from starlette.background import BackgroundTask
 from . import store as s
+
+_cache_lock=threading.Lock()
+_cache_readers={}
+
+
+def verified_response(row,filename,media_type):
+    """Verify the whole immutable object before serving any byte range.
+
+    Cache verified objects up to 512 MiB; active response files are never evicted.
+    Each cache read checks the digest too, so local corruption cannot be served.
+    """
+    cache=s.DATA/'verified-originals'
+    cache.mkdir(parents=True,exist_ok=True)
+    identity=json.dumps([locator(row),row.get('sha256')],sort_keys=True)
+    key=hashlib.sha256(identity.encode()).hexdigest()
+    path=cache/key
+    with _cache_lock:
+        if path.exists() and row.get('sha256') and file_sha256(path)!=row['sha256']:
+            if _cache_readers.get(str(path),0):
+                raise HTTPException(502,'原文件缓存哈希不匹配，请稍后重试')
+            path.unlink()
+        if not path.exists():
+            try:
+                with local_path(row) as source:
+                    shutil.copyfile(source,path)
+            except RuntimeError as error:
+                path.unlink(missing_ok=True)
+                raise HTTPException(502,str(error)) from None
+            except BaseException:
+                path.unlink(missing_ok=True)
+                raise
+        path.touch()
+        _cache_readers[str(path)]=_cache_readers.get(str(path),0)+1
+
+    def release():
+        with _cache_lock:
+            count=_cache_readers.get(str(path),1)-1
+            if count:
+                _cache_readers[str(path)]=count
+            else:
+                _cache_readers.pop(str(path),None)
+            files=sorted(cache.iterdir(),key=lambda item:item.stat().st_mtime)
+            total=sum(item.stat().st_size for item in files)
+            for item in files:
+                if total<=512*1024*1024:
+                    break
+                if not _cache_readers.get(str(item),0):
+                    size=item.stat().st_size
+                    item.unlink(missing_ok=True);total-=size
+    return FileResponse(path,filename=filename,content_disposition_type='inline',media_type=media_type,
+                        background=BackgroundTask(release),headers={'Cache-Control':'private, no-store'})
 
 
 def backend():
@@ -149,25 +203,9 @@ def original_response(row, filename, media_type=None, range_header=None):
     options = locator(row)
     if not options:
         return FileResponse(row['path'], filename=filename, content_disposition_type='inline', media_type=media_type)
-    if range_header and re.fullmatch(r'bytes=\d*-\d*', range_header):
-        options['Range'] = range_header
-    result = client().get_object(**options)
-    body = result['Body']
-    def stream():
-        try:
-            for chunk in body.iter_chunks(chunk_size=1024 * 1024):
-                if chunk:
-                    yield chunk
-        finally:
-            body.close()
-    headers={'Content-Disposition': "inline; filename*=UTF-8''" + quote(filename),
-             'Accept-Ranges':'bytes'}
-    if result.get('ContentRange'):
-        headers['Content-Range']=result['ContentRange']
-    if result.get('ContentLength') is not None:
-        headers['Content-Length']=str(result['ContentLength'])
-    return StreamingResponse(stream(), media_type=media_type,
-        status_code=206 if result.get('ContentRange') else 200, headers=headers)
+    if not row.get('sha256'):
+        raise HTTPException(409,'历史原件缺少 SHA-256，无法核验完整性，请重新上传原文件')
+    return verified_response(row,filename,media_type)
 
 
 def remove_uncommitted(key, version_id=''):

@@ -1,0 +1,29 @@
+{
+  "pass": true,
+  "pdf_ocr_worker": true,
+  "audio_video_worker": true,
+  "duplicate_choices": true,
+  "results": [
+    {
+      "file": "scanned.pdf",
+      "status": "ready",
+      "seconds": 6.019391500001802,
+      "text": "知源扫描件验收：控制器采用被动散热\n设备编号NX90217，保留期限为21天。",
+      "sha256": "d192c19ef9de1b94ef7a9ea2b406087313afee69b6a073113bb720f3299bb568"
+    },
+    {
+      "file": "speech.wav",
+      "status": "ready",
+      "seconds": 2.684758499999589,
+      "text": "The controller uses passive cooling. Disconnect the power before opening the case.",
+      "sha256": "ac174a31d6eae8da46dbd167ad216215fc1005c29c605752ac3fd004e36c4b8a"
+    },
+    {
+      "file": "speech.mp4",
+      "status": "ready",
+      "seconds": 1.5625762000017858,
+      "text": "The controller uses passive cooling. Disconnect the power before opening the case.",
+      "sha256": "5ee204b2d4c33519e598d1a1a47583b211c1b8822ed9468f612f52d8fa69ba1b"
+    }
+  ]
+}

@@ -10,6 +10,7 @@ const route=useRoute(),router=useRouter(),docs=ref([]),kbs=ref([]),error=ref('')
 const filter=ref(String(route.query.kb||'')),query=ref(String(route.query.q||'')),status=ref(String(route.query.status||''))
 const uploadKb=ref(''),file=ref(null),uploading=ref(false),uploadError=ref(''),progress=ref(null)
 const generateVectors=ref(null)
+const duplicate=ref(null)
 const tracking=ref(null),showUpload=ref(route.query.upload==='1')
 const writable=computed(()=>kbs.value.filter(k=>k.access==='write'&&can('kb.write')))
 const filtered=computed(()=>docs.value.filter(d=>(!filter.value||String(d.knowledge_base_id)===String(filter.value))&&(!query.value||(d.name+' '+d.knowledge_base_name).toLowerCase().includes(query.value.toLowerCase()))&&(!status.value||d.status===status.value)))
@@ -18,6 +19,7 @@ const stageNames={upload:'上传',parse:'解析',chunk:'切分',index:'索引'}
 let timer=null,loadingList=false,closing=false
 async function load(quiet=false){if(loadingList)return;loadingList=true;if(!quiet)loading.value=true;try{[docs.value,kbs.value]=await Promise.all([api('/api/documents'),api('/api/knowledge-bases')]);if(!uploading.value&&!writable.value.some(k=>k.id===uploadKb.value))uploadKb.value=writable.value.find(k=>String(k.id)===filter.value)?.id||writable.value[0]?.id||'';error.value=''}catch(e){error.value=e.message}finally{loading.value=false;loadingList=false}}
 function resetTransfer(){
+  duplicate.value=null
   uploadError.value=''
   progress.value=null
 }
@@ -36,7 +38,7 @@ async function closeDialog(){
     resetTransfer()
   }finally{closing=false}
 }
-async function upload(){
+async function upload(duplicatePolicy='ask'){
   if(uploading.value||tracking.value)return
   resetTransfer()
   const library=writable.value.find(k=>k.id===uploadKb.value)
@@ -45,6 +47,7 @@ async function upload(){
   const form=new FormData()
   form.append('knowledge_base_id',library.id)
   form.append('file',file.value)
+  form.append('duplicate_policy',typeof duplicatePolicy==='string'?duplicatePolicy:'ask')
   if(generateVectors.value!==null)form.append('generate_vectors',String(generateVectors.value))
   uploading.value=true
   progress.value=0
@@ -53,7 +56,7 @@ async function upload(){
     tracking.value={id:result.id,name:result.name,knowledge_base_name:library.name}
     file.value=null
     load(true)
-  }catch(e){uploadError.value=e.message}
+  }catch(e){uploadError.value=e.message;if(e.detail?.code==='duplicate_document'){duplicate.value=e.detail;progress.value=null}}
   finally{uploading.value=false}
 }
 async function remove(doc){if(!await confirmAction('将“'+doc.name+' '+doc.version+'”移出检索？原文件和历史引用仍保留。',{title:'移出检索',danger:true,okText:'确认移出'}))return;try{await api('/api/documents/'+doc.id,{method:'DELETE'});message.success('文档已移出检索');await load()}catch(e){error.value=e.message}}
@@ -99,6 +102,11 @@ onUnmounted(()=>clearInterval(timer))
     <div><dt>文件名</dt><dd>{{tracking.name}}</dd></div>
    </dl>
    <div v-if="uploadError&&progress===null" class="error-banner" role="alert">{{uploadError}}</div>
+   <div v-if="duplicate" class="duplicate-choice">
+    <p>已存在：{{duplicate.name}} · {{duplicate.version}}。取消不会创建文档或版本。</p>
+    <button v-if="duplicate.can_reuse" type="button" class="secondary-button" :disabled="uploading" @click="upload('reuse')">使用已有文档</button>
+    <button type="button" class="secondary-button" :disabled="uploading" @click="upload('new_version')">另建新版本（保留历史）</button>
+   </div>
    <ProcessingPanel v-if="tracking||progress!==null" :document-id="tracking?.id"
     :upload-progress="progress" :upload-error="uploadError" @changed="load(true)"/>
    <p v-if="tracking" class="section-description">关闭弹窗后，后台处理会继续。可从文档列表重新查看进度。</p>

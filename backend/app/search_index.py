@@ -32,7 +32,7 @@ def index_document(conn, document_id):
         en=len(re.findall(r'[a-zA-Z]',plain))
         conn.execute('''INSERT INTO chunk_search(chunk_id,document_id,knowledge_base_id,search_terms,has_zh,has_en,embedding)
             VALUES(?,?,?,?,?,?,CAST(? AS vector(1024)))''',
-            (chunk['id'],document_id,doc['knowledge_base_id'],search_terms,int(zh>=12),int(en>=100 and zh<en*.12),vector))
+            (chunk['id'],document_id,doc['knowledge_base_id'],search_terms,int(zh>=12),int(en>=40 and zh<en*.12),vector))
 
 
 def complete():

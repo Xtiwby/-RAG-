@@ -46,6 +46,16 @@ def query_anchors(query):
     return {word.lower() for word in re.findall(r'[A-Za-z][A-Za-z0-9_]+',query)
             if word.lower() not in ENGLISH_STOP and (mixed or word[0].isupper() or any(c.isdigit() for c in word))}
 
+
+def heading_only(text,section):
+    text=text.strip()
+    if text==section.strip() or re.fullmatch(r'#{1,6}\s+[^\n]+',text):return True
+    # Archived web captures may flatten h2/h3 into plain paragraphs. A short
+    # hierarchical label without a sentence or factual numeric value remains
+    # a heading, even when the HTML no longer carries the original tag.
+    numbered=re.fullmatch(r'\d+(?:\.\d+){1,5}\.?\s+([^\n.!?。！？]{2,100})',text)
+    return bool(numbered and not re.search(r'(?<![A-Za-z0-9_])\d',numbered[1]))
+
 def json_lines(value,prefix=''):
     """Flatten API payloads into readable lines instead of one dense JSON blob."""
     lines=[]
@@ -207,9 +217,14 @@ def llm_config():
     return key,config.base_url,config.model
 
 def payload(messages,stream=False,max_tokens=None):
-    _,_,model=llm_config()
+    _,base,model=llm_config()
     body={'model':model,'messages':messages,'stream':stream,'max_tokens':max_tokens or settings.get().chat.max_tokens}
-    if model.startswith('kimi-k2'):
+    if stream:
+        body['stream_options']={'include_usage':True}
+    # These official models default to reasoning, which shares the output budget
+    # and can truncate the bounded JSON used by grounding and query planning.
+    deepseek=(httpx.URL(base).host=='api.deepseek.com' and model in {'deepseek-flash','deepseek-v4-pro'})
+    if model.startswith('kimi-k2') or deepseek:
         body['thinking']={'type':'disabled'}
     return body
 
@@ -462,7 +477,9 @@ async def retrieve(query,kb_ids,mode=None,top_k=None,rerank=None,expand_queries=
     else:
         items=s.rows(query_sql,kb_ids)
     # Short factual statements are valid evidence; pure headings are not.
-    items=[item for item in items if len(chunk_terms(item['text']))>=2 and not re.fullmatch(r'#{1,6}\s+[^\n]+',item['text'].strip())]
+    source_items=items
+    items=[item for item in items if len(chunk_terms(item['text']))>=2
+           and not heading_only(item['text'],item['section'])]
     if not items:
         return [],{'embedding':'none','rerank':'none'}
     queries,expansion=preplanned if preplanned is not None else await plan(items)
@@ -544,7 +561,14 @@ async def retrieve(query,kb_ids,mode=None,top_k=None,rerank=None,expand_queries=
             matches.setdefault(i,[]).append({'query':variant['query'],'group':variant['group'],'rank':rank,
                 'coverage':round(coverage,4),'raw_score':round(raw,6),'vector_score':round(max(0,vector),4)})
     ranked=sorted(fused,key=lambda i:fused[i],reverse=True)
-    neural_scores={};neural_meta={}
+    part_candidates={}
+    for group,values in group_scores.items():
+        if not group.startswith('part-'):continue
+        topics=group_anchors.get(group,set())
+        common=set.intersection(*(anchor_docs[a] for a in topics)) if topics else set()
+        eligible=[i for i in values if not common or items[i]['document_id'] in common]
+        part_candidates[group]=sorted(eligible,key=lambda i:(values[i],fused[i]),reverse=True)
+    neural_scores={};neural_meta={};part_neural={};part_meta={}
     if model_rerank and ranked:
         from . import local_models
         rank_config=settings.get().reranking
@@ -555,40 +579,75 @@ async def retrieve(query,kb_ids,mode=None,top_k=None,rerank=None,expand_queries=
         for anchor in sorted(anchor_docs,key=lambda a:(len(anchor_docs[a]),a)):
             best=next((i for i in ranked if items[i]['document_id'] in anchor_docs[anchor]),None)
             if best is not None and best not in required:required.append(best)
-        for group,values in group_scores.items():
-            if group.startswith('part-'):
-                best=max(values,key=lambda i:values[i])
-                if best not in required:required.append(best)
+        for eligible in part_candidates.values():
+            for i in eligible[:min(top_k,5)]:
+                if i not in required:required.append(i)
         for i in required:
             if i not in pool:
                 replace=next((j for j in reversed(range(len(pool))) if pool[j] not in required),None)
                 if replace is not None:pool[replace]=i
-        values,neural_meta=await local_models.rerank(rank_config,query,[items[i]['text'] for i in pool])
-        if len(values)!=len(pool) or any(not isinstance(v,(int,float)) or not math.isfinite(v) or not 0<=v<=1 for v in values):
-            raise HTTPException(502,'重排模型返回无效得分；未退回词项重排')
-        neural_scores=dict(zip(pool,values))
+        # Use the already-authorized translation matching each passage's
+        # language. Re-ranking every English passage with only the Chinese
+        # original can erase the recall gained by bilingual retrieval.
+        use_context=settings.get().answer_quality.context_neighbors>0
+        by_location={(v['document_id'],v['ordinal']):v for v in source_items} if use_context else {}
+        def passage(i):
+            passage=items[i]['text']
+            if use_context:
+                before=by_location.get((items[i]['document_id'],items[i]['ordinal']-1))
+                after=by_location.get((items[i]['document_id'],items[i]['ordinal']+1))
+                if before and (before['page'],before['section'])==(items[i]['page'],items[i]['section']):
+                    passage=before['text'][-450:]+'\n'+passage
+                if after and (after['page'],after['section'])==(items[i]['page'],items[i]['section']):
+                    passage+='\n'+after['text'][:450]
+            return passage
+        async def score(indices,routes,fallback):
+            native_queries={('zh' if re.search(r'[\u4e00-\u9fff]',fallback) else 'en'):fallback}
+            for variant in routes:
+                if variant['language'] in ('zh','en'):
+                    native_queries.setdefault(variant['language'],variant['query'])
+            batches={}
+            for i in indices:
+                langs=retrieval_planner.languages([items[i]])
+                native=native_queries.get(langs[0],fallback) if len(langs)==1 else fallback
+                batches.setdefault(native,[]).append(i)
+            scored={};length_limits=0;meta={}
+            for native,batch in batches.items():
+                values,meta=await local_models.rerank(rank_config,native,[passage(i) for i in batch])
+                if len(values)!=len(batch) or any(not isinstance(v,(int,float)) or not math.isfinite(v) or not 0<=v<=1 for v in values):
+                    raise HTTPException(502,'重排模型返回无效得分；未退回词项重排')
+                scored.update(zip(batch,values));length_limits+=meta.get('at_length_limit',0)
+            return scored,{**meta,'at_length_limit':length_limits,'language_batches':len(batches),
+                           'adjacent_context':use_context,'context_char_limit':900 if use_context else 0}
+        neural_scores,neural_meta=await score(pool,[v for v in queries if v['group']=='question'],query)
+        for group,eligible in part_candidates.items():
+            subset=[i for i in eligible if i in neural_scores][:20]
+            routes=[v for v in queries if v['group']==group]
+            if subset and routes:
+                part_neural[group],meta=await score(subset,routes,routes[0]['query'])
+                part_meta[group]={'candidate_count':len(subset),**meta}
         ranked=sorted(pool,key=lambda i:(neural_scores[i],fused[i]),reverse=True)
     chosen=[]
     covered_anchors=set()
+    # Score each independent information need against its own query, rather
+    # than treating any weak match to that query as completed coverage.
+    for group,eligible in part_candidates.items():
+        if len(chosen)>=top_k:break
+        values=part_neural.get(group,{}) if model_rerank else group_scores[group]
+        candidates=[i for i in eligible if i in values]
+        best=max(candidates,key=lambda i:(values[i],fused[i])) if candidates else None
+        if best is not None:
+            if best not in chosen:chosen.append(best)
+            covered_anchors.update(a for a,docs in anchor_docs.items() if items[best]['document_id'] in docs)
     for anchor in sorted(anchor_docs,key=lambda a:(len(anchor_docs[a]),a)):
         if anchor in covered_anchors or len(chosen)>=top_k:continue
         best=next((i for i in ranked if items[i]['document_id'] in anchor_docs[anchor]),None)
         if best is not None:
             if best not in chosen:chosen.append(best)
             covered_anchors.update(a for a,docs in anchor_docs.items() if items[best]['document_id'] in docs)
-    # A compound question needs evidence for each actual subquestion. Reserve
-    # one eligible result per part, then fill by fused order; never bypass ACL,
-    # latest-version filtering, or a relevance gate to fill a quota.
-    for group,values in group_scores.items():
-        if group.startswith('part-') and len(chosen)<top_k:
-            # A weak match in an earlier group does not fill a locally split part.
-            if not expansion.get('local_split') and any(i in values for i in chosen):
-                continue
-            best=next((i for i in ranked if i in values),None) if model_rerank else max(values,key=lambda i:(values[i],fused[i]))
-            if best is not None and best not in chosen:chosen.append(best)
     for i in ranked:
-        if i not in chosen:chosen.append(i)
         if len(chosen)>=top_k:break
+        if i not in chosen:chosen.append(i)
     if model_rerank:
         chosen.sort(key=lambda i:(neural_scores[i],fused[i]),reverse=True)
     out=[]
@@ -597,6 +656,8 @@ async def retrieve(query,kb_ids,mode=None,top_k=None,rerank=None,expand_queries=
         item.update(chunk_id=item['id'],snippet=item['text'],score=round(fused[i],6),
             relevance=round(neural_scores[i],4) if model_rerank else best['vector_score'],
             rerank_score=round(neural_scores[i],6) if model_rerank else round(fused[i],6),matched_queries=matches[i])
+        if part_neural:
+            item['subquestion_relevance']={group:round(values[i],6) for group,values in part_neural.items() if i in values}
         item['source']=f"{item['name']} · {item['section']} · "+(f"第{item['page']}页 · " if item['page'] else '')+item['version']
         out.append(item)
     main_count=len(out)
@@ -605,11 +666,19 @@ async def retrieve(query,kb_ids,mode=None,top_k=None,rerank=None,expand_queries=
     # concern. It may be enabled while the extra LLM coverage pass stays off.
     context_limit=min(quality_config.context_neighbors,20-main_count)
     if context_limit>0:
-        by_location={(v['document_id'],v['ordinal']):v for v in items}
+        by_location={(v['document_id'],v['ordinal']):v for v in source_items}
         present={v['chunk_id'] for v in out};neighbors={}
         for rank,item in enumerate(list(out)):
             for step in (-1,1):
-                neighbor=by_location.get((item['document_id'],item['ordinal']+step))
+                # Headings consume no evidence budget. Look through at most
+                # two heading-only chunks to reach the adjacent factual text.
+                neighbor=None
+                for distance in range(1,4):
+                    candidate=by_location.get((item['document_id'],item['ordinal']+step*distance))
+                    if not candidate:break
+                    if not heading_only(candidate['text'],candidate['section']):
+                        neighbor=candidate
+                        break
                 if not neighbor or neighbor['id'] in present:continue
                 # A paragraph ending in a colon commonly introduces details
                 # in the next paragraph; otherwise prefer closer-ranked context.
@@ -626,6 +695,7 @@ async def retrieve(query,kb_ids,mode=None,top_k=None,rerank=None,expand_queries=
         'embedding_model':settings.get().embedding.model if semantic_used else None,
         'rerank':'local-cross-encoder' if model_rerank and ranked else 'rank-aware-lexical' if rerank and not model_rerank else 'none',
         'reranking':{'model':settings.get().reranking.model,'candidate_count':len(neural_scores),**neural_meta} if model_rerank else None,
+        'subquestion_reranking':part_meta,
         'policy':'multi-query-neural-v3' if model_rerank else 'multi-query-rrf-v2',
         'mode':mode,'top_k':top_k,'min_similarity':config.min_similarity,'min_coverage':config.min_coverage,
         'main_result_count':main_count,'context_result_count':len(out)-main_count,
@@ -642,6 +712,7 @@ def evidence_prompt(question,citations,history=None,answer_schema=None):
 证据不足时明确说“当前知识库证据不足”，请求补充文档或缩小问题，禁止利用模型常识补齐事实。
 每个有事实依据的句段末必须有引用 [1]、[2] 等，编号必须存在于 evidence_json，不要凭空引用。
 按问题要求逐项用简短的事实句直接回答，区分对象、操作路径及条件。特定车型、时间、地点或记录的数据必须与问题中的限定匹配。若证据完全不支持所问事实，只输出“当前知识库证据不足”。若只能确认部分要点，说明缺少哪些要点。不要罗列相关背景、整段抄录原文或用不同条件的数据替代所问事实。
+外部教程、示例应用和论文不能证明本项目或当前系统的实现、配置、能力、用户数量或实测成绩。证据中的“我们”“本应用”属于原作者，不能转换为正在使用本系统的用户或项目；除非有明确的本项目实现记录，否则此类问题必须说明证据不足。
 历史对话仅用于理解追问，不是证据。不要宣称完成未发生的工作。使用中文。'''
     if settings.get().answer_quality.enabled:
         system+='\n优先完整回答问题明确要求的核心要点。问题问名称、类型或框架时，第一事实句直接给出名称，不要仅描述组成。不省略参数对应关系、否定条件和职责边界。每个事实句只表达少量可核验事实，句末用[1][2]分别引用。不输出标题、数字列表、泛泛背景或不必要的扩展。'
@@ -651,6 +722,7 @@ def evidence_prompt(question,citations,history=None,answer_schema=None):
         system+='''\n仅返回符合 answer_schema 的JSON，不输出Markdown或额外文字。
 claims中每项只写一个简短事实：text不带引用编号；references列出支撑该事实的证据编号；quotes必须为每个 references 编号提供一段该证据中真实存在的连续逐字原文。
 只输出1至4个最能直接回答问题的核心事实，不要为了完整复述材料而增加背景、示例或旁支信息；问题包含多个要点时优先保证每个要点至少有一个核心事实。
+比较多个对象时，先分别给出每个对象有直接证据支持的一条核心事实，再说明差异；不要用某一方的背景、示例或性能成绩挤掉另一方的定义、职责或机制。某一方缺乏直接证据时明确标为不足。
 每个事实优先只选一个最直接的证据编号；仅当一个证据无法完整支持时才合并多个编号。quote只截取足以支持事实的最短连续原文，通常不超过200字，不要重复同义证据。
 不得伪造、改写或拼接quote；不得把不同对象、车型、时间、地点或条件的资料当作答案。问题要点无直接证据时不输出该事实。
 同一问题同时询问操作位置与菜单路径时，必须从同一种操作方法回答，不能把两套替代流程的步骤混在一起。若问题点名某个界面或系统（例如MMI），所有步骤均取该界面或系统对应的操作分支，不要混入物理操纵杆的另一种替代方法。

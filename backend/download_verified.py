@@ -6,7 +6,11 @@ from pathlib import Path
 import requests
 
 def digest(path):
-    with path.open('rb') as handle:return hashlib.file_digest(handle,'sha256').hexdigest()
+    result=hashlib.sha256()
+    with path.open('rb') as handle:
+        for block in iter(lambda:handle.read(1024*1024),b''):
+            result.update(block)
+    return result.hexdigest()
 
 def download(url,target,checksum):
     target=Path(target)

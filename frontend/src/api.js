@@ -105,7 +105,7 @@ export function uploadDocument(form,onProgress) {
       let data={};try{data=JSON.parse(request.responseText)}catch{}
       if(request.status===401){clearSession();location.href='/login'}
       if(request.status>=200&&request.status<300)resolve(data)
-      else reject(new Error(errorMessage(data)))
+      else {const error=new Error(errorMessage(data));error.detail=data.detail;reject(error)}
     }
     request.send(form)
   })

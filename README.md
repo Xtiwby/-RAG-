@@ -34,7 +34,7 @@
 
 - 用户可选择一个或多个已授权知识库进行自然语言提问。
 - Kimi 仅接收通过权限和阈值检查的检索证据。
-- 默认使用“引用先行”低延迟核验：Kimi在同一次调用中返回事实、引用和逐字引文，本地执行引文定位、OCR轻微容错及数字绑定；高风险场景可切换为第二次Kimi独立核验。
+- 默认使用“引用先行”低延迟核验：模型在同一次调用中返回事实、引用和逐字引文，本地执行引文定位、OCR轻微容错及数字绑定；涉及本项目实际实现或运行数据的问题额外执行独立核验，完整严格模式可对全部回答启用。
 - 回答最多保留4条核心事实；单次生成超过8秒时才启动一个可取消的备援请求，用受控调用开销降低模型长尾。
 - 证据不足时明确拒答或提示补充资料，不发布未通过校验的候选句段。
 - 通过 SSE 流式展示 `meta`、`token`、`citation`、`done` 和 `error` 事件。
@@ -180,6 +180,21 @@ python -m venv .venv
 
 模型脚本下载固定版本并校验权重，不会把知识库内容上传至模型仓库。
 
+扫描 PDF、图片的本地 OCR 和便携 ffmpeg 可选安装：
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements-ocr.txt
+```
+
+需要离线语音、视频转写时，安装并准备 Whisper 模型，再在「系统配置」选择本地转写：
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements-asr.txt
+.\.venv\Scripts\python.exe prepare_asr.py
+```
+
+模型下载固定版本并校验哈希，转写时不会自动联网下载。可通过 `RAG_ASR_PROVIDER=local` 设置初始默认值；已经保存的系统配置优先。
+
 ### 3. 启动 PostgreSQL 和 MinIO
 
 在项目根目录执行：
@@ -265,7 +280,13 @@ RAG_FFMPEG_PATH=
 
 文档管理的 PPT/PPTX 原文预览由后端使用 LibreOffice 生成静态幻灯片。请在运行后端的机器上安装 [LibreOffice](https://www.libreoffice.org/download/)。如果安装在自定义位置，可在 `backend/.env` 中用 `RAG_SOFFICE_PATH` 指定 `soffice`（Windows 上为 `soffice.com`）的完整路径。页面上的「下载原文件」仍可获取 PowerPoint 原件。旧版 `.doc`、`.xls` 的解析也复用同一个 LibreOffice，缺少时会返回可读的 422 而不是解析错误。
 
-视频转写需要本机安装 [ffmpeg](https://ffmpeg.org/download.html)（或设置 `RAG_FFMPEG_PATH`）；音频格式在不装 ffmpeg 时仍可由转写服务直接解码。语音与视频的转写服务地址、模型和密钥分别通过 `RAG_ASR_BASE_URL`、`RAG_ASR_MODEL`、`RAG_ASR_API_KEY` 配置，未配置时上传后会停在「待转写」。
+视频转写需要 [ffmpeg](https://ffmpeg.org/download.html)，可使用可选安装包携带的版本，或设置 `RAG_FFMPEG_PATH`。语音与视频可选择离线 Whisper，或通过 `RAG_ASR_BASE_URL`、`RAG_ASR_MODEL`、`RAG_ASR_API_KEY` 连接兼容转写服务；未配置可用方式时上传后会停在「待转写」。
+
+本地 OCR 模式默认逐页识别 PDF 中没有文本层的页面，保留已有文字和真实页码。纯空白页不会导致识别失败；默认最多处理 100 页，可在系统配置中调整。视觉模型模式需要手动开始 PDF 视觉解析。识别内容标记为 OCR 转录，仍需核对原件。
+
+重复上传同一知识库中的相同文件会先提示，可取消、复用已有文档或另建新版本；原件和历史引用保留。接入 API 可通过 `duplicate_policy=ask|reuse|new_version` 指定行为，默认 `ask` 返回结构化 409 提示。
+
+PostgreSQL 使用进程内连接池，事务结束后归还连接。S3 原件在返回任何字节前校验完整 SHA-256，再提供区间读取；校验缓存位于数据目录的 `verified-originals`，回收至 512 MiB，正在读取的文件会保留。历史原件缺少哈希时要求重新上传。
 
 问答导出将 PDF 和幻灯片的原版页面渲染为图片，保留整页版式。引用文字有可靠坐标时会在原页标黄。没有可用原版页面的引用仅显示索引和缺页提示。
 
@@ -323,7 +344,9 @@ pnpm install
 pnpm build
 ```
 
-真实 Kimi、真实 MinIO 和 PostgreSQL 联调可能产生模型费用或写入测试记录，应在隔离知识库或测试环境中执行。
+真实模型、MinIO 和 PostgreSQL 联调可能产生模型费用或写入测试记录，应在隔离知识库或测试环境中执行。
+
+扫描 PDF OCR、离线转写、真实 PostgreSQL/MinIO、本地 BGE 检索及当前生成模型的最新修复、实机结果和复现方法，见[遗留问题修复与实机验收](docs/testing/remaining-2026-11-19.md)。该记录分别报告来源召回、生成答案复核与不同规模的性能，包含适用范围。
 
 五数据集端到端知识问答评测见[`test-results/qa-five-datasets-2026-11-16`](test-results/qa-five-datasets-2026-11-16)：功能人工通过率95.45%，完整响应P50为6.76秒，P95为16.64秒。P50达到8秒目标，P95仍高于15秒目标；报告保留了失败题、人工改判原因和模型调用开销，未将检索召回率冒充问答准确率。
 
@@ -340,8 +363,8 @@ pnpm build
 
 - 模型核验可能误判，不能等同于绝对无幻觉保证，正式内容仍需人工审阅。
 - 当前只支持单个独立 worker，多 worker 需要进一步完善任务租约和故障恢复。
-- 扫描 PDF 和图片需要显式执行视觉解析；未解析图片不会进入问答证据池。扫描版 PDF 仍不提供逐页自动 OCR。
-- 语音和视频依赖外部转写服务；视频还需要本机安装 ffmpeg（可用 `RAG_FFMPEG_PATH` 指定）。转写按时间段定位，不提供原版页面级高亮。
+- 扫描 PDF 支持逐页 OCR，本地模式可自动执行；图片仍需显式开始解析。未解析内容不会进入问答证据池。
+- 语音和视频支持离线 Whisper 或外部转写服务；识别质量取决于语种和录音条件，按时间段定位，不提供原版页面级高亮。
 - 数据源只支持配置文件维护的单对象导入：对象存储不做前缀批量，网盘只支持 HTTP/WebDAV 直链，未接入 OAuth 授权流。
 - PDF 可定位到页和结构化片段，当前不提供版面坐标级像素高亮。
 - 复杂 DOCX 图形、动态目录、特殊域和完全一致的分页无法保证无损保留。

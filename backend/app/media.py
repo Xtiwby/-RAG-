@@ -31,7 +31,14 @@ def ffmpeg():
         found = shutil.which(configured) or (configured if Path(configured).is_file() else None)
         if found:
             return found
-    return shutil.which('ffmpeg') or shutil.which('ffmpeg.exe')
+    found = shutil.which('ffmpeg') or shutil.which('ffmpeg.exe')
+    if found:
+        return found
+    try:
+        import imageio_ffmpeg
+        return imageio_ffmpeg.get_ffmpeg_exe()
+    except ImportError:
+        return None
 
 
 def ffprobe():
@@ -127,6 +134,9 @@ def stamp(seconds):
 
 def asr_configured():
     config = settings.get().asr
+    if config.provider=='local':
+        from . import local_asr
+        return local_asr.available()
     return bool(config.provider == 'api' and config.base_url and config.model
                 and os.getenv('RAG_ASR_API_KEY', '').strip())
 
@@ -139,6 +149,9 @@ def _asr_error(status):
 async def transcribe(path):
     """Return ``(text, segments, model)`` from an OpenAI-compatible ASR service."""
     config = settings.get().asr
+    if config.provider=='local':
+        from . import local_asr
+        return await local_asr.transcribe(path,config)
     key = os.getenv('RAG_ASR_API_KEY', '').strip()
     if not asr_configured():
         raise RuntimeError('尚未配置语音转写服务，请在 backend/.env 设置 RAG_ASR_BASE_URL、RAG_ASR_MODEL 和 RAG_ASR_API_KEY')

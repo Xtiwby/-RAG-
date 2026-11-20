@@ -35,6 +35,7 @@ async def lifespan(app):
         yield
     finally:
         await jobs.stop()
+        db_postgres.close_pools()
 
 app = FastAPI(title='知源 RAG API', version='0.12.0',lifespan=lifespan)
 app.add_middleware(CORSMiddleware,allow_origins=['http://localhost:5173','http://127.0.0.1:5173','http://localhost:4173','http://127.0.0.1:4173','http://127.0.0.1:4174'],allow_credentials=True,allow_methods=['*'],allow_headers=['*'])
@@ -529,7 +530,7 @@ def documents(knowledge_base_id:int|None=None,user=Depends(current_user)):
 
 @app.post('/api/documents',status_code=201)
 async def upload(knowledge_base_id:int=Form(...),modality:Literal['text','image','table']=Form('text'),file:UploadFile=File(...),
-                 generate_vectors:bool|None=Form(None),user=Depends(current_user)):
+                 generate_vectors:bool|None=Form(None),duplicate_policy:Literal['ask','reuse','new_version']=Form('ask'),user=Depends(current_user)):
     check_kb(user,knowledge_base_id,True)
     config=settings.get()
     if generate_vectors is True:
@@ -573,6 +574,26 @@ async def upload(knowledge_base_id:int=Form(...),modality:Literal['text','image'
                 if percent!=last_percent:
                     ingestion.record(did,'upload','running',percent,f'已接收 {size} 字节')
                     last_percent=percent
+        with s.connect() as c:
+            c.execute('BEGIN IMMEDIATE')
+            duplicate=c.execute("SELECT * FROM documents WHERE knowledge_base_id=? AND sha256=? AND id<>? AND deleted=0 AND status<>'upload_failed' ORDER BY id DESC LIMIT 1",
+                                (knowledge_base_id,sha.hexdigest(),did)).fetchone()
+            if duplicate and duplicate_policy!='new_version':
+                if duplicate_policy=='reuse' and duplicate['status'] not in ('uploading','upload_failed'):
+                    reused=dict(duplicate)
+                else:
+                    raise HTTPException(409,{'code':'duplicate_document','message':'此知识库已有相同内容的文件，请选择使用已有文档或另建版本',
+                                             'document_id':duplicate['id'],'name':duplicate['name'],'version':duplicate['version'],
+                                             'can_reuse':duplicate['status']!='uploading'})
+            else:
+                reused=None
+            c.execute('UPDATE documents SET sha256=? WHERE id=?',(sha.hexdigest(),did))
+        if reused:
+            target.unlink();target.parent.rmdir();staging_created=False
+            with s.connect() as c:
+                c.execute('DELETE FROM document_events WHERE document_id=?',(did,))
+                c.execute('DELETE FROM documents WHERE id=?',(did,))
+            return {**safe_doc(reused),'reused':True}
         key=object_storage.object_key('documents',did,s.one('SELECT version FROM documents WHERE id=?',(did,))['version'],suffix)
         stored=await asyncio.to_thread(object_storage.save_file,target,key,sha.hexdigest())
         s.execute("UPDATE documents SET size=?,sha256=?,status='processing',path=?,storage_backend=?,storage_bucket=?,object_key=?,object_version_id=? WHERE id=?",
@@ -599,8 +620,13 @@ async def upload(knowledge_base_id:int=Form(...),modality:Literal['text','image'
                     object_storage.remove_uncommitted(key,stored['object_version_id'] if stored else '')
                 except Exception:
                     pass  # The read-only consistency checker reports any orphaned object.
-            s.execute("UPDATE documents SET status='upload_failed',path='',parse_error=? WHERE id=?",('上传未完成',did))
-            ingestion.record(did,'upload','failed',last_percent if last_percent>=0 else 0,'上传未完成')
+            if isinstance(error,HTTPException) and isinstance(error.detail,dict) and error.detail.get('code')=='duplicate_document':
+                with s.connect() as c:
+                    c.execute('DELETE FROM document_events WHERE document_id=?',(did,))
+                    c.execute('DELETE FROM documents WHERE id=?',(did,))
+            else:
+                s.execute("UPDATE documents SET status='upload_failed',path='',parse_error=? WHERE id=?",('上传未完成',did))
+                ingestion.record(did,'upload','failed',last_percent if last_percent>=0 else 0,'上传未完成')
         raise
 
 @app.get('/api/documents/{did}')
@@ -653,8 +679,8 @@ def document_processing(did:int,user=Depends(current_user)):
 @app.post('/api/documents/{did}/vision-processing',status_code=202)
 async def continue_vision(did:int,user=Depends(current_user)):
     doc=document(user,did,True)
-    if doc['file_type'] not in ingestion.IMAGE_TYPES or not safe_doc(doc)['has_original']:
-        raise HTTPException(422,'视觉解析需要可读取的图片原文件（PNG、JPEG、WebP、BMP、TIFF 或 GIF）')
+    if doc['file_type'] not in ingestion.IMAGE_TYPES | {'pdf'} or not safe_doc(doc)['has_original']:
+        raise HTTPException(422,'视觉解析需要可读取的图片或 PDF 原文件')
     if settings.get().ocr.provider=='vision':
         rag.llm_config()
     jid=ingestion.enqueue_vision(did,user)
@@ -842,7 +868,9 @@ async def prepare_question(body,user):
         prev=next((m['content'] for m in reversed(history) if m['role']=='user'),'')
         retrieval_query=(prev+' '+query)[-4000:]
     retrieval=question_retrieval_settings(last_retrieval,body.mode,body.rerank)
-    evidence,meta=await rag.retrieve(retrieval_query,ids,retrieval['mode'],body.top_k,retrieval['rerank'])
+    from .retrieval_planner import explicit_parts
+    evidence,meta=await rag.retrieve(retrieval_query,ids,retrieval['mode'],body.top_k,retrieval['rerank'],
+                                     split_question=bool(explicit_parts(query)))
     meta={**meta,'mode':retrieval['mode'],'rerank_enabled':retrieval['rerank']}
     if evidence:
         rag.llm_config()
@@ -873,7 +901,11 @@ async def qa_stream(body:QuestionBody,request:Request,user=Depends(current_user)
                 text='当前知识库证据不足，无法可靠回答。请补充相关文档、完成文档解析，或缩小问题范围。'
                 yield rag.event('token',content=text)
             else:
-                async for item in grounding.verified_stream(query,evidence,history):
+                def authorize():
+                    fresh=current_user(request.headers.get('authorization'))
+                    for kid in ids:
+                        check_kb(fresh,kid)
+                async for item in grounding.verified_stream(query,evidence,history,authorize=authorize):
                     if await request.is_disconnected():
                         break
                     # Disabling a user or revoking a KB takes effect even during an active stream.

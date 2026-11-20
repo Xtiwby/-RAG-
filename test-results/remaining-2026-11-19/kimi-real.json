@@ -1,0 +1,860 @@
+{
+  "results": [
+    {
+      "question": "NX90217的保留期限是多少天？",
+      "answer": "NX90217的保留期限为21天。[1]\n",
+      "seconds": 1.6940217999999732,
+      "pass": true,
+      "events": [
+        {
+          "type": "meta",
+          "conversation_id": 1,
+          "message_id": 2,
+          "citations": [
+            {
+              "id": 1,
+              "document_id": 1,
+              "ordinal": 0,
+              "page": null,
+              "section": "正文",
+              "text": "NX90217控制器采用被动散热，不使用电动风扇。保留期限为21天。最低工作温度为-11摄氏度。维护时必须先断电，然后才能打开机壳。未提供本项目的QPS实测结果。",
+              "char_start": 0,
+              "char_end": 81,
+              "sha256": "15bc95c239c693fbebd3d56f71fa02874177a4eb52316af6cd33dda68315fdab",
+              "name": "NX90217.txt",
+              "version": "v1.0",
+              "modality": "text",
+              "knowledge_base_id": 2,
+              "knowledge_base_name": "真实模型合成验收",
+              "chunk_id": 1,
+              "snippet": "NX90217控制器采用被动散热，不使用电动风扇。保留期限为21天。最低工作温度为-11摄氏度。维护时必须先断电，然后才能打开机壳。未提供本项目的QPS实测结果。",
+              "score": 0.016393,
+              "relevance": 0.1681,
+              "rerank_score": 0.016393,
+              "matched_queries": [
+                {
+                  "query": "NX90217的保留期限是多少天?",
+                  "group": "question",
+                  "rank": 1,
+                  "coverage": 0.5625,
+                  "raw_score": 0.032787,
+                  "vector_score": 0.1681
+                }
+              ],
+              "source": "NX90217.txt · 正文 · v1.0"
+            }
+          ],
+          "pipeline": {
+            "embedding": "local-tfidf",
+            "embedding_model": null,
+            "rerank": "rank-aware-lexical",
+            "reranking": null,
+            "policy": "multi-query-rrf-v2",
+            "mode": "hybrid",
+            "top_k": 6,
+            "min_similarity": 0.3,
+            "min_coverage": 0.12,
+            "main_result_count": 1,
+            "context_result_count": 0,
+            "knowledge_base_ids": [
+              2
+            ],
+            "search_index": "application-scan",
+            "query_expansion": {
+              "policy": "bilingual-query-v1",
+              "status": "disabled",
+              "corpus_languages": [
+                "zh"
+              ],
+              "queries": [
+                {
+                  "query": "NX90217的保留期限是多少天?",
+                  "group": "question",
+                  "weight": 1.0,
+                  "language": "original"
+                }
+              ],
+              "warnings": []
+            },
+            "topic_anchors": [
+              "nx90217"
+            ],
+            "covered_topic_anchors": [
+              "nx90217"
+            ],
+            "part_coverage": {},
+            "rerank_enabled": true
+          }
+        },
+        {
+          "type": "verification",
+          "checks": [
+            {
+              "claim_id": 1,
+              "sha256": "96320b663b8bdf3ff748da3366663a655301d2ea3d7e3820dd95a1814acd738c",
+              "references": [
+                1
+              ],
+              "status": "supported",
+              "reason_code": "supported",
+              "reason": "同次生成提供逐字引文，本地完成引用定位与数字绑定检查",
+              "text": "NX90217的保留期限为21天。[1]",
+              "quotes": [
+                {
+                  "reference": 1,
+                  "quote": "保留期限为21天。",
+                  "char_start": 25,
+                  "char_end": 34,
+                  "match": "exact",
+                  "source_sha256": "15bc95c239c693fbebd3d56f71fa02874177a4eb52316af6cd33dda68315fdab"
+                }
+              ],
+              "model": "deepseek-flash",
+              "policy": "citation-first-local-v1"
+            }
+          ]
+        },
+        {
+          "type": "token",
+          "content": "NX90217的保留期限为21天。[1]\n"
+        },
+        {
+          "type": "done",
+          "conversation_id": 1,
+          "message_id": 2
+        }
+      ]
+    },
+    {
+      "question": "What cooling method does NX90217 use?",
+      "answer": "NX90217 uses passive cooling and does not use an electric fan.[1]\n",
+      "seconds": 1.357743999999002,
+      "pass": true,
+      "events": [
+        {
+          "type": "meta",
+          "conversation_id": 2,
+          "message_id": 4,
+          "citations": [
+            {
+              "id": 1,
+              "document_id": 1,
+              "ordinal": 0,
+              "page": null,
+              "section": "正文",
+              "text": "NX90217控制器采用被动散热，不使用电动风扇。保留期限为21天。最低工作温度为-11摄氏度。维护时必须先断电，然后才能打开机壳。未提供本项目的QPS实测结果。",
+              "char_start": 0,
+              "char_end": 81,
+              "sha256": "15bc95c239c693fbebd3d56f71fa02874177a4eb52316af6cd33dda68315fdab",
+              "name": "NX90217.txt",
+              "version": "v1.0",
+              "modality": "text",
+              "knowledge_base_id": 2,
+              "knowledge_base_name": "真实模型合成验收",
+              "chunk_id": 1,
+              "snippet": "NX90217控制器采用被动散热，不使用电动风扇。保留期限为21天。最低工作温度为-11摄氏度。维护时必须先断电，然后才能打开机壳。未提供本项目的QPS实测结果。",
+              "score": 0.012398,
+              "relevance": 0.0511,
+              "rerank_score": 0.012398,
+              "matched_queries": [
+                {
+                  "query": "What cooling method does NX90217 use?",
+                  "group": "question",
+                  "rank": 1,
+                  "coverage": 0.25,
+                  "raw_score": 0.032787,
+                  "vector_score": 0.0511
+                }
+              ],
+              "source": "NX90217.txt · 正文 · v1.0"
+            }
+          ],
+          "pipeline": {
+            "embedding": "local-tfidf",
+            "embedding_model": null,
+            "rerank": "rank-aware-lexical",
+            "reranking": null,
+            "policy": "multi-query-rrf-v2",
+            "mode": "hybrid",
+            "top_k": 6,
+            "min_similarity": 0.3,
+            "min_coverage": 0.12,
+            "main_result_count": 1,
+            "context_result_count": 0,
+            "knowledge_base_ids": [
+              2
+            ],
+            "search_index": "application-scan",
+            "query_expansion": {
+              "policy": "bilingual-query-v1",
+              "status": "disabled",
+              "corpus_languages": [
+                "zh"
+              ],
+              "queries": [
+                {
+                  "query": "What cooling method does NX90217 use?",
+                  "group": "question",
+                  "weight": 1.0,
+                  "language": "original"
+                }
+              ],
+              "warnings": []
+            },
+            "topic_anchors": [
+              "nx90217"
+            ],
+            "covered_topic_anchors": [
+              "nx90217"
+            ],
+            "part_coverage": {},
+            "rerank_enabled": true
+          }
+        },
+        {
+          "type": "verification",
+          "checks": [
+            {
+              "claim_id": 1,
+              "sha256": "7c7fc4497aa7588b39190d94e34aa5706ded53a35c34e71f9d71236c801e8692",
+              "references": [
+                1
+              ],
+              "status": "supported",
+              "reason_code": "supported",
+              "reason": "同次生成提供逐字引文，本地完成引用定位与数字绑定检查",
+              "text": "NX90217 uses passive cooling and does not use an electric fan.[1]",
+              "quotes": [
+                {
+                  "reference": 1,
+                  "quote": "NX90217控制器采用被动散热，不使用电动风扇。",
+                  "char_start": 0,
+                  "char_end": 25,
+                  "match": "exact",
+                  "source_sha256": "15bc95c239c693fbebd3d56f71fa02874177a4eb52316af6cd33dda68315fdab"
+                }
+              ],
+              "model": "deepseek-flash",
+              "policy": "citation-first-local-v1"
+            }
+          ]
+        },
+        {
+          "type": "token",
+          "content": "NX90217 uses passive cooling and does not use an electric fan.[1]\n"
+        },
+        {
+          "type": "done",
+          "conversation_id": 2,
+          "message_id": 4
+        }
+      ]
+    },
+    {
+      "question": "NX90217的最低工作温度是多少？",
+      "answer": "NX90217的最低工作温度为-11摄氏度。[1]\n",
+      "seconds": 1.6638508000014554,
+      "pass": true,
+      "events": [
+        {
+          "type": "meta",
+          "conversation_id": 3,
+          "message_id": 6,
+          "citations": [
+            {
+              "id": 1,
+              "document_id": 1,
+              "ordinal": 0,
+              "page": null,
+              "section": "正文",
+              "text": "NX90217控制器采用被动散热，不使用电动风扇。保留期限为21天。最低工作温度为-11摄氏度。维护时必须先断电，然后才能打开机壳。未提供本项目的QPS实测结果。",
+              "char_start": 0,
+              "char_end": 81,
+              "sha256": "15bc95c239c693fbebd3d56f71fa02874177a4eb52316af6cd33dda68315fdab",
+              "name": "NX90217.txt",
+              "version": "v1.0",
+              "modality": "text",
+              "knowledge_base_id": 2,
+              "knowledge_base_name": "真实模型合成验收",
+              "chunk_id": 1,
+              "snippet": "NX90217控制器采用被动散热，不使用电动风扇。保留期限为21天。最低工作温度为-11摄氏度。维护时必须先断电，然后才能打开机壳。未提供本项目的QPS实测结果。",
+              "score": 0.016393,
+              "relevance": 0.2317,
+              "rerank_score": 0.016393,
+              "matched_queries": [
+                {
+                  "query": "NX90217的最低工作温度是多少?",
+                  "group": "question",
+                  "rank": 1,
+                  "coverage": 0.6667,
+                  "raw_score": 0.032787,
+                  "vector_score": 0.2317
+                }
+              ],
+              "source": "NX90217.txt · 正文 · v1.0"
+            }
+          ],
+          "pipeline": {
+            "embedding": "local-tfidf",
+            "embedding_model": null,
+            "rerank": "rank-aware-lexical",
+            "reranking": null,
+            "policy": "multi-query-rrf-v2",
+            "mode": "hybrid",
+            "top_k": 6,
+            "min_similarity": 0.3,
+            "min_coverage": 0.12,
+            "main_result_count": 1,
+            "context_result_count": 0,
+            "knowledge_base_ids": [
+              2
+            ],
+            "search_index": "application-scan",
+            "query_expansion": {
+              "policy": "bilingual-query-v1",
+              "status": "disabled",
+              "corpus_languages": [
+                "zh"
+              ],
+              "queries": [
+                {
+                  "query": "NX90217的最低工作温度是多少?",
+                  "group": "question",
+                  "weight": 1.0,
+                  "language": "original"
+                }
+              ],
+              "warnings": []
+            },
+            "topic_anchors": [
+              "nx90217"
+            ],
+            "covered_topic_anchors": [
+              "nx90217"
+            ],
+            "part_coverage": {},
+            "rerank_enabled": true
+          }
+        },
+        {
+          "type": "verification",
+          "checks": [
+            {
+              "claim_id": 1,
+              "sha256": "345516868e7471e88d5bfe0f60746df031834133de645986da4a724d7e8d8655",
+              "references": [
+                1
+              ],
+              "status": "supported",
+              "reason_code": "supported",
+              "reason": "同次生成提供逐字引文，本地完成引用定位与数字绑定检查",
+              "text": "NX90217的最低工作温度为-11摄氏度。[1]",
+              "quotes": [
+                {
+                  "reference": 1,
+                  "quote": "最低工作温度为-11摄氏度。",
+                  "char_start": 34,
+                  "char_end": 48,
+                  "match": "exact",
+                  "source_sha256": "15bc95c239c693fbebd3d56f71fa02874177a4eb52316af6cd33dda68315fdab"
+                }
+              ],
+              "model": "deepseek-flash",
+              "policy": "citation-first-local-v1"
+            }
+          ]
+        },
+        {
+          "type": "token",
+          "content": "NX90217的最低工作温度为-11摄氏度。[1]\n"
+        },
+        {
+          "type": "done",
+          "conversation_id": 3,
+          "message_id": 6
+        }
+      ]
+    },
+    {
+      "question": "NX90217开壳前需要做什么？",
+      "answer": "NX90217开壳前必须先断电。[1]\n",
+      "seconds": 1.529683999999179,
+      "pass": true,
+      "events": [
+        {
+          "type": "meta",
+          "conversation_id": 4,
+          "message_id": 8,
+          "citations": [
+            {
+              "id": 1,
+              "document_id": 1,
+              "ordinal": 0,
+              "page": null,
+              "section": "正文",
+              "text": "NX90217控制器采用被动散热，不使用电动风扇。保留期限为21天。最低工作温度为-11摄氏度。维护时必须先断电，然后才能打开机壳。未提供本项目的QPS实测结果。",
+              "char_start": 0,
+              "char_end": 81,
+              "sha256": "15bc95c239c693fbebd3d56f71fa02874177a4eb52316af6cd33dda68315fdab",
+              "name": "NX90217.txt",
+              "version": "v1.0",
+              "modality": "text",
+              "knowledge_base_id": 2,
+              "knowledge_base_name": "真实模型合成验收",
+              "chunk_id": 1,
+              "snippet": "NX90217控制器采用被动散热，不使用电动风扇。保留期限为21天。最低工作温度为-11摄氏度。维护时必须先断电，然后才能打开机壳。未提供本项目的QPS实测结果。",
+              "score": 0.01373,
+              "relevance": 0.0719,
+              "rerank_score": 0.01373,
+              "matched_queries": [
+                {
+                  "query": "NX90217开壳前需要做什么?",
+                  "group": "question",
+                  "rank": 1,
+                  "coverage": 0.3,
+                  "raw_score": 0.032787,
+                  "vector_score": 0.0719
+                }
+              ],
+              "source": "NX90217.txt · 正文 · v1.0"
+            }
+          ],
+          "pipeline": {
+            "embedding": "local-tfidf",
+            "embedding_model": null,
+            "rerank": "rank-aware-lexical",
+            "reranking": null,
+            "policy": "multi-query-rrf-v2",
+            "mode": "hybrid",
+            "top_k": 6,
+            "min_similarity": 0.3,
+            "min_coverage": 0.12,
+            "main_result_count": 1,
+            "context_result_count": 0,
+            "knowledge_base_ids": [
+              2
+            ],
+            "search_index": "application-scan",
+            "query_expansion": {
+              "policy": "bilingual-query-v1",
+              "status": "disabled",
+              "corpus_languages": [
+                "zh"
+              ],
+              "queries": [
+                {
+                  "query": "NX90217开壳前需要做什么?",
+                  "group": "question",
+                  "weight": 1.0,
+                  "language": "original"
+                }
+              ],
+              "warnings": []
+            },
+            "topic_anchors": [
+              "nx90217"
+            ],
+            "covered_topic_anchors": [
+              "nx90217"
+            ],
+            "part_coverage": {},
+            "rerank_enabled": true
+          }
+        },
+        {
+          "type": "verification",
+          "checks": [
+            {
+              "claim_id": 1,
+              "sha256": "1315195c6b4ce1f6184d971866b972e02c653330be9f63d99c0dca8397317238",
+              "references": [
+                1
+              ],
+              "status": "supported",
+              "reason_code": "supported",
+              "reason": "同次生成提供逐字引文，本地完成引用定位与数字绑定检查",
+              "text": "NX90217开壳前必须先断电。[1]",
+              "quotes": [
+                {
+                  "reference": 1,
+                  "quote": "维护时必须先断电，然后才能打开机壳。",
+                  "char_start": 48,
+                  "char_end": 66,
+                  "match": "exact",
+                  "source_sha256": "15bc95c239c693fbebd3d56f71fa02874177a4eb52316af6cd33dda68315fdab"
+                }
+              ],
+              "model": "deepseek-flash",
+              "policy": "citation-first-local-v1"
+            }
+          ]
+        },
+        {
+          "type": "token",
+          "content": "NX90217开壳前必须先断电。[1]\n"
+        },
+        {
+          "type": "done",
+          "conversation_id": 4,
+          "message_id": 8
+        }
+      ]
+    },
+    {
+      "question": "NX90217的期限、温度和维护步骤分别是什么？",
+      "answer": "NX90217的保留期限为21天。[1]\nNX90217的最低工作温度为-11摄氏度。[1]\n维护NX90217时必须先断电，然后才能打开机壳。[1]\n",
+      "seconds": 2.4033476000004157,
+      "pass": true,
+      "events": [
+        {
+          "type": "meta",
+          "conversation_id": 5,
+          "message_id": 10,
+          "citations": [
+            {
+              "id": 1,
+              "document_id": 1,
+              "ordinal": 0,
+              "page": null,
+              "section": "正文",
+              "text": "NX90217控制器采用被动散热，不使用电动风扇。保留期限为21天。最低工作温度为-11摄氏度。维护时必须先断电，然后才能打开机壳。未提供本项目的QPS实测结果。",
+              "char_start": 0,
+              "char_end": 81,
+              "sha256": "15bc95c239c693fbebd3d56f71fa02874177a4eb52316af6cd33dda68315fdab",
+              "name": "NX90217.txt",
+              "version": "v1.0",
+              "modality": "text",
+              "knowledge_base_id": 2,
+              "knowledge_base_name": "真实模型合成验收",
+              "chunk_id": 1,
+              "snippet": "NX90217控制器采用被动散热，不使用电动风扇。保留期限为21天。最低工作温度为-11摄氏度。维护时必须先断电，然后才能打开机壳。未提供本项目的QPS实测结果。",
+              "score": 0.016393,
+              "relevance": 0.1598,
+              "rerank_score": 0.016393,
+              "matched_queries": [
+                {
+                  "query": "NX90217的期限、温度和维护步骤分别是什么?",
+                  "group": "question",
+                  "rank": 1,
+                  "coverage": 0.4545,
+                  "raw_score": 0.032787,
+                  "vector_score": 0.1598
+                }
+              ],
+              "source": "NX90217.txt · 正文 · v1.0"
+            }
+          ],
+          "pipeline": {
+            "embedding": "local-tfidf",
+            "embedding_model": null,
+            "rerank": "rank-aware-lexical",
+            "reranking": null,
+            "policy": "multi-query-rrf-v2",
+            "mode": "hybrid",
+            "top_k": 6,
+            "min_similarity": 0.3,
+            "min_coverage": 0.12,
+            "main_result_count": 1,
+            "context_result_count": 0,
+            "knowledge_base_ids": [
+              2
+            ],
+            "search_index": "application-scan",
+            "query_expansion": {
+              "policy": "bilingual-query-v1",
+              "status": "disabled",
+              "corpus_languages": [
+                "zh"
+              ],
+              "queries": [
+                {
+                  "query": "NX90217的期限、温度和维护步骤分别是什么?",
+                  "group": "question",
+                  "weight": 1.0,
+                  "language": "original"
+                }
+              ],
+              "warnings": []
+            },
+            "topic_anchors": [
+              "nx90217"
+            ],
+            "covered_topic_anchors": [
+              "nx90217"
+            ],
+            "part_coverage": {},
+            "rerank_enabled": true
+          }
+        },
+        {
+          "type": "verification",
+          "checks": [
+            {
+              "claim_id": 1,
+              "sha256": "96320b663b8bdf3ff748da3366663a655301d2ea3d7e3820dd95a1814acd738c",
+              "references": [
+                1
+              ],
+              "status": "supported",
+              "reason_code": "supported",
+              "reason": "同次生成提供逐字引文，本地完成引用定位与数字绑定检查",
+              "text": "NX90217的保留期限为21天。[1]",
+              "quotes": [
+                {
+                  "reference": 1,
+                  "quote": "保留期限为21天。",
+                  "char_start": 25,
+                  "char_end": 34,
+                  "match": "exact",
+                  "source_sha256": "15bc95c239c693fbebd3d56f71fa02874177a4eb52316af6cd33dda68315fdab"
+                }
+              ],
+              "model": "deepseek-flash",
+              "policy": "citation-first-local-v1"
+            },
+            {
+              "claim_id": 2,
+              "sha256": "345516868e7471e88d5bfe0f60746df031834133de645986da4a724d7e8d8655",
+              "references": [
+                1
+              ],
+              "status": "supported",
+              "reason_code": "supported",
+              "reason": "同次生成提供逐字引文，本地完成引用定位与数字绑定检查",
+              "text": "NX90217的最低工作温度为-11摄氏度。[1]",
+              "quotes": [
+                {
+                  "reference": 1,
+                  "quote": "最低工作温度为-11摄氏度。",
+                  "char_start": 34,
+                  "char_end": 48,
+                  "match": "exact",
+                  "source_sha256": "15bc95c239c693fbebd3d56f71fa02874177a4eb52316af6cd33dda68315fdab"
+                }
+              ],
+              "model": "deepseek-flash",
+              "policy": "citation-first-local-v1"
+            },
+            {
+              "claim_id": 3,
+              "sha256": "a67e3785280b4a421f5ff00e92c88dc94bbec941c13f3e002d9a0c0c55308eac",
+              "references": [
+                1
+              ],
+              "status": "supported",
+              "reason_code": "supported",
+              "reason": "同次生成提供逐字引文，本地完成引用定位与数字绑定检查",
+              "text": "维护NX90217时必须先断电，然后才能打开机壳。[1]",
+              "quotes": [
+                {
+                  "reference": 1,
+                  "quote": "维护时必须先断电，然后才能打开机壳。",
+                  "char_start": 48,
+                  "char_end": 66,
+                  "match": "exact",
+                  "source_sha256": "15bc95c239c693fbebd3d56f71fa02874177a4eb52316af6cd33dda68315fdab"
+                }
+              ],
+              "model": "deepseek-flash",
+              "policy": "citation-first-local-v1"
+            }
+          ]
+        },
+        {
+          "type": "token",
+          "content": "NX90217的保留期限为21天。[1]\n"
+        },
+        {
+          "type": "token",
+          "content": "NX90217的最低工作温度为-11摄氏度。[1]\n"
+        },
+        {
+          "type": "token",
+          "content": "维护NX90217时必须先断电，然后才能打开机壳。[1]\n"
+        },
+        {
+          "type": "done",
+          "conversation_id": 5,
+          "message_id": 10
+        }
+      ]
+    },
+    {
+      "question": "NX90217已经实测达到多少QPS？",
+      "answer": "现有证据未提供NX90217的QPS实测结果，因此无法给出已实测达到的QPS数值。[1]\n",
+      "seconds": 3.4626883000000817,
+      "pass": true,
+      "events": [
+        {
+          "type": "meta",
+          "conversation_id": 6,
+          "message_id": 12,
+          "citations": [
+            {
+              "id": 1,
+              "document_id": 1,
+              "ordinal": 0,
+              "page": null,
+              "section": "正文",
+              "text": "NX90217控制器采用被动散热，不使用电动风扇。保留期限为21天。最低工作温度为-11摄氏度。维护时必须先断电，然后才能打开机壳。未提供本项目的QPS实测结果。",
+              "char_start": 0,
+              "char_end": 81,
+              "sha256": "15bc95c239c693fbebd3d56f71fa02874177a4eb52316af6cd33dda68315fdab",
+              "name": "NX90217.txt",
+              "version": "v1.0",
+              "modality": "text",
+              "knowledge_base_id": 2,
+              "knowledge_base_name": "真实模型合成验收",
+              "chunk_id": 1,
+              "snippet": "NX90217控制器采用被动散热，不使用电动风扇。保留期限为21天。最低工作温度为-11摄氏度。维护时必须先断电，然后才能打开机壳。未提供本项目的QPS实测结果。",
+              "score": 0.014063,
+              "relevance": 0.0881,
+              "rerank_score": 0.014063,
+              "matched_queries": [
+                {
+                  "query": "NX90217已经实测达到多少QPS?",
+                  "group": "question",
+                  "rank": 1,
+                  "coverage": 0.3125,
+                  "raw_score": 0.032787,
+                  "vector_score": 0.0881
+                }
+              ],
+              "source": "NX90217.txt · 正文 · v1.0"
+            }
+          ],
+          "pipeline": {
+            "embedding": "local-tfidf",
+            "embedding_model": null,
+            "rerank": "rank-aware-lexical",
+            "reranking": null,
+            "policy": "multi-query-rrf-v2",
+            "mode": "hybrid",
+            "top_k": 6,
+            "min_similarity": 0.3,
+            "min_coverage": 0.12,
+            "main_result_count": 1,
+            "context_result_count": 0,
+            "knowledge_base_ids": [
+              2
+            ],
+            "search_index": "application-scan",
+            "query_expansion": {
+              "policy": "bilingual-query-v1",
+              "status": "disabled",
+              "corpus_languages": [
+                "zh"
+              ],
+              "queries": [
+                {
+                  "query": "NX90217已经实测达到多少QPS?",
+                  "group": "question",
+                  "weight": 1.0,
+                  "language": "original"
+                }
+              ],
+              "warnings": []
+            },
+            "topic_anchors": [
+              "nx90217",
+              "qps"
+            ],
+            "covered_topic_anchors": [
+              "nx90217",
+              "qps"
+            ],
+            "part_coverage": {},
+            "rerank_enabled": true
+          }
+        },
+        {
+          "type": "verification",
+          "checks": [
+            {
+              "claim_id": 1,
+              "sha256": "f23d7dee2599f3f576a8b5f8d370ad0ba78ed2699eb0bc85939a265d81cf83c7",
+              "references": [
+                1
+              ],
+              "status": "supported",
+              "reason_code": "supported",
+              "reason": "同次生成提供逐字引文，本地完成引用定位与数字绑定检查",
+              "text": "现有证据未提供NX90217的QPS实测结果，因此无法给出已实测达到的QPS数值。[1]",
+              "quotes": [
+                {
+                  "reference": 1,
+                  "quote": "未提供本项目的QPS实测结果。",
+                  "char_start": 66,
+                  "char_end": 81,
+                  "match": "exact",
+                  "source_sha256": "15bc95c239c693fbebd3d56f71fa02874177a4eb52316af6cd33dda68315fdab"
+                }
+              ],
+              "model": "deepseek-flash",
+              "policy": "citation-first-local-v1"
+            }
+          ]
+        },
+        {
+          "type": "token",
+          "content": "现有证据未提供NX90217的QPS实测结果，因此无法给出已实测达到的QPS数值。[1]\n"
+        },
+        {
+          "type": "done",
+          "conversation_id": 6,
+          "message_id": 12
+        }
+      ]
+    }
+  ],
+  "model_calls": [
+    {
+      "kind": "chat",
+      "model": "deepseek-flash",
+      "status": "success",
+      "latency_ms": 1552,
+      "input_tokens": 1013,
+      "output_tokens": 64
+    },
+    {
+      "kind": "chat",
+      "model": "deepseek-flash",
+      "status": "success",
+      "latency_ms": 1204,
+      "input_tokens": 1014,
+      "output_tokens": 67
+    },
+    {
+      "kind": "chat",
+      "model": "deepseek-flash",
+      "status": "success",
+      "latency_ms": 1528,
+      "input_tokens": 1012,
+      "output_tokens": 92
+    },
+    {
+      "kind": "chat",
+      "model": "deepseek-flash",
+      "status": "success",
+      "latency_ms": 1399,
+      "input_tokens": 1013,
+      "output_tokens": 129
+    },
+    {
+      "kind": "chat",
+      "model": "deepseek-flash",
+      "status": "success",
+      "latency_ms": 2277,
+      "input_tokens": 1016,
+      "output_tokens": 290
+    },
+    {
+      "kind": "chat",
+      "model": "deepseek-flash",
+      "status": "success",
+      "latency_ms": 3353,
+      "input_tokens": 1014,
+      "output_tokens": 426
+    }
+  ]
+}

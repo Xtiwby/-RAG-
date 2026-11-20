@@ -1,0 +1,340 @@
+{
+  "pass": true,
+  "postgres": "postgres (PostgreSQL) 16.15",
+  "pgvector": "0.8.6",
+  "minio": true,
+  "external_worker": true,
+  "real_bge": true,
+  "ingestion_seconds": 40.187278599998535,
+  "original_sha256": "9ce37c673d4a765c41611d45fedd46361c5abaaf840e053a63aed98a316f7e7c",
+  "range_pass": true,
+  "audit_count": 21,
+  "indexes": [
+    "chunk_search_pkey",
+    "chunk_search_terms_idx",
+    "chunk_search_vector_idx",
+    "chunk_search_kb_idx"
+  ],
+  "queries": [
+    {
+      "mode": "keyword",
+      "query": "NX90217如何散热？",
+      "ms": 28495.430099999794,
+      "pipeline": {
+        "embedding": "not-used",
+        "embedding_model": null,
+        "rerank": "local-cross-encoder",
+        "reranking": {
+          "model": "BAAI/bge-reranker-v2-m3",
+          "candidate_count": 1,
+          "device": "cuda",
+          "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+          "max_length": 1024,
+          "at_length_limit": 0
+        },
+        "policy": "multi-query-neural-v3",
+        "mode": "keyword",
+        "top_k": 6,
+        "min_similarity": 0.3,
+        "min_coverage": 0.12,
+        "main_result_count": 1,
+        "context_result_count": 0,
+        "knowledge_base_ids": [
+          2
+        ],
+        "search_index": "postgresql-fts-pgvector",
+        "query_expansion": {
+          "policy": "bilingual-query-v1",
+          "status": "disabled",
+          "corpus_languages": [
+            "zh"
+          ],
+          "queries": [
+            {
+              "query": "NX90217如何散热?",
+              "group": "question",
+              "weight": 1.0,
+              "language": "original"
+            }
+          ],
+          "warnings": []
+        },
+        "topic_anchors": [
+          "nx90217"
+        ],
+        "covered_topic_anchors": [
+          "nx90217"
+        ],
+        "part_coverage": {}
+      }
+    },
+    {
+      "mode": "keyword",
+      "query": "How is NX90217 cooled?",
+      "ms": 1993.6229000013554,
+      "pipeline": {
+        "embedding": "not-used",
+        "embedding_model": null,
+        "rerank": "local-cross-encoder",
+        "reranking": {
+          "model": "BAAI/bge-reranker-v2-m3",
+          "candidate_count": 1,
+          "device": "cuda",
+          "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+          "max_length": 1024,
+          "at_length_limit": 0
+        },
+        "policy": "multi-query-neural-v3",
+        "mode": "keyword",
+        "top_k": 6,
+        "min_similarity": 0.3,
+        "min_coverage": 0.12,
+        "main_result_count": 1,
+        "context_result_count": 0,
+        "knowledge_base_ids": [
+          2
+        ],
+        "search_index": "postgresql-fts-pgvector",
+        "query_expansion": {
+          "policy": "bilingual-query-v1",
+          "status": "disabled",
+          "corpus_languages": [
+            "zh"
+          ],
+          "queries": [
+            {
+              "query": "How is NX90217 cooled?",
+              "group": "question",
+              "weight": 1.0,
+              "language": "original"
+            }
+          ],
+          "warnings": []
+        },
+        "topic_anchors": [
+          "nx90217"
+        ],
+        "covered_topic_anchors": [
+          "nx90217"
+        ],
+        "part_coverage": {}
+      }
+    },
+    {
+      "mode": "vector",
+      "query": "NX90217如何散热？",
+      "ms": 10341.337699999713,
+      "pipeline": {
+        "embedding": "local-bge-m3",
+        "embedding_model": "BAAI/bge-m3",
+        "rerank": "local-cross-encoder",
+        "reranking": {
+          "model": "BAAI/bge-reranker-v2-m3",
+          "candidate_count": 1,
+          "device": "cuda",
+          "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+          "max_length": 1024,
+          "at_length_limit": 0
+        },
+        "policy": "multi-query-neural-v3",
+        "mode": "vector",
+        "top_k": 6,
+        "min_similarity": 0.3,
+        "min_coverage": 0.12,
+        "main_result_count": 1,
+        "context_result_count": 0,
+        "knowledge_base_ids": [
+          2
+        ],
+        "search_index": "postgresql-fts-pgvector",
+        "query_expansion": {
+          "policy": "bilingual-query-v1",
+          "status": "disabled",
+          "corpus_languages": [
+            "zh"
+          ],
+          "queries": [
+            {
+              "query": "NX90217如何散热?",
+              "group": "question",
+              "weight": 1.0,
+              "language": "original"
+            }
+          ],
+          "warnings": []
+        },
+        "topic_anchors": [
+          "nx90217"
+        ],
+        "covered_topic_anchors": [
+          "nx90217"
+        ],
+        "part_coverage": {}
+      }
+    },
+    {
+      "mode": "vector",
+      "query": "How is NX90217 cooled?",
+      "ms": 2236.0607999980857,
+      "pipeline": {
+        "embedding": "local-bge-m3",
+        "embedding_model": "BAAI/bge-m3",
+        "rerank": "local-cross-encoder",
+        "reranking": {
+          "model": "BAAI/bge-reranker-v2-m3",
+          "candidate_count": 1,
+          "device": "cuda",
+          "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+          "max_length": 1024,
+          "at_length_limit": 0
+        },
+        "policy": "multi-query-neural-v3",
+        "mode": "vector",
+        "top_k": 6,
+        "min_similarity": 0.3,
+        "min_coverage": 0.12,
+        "main_result_count": 1,
+        "context_result_count": 0,
+        "knowledge_base_ids": [
+          2
+        ],
+        "search_index": "postgresql-fts-pgvector",
+        "query_expansion": {
+          "policy": "bilingual-query-v1",
+          "status": "disabled",
+          "corpus_languages": [
+            "zh"
+          ],
+          "queries": [
+            {
+              "query": "How is NX90217 cooled?",
+              "group": "question",
+              "weight": 1.0,
+              "language": "original"
+            }
+          ],
+          "warnings": []
+        },
+        "topic_anchors": [
+          "nx90217"
+        ],
+        "covered_topic_anchors": [
+          "nx90217"
+        ],
+        "part_coverage": {}
+      }
+    },
+    {
+      "mode": "hybrid",
+      "query": "NX90217如何散热？",
+      "ms": 2330.6774999982736,
+      "pipeline": {
+        "embedding": "local-bge-m3",
+        "embedding_model": "BAAI/bge-m3",
+        "rerank": "local-cross-encoder",
+        "reranking": {
+          "model": "BAAI/bge-reranker-v2-m3",
+          "candidate_count": 1,
+          "device": "cuda",
+          "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+          "max_length": 1024,
+          "at_length_limit": 0
+        },
+        "policy": "multi-query-neural-v3",
+        "mode": "hybrid",
+        "top_k": 6,
+        "min_similarity": 0.3,
+        "min_coverage": 0.12,
+        "main_result_count": 1,
+        "context_result_count": 0,
+        "knowledge_base_ids": [
+          2
+        ],
+        "search_index": "postgresql-fts-pgvector",
+        "query_expansion": {
+          "policy": "bilingual-query-v1",
+          "status": "disabled",
+          "corpus_languages": [
+            "zh"
+          ],
+          "queries": [
+            {
+              "query": "NX90217如何散热?",
+              "group": "question",
+              "weight": 1.0,
+              "language": "original"
+            }
+          ],
+          "warnings": []
+        },
+        "topic_anchors": [
+          "nx90217"
+        ],
+        "covered_topic_anchors": [
+          "nx90217"
+        ],
+        "part_coverage": {}
+      }
+    },
+    {
+      "mode": "hybrid",
+      "query": "How is NX90217 cooled?",
+      "ms": 2285.037800000282,
+      "pipeline": {
+        "embedding": "local-bge-m3",
+        "embedding_model": "BAAI/bge-m3",
+        "rerank": "local-cross-encoder",
+        "reranking": {
+          "model": "BAAI/bge-reranker-v2-m3",
+          "candidate_count": 1,
+          "device": "cuda",
+          "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+          "max_length": 1024,
+          "at_length_limit": 0
+        },
+        "policy": "multi-query-neural-v3",
+        "mode": "hybrid",
+        "top_k": 6,
+        "min_similarity": 0.3,
+        "min_coverage": 0.12,
+        "main_result_count": 1,
+        "context_result_count": 0,
+        "knowledge_base_ids": [
+          2
+        ],
+        "search_index": "postgresql-fts-pgvector",
+        "query_expansion": {
+          "policy": "bilingual-query-v1",
+          "status": "disabled",
+          "corpus_languages": [
+            "zh"
+          ],
+          "queries": [
+            {
+              "query": "How is NX90217 cooled?",
+              "group": "question",
+              "weight": 1.0,
+              "language": "original"
+            }
+          ],
+          "warnings": []
+        },
+        "topic_anchors": [
+          "nx90217"
+        ],
+        "covered_topic_anchors": [
+          "nx90217"
+        ],
+        "part_coverage": {}
+      }
+    }
+  ],
+  "concurrency": {
+    "requests": 40,
+    "workers": 4,
+    "failures": 0,
+    "seconds": 38.12249349999911,
+    "median_ms": 3703.4493500013923,
+    "p95_ms": 5171.72269999719
+  }
+}

@@ -2,11 +2,11 @@
 import csv
 import io
 import json
+import os
 from datetime import datetime,timezone
 from typing import Literal
 from fastapi import HTTPException,Query
 from fastapi.responses import Response
-from . import store as s
 
 EXPORT_LIMIT=50000
 
@@ -21,7 +21,8 @@ def audit_filters(user_id:int|None=None,actor:str=Query('',max_length=100),resou
         if value:
             clauses.append(name+'=?');params.append(value)
     if actor:
-        clauses.append('(instr(actor,?)>0 OR instr(username,?)>0)');params.extend([actor,actor])
+        contains = 'strpos' if os.getenv('RAG_DATABASE_URL') else 'instr'
+        clauses.append(f'({contains}(actor,?)>0 OR {contains}(username,?)>0)');params.extend([actor,actor])
     times=[]
     for name,value,operator in [('start',start,'>='),('end',end,'<=')]:
         if value:
@@ -33,7 +34,11 @@ def audit_filters(user_id:int|None=None,actor:str=Query('',max_length=100),resou
                 raise HTTPException(422,'时间必须是包含时区的 ISO 日期时间') from None
             iso=parsed.astimezone(timezone.utc).isoformat();times.append(parsed)
             values[name]=iso
-            clauses.append('julianday(created_at)'+operator+'julianday(?)');params.append(iso)
+            if os.getenv('RAG_DATABASE_URL'):
+                clauses.append('CAST(created_at AS timestamptz)'+operator+'CAST(? AS timestamptz)')
+            else:
+                clauses.append('julianday(created_at)'+operator+'julianday(?)')
+            params.append(iso)
     if len(times)==2 and times[0]>times[1]:
         raise HTTPException(422,'开始时间不能晚于结束时间')
     return (' WHERE '+' AND '.join(clauses) if clauses else ''),params,{key:value for key,value in values.items() if value is not None and value!=''}
@@ -45,6 +50,7 @@ def safe_cell(value):
     return value
 
 def export_logs(filters,format,user):
+    from . import store as s
     where,params,selected=filters
     with s.connect() as c:
         c.execute('BEGIN')

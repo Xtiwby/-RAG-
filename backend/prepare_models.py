@@ -48,7 +48,10 @@ def main():
             downloaded=target/entry.rfilename
             with downloaded.open('rb') as handle:
                 if entry.lfs:
-                    digest=hashlib.file_digest(handle,'sha256').hexdigest()
+                    hasher=hashlib.sha256()
+                    for block in iter(lambda:handle.read(1024*1024),b''):
+                        hasher.update(block)
+                    digest=hasher.hexdigest()
                     expected=entry.lfs.sha256
                 else:
                     data=handle.read()

@@ -1,0 +1,4 @@
+# Optional local scanned-PDF/image OCR and portable audio/video decoder.
+-r requirements-server.txt
+rapidocr-onnxruntime>=1.4.4,<2
+imageio-ffmpeg>=0.6,<1

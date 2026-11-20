@@ -2,7 +2,7 @@
 import hashlib
 import json
 import re
-from . import grounding,rag,store as s
+from . import grounding,rag,settings,store as s
 
 POLICY='sentence-evidence-v2'
 
@@ -62,7 +62,7 @@ def current(section):
     citations=section.get('citations') or '[]'
     citations=json.loads(citations) if isinstance(citations,str) else citations
     if value.get('content_sha256')!=hashlib.sha256(section['content'].encode()).hexdigest() or (value.get('state') not in ('unverified_manual',None) and value.get('evidence_sha256')!=evidence_digest(citations)):
-        return {'state':'unverified_manual' if section.get('edited') else 'legacy','checks':[]}
+        return {'state':'unverified_manual' if value.get('content_sha256') or section.get('edited') else 'legacy','checks':[]}
     return value
 
 def label(section):
@@ -77,20 +77,52 @@ def label(section):
         title+='；关键点覆盖（模型评估）：'+('已覆盖' if coverage.get('complete') else '待复核或证据不足')
     return title
 
-async def generate(instruction,evidence,authorize):
-    content='';checks=[];coverage={}
-    if not evidence:
-        content='当前知识库证据不足，待补充资料。'
-        yield {'type':'token','content':content}
-    else:
-        async for item in grounding.verified_stream(instruction+' 正文只写带句末引用的事实句，不输出标题、表格、列表序号或未经证据支持的建议。',evidence):
+async def generate_section(instruction,evidence,authorize,kind='fact',coverage_question=None,generation_mode='strict'):
+    if kind in ('fixed','container'):raise ValueError('固定结构不得调用生成模型')
+    if generation_mode=='synthesis':return await generate_synthesis(instruction,evidence,authorize)
+    if generation_mode!='strict':raise ValueError('未知的报告生成模式')
+    content='';checks=[];count=0
+    if evidence:
+        extra={'fact':'只写连续事实句，不输出标题、编号或列表标记；每句末尾引用证据。','analysis':'仅给出有证据基础的分析，明确是推断，不冒充已发生事实，每句末尾引用依据。','recommendation':'仅提出有证据基础的建议，不冒充已经实施的事实，每句末尾引用依据。'}[kind]
+        candidate=''
+        async for token in rag.llm_stream(rag.evidence_prompt(instruction+' '+extra,evidence)):
+            authorize();candidate+=token
+            if len(candidate)>32000:raise ValueError('候选章节过长，未发布未经核验内容')
+        lines=[]
+        for line in candidate.splitlines():
+            if re.match(r'^\s*#{1,6}\s+',line) and not re.search(r'\[\d+\]',line):continue
+            line=re.sub(r'^\s*(?:[-*•]|\d+[.)、](?!\d))\s*','',line).strip()
+            if line:lines.append(line)
+        units=[unit for line in lines for unit in grounding.sentences(line)]
+        if len(units)>128:raise ValueError('本节超过128个核验句段，请缩减目标字数')
+        # Verify up to eight sentences per model call; never persist raw output.
+        for offset in range(0,len(units),8):
             authorize()
-            if item['type']=='verification':checks.extend(item['checks'])
-            if item['type']=='coverage':coverage=item['assessment']
-            if item['type']=='token':content+=item['content']
-            yield item
+            supported,batch=await grounding.check_batch(units[offset:offset+8],evidence,count+1,claim_kind=kind)
+            authorize();count+=len(batch);checks.extend(batch)
+            for unit in supported:content+=unit+'\n'
+    coverage={}
+    if evidence and kind=='fact' and settings.get().answer_quality.enabled:
+        from . import answer_quality
+        coverage,extra,batch=await answer_quality.assess(coverage_question or instruction,evidence,content.splitlines(),checks,count)
+        authorize();checks.extend(batch)
+        for text in extra:content+=text+'\n'
+    if not content:content='【待补充】证据不足，当前资料不足以支持本节内容，请补充证据后重新生成。'
+    verification=record(content,checks,evidence=evidence,coverage=coverage)
+    verification['publishable']=bool(checks) and any(c['status']=='supported' for c in checks)
+    verification['content_kind']=kind
+    return content,verification
+
+async def generate(instruction,evidence,authorize):
+    content,verification=await generate_section(instruction,evidence,authorize)
+    if verification['checks']:
+        yield {'type':'verification','checks':verification['checks']}
+    if verification.get('coverage'):
+        yield {'type':'coverage','assessment':verification['coverage']}
+    yield {'type':'token','content':content}
     authorize()
-    yield {'type':'result','content':content,'verification':record(content,checks,evidence=evidence,coverage=coverage)}
+    yield {'type':'result','content':content,'verification':verification}
+
 
 async def verify_existing(content,evidence,authorize):
     units=[unit for para in content.splitlines() if para.strip() for unit in grounding.sentences(para)]

@@ -1,8 +1,4 @@
-"""db_postgres 适配层单测 + PG 模式下审计导出的已知不兼容（skipif）。
-
-前 3 例用假 Inner 测 Connection 翻译层，不依赖 psycopg 运行时，SQLite 模式下也运行并通过。
-仅最后 1 例需要真实 PostgreSQL 环境，单独 skipif。
-"""
+"""PostgreSQL adapter and audit SQL contracts, plus opt-in real-server parity."""
 import os
 import pytest
 from app import db_postgres
@@ -21,7 +17,8 @@ def test_insert_or_ignore_is_translated():
             return Cur()
     inner = Inner()
     conn = db_postgres.Connection(inner)
-    conn.execute('INSERT OR IGNORE INTO roles(id,name,permissions) VALUES(?,?,?)', (1, 'x', '[]'))
+    result = conn.execute('INSERT OR IGNORE INTO roles(id,name,permissions) VALUES(?,?,?)', (1, 'x', '[]'))
+    assert result.lastrowid is None
     assert 'ON CONFLICT DO NOTHING' in inner.last
     assert '?' not in inner.last
 
@@ -63,9 +60,33 @@ def test_insert_returns_id_for_id_tables():
     assert cur.lastrowid == 42
 
 
-@pytest.mark.skipif(not os.getenv('RAG_DATABASE_URL'), reason='仅在 PostgreSQL 模式运行')
-def test_audit_export_postgres_incompatible():
-    """已知问题：audit_filters 使用 instr/julianday，PG 模式导出应失败（记录为待处理）。"""
-    from test_api import client, admin, application_lifespan
-    r = client.get('/api/audits/export', headers=admin, params={'format': 'csv'})
-    assert r.status_code >= 500, '若 PG 已修复此问题，请更新 open-issues.md 并移除本用例'
+def filters():
+    from app.audit_export import audit_filters
+    return audit_filters(user_id=None, actor='审计_%', resource='', object_id='',
+                         action='', result=None, start='2026-11-19T08:00:00+08:00',
+                         end='2026-11-19T01:00:00Z')
+
+
+def test_audit_postgres_filters_preserve_literal_match_and_timezone(monkeypatch):
+    monkeypatch.setenv('RAG_DATABASE_URL', 'postgresql://test-only')
+    where, params, selected = filters()
+    assert 'strpos(actor,?)' in where and 'strpos(username,?)' in where
+    assert 'CAST(created_at AS timestamptz)' in where
+    assert 'instr(' not in where and 'julianday(' not in where
+    assert params[:2] == ['审计_%', '审计_%']
+    assert selected['start'] == '2026-11-19T00:00:00+00:00'
+
+
+@pytest.mark.skipif(not os.getenv('RAG_TEST_POSTGRES_URL'), reason='需独立配置 RAG_TEST_POSTGRES_URL')
+def test_audit_filters_against_real_postgres(monkeypatch):
+    import psycopg
+    monkeypatch.setenv('RAG_DATABASE_URL', os.environ['RAG_TEST_POSTGRES_URL'])
+    # A session-local temporary table cannot change business data.
+    with psycopg.connect(os.environ['RAG_TEST_POSTGRES_URL'], connect_timeout=3, row_factory=psycopg.rows.dict_row) as raw:
+        raw.execute('CREATE TEMP TABLE audit_logs(actor TEXT,username TEXT,created_at TEXT)')
+        raw.execute('INSERT INTO audit_logs VALUES(%s,%s,%s)', ('审计_%', 'demo', '2026-11-19T00:30:00Z'))
+        raw.execute('INSERT INTO audit_logs VALUES(%s,%s,%s)', ('审计xx', 'demo', '2026-11-19T00:30:00Z'))
+        where, params, _ = filters()
+        row = db_postgres.Connection(raw).execute('SELECT COUNT(*) AS count FROM audit_logs'+where, params).fetchone()
+        assert row[0] == 1
+        raw.rollback()
