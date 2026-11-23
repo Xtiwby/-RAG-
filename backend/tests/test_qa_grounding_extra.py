@@ -2,11 +2,11 @@
 import json
 import pytest
 from test_api import client, admin, application_lifespan, kb, upload, events, response_text, configured, save_config, fake_model
-from app import rag, grounding, store
+from app import rag, grounding, retrieval_planner, store
 
 
-def test_citations_only_tamper_marks_unverified(admin, monkeypatch):
-    """citations 被篡改但 content 不变 → 报告章节回 unverified_manual。"""
+def test_citations_only_tamper_marks_legacy_for_unedited_model_text(admin, monkeypatch):
+    """模型正文的 citations 被篡改但 content 不变 → 记录降级为 legacy，而非继续显示已核验。"""
     from test_api import generated_report
     monkeypatch.setattr(rag, 'llm_stream', fake_model)
     report = generated_report(admin, monkeypatch)
@@ -16,7 +16,7 @@ def test_citations_only_tamper_marks_unverified(admin, monkeypatch):
     wrong[0]['version'] = 'tampered-version'
     store.execute('UPDATE report_sections SET citations=? WHERE id=?', (json.dumps(wrong), section['id']))
     row = client.get(f"/api/report-tasks/{report['id']}", headers=admin).json()
-    assert row['sections'][0]['verification']['state'] == 'unverified_manual'
+    assert row['sections'][0]['verification']['state'] == 'legacy'
     # 恢复后仍为 verified（内容未变，evidence_sha256 重新匹配）
     store.execute('UPDATE report_sections SET citations=? WHERE id=?', (cites, section['id']))
     row = client.get(f"/api/report-tasks/{report['id']}", headers=admin).json()
@@ -25,6 +25,7 @@ def test_citations_only_tamper_marks_unverified(admin, monkeypatch):
 
 def test_judge_unavailable_does_not_trigger_repair(admin, configured, monkeypatch):
     """judge 异常时不触发 coverage 补写。"""
+    monkeypatch.setenv('RAG_QA_VERIFICATION_MODE','independent')
     save_config(admin, lambda cfg: cfg['answer_quality'].update(enabled=True, repair=True))
     calls = []
 
@@ -46,13 +47,13 @@ def test_judge_unavailable_does_not_trigger_repair(admin, configured, monkeypatc
     assert response_text(stream) == grounding.REFUSAL
 
 
-def test_cross_language_degraded_keeps_gates(admin, configured, monkeypatch):
-    """跨语言改写降级时，检索仍走证据门禁，不静默放宽。"""
+def test_cross_language_planner_skips_irrelevant_query_without_relaxing_gates(admin, configured, monkeypatch):
+    """无可复用跨语言锚点时不调用模型，检索仍不得返回无关证据。"""
+    retrieval_planner._cache.clear()
     save_config(admin, lambda cfg: cfg['retrieval'].update(cross_language=True))
 
     async def blocked(messages, max_tokens=None):
-        import asyncio
-        await asyncio.sleep(4)
+        raise AssertionError('无跨语言锚点时不应调用改写模型')
         yield '{}'
 
     kid = kb(admin)
@@ -60,5 +61,6 @@ def test_cross_language_degraded_keeps_gates(admin, configured, monkeypatch):
     monkeypatch.setattr(rag, 'llm_stream', blocked)
     resp = client.post('/api/search', headers=admin,
                        json={'query': '不存在的中文量子水稻', 'knowledge_base_ids': [kid]}).json()
-    assert resp['pipeline']['query_expansion']['status'] == 'degraded'
+    assert resp['pipeline']['query_expansion']['status'] == 'not_needed'
     assert resp['results'] == []
+    retrieval_planner._cache.clear()

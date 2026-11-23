@@ -11,8 +11,10 @@ backend/*.log
 frontend/*.log
 __pycache__/
 .pytest_cache/
+.pytest-tmp/
 *.pyc
 backend/.env
 backend/.env.*
 !backend/.env.example
+.runtime-logs/
 

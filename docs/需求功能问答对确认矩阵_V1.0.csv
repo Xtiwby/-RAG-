@@ -1,0 +1,31 @@
+需求编号,模块,优先级,确认问题,预期答案摘要,状态,主要验证用例
+FR-KB-01,RAG检索与知识接入,P0,"管理员能否创建、编辑、停用和归档知识库并保存检索参数？","能；停用或归档后不可用于新问答，历史对象仍可追溯。",已实现,test_kb_admin_edit_disable_archive_and_historical_scope
+FR-KB-02,RAG检索与知识接入,P1,"是否完整支持网页、数据库、API、对象存储和企业网盘连接器？","当前完成配置式文件、HTTP API和数据库导入；企业网盘及通用对象存储连接器待补。",部分实现,test_import_configured_sources
+FR-KB-03,RAG检索与知识接入,P0,"是否逐阶段处理文档并记录进度和错误？","能；上传、解析、切分和索引均记录事件，失败可重试。",已实现,test_document_stage_events_failure_retry_and_atomic_index
+FR-KB-04,RAG检索与知识接入,P0,"是否保存原文件、结构化文本、位置、片段、哈希和版本？","是；引用可回到相应版本和目标原文窗口。",已实现,test_document_compact_window_locates_cited_chunk
+FR-KB-05,RAG检索与知识接入,P1,"能否更新、停用、删除或重建索引并保留旧引用？","能；新版本就绪前继续使用旧ready版本。",已实现,test_search_keeps_previous_ready_version_until_replacement_is_ready
+FR-KB-06,RAG检索与知识接入,P1,"重复文件是否支持取消、覆盖或创建新版本？","已有哈希与版本基础能力，三种决策分支及专项测试待补。",部分实现,待新增重复文件决策测试
+FR-KB-07,RAG检索与知识接入,P0,"是否支持预处理、关键词、向量、混合检索和重排？","是；在授权范围内使用GIN/HNSW、RRF和模型重排。",已实现,test_neural_scores_actually_reverse_lexical_order_and_disable_works
+FR-QA-01,知识问答,P0,"是否支持规定的办公文件、HTML、图片OCR及音视频扩展？","是；部分格式需要LibreOffice、OCR或ASR运行依赖。",已实现,"test_media.py; test_html_text.py; test_powerpoint_text_slide_order_original_and_pipeline"
+FR-QA-02,知识问答,P0,"能否选择多个授权知识库提问并由服务端复核权限？","能；越权请求返回403或受控404。",已实现,test_permission_matrix
+FR-QA-03,知识问答,P0,"证据不足时是否拒答并阻止无依据事实？","是；检索门槛和事实核验失败时拒答或提示资料不足。",已实现,test_grounding_uncited_false_and_forged_quotes_fail_closed
+FR-QA-04,知识问答,P0,"是否流式展示并逐句绑定引用，取消后仍一致？","是；仅发布已核验句段，按原顺序输出。",已实现,test_parallel_judges_overlap_and_publish_in_order
+FR-QA-05,知识问答,P0,"引用能否显示完整定位信息并打开原文？","能；定位对应版本的目标片段窗口并高亮。",已实现,test_document_compact_window_locates_cited_chunk
+FR-QA-06,知识问答,P1,"会话是否支持历史、重命名、继续、删除和反馈？","是；用户仅操作本人会话，继续时重查授权。",已实现,test_rag_stream_history_citations_export_feedback_and_refusal
+FR-QA-07,知识问答,P1,"导出是否包含问题、答案、引用、时间和知识库范围？","是；导出读取持久化会话与消息快照。",已实现,test_rag_stream_history_citations_export_feedback_and_refusal
+FR-TP-01,模板库,P0,"能否上传DOCX模板并形成可管理版本？","能；原件、解析结构和不可变版本均保存。",已实现,test_docx_structural_parse_versions_mapping_scope_original
+FR-TP-02,模板库,P0,"能否解析标题、固定文本、占位符和表格并校正映射？","能；异常和未映射字段会警告，校正结果可保存。",已实现,test_docx_bad_zip_xml_entity_wrong_mapping_and_correction
+FR-RP-01,报告生成,P0,"能否按模板、知识库、时间范围和要求创建可追踪任务？","能；预检后创建后台任务并记录状态和参数。",已实现,test_preflight_parameter_validation_and_invalid_combinations
+FR-RP-02,报告生成,P0,"报告是否仍按章节分别检索和生成？","当前改为全文一次生成；需更新需求和设计基线。",基线待更新,test_fulltext_generation_uses_one_model_call_and_keeps_one_document
+FR-RP-03,报告生成,P0,"能否预览编辑并只重新生成某一节？","预览编辑已实现；当前改为整篇重新生成，需修改需求。",基线待更新,test_fulltext_regeneration_replaces_the_single_body
+FR-RP-04,报告生成,P0,"能否导出DOCX和PDF并保留模板与引用？","能；正式导出读取不可变发布快照。",已实现,test_template_fills_fixed_text_fields_tables_in_all_exports
+FR-RP-05,报告生成,P1,"是否保存版本、状态、创建人和参数并支持新修订？","是；正式版本不可变，重新打开产生新修订。",已实现,test_review_finalize_immutable_release_and_reopen
+FR-UI-01,UI与系统管理,P0,"是否支持登录退出、失败锁定及令牌失效？","是；认证失败使用通用提示，服务端会话可撤销。",已实现,test_auth_acl_roles_and_revocation
+FR-UI-02,UI与系统管理,P0,"管理员能否创建停用重置用户并分配角色？","能；变更写入审计并按策略撤销旧会话。",已实现,test_profile_password_and_reset
+FR-UI-03,UI与系统管理,P0,"是否支持权限点和知识库授权并阻止越权？","是；服务端联合校验RBAC、ACL、资源归属和状态。",已实现,test_permission_matrix
+FR-UI-04,UI与系统管理,P1,"用户能否修改显示名和本人密码？","能；服务端执行密码策略并处理旧会话。",已实现,test_profile_password_and_reset
+FR-UI-05,UI与系统管理,P0,"答案和报告引用是否绑定完整来源信息？","是；引用和发布快照保存知识库、文档、版本、位置与片段。",已实现,test_report_fact_judge_blocks_unsupported_before_events_storage_export
+FR-UI-06,UI与系统管理,P0,"关键操作是否写入包含操作者、对象、结果和请求标识的审计？","是；统一审计入口追加写入。",已实现,test_audit_composite_filters_pagination_time_and_sensitive_redaction
+FR-UI-07,UI与系统管理,P1,"管理员能否组合查询和导出审计日志？","能；导出受权限和数量限制。",已实现,test_audit_export_filters_all_pages_csv_safety_and_permissions
+FR-UI-08,UI与系统管理,P1,"模型、Embedding、切分、阈值和TopK配置是否支持版本校验回滚审计？","是；配置使用修订号并影响后续任务。",已实现,test_settings_validation_real_effect_and_reindex_version
+FR-UI-09,UI与系统管理,P1,"是否提供任务、失败、存储、worker和模型调用状态？","是；运行状态页面聚合队列、心跳、存储和模型调用。",已实现,test_model_probe_telemetry_and_storage_are_measured

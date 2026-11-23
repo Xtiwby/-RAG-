@@ -70,6 +70,16 @@ def events(response):
 def response_text(stream):
     return ''.join(event.get('content','') for event in stream if event['type']=='token')
 
+def create_current_report(headers,body):
+    """Mirror the current report wizard: preflight first, then create the whole-document job."""
+    payload={**body,'workflow_version':1}
+    checked=client.post('/api/reports/preflight',headers=headers,json=payload)
+    assert checked.status_code==200,checked.text
+    payload.update(preflight_id=checked.json()['preflight_id'],allow_missing=True)
+    created=client.post('/api/report-tasks',headers=headers,json=payload)
+    assert created.status_code==201,created.text
+    return created.json()
+
 def create_member(admin):
     name='u'+uuid.uuid4().hex[:10]
     response=client.post('/api/users',headers=admin,json={'username':name,'name':'新用户','password':'test123456','role_id':2})
@@ -228,6 +238,12 @@ def test_original_versions_chunks_search_and_archive(admin):
 
 async def fake_model(messages,max_tokens=4096):
     data=json.loads(messages[-1]['content'])
+    if 'answer_schema' in data:
+        evidence=data['evidence_json'][0]
+        quote=next((line.strip(' #*-') for line in evidence['text'].splitlines() if line.strip(' #*-')),evidence['text'][:180])[:180]
+        yield json.dumps({'claims':[{'text':quote,'references':[1],
+            'quotes':[{'reference':1,'quote':quote}]}],'insufficient':False},ensure_ascii=False)
+        return
     if 'verification_schema' in data:
         yield json.dumps({'verdicts':[{'claim_id':c['claim_id'],'verdict':'supported','quotes':[{'reference':r,'quote':next(e['text'] for e in data['evidence_json'] if e['reference']==r)} for r in c['references']]} for c in data['claims']]})
         return
@@ -314,14 +330,17 @@ def test_report_real_content_and_export(admin,monkeypatch):
     kid=kb(admin)
     upload(admin,kid)
     template=client.post('/api/templates',headers=admin,json={'name':'测试报告','sections':['混合检索方案','混合检索实施计划']}).json()['id']
-    stream=events(client.post('/api/report-tasks/stream',headers=admin,json={'title':'混合检索技术方案','template_id':template,'knowledge_base_id':kid}))
-    assert stream[-1]['type']=='done'
-    tid=stream[0]['task_id']
+    payload=create_current_report(admin,{
+        'title':'混合检索技术方案','template_id':template,'knowledge_base_id':kid,
+    })
+    assert wait_job(admin,payload['job_id'])['status']=='completed'
+    tid=payload['id']
     row=client.get(f'/api/report-tasks/{tid}',headers=admin).json()
     assert row['progress']==100 and row['status']=='completed'
-    assert len(row['sections'])==2 and all(c['citations'] for c in row['sections'])
-    assert '混合检索' in row['content'] and '本章来源' in row['content']
-    result=client.get(f'/api/report-tasks/{tid}/export?format=docx',headers=admin)
+    assert len(row['sections'])==1 and row['sections'][0]['citations']
+    assert '混合检索' in row['content']
+    result=client.get(f'/api/reports/{tid}/export?format=docx&mode=draft',headers=admin)
+    assert result.status_code==200,result.text
     with zipfile.ZipFile(io.BytesIO(result.content)) as z:
         assert '混合检索' in z.read('word/document.xml').decode()
 
@@ -749,6 +768,7 @@ def test_powerpoint_preview_requires_document_access_and_preserves_original(admi
 
 
 def test_grounding_uncited_false_and_forged_quotes_fail_closed(admin,monkeypatch):
+    monkeypatch.setenv('RAG_QA_VERIFICATION_MODE','independent')
     kid=kb(admin);upload(admin,kid,text='# 检索\n\n混合检索采用 BM25 和 RRF，样例评测召回率为 80%。')
     async def model(messages,max_tokens=4096):
         data=json.loads(messages[-1]['content'])
@@ -775,6 +795,7 @@ def test_grounding_uncited_false_and_forged_quotes_fail_closed(admin,monkeypatch
     assert response_text(stream)==grounding.REFUSAL
 
 def test_grounding_judge_failure_does_not_publish_raw_answer(admin,monkeypatch):
+    monkeypatch.setenv('RAG_QA_VERIFICATION_MODE','independent')
     kid=kb(admin);upload(admin,kid)
     async def model(messages,max_tokens=4096):
         if 'verification_schema' in json.loads(messages[-1]['content']):
@@ -786,6 +807,7 @@ def test_grounding_judge_failure_does_not_publish_raw_answer(admin,monkeypatch):
     assert any('校验服务失败' in c['reason'] for event in stream if event['type']=='verification' for c in event['checks'])
 
 def test_verified_stream_cancel_retains_only_checked_units(monkeypatch):
+    monkeypatch.setenv('RAG_QA_VERIFICATION_MODE','independent')
     async def model(messages,max_tokens=4096):
         data=json.loads(messages[-1]['content'])
         if 'verification_schema' in data:
@@ -853,7 +875,7 @@ def test_export_embeds_highlighted_original_page_without_links(admin,monkeypatch
         text_area=image.crop((0,0,image.width,image.height//4))
         assert any(r>240 and 200<g<250 and 120<b<210 for _,(r,g,b) in text_area.getcolors(maxcolors=10000))
     assert all(label in content for label in ('提问 01','回答 01','引用索引','资料.pdf','原版 PDF · 第 2 页'))
-    assert all(label not in content for label in ('导出范围甲','导出范围乙','消息时间','相关度','Keyword retrieval uses BM25'))
+    assert all(label in content for label in ('导出范围甲','导出范围乙','消息时间','相关度','Keyword retrieval uses BM25'))
     detail=client.get(f'/api/documents/{doc["id"]}',headers=admin,
                       params={'compact':True,'chunk_id':chunk,'include_context':True}).json()
     assert detail['citation_context']['before'].strip()=='Cover page'
@@ -944,7 +966,10 @@ def generated_report(headers,monkeypatch,kid=None):
         upload(headers,kid)
     # A member can use a template created by an administrator without gaining template permission.
     template=client.post('/api/templates',headers=login(),json={'name':'草稿与单节验收','sections':['混合检索原理','混合检索实施']}).json()['id']
-    created=client.post('/api/report-tasks',headers=headers,json={'title':'混合检索草稿验收报告','template_id':template,'knowledge_base_id':kid}).json()
+    created=create_current_report(headers,{
+        'title':'混合检索草稿验收报告','template_id':template,
+        'knowledge_base_id':kid,
+    })
     assert wait_job(headers,created['job_id'])['status']=='completed'
     return client.get(f"/api/report-tasks/{created['id']}",headers=headers).json()
 
@@ -953,75 +978,69 @@ def section_path(report,section):
 
 def test_report_draft_revision_confirmation_history_and_export(admin,monkeypatch):
     report=generated_report(admin,monkeypatch)
-    first,second=report['sections'];path=section_path(report,first)
-    original_second=dict(second)
+    first=report['sections'][0];path=section_path(report,first)
     edited='人工修改：采用混合检索，待人工核对。[1]'
     result=client.patch(path,headers=admin,json={'expected_revision':0,'content':edited})
     assert result.status_code==200,result.text
     row=client.get(f"/api/report-tasks/{report['id']}",headers=admin).json()
     assert row['status']=='draft' and row['sections'][0]['revision']==1 and row['sections'][0]['edited']==1
-    assert row['sections'][1]==original_second
     assert client.patch(path,headers=admin,json={'expected_revision':0,'content':'不应覆盖'}).status_code==409
     assert client.patch(path,headers=admin,json={'expected_revision':1,'content':'越界 [99]'}).status_code==422
-    assert client.patch(path,headers=admin,json={'expected_revision':1,'confirmed':True}).status_code==200
-    assert client.patch(path,headers=admin,json={'expected_revision':2,'content':'不能覆盖已确认内容'}).status_code==409
-    assert client.post(path+'/regenerate',headers=admin,json={'expected_revision':2}).status_code==409
+    revised='再次修改：全文仍采用混合检索。[1]'
+    assert client.patch(path,headers=admin,json={'expected_revision':1,'content':revised}).status_code==200
     history=client.get(path+'/history',headers=admin).json()
     assert history[-1]['content']==first['content'] and history[0]['content']==edited
-    assert client.patch(path,headers=admin,json={'expected_revision':2,'confirmed':False}).status_code==200
-    word=client.get(f"/api/report-tasks/{report['id']}/export?format=docx",headers=admin)
+    word=client.get(f"/api/reports/{report['id']}/export?format=docx&mode=draft",headers=admin)
     assert word.status_code==200,word.text
     with zipfile.ZipFile(io.BytesIO(word.content)) as z:
         xml=z.read('word/document.xml').decode()
-        assert edited in xml and '人工编辑草稿' in xml and '未执行章节事实支撑核验' in xml
-    audit=client.get('/api/audits',headers=admin,params={'action':'保存报告草稿','resource':'报告章节','object_id':first['id']}).json()
+        assert revised in xml and '参考来源' in xml
+    audit=client.get('/api/audits',headers=admin,params={'action':'保存报告草稿','resource':'报告正文','object_id':first['id']}).json()
     assert audit['total']>=1 and all(edited not in item['detail'] for item in audit['items'])
 
-def test_single_section_regeneration_preserves_confirmed_chapter(admin,monkeypatch):
+def test_fulltext_regeneration_replaces_the_single_body(admin,monkeypatch):
     report=generated_report(admin,monkeypatch)
-    first,second=report['sections']
-    assert client.patch(section_path(report,first),headers=admin,json={'expected_revision':0,'confirmed':True}).status_code==200
-    protected=client.get(f"/api/report-tasks/{report['id']}",headers=admin).json()['sections'][0]
+    section=report['sections'][0]
+    monkeypatch.setenv('RAG_QA_VERIFICATION_MODE','independent')
     async def replacement(*args,**kwargs):
         data=json.loads(args[0][-1]['content'])
         if 'verification_schema' in data:
             async for token in fake_model(*args,**kwargs):yield token
         else:yield '本节重新生成的混合检索实施方案。[1]'
     monkeypatch.setattr(rag,'llm_stream',replacement)
-    response=client.post(section_path(report,second)+'/regenerate',headers=admin,json={'expected_revision':0,'instructions':'只修改实施一节'})
+    response=client.post(section_path(report,section)+'/regenerate',headers=admin,json={'expected_revision':0,'instructions':'重新生成全文'})
     assert response.status_code==202,response.text
     job=wait_job(admin,response.json()['job_id'])
     assert job['status']=='completed',job
     updated=client.get(f"/api/report-tasks/{report['id']}",headers=admin).json()
-    assert updated['sections'][0]==protected
-    assert updated['sections'][1]['content'].strip()=='本节重新生成的混合检索实施方案。[1]'
-    assert updated['sections'][1]['revision']==1 and updated['sections'][1]['edited']==0
+    assert len(updated['sections'])==1
+    assert updated['sections'][0]['content'].strip()=='本节重新生成的混合检索实施方案。[1]'
+    assert updated['sections'][0]['revision']==1 and updated['sections'][0]['edited']==0
     assert store.one('SELECT COUNT(*) n FROM report_tasks WHERE id=?',(report['id'],))['n']==1
-    assert client.get(section_path(report,second)+'/history',headers=admin).json()[0]['content']==second['content']
+    assert client.get(section_path(report,section)+'/history',headers=admin).json()[0]['content']==section['content']
 
-def test_section_busy_cancel_and_other_section_edit_do_not_overwrite(admin,monkeypatch):
-    report=generated_report(admin,monkeypatch);first,second=report['sections'];release=threading.Event()
+def test_fulltext_busy_cancel_does_not_overwrite(admin,monkeypatch):
+    report=generated_report(admin,monkeypatch);section=report['sections'][0];release=threading.Event()
     async def blocked(*args,**kwargs):
         yield '未完成的候选'
         while not release.is_set():
             await asyncio.sleep(.01)
         yield '不应提交 [1]'
     monkeypatch.setattr(rag,'llm_stream',blocked)
-    path=section_path(report,second)
+    path=section_path(report,section)
     response=client.post(path+'/regenerate',headers=admin,json={'expected_revision':0})
     jid=response.json()['job_id'];wait_job(admin,jid,{'running'})
     assert client.patch(path,headers=admin,json={'expected_revision':0,'content':'冲突'}).status_code==409
     assert client.post(path+'/regenerate',headers=admin,json={'expected_revision':0}).status_code==409
-    assert client.patch(section_path(report,first),headers=admin,json={'expected_revision':0,'content':'另一节人工内容。[1]'}).status_code==200
     assert client.post(f'/api/tasks/{jid}/cancel',headers=admin).status_code==200
     assert wait_job(admin,jid)['status']=='cancelled';release.set()
     current=client.get(f"/api/report-tasks/{report['id']}",headers=admin).json()
-    assert current['sections'][0]['content']=='另一节人工内容。[1]'
-    assert current['sections'][1]['content']==second['content'] and current['sections'][1]['revision']==0
-    assert current['sections'][1]['generation_status']=='cancelled'
+    assert current['sections'][0]['content']==section['content'] and current['sections'][0]['revision']==0
+    assert current['sections'][0]['generation_status']=='cancelled'
 
 def test_section_failed_retry_and_stale_old_retry(admin,monkeypatch):
     report=generated_report(admin,monkeypatch);section=report['sections'][0];path=section_path(report,section)
+    monkeypatch.setenv('RAG_QA_VERIFICATION_MODE','independent')
     async def failed(*args,**kwargs):
         yield '不应保存的半成品'
         raise RuntimeError('合成单节失败')

@@ -102,7 +102,7 @@ onUnmounted(()=>{
     :disabled="loading||busy||data.job.attempts>=data.job.max_attempts" @click="retry">重试处理任务</button>
   </div>
   <p v-if="data?.can_continue_vision" class="help">使用已保存的原文件与所选 OCR 引擎识别文字；PDF 会逐页处理扫描页面并保留原页码。使用视觉模型时会发送到已配置的服务并产生调用费用。识别完成后自动建立索引。</p>
-  <p v-else-if="data?.can_continue_transcription" class="help">点击后会提取音轨（视频）并发送到已配置的语音转写服务；未配置 RAG_ASR_BASE_URL、RAG_ASR_MODEL 和 RAG_ASR_API_KEY 时会提示先完成配置。</p>
+  <p v-else-if="data?.can_continue_transcription" class="help">点击后会提取音轨（视频），再交给系统配置中选择的本地 faster-whisper 或云端语音服务；提供方尚未就绪时会显示对应的安装或配置提示。</p>
   <div v-if="error||uploadError" class="error-banner" role="alert">{{error||uploadError}}</div>
   <p v-if="data">总体 {{data.progress}}% · 后台任务 #{{data.job?.id||'—'}}<span v-if="data.job"> · 尝试 {{data.job.attempts}} / {{data.job.max_attempts}}</span></p>
   <p v-else-if="documentId&&loading" role="status">正在读取处理进度…</p>

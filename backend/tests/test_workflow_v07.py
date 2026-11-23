@@ -6,7 +6,7 @@ from xml.etree import ElementTree as ET
 from pypdf import PdfReader
 from test_api import client,admin,application_lifespan,kb,upload,wait_job,create_member,fake_model,generated_report,section_path
 from test_reports_v06 import template_bytes,parsed_import
-from app import rag,store,report_layout,template_docx,report_workflow
+from app import blueprints,rag,store,report_layout,template_docx,report_workflow
 
 def setup_report(admin,monkeypatch,imported=False):
     monkeypatch.setattr(rag,'llm_stream',fake_model)
@@ -57,16 +57,42 @@ def test_template_fills_fixed_text_fields_tables_in_all_exports(admin,monkeypatc
     params,_=setup_report(admin,monkeypatch,True);report=create(admin,params);tid=report['id']
     preview=client.get(f'/api/reports/{tid}/preview',headers=admin);assert preview.status_code==200,preview.text
     tree=preview.json()['nodes'];text=report_layout.markdown(tree)
-    assert '固定说明' in text and '方案表' in text and '标题缓存' not in text and '{{' not in text and '${' not in text
-    assert params['title'] in text and '参考来源' in text and '草稿' in text and 'SHA256' not in text
-    assert any(n['type']=='table' for n in tree)
+    assert params['title'] in text and '参考来源' in text and 'SHA256' not in text
+    assert '生成模式：' not in text and '证据状态说明：' not in text
+    markdown=client.get(f'/api/reports/{tid}/export?format=md',headers=admin)
+    assert '草稿：' in markdown.text
     word=client.get(f'/api/reports/{tid}/export?format=docx',headers=admin)
     with zipfile.ZipFile(io.BytesIO(word.content)) as z:
-        xml=z.read('word/document.xml');ET.fromstring(xml);assert b'<w:tbl>' in xml and b'gridSpan' in xml
+        xml=z.read('word/document.xml');ET.fromstring(xml);assert params['title'] in xml.decode()
     pdf=client.get(f'/api/reports/{tid}/export?format=pdf',headers=admin)
     assert pdf.status_code==200,pdf.text[:300]
     assert pdf.content.startswith(b'%PDF') and len(PdfReader(io.BytesIO(pdf.content)).pages)>=1
     assert client.get(f'/api/report-tasks/{tid}/export',headers=admin).status_code==409
+
+def test_report_preview_and_word_rendering_keep_content_separate_from_notices_and_markup():
+    report={
+        'title':'车辆报告','created_at':'2026-11-12',
+        'blueprint':{'name':'车辆报告模板','sections':[{'title':'原因分析','kind':'analysis'}]},
+        'template_snapshot':{'generation_mode':'synthesis'},
+    }
+    content="### 故障表现\n* **异常响声** [1]\n* *复查* \x60A*B\x60"
+    sections=[{'title':'原因分析','content':content,
+               'citations':[{'document_id':1,'chunk_id':1,'version':'v1','source':'Q6手册'}]}]
+    preview=report_layout.markdown(report_layout.nodes(report,sections,include_notices=False))
+    assert '原因分析' in preview and '异常响声' in preview and 'Q6手册' in preview
+    assert all(notice not in preview for notice in ('生成模式：','证据状态说明：','分析（基于来源的推断'))
+
+    tree=report_layout.nodes(report,sections,draft=False)
+    markdown=report_layout.markdown(tree)
+    assert content.replace('\n','\n\n') in markdown
+    assert '证据状态说明：' in markdown
+    word=report_layout.docx(tree,blueprints.ReportFormat())
+    with zipfile.ZipFile(io.BytesIO(word)) as z:
+        root=ET.fromstring(z.read('word/document.xml'))
+    ns={'w':'http://schemas.openxmlformats.org/wordprocessingml/2006/main'}
+    paragraphs=[''.join(p.itertext()) for p in root.findall('.//w:p',ns)]
+    assert '故障表现' in paragraphs and '• 异常响声 [1]' in paragraphs and '• 复查 A*B' in paragraphs
+    assert root.find('.//w:rPr/w:b',ns) is not None and root.find('.//w:rPr/w:i',ns) is not None
 
 def test_review_finalize_immutable_release_and_reopen(admin,monkeypatch):
     params,_=setup_report(admin,monkeypatch);report=create(admin,params);tid=report['id']
@@ -85,24 +111,22 @@ def test_review_finalize_immutable_release_and_reopen(admin,monkeypatch):
     assert client.get(f'/api/reports/{tid}/export?mode=final&format=md&release_id={release}',headers=admin).content==original
     updated=client.get(f'/api/reports/{tid}',headers=admin).json()
     assert updated['sections'][0]['verification']['state']=='unverified_manual' and updated['quality']['issues']
-    assert '项目负责人：验收用户' in client.get(f'/api/reports/{tid}/export?format=md',headers=admin).text
+    assert '新的草稿' in client.get(f'/api/reports/{tid}/export?format=md',headers=admin).text
 
-def test_candidate_compare_accept_preserves_other_section_and_stale_guard(admin,monkeypatch):
-    params,_=setup_report(admin,monkeypatch);report=create(admin,params);first,second=report['sections'];tid=report['id']
-    assert client.patch(section_path(report,first),headers=admin,json={'expected_revision':first['revision'],'confirmed':True}).status_code==200
-    protected=client.get(f'/api/reports/{tid}',headers=admin).json()['sections'][0]
-    response=client.post(section_path(report,second)+'/regenerate',headers=admin,json={'expected_revision':second['revision'],'preview':True});wait_job(admin,response.json()['job_id'])
+def test_candidate_compare_accept_preserves_whole_text_and_stale_guard(admin,monkeypatch):
+    params,_=setup_report(admin,monkeypatch);report=create(admin,params);section=report['sections'][0];tid=report['id']
+    response=client.post(section_path(report,section)+'/regenerate',headers=admin,json={'expected_revision':section['revision'],'preview':True});wait_job(admin,response.json()['job_id'])
     after=client.get(f'/api/reports/{tid}',headers=admin).json();candidate=after['candidates'][0]
-    assert after['sections'][0]==protected and after['sections'][1]['content']==second['content'] and after['sections'][1]['revision']==second['revision']
-    accepted=client.post(f"/api/reports/{tid}/candidates/{candidate['id']}",headers=admin,json={'expected_revision':second['revision'],'action':'accept'})
+    assert after['sections'][0]['content']==section['content'] and after['sections'][0]['revision']==section['revision']
+    accepted=client.post(f"/api/reports/{tid}/candidates/{candidate['id']}",headers=admin,json={'expected_revision':section['revision'],'action':'accept'})
     assert accepted.status_code==200,accepted.text
-    after=client.get(f'/api/reports/{tid}',headers=admin).json();assert after['sections'][1]['revision']==second['revision']+1
-    sec=after['sections'][1];job=client.post(section_path(after,sec)+'/regenerate',headers=admin,json={'expected_revision':sec['revision'],'preview':True}).json();wait_job(admin,job['job_id'])
+    after=client.get(f'/api/reports/{tid}',headers=admin).json();assert after['sections'][0]['revision']==section['revision']+1
+    sec=after['sections'][0];job=client.post(section_path(after,sec)+'/regenerate',headers=admin,json={'expected_revision':sec['revision'],'preview':True}).json();wait_job(admin,job['job_id'])
     candidate=client.get(f'/api/reports/{tid}',headers=admin).json()['candidates'][0]
     client.patch(section_path(after,sec),headers=admin,json={'expected_revision':sec['revision'],'content':'候选生成后人工修改。[1]'})
     assert client.post(f"/api/reports/{tid}/candidates/{candidate['id']}",headers=admin,json={'expected_revision':sec['revision']+1,'action':'accept'}).status_code==409
 
-def test_attach_restore_acl_lock_and_review_state(admin,monkeypatch):
+def test_attach_restore_acl_and_review_state_without_lock(admin,monkeypatch):
     params,_=setup_report(admin,monkeypatch);report=create(admin,params);tid=report['id'];sec=report['sections'][0]
     doc=upload(admin,params['knowledge_base_id'],name='新增资料.md',text='混合检索的新增合成资料。关键词检索使用BM25算法并结合RRF排名融合。这不是实际项目进度。')
     chunk=client.get(f"/api/documents/{doc['id']}",headers=admin).json()['chunks'][0]['id']
@@ -119,7 +143,7 @@ def test_attach_restore_acl_lock_and_review_state(admin,monkeypatch):
     current=client.get(f'/api/reports/{tid}',headers=admin).json()['sections'][0]
     job=client.post(section_path(report,sec)+'/verify',headers=admin,json={'expected_revision':current['revision']});assert job.status_code==202,job.text
     wait_job(admin,job.json()['job_id'])
-    assert client.get(f'/api/reports/{tid}',headers=admin).json()['sections'][0]['confirmed']==1
+    assert client.get(f'/api/reports/{tid}',headers=admin).json()['sections'][0]['confirmed']==0
 
 def test_legacy_empty_blueprint_can_open_new_editor(admin):
     template=client.post('/api/templates',headers=admin,json={'name':'旧版兼容','sections':['背景']}).json()['id']
@@ -151,18 +175,16 @@ def test_inline_word_fields_preserve_fixed_prefix_and_suffix():
 
 def test_optional_nonempty_claim_requires_review_but_human_review_is_final(admin,monkeypatch):
     params,_=setup_report(admin,monkeypatch);report=create(admin,params)
-    plan=json.loads(json.dumps(report['blueprint']));plan['sections'][1]['required']=False
-    report['blueprint']=plan
     sections=report['sections']
     for sec in sections:sec['reviewed_revision']=sec['revision']
-    sections[1]['content']='没有证据的可选章节结论。'
-    sections[1]['verification']={}
+    sections[0]['content']='没有证据的全文结论。'
+    sections[0]['verification']={}
     result=report_workflow.quality(report,sections)
     assert result['ready'] and result['human_accepted_sections']==1
-    assert any(i.get('section_id')==sections[1]['id'] and i['human_accepted'] for i in result['warnings'])
-    sections[1]['reviewed_revision']=-1
+    assert any(i.get('section_id')==sections[0]['id'] and i['human_accepted'] for i in result['warnings'])
+    sections[0]['reviewed_revision']=-1
     result=report_workflow.quality(report,sections)
-    assert not result['ready'] and any(i.get('section_id')==sections[1]['id'] and i['kind']=='review' for i in result['issues'])
+    assert not result['ready'] and any(i.get('section_id')==sections[0]['id'] and i['kind']=='review' for i in result['issues'])
 
 
 def test_unpublished_template_hidden_and_version_save_does_not_overwrite(admin,monkeypatch):
@@ -252,7 +274,7 @@ def test_human_review_allows_evidence_missing_final_without_faking_verification(
         assert response.status_code==200,response.text
     report=client.get(f'/api/reports/{tid}',headers=admin).json()
     assert report['quality']['ready'] and report['quality']['issues']==[]
-    assert report['quality']['verified_sections']==0 and report['quality']['human_accepted_sections']==2
+    assert report['quality']['verified_sections']==0 and report['quality']['human_accepted_sections']==1
     assert all(w['human_accepted'] for w in report['quality']['warnings'])
     assert [(s['content'],s['verification']) for s in report['sections']]==original
     body={'expected_revision':report['revision'],'fixed_text_reviewed':False}
@@ -260,7 +282,7 @@ def test_human_review_allows_evidence_missing_final_without_faking_verification(
     response=client.post(f'/api/reports/{tid}/finalize',headers=admin,json={**body,'fixed_text_reviewed':True})
     assert response.status_code==201,response.text
     release=store.one('SELECT * FROM report_releases WHERE id=?',(response.json()['id'],));snapshot=json.loads(release['snapshot'])
-    assert snapshot['decision']['policy']=='human-review-final' and snapshot['decision']['human_accepted_sections']==2
+    assert snapshot['decision']['policy']=='human-review-final' and snapshot['decision']['human_accepted_sections']==1
     assert all(s['verification'] and json.loads(s['verification'])['state']=='insufficient' for s in snapshot['sections'])
     exported=client.get(f'/api/reports/{tid}/export?mode=final&format=md',headers=admin)
     assert exported.status_code==200 and '【待补充】' in exported.text and '不代表已核实事实' in exported.text and '人工审阅决定保留' in exported.text

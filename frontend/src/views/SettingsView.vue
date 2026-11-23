@@ -10,6 +10,11 @@ async function load(){if(dirty.value&&!await confirmAction('重新加载会丢�
 function preventClose(e){if(dirty.value){e.preventDefault();e.returnValue=''}}
 function revealInvalid(e){e.target.closest('details')?.setAttribute('open','')}
 function embeddingChanged(){if(config.value.embedding.provider==='local')config.value.embedding.model='BAAI/bge-m3'}
+function asrChanged(){
+ const localModels=['tiny','base','small','medium','large-v3','turbo','Systran/faster-whisper-tiny']
+ if(config.value.asr.provider==='local'&&!localModels.includes(config.value.asr.model))config.value.asr.model='small'
+ if(config.value.asr.provider==='api'&&localModels.includes(config.value.asr.model))config.value.asr.model='gpt-4o-mini-transcribe'
+}
 onMounted(()=>{load();window.addEventListener('beforeunload',preventClose)})
 onUnmounted(()=>window.removeEventListener('beforeunload',preventClose))
 onBeforeRouteLeave(async()=>!getToken()||!dirty.value||await confirmAction('配置尚未保存，离开后修改会丢失。',{title:'离开系统配置？',okText:'离开'}))
@@ -76,9 +81,15 @@ async function probe(target){probing.value=target;error.value='';success.value='
     <label class="field">覆盖检查超时秒数<input v-model.number="config.answer_quality.timeout_seconds" class="input" type="number" min="10" max="120" required/></label>
    </div><p>主检索TopK之外可补相邻原文，总证据最多20条；相邻片段保留独立ID、版本和哈希，不伪装成主检索得分。增加一次模型覆盖评估；需要补充时再增加一次事实核验，因此有额外费用和等待。失败保留已核验答案并提示未能确认完整性。旧任务保持提交时配置。</p></div></details>
    <details class="card settings-card"><summary>多模态与语音转写</summary><div class="settings-body"><div class="form-grid">
-     <label class="field">语音转写方式<select v-model="config.asr.provider" class="select" @change="config.asr.model=config.asr.provider==='local'?'Systran/faster-whisper-tiny':''"><option value="api">OpenAI 兼容 /audio/transcriptions</option><option value="local">本地 Whisper（离线 CPU）</option><option value="disabled">关闭（仅保留手动转写入口）</option></select></label>
-     <label class="field">转写服务地址<input v-model="config.asr.base_url" class="input" type="url" :disabled="config.asr.provider!=='api'" :required="config.asr.provider==='api'" placeholder="https://api.openai.com/v1"/></label>
-    <label class="field">转写模型<input v-model="config.asr.model" class="input" :disabled="config.asr.provider==='disabled'" :required="config.asr.provider==='api'" placeholder="whisper-1"/></label>
+    <label class="field">语音转写方式<select v-model="config.asr.provider" class="select" @change="asrChanged"><option value="local">本地 faster-whisper（默认）</option><option value="api">OpenAI 兼容云端服务</option><option value="disabled">关闭（仅保留手动入口）</option></select></label>
+    <label v-if="config.asr.provider==='api'" class="field">转写服务地址<input v-model="config.asr.base_url" class="input" type="url" required placeholder="https://api.openai.com/v1"/></label>
+    <label v-if="config.asr.provider==='api'" class="field">转写模型<input v-model="config.asr.model" class="input" required placeholder="gpt-4o-mini-transcribe"/></label>
+    <label v-if="config.asr.provider==='local'" class="field">本地模型<select v-model="config.asr.model" class="select"><option value="tiny">tiny（最快）</option><option value="base">base</option><option value="small">small（推荐）</option><option value="medium">medium</option><option value="large-v3">large-v3</option><option value="turbo">turbo</option></select></label>
+    <template v-if="config.asr.provider==='local'">
+     <label class="field">推理设备<select v-model="config.asr.device" class="select"><option value="auto">自动（CUDA失败时回退CPU）</option><option value="cuda">仅CUDA</option><option value="cpu">仅CPU</option></select></label>
+     <label class="field">计算精度<select v-model="config.asr.compute_type" class="select"><option value="auto">自动</option><option value="float16">float16</option><option value="int8">int8</option><option value="float32">float32</option></select></label>
+     <label class="field">Beam Size<input v-model.number="config.asr.beam_size" class="input" type="number" min="1" max="10" required/></label>
+    </template>
     <label class="field">识别语言<input v-model="config.asr.language" class="input" maxlength="20" placeholder="zh"/></label>
     <label class="field">转写超时秒数<input v-model.number="config.asr.timeout_seconds" class="input" type="number" min="30" max="1800" required/></label>
     <label class="field">图片 OCR 引擎<select v-model="config.ocr.provider" class="select"><option value="vision">视觉模型（Kimi，默认）</option><option value="local">本地 RapidOCR（需额外安装）</option></select></label>
@@ -90,7 +101,9 @@ async function probe(target){probing.value=target;error.value='';success.value='
     <label class="field">最多抽帧数<input v-model.number="config.media.max_frames" class="input" type="number" min="1" max="32" :disabled="!config.media.frame_ocr" required/></label>
     <label class="field">音视频时长上限（秒）<input v-model.number="config.media.max_duration_seconds" class="input" type="number" min="60" max="36000" required/></label>
    </div>
-    <p>本地转写无需密钥，需先准备离线 Whisper 模型。服务转写密钥状态：{{credentials.asr?'已配置':'未配置'}}。关闭自动转写后，可在处理详情中手动开始。视频需要 ffmpeg；本地 OCR 与转写的安装包可提供便携版本。画面 OCR 默认关闭，本地 OCR 缺少依赖时会提示安装。</p></div></details>
+   <p v-if="config.asr.provider==='local'">本地转写不使用API密钥，模型必须通过 backend/prepare_asr_model.py 预先下载，上传时不会临时联网。small适合课程演示；自动设备模式优先CUDA，运行库不可用时回退CPU。</p>
+   <p v-else-if="config.asr.provider==='api'">云端密钥只从 backend/.env 的 RAG_ASR_API_KEY 读取，界面不显示；密钥状态：{{credentials.asr?'已配置':'未配置'}}。</p>
+   <p>关闭自动转写后，音频和视频上传后需要手动点击「开始语音转写」。视频依赖 ffmpeg；本地 OCR 可自动逐页处理没有文本层的 PDF，并保留原页码；视觉 OCR 可能产生模型调用费用。</p></div></details>
    <details class="card settings-card"><summary>文档切分</summary><div class="settings-body"><div class="form-grid">
     <label class="field">片段长度（字符）<input v-model.number="config.chunk.size" class="input" type="number" min="100" max="8000" required/></label>
     <label class="field">重叠长度（字符）<input v-model.number="config.chunk.overlap" class="input" type="number" min="0" :max="Math.min(2000,config.chunk.size-1)" required/></label>

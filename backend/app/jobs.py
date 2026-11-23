@@ -68,7 +68,7 @@ async def execute(row):
         report_drafts.finish_failed(row,message,status)
         if row['kind']=='report':
             s.execute("UPDATE report_tasks SET status=?,error=? WHERE job_id=? AND status IN ('queued','generating')",(status,message,jid))
-            s.execute("UPDATE report_sections SET status=? WHERE status='generating' AND task_id IN (SELECT id FROM report_tasks WHERE job_id=?)",(status,jid))
+            s.execute("UPDATE report_sections SET status=?,generation_status=?,generation_error=? WHERE status='generating' AND task_id IN (SELECT id FROM report_tasks WHERE job_id=?)",(status,status,message,jid))
     except Exception as error:
         # Do not persist HTTP request bodies, credentials or upstream raw error payloads.
         message=getattr(error,'detail',None) or (str(error) if isinstance(error,(RuntimeError,ValueError)) else '任务执行失败：'+type(error).__name__)
@@ -81,7 +81,7 @@ async def execute(row):
         report_drafts.finish_failed(row,message,'failed')
         if row['kind']=='report':
             s.execute("UPDATE report_tasks SET status='failed',error=? WHERE job_id=?",(message,jid))
-            s.execute("UPDATE report_sections SET status='failed' WHERE status='generating' AND task_id IN (SELECT id FROM report_tasks WHERE job_id=?)",(jid,))
+            s.execute("UPDATE report_sections SET status='failed',generation_status='failed',generation_error=? WHERE status='generating' AND task_id IN (SELECT id FROM report_tasks WHERE job_id=?)",(message,jid))
         owner=s.one('SELECT id,username,name FROM users WHERE id=?',(row['user_id'],)) or {'id':row['user_id'],'name':'任务工作进程'}
         s.audit(owner,'任务失败','任务',message,result='failure',object_id=jid)
     finally:

@@ -128,14 +128,13 @@ def test_corrupted_s3_range_is_rejected_before_any_bytes(admin,monkeypatch):
 
 
 def test_local_asr_missing_weights_are_explicit_and_never_downloaded(monkeypatch,tmp_path):
-    from app import local_asr,media
+    from app import asr,media
     config=settings.RuntimeSettings(asr=settings.AsrSettings(provider='local'))
     monkeypatch.setattr(settings,'get',lambda:config)
-    monkeypatch.setattr(local_asr,'ROOT',tmp_path)
+    monkeypatch.setattr(asr,'MODEL_ROOT',tmp_path)
     assert not media.asr_configured()
-    with pytest.raises(RuntimeError,match='本地语音模型未准备完整'):
-        local_asr.infer(tmp_path/'missing.wav','zh')
-    with pytest.raises(ValueError,match='本地转写目前支持'):
+    assert asr.local_model_path('small') == tmp_path/'small'
+    with pytest.raises(ValueError,match='本地语音转写模型可选'):
         settings.AsrSettings(provider='local',model='unknown-model')
 
 

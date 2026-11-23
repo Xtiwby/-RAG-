@@ -127,6 +127,7 @@ flowchart LR
 │  │  ├─ rag.py                  文档处理和混合检索
 │  │  ├─ html_text.py            结构化 HTML 抽取
 │  │  ├─ media.py                音视频探测、抽音轨与语音转写
+│  │  ├─ asr.py                  本地/云端语音识别提供方抽象
 │  │  ├─ ocr.py                  图片规范化与 OCR 提供方
 │  │  ├─ data_sources.py         数据源配置、快照下载与导入
 │  │  ├─ local_models.py         本地 BGE 推理
@@ -232,9 +233,14 @@ RAG_S3_BUCKET=rag-originals
 RAG_S3_ACCESS_KEY=rag-local-dev
 RAG_S3_SECRET_KEY=change-me-local
 
-# 语音/视频转写（OpenAI 兼容 /audio/transcriptions），不配置则保留手动入口
+# 语音/视频转写：默认本地 faster-whisper，不消耗云端API额度
+RAG_ASR_PROVIDER=local
+RAG_ASR_MODEL=small
+RAG_ASR_DEVICE=auto
+RAG_ASR_COMPUTE_TYPE=auto
+RAG_ASR_BEAM_SIZE=5
+# 切换为 api 时再填写 OpenAI 兼容服务地址和密钥
 RAG_ASR_BASE_URL=
-RAG_ASR_MODEL=
 RAG_ASR_API_KEY=
 
 # 可选：数据源配置文件、OCR 引擎、ffmpeg 路径
@@ -280,7 +286,15 @@ RAG_FFMPEG_PATH=
 
 文档管理的 PPT/PPTX 原文预览由后端使用 LibreOffice 生成静态幻灯片。请在运行后端的机器上安装 [LibreOffice](https://www.libreoffice.org/download/)。如果安装在自定义位置，可在 `backend/.env` 中用 `RAG_SOFFICE_PATH` 指定 `soffice`（Windows 上为 `soffice.com`）的完整路径。页面上的「下载原文件」仍可获取 PowerPoint 原件。旧版 `.doc`、`.xls` 的解析也复用同一个 LibreOffice，缺少时会返回可读的 422 而不是解析错误。
 
-视频转写需要 [ffmpeg](https://ffmpeg.org/download.html)，可使用可选安装包携带的版本，或设置 `RAG_FFMPEG_PATH`。语音与视频可选择离线 Whisper，或通过 `RAG_ASR_BASE_URL`、`RAG_ASR_MODEL`、`RAG_ASR_API_KEY` 连接兼容转写服务；未配置可用方式时上传后会停在「待转写」。
+视频转写需要 [ffmpeg](https://ffmpeg.org/download.html)，可使用可选安装包携带的版本，或设置 `RAG_FFMPEG_PATH`。本地语音转写需预先安装依赖和准备模型，运行时不会临时联网下载：
+
+```powershell
+cd backend
+.\.venv\Scripts\python.exe -m pip install -r requirements-asr.txt
+.\.venv\Scripts\python.exe prepare_asr_model.py --model small
+```
+
+`RAG_ASR_PROVIDER=local` 使用本地 faster-whisper；`api` 保留 OpenAI 兼容 `/audio/transcriptions` 服务；`disabled` 关闭转写。上传任务会保存提交时的提供方和模型配置，Kimi 问答密钥与ASR配置相互独立。
 
 本地 OCR 模式默认逐页识别 PDF 中没有文本层的页面，保留已有文字和真实页码。纯空白页不会导致识别失败；默认最多处理 100 页，可在系统配置中调整。视觉模型模式需要手动开始 PDF 视觉解析。识别内容标记为 OCR 转录，仍需核对原件。
 
@@ -372,9 +386,10 @@ pnpm build
 ## 项目文档
 
 - [软件项目计划](docs/基于RAG的知识库管理系统_软件项目计划_V1.0.docx)
-- [软件需求规格说明书](docs/基于RAG的知识库管理系统_软件需求规格说明书_V1.0.docx)
-- [软件系统设计文档](docs/基于RAG的知识库管理系统_软件系统设计文档_V1.0.docx)
-- [软件详细设计文档](docs/基于RAG的知识库管理系统_软件详细设计文档_V1.0.docx)
+- [软件需求规格说明书 V1.1](docs/基于RAG的知识库管理系统_软件需求规格说明书_V1.1.docx)
+- [软件系统设计文档 V1.2](docs/基于RAG的知识库管理系统_软件系统设计文档_V1.2.docx)
+- [软件详细设计文档 V1.2](docs/基于RAG的知识库管理系统_软件详细设计文档_V1.2.docx)
+- [需求 功能 问答对确认矩阵](docs/需求功能问答对确认矩阵_V1.0.md)
 - [存储与工作进程升级指南](docs/storage-upgrade.md)
 - [多模态与数据源接入记录](docs/multimodal-datasource-v012.md)
 - [0.12.0 单元测试与回归报告](docs/testing/v0.12-test-report.md)

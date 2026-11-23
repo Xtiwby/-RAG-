@@ -7,6 +7,11 @@ import pytest
 from test_api import client,admin,application_lifespan,kb,upload,configured,save_config,events,response_text,create_member
 from app import grounding,rag,settings,evidence_matching as match,report_grounding,store
 
+@pytest.fixture(autouse=True)
+def verification_policy(monkeypatch):
+    """本文件大部分用例专门验证独立核验；引用先行另有两条显式用例。"""
+    monkeypatch.setenv('RAG_QA_VERIFICATION_MODE','independent')
+
 @pytest.mark.parametrize('claim,source,expected',[
  ('BM25中k1=1.2，b=.75。','The constants are 1.2 and 0.75 respectively.',True),
  ('阈值为1.20。','阈值为1.2。',True),

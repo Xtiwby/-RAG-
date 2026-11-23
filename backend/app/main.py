@@ -20,7 +20,7 @@ from fastapi import Depends, FastAPI, File, Form, Header, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, Response, StreamingResponse
 from pydantic import BaseModel, Field
-from contextlib import asynccontextmanager
+from contextlib import aclosing, asynccontextmanager
 
 load_dotenv(Path(__file__).resolve().parents[1] / '.env')
 from . import store as s
@@ -48,6 +48,7 @@ if os.getenv('RAG_WORKER_PROCESS')!='1':
         s.execute("UPDATE report_sections SET status='interrupted' WHERE status='generating'")
     s.execute("UPDATE report_tasks SET status='needs_review' WHERE status='completed' AND EXISTS (SELECT 1 FROM report_sections WHERE task_id=report_tasks.id AND status='needs_review')")
 ACTIVE_CONVERSATIONS: set[int] = set()
+QA_JUDGE_CONCURRENCY = 2
 
 @app.middleware('http')
 async def audit_requests(request,call_next):
@@ -693,7 +694,7 @@ async def continue_transcription(did:int,user=Depends(current_user)):
     if doc['file_type'] not in media.MEDIA_TYPES or not safe_doc(doc)['has_original']:
         raise HTTPException(422,'语音转写需要可读取的音频或视频原文件')
     if not media.asr_configured():
-        raise HTTPException(503,'尚未配置语音转写服务，请在 backend/.env 设置 RAG_ASR_BASE_URL、RAG_ASR_MODEL 和 RAG_ASR_API_KEY')
+        raise HTTPException(503,media.asr_unavailable_message())
     jid=ingestion.enqueue_transcription(did,user)
     await jobs.start()
     return {'document_id':did,'job_id':jid}
@@ -818,7 +819,7 @@ def feedback(mid:int,body:FeedbackBody,user=Depends(current_user)):
 def download_text(text,name,kind='md',format_options=None):
     from urllib.parse import quote
     if kind=='docx':
-        content=report_export.docx(text,format_options or blueprints.ReportFormat())
+        content=report_export.docx(text,format_options or blueprints.ReportFormat(),report_markup=True)
         mime='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
     else:
         content=text.encode('utf-8-sig')
@@ -832,7 +833,12 @@ def source_lines(citations,used=None):
 def export_conversation(cid:int,format:Literal['docx']='docx',user=Depends(current_user)):
     from urllib.parse import quote
     row=get_conversation(cid,user)
-    content=chat_export.export(row['messages'],lambda did:document(user,did))
+    scope=[]
+    for kid in row['knowledge_base_ids']:
+        kb=s.one('SELECT name FROM knowledge_bases WHERE id=?',(kid,))
+        scope.append(kb['name'] if kb else f'知识库#{kid}')
+    content=chat_export.export(row['messages'],lambda did:document(user,did),
+                               title=row['title'],knowledge_bases=scope)
     return Response(content,media_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document',
                     headers={'Content-Disposition':"attachment; filename*=UTF-8''"+quote(row['title']+'.docx',safe='')})
 
@@ -869,18 +875,25 @@ async def prepare_question(body,user):
         retrieval_query=(prev+' '+query)[-4000:]
     retrieval=question_retrieval_settings(last_retrieval,body.mode,body.rerank)
     from .retrieval_planner import explicit_parts
+    started = time.perf_counter()
     evidence,meta=await rag.retrieve(retrieval_query,ids,retrieval['mode'],body.top_k,retrieval['rerank'],
                                      split_question=bool(explicit_parts(query)))
-    meta={**meta,'mode':retrieval['mode'],'rerank_enabled':retrieval['rerank']}
+    meta={**meta,'mode':retrieval['mode'],'rerank_enabled':retrieval['rerank'],
+          'retrieval_ms':round((time.perf_counter()-started)*1000)}
     if evidence:
         rag.llm_config()
     return ids,query,history,evidence,meta
 
 @app.post('/api/qa/stream')
 async def qa_stream(body:QuestionBody,request:Request,user=Depends(current_user)):
+    started = time.perf_counter()
     ids,query,history,evidence,meta=await prepare_question(body,user)
-    fresh=current_user(request.headers.get('authorization'))
-    for kid in ids:check_kb(fresh,kid)
+    def authorize():
+        fresh = current_user(request.headers.get('authorization'))
+        for kid in ids:
+            check_kb(fresh, kid)
+
+    authorize()
     if body.conversation_id:
         cid=body.conversation_id
     else:
@@ -893,48 +906,52 @@ async def qa_stream(body:QuestionBody,request:Request,user=Depends(current_user)
         text=''
         complete=False
         checks=[]
+        first_token_ms=None
         try:
             s.execute('INSERT INTO messages(conversation_id,role,content,created_at) VALUES(?,?,?,?)',(cid,'user',query,s.now()))
             mid=s.execute("INSERT INTO messages(conversation_id,role,content,citations,status,created_at,retrieval) VALUES(?,?,?,?,?,?,?)",(cid,'assistant','',json.dumps(evidence,ensure_ascii=False),'streaming',s.now(),json.dumps(meta,ensure_ascii=False)))
             yield rag.event('meta',conversation_id=cid,message_id=mid,citations=evidence,pipeline=meta)
             if not evidence:
                 text='当前知识库证据不足，无法可靠回答。请补充相关文档、完成文档解析，或缩小问题范围。'
+                first_token_ms=round((time.perf_counter()-started)*1000)
                 yield rag.event('token',content=text)
             else:
-                def authorize():
-                    fresh=current_user(request.headers.get('authorization'))
-                    for kid in ids:
-                        check_kb(fresh,kid)
-                async for item in grounding.verified_stream(query,evidence,history,authorize=authorize):
-                    if await request.is_disconnected():
-                        break
-                    # Disabling a user or revoking a KB takes effect even during an active stream.
-                    fresh=current_user(request.headers.get('authorization'))
-                    for kid in ids:
-                        check_kb(fresh,kid)
-                    if item['type']=='verification':
-                        checks.extend(item['checks'])
-                        s.execute('UPDATE messages SET verification=? WHERE id=?',(json.dumps(checks,ensure_ascii=False),mid))
-                        yield rag.event('verification',checks=checks)
-                    elif item['type']=='coverage':
-                        s.execute('UPDATE messages SET coverage=? WHERE id=?',(json.dumps(item['assessment'],ensure_ascii=False),mid))
-                        yield rag.event('coverage',assessment=item['assessment'])
-                    elif item['type']=='stage':
-                        yield rag.event('stage',stage=item['stage'],message=item['message'])
+                stream = grounding.verified_stream(
+                    query, evidence, history, judge_concurrency=QA_JUDGE_CONCURRENCY, authorize=authorize,
+                )
+                async with rag.chat_session(), aclosing(stream) as verified:
+                    async for item in verified:
+                        if await request.is_disconnected():
+                            break
+                        # Disabling a user or revoking a KB takes effect even during an active stream.
+                        authorize()
+                        if item['type']=='verification':
+                            checks.extend(item['checks'])
+                            s.execute('UPDATE messages SET verification=? WHERE id=?',(json.dumps(checks,ensure_ascii=False),mid))
+                            yield rag.event('verification',checks=checks)
+                        elif item['type']=='coverage':
+                            s.execute('UPDATE messages SET coverage=? WHERE id=?',(json.dumps(item['assessment'],ensure_ascii=False),mid))
+                            yield rag.event('coverage',assessment=item['assessment'])
+                        elif item['type']=='stage':
+                            yield rag.event('stage',stage=item['stage'],message=item['message'])
+                        else:
+                            text+=item['content']
+                            # Only checked content is persisted or sent to the browser.
+                            s.execute('UPDATE messages SET content=? WHERE id=?',(text,mid))
+                            if first_token_ms is None:
+                                first_token_ms=round((time.perf_counter()-started)*1000)
+                            yield rag.event('token',content=item['content'])
                     else:
-                        text+=item['content']
-                        # Only checked content is persisted or sent to the browser.
-                        s.execute('UPDATE messages SET content=? WHERE id=?',(text,mid))
-                        yield rag.event('token',content=item['content'])
-                else:
-                    complete=True
+                        complete=True
                 if not complete:
                     return
             complete=True
             s.execute("UPDATE messages SET content=?,status='complete' WHERE id=?",(text,mid))
             s.execute('UPDATE conversations SET updated_at=? WHERE id=?',(s.now(),cid))
             s.audit(user,'流式问答','会话',str(cid))
-            yield rag.event('done',conversation_id=cid,message_id=mid)
+            yield rag.event('done',conversation_id=cid,message_id=mid,timings={
+                'retrieval_ms':meta['retrieval_ms'],'first_token_ms':first_token_ms,
+                'total_ms':round((time.perf_counter()-started)*1000)})
         except asyncio.CancelledError:
             raise
         except Exception as error:

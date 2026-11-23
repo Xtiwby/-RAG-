@@ -10,7 +10,7 @@ from . import blueprints,template_docx,report_export
 def decode(value,default):
     return json.loads(value) if isinstance(value,str) and value else value or default
 
-def nodes(report,sections,kb_name='',draft=True,diagnostics=False):
+def nodes(report,sections,kb_name='',draft=True,diagnostics=False,*,include_notices=True):
     plan=blueprints.ReportBlueprint.model_validate(decode(report.get('blueprint'),{}))
     template=decode(report.get('template_snapshot'),{})
     structure=decode(template.get('structure'),{})
@@ -38,7 +38,9 @@ def nodes(report,sections,kb_name='',draft=True,diagnostics=False):
                 'literal':mapping.get('value',''),'user_input':inputs.get(mapping['key'],''),'ignore':''}.get(target,'')
     values={m['key']:field(m) for m in mappings}
     def section_text(i):
-        prefix={'analysis':'分析（基于来源的推断，不等同于已发生事实）：\n','recommendation':'建议（不表示已经实施）：\n'}.get(plan.sections[i].kind,'')
+        prefix=''
+        if include_notices:
+            prefix={'analysis':'分析（基于来源的推断，不等同于已发生事实）：\n','recommendation':'建议（不表示已经实施）：\n'}.get(plan.sections[i].kind,'')
         return prefix+(texts[i] if i<len(texts) else '【待生成章节】')
     for m in mappings:
         if m['target']=='section':
@@ -71,22 +73,44 @@ def nodes(report,sections,kb_name='',draft=True,diagnostics=False):
             result['rows'].append({'header':row.get('header',False),'cells':cells})
         return result
     result=[paragraph(report['title'],1)]
-    if draft:result.append(paragraph('草稿：仅供编辑和审阅，不代表已定稿。未核验或未解决内容请勿作为正式结论。'))
-    from . import report_grounding
-    if report_grounding.generation_mode(report)=='synthesis':
-        result.append(paragraph('生成模式：基于证据综合生成。正文由Kimi结合RAG资料撰写，可含明确标注的分析、方案及建议，未执行逐句事实核验，请人工审阅。'))
-    else:
-        result.append(paragraph('生成模式：严格事实证据。生成正文执行逐句证据核验，仍需人工审阅。'))
-    risks=[]
-    for i,section in enumerate(sections):
-        spec=plan.sections[i] if i<len(plan.sections) else None
-        verification=report_grounding.current(section)
-        supported=verification.get('state')=='verified' or (verification.get('state')=='partial' and verification.get('publishable'))
-        if section['content'].strip() and not supported and (not spec or spec.kind not in ('fixed','container')):
-            risks.append(section['title'])
-    if risks:
-        result.append(paragraph('证据状态说明：'+ '、'.join(risks)+'尚未获证据核验通过，相关内容不代表已核实事实。'+('人工审阅后可决定是否定稿。' if draft else '本正式版本由人工审阅决定保留，定稿不代表模型核验通过。')))
+    if include_notices:
+        from . import report_grounding
+        if draft:result.append(paragraph('草稿：仅供编辑和审阅，不代表已定稿。未核验或未解决内容请勿作为正式结论。'))
+        if report_grounding.generation_mode(report)=='synthesis':
+            result.append(paragraph('生成模式：基于证据综合生成。正文由Kimi结合RAG资料撰写，可含明确标注的分析、方案及建议，未执行逐句事实核验，请人工审阅。'))
+        else:
+            result.append(paragraph('生成模式：严格事实证据。生成正文执行逐句证据核验，仍需人工审阅。'))
+        risks=[]
+        for i,section in enumerate(sections):
+            spec=plan.sections[i] if i<len(plan.sections) else None
+            verification=report_grounding.current(section)
+            supported=verification.get('state')=='verified' or (verification.get('state')=='partial' and verification.get('publishable'))
+            if section['content'].strip() and not supported and (not spec or spec.kind not in ('fixed','container')):
+                risks.append(section['title'])
+        if risks:
+            result.append(paragraph('证据状态说明：'+ '、'.join(risks)+'尚未获证据核验通过，相关内容不代表已核实事实。'+('人工审阅后可决定是否定稿。' if draft else '本正式版本由人工审阅决定保留，定稿不代表模型核验通过。')))
     if report.get('period_start') or report.get('period_end'):result.append(paragraph('报告业务时间范围：'+values.get('报告期间',' 至 '.join(v for v in (report.get('period_start'),report.get('period_end')) if v))))
+    from . import report_grounding
+    if report_grounding.generation_policy(report)=='whole-document-v1':
+        content=texts[0] if texts else ''
+        def clean_markdown(value):
+            value=re.sub(r'\*\*|__|`','',value)
+            return re.sub(r'^\s*[-*+]\s+','• ',value)
+        for line in content.splitlines():
+            heading=re.match(r'^\s*(#{1,6})\s+(.+?)\s*#*\s*$',line)
+            if heading:
+                result.append(paragraph(clean_markdown(heading.group(2)),min(6,len(heading.group(1)))))
+            elif line.strip():
+                result.append(paragraph(clean_markdown(line)))
+        if sources:
+            result.append(paragraph('参考来源',2))
+            for i,c in enumerate(sources,1):
+                result.append(paragraph(f"[{i}] {c.get('source',c.get('name','资料'))}；知识库 {c.get('knowledge_base_name',kb_name)}；文档#{c.get('document_id')}；片段#{c.get('chunk_id')}；相关度 {c.get('relevance','—')}"))
+                if plan.format.include_sources:result.append(paragraph(c.get('text',c.get('snippet',''))))
+        if diagnostics:
+            from .report_grounding import label
+            for section in sections:result.append(paragraph('质量核验：'+label(section),2))
+        return result
     if not structure.get('blocks'):
         for m in mappings:
             if m['target'] not in ('section','ignore'):result.append(paragraph(m['key']+'：'+values[m['key']]))
@@ -140,11 +164,9 @@ def markdown(tree):
 
 def docx(tree,format):
     w='http://schemas.openxmlformats.org/wordprocessingml/2006/main'
-    def paragraph(text,level=0):
-        style='Title' if level==1 else 'Heading1' if level==2 else 'Heading2' if level else 'Normal'
-        return '<w:p><w:pPr><w:pStyle w:val="'+style+'"/>'+ (f'<w:outlineLvl w:val="{min(8,level-2)}"/>' if level>1 else '')+'</w:pPr>'+''.join('<w:r><w:t xml:space="preserve">'+escape(line)+'</w:t></w:r>'+('<w:r><w:br/></w:r>' if i<len(text.split('\n'))-1 else '') for i,line in enumerate(text.split('\n')))+'</w:p>'
     def render(node):
-        if node['type']!='table':return paragraph(node['text'],node.get('level',0))
+        if node['type']!='table':
+            return ''.join(report_export.word_paragraph(line,level=node.get('level',0)) for line in node['text'].split('\n'))
         rows=[]
         for row in node['rows']:
             cells=[]

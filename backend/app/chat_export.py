@@ -13,7 +13,7 @@ from .blueprints import ReportFormat
 REFERENCE = re.compile(r'\[([0-9]{1,9})\]')
 
 
-def export(messages, read_document):
+def export(messages, read_document, *, title='', knowledge_bases=()):
     with TemporaryDirectory(prefix='rag-chat-export-') as directory:
         @lru_cache(maxsize=None)
         def presentation_pdf(document_id):
@@ -39,11 +39,16 @@ def export(messages, read_document):
                 return load_image(*map(int, ids))
             return None
 
-        return render(messages, original_image)
+        return render(messages, original_image, title=title, knowledge_bases=knowledge_bases)
 
 
-def render(messages, original_image):
+def render(messages, original_image, *, title='', knowledge_bases=()):
     lines, images = [], {}
+    if title:
+        lines.extend((f'# {title}', ''))
+    names = [str(name).strip() for name in knowledge_bases if str(name).strip()]
+    if names:
+        lines.extend((f"知识库范围：{'、'.join(names)}", ''))
     turn = 0
     for message in messages:
         content = message['content'].strip()
@@ -53,6 +58,8 @@ def render(messages, original_image):
         if question:
             turn += 1
         lines.append(f"## {'提问' if question else '回答'} {max(turn, 1):02d}")
+        if message.get('created_at'):
+            lines.append(f"消息时间：{message['created_at']}")
         lines.extend(content.splitlines())
 
         citations = [] if question else message['citations']
@@ -64,6 +71,11 @@ def render(messages, original_image):
             citation = citations[number - 1]
             source = ' · '.join(filter(None, (citation.get('name'), citation.get('section'), citation.get('version'))))
             lines.append(f"[{number}] {' '.join(source.split()) or '原文'}")
+            if citation.get('relevance') is not None:
+                lines.append(f"相关度：{citation['relevance']}")
+            snippet = str(citation.get('text') or citation.get('snippet') or '').strip()
+            if snippet:
+                lines.append(snippet)
             image = original_image(citation)
             if image is None:
                 lines.append('此引用暂无可用的原文页面。')

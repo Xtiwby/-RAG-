@@ -104,6 +104,7 @@ async def mixed_judge(messages,max_tokens=4096):
         'quotes':[{'reference':r,'quote':next(e['text'] for e in data['evidence_json'] if e['reference']==r)} for r in c['references']]} for c in data['claims']]})
 
 def test_report_fact_judge_blocks_unsupported_before_events_storage_export(admin,monkeypatch):
+    monkeypatch.setenv('RAG_QA_VERIFICATION_MODE','independent')
     monkeypatch.setattr(rag,'llm_stream',mixed_judge)
     kid=kb(admin);upload(admin,kid)
     tid=client.post('/api/templates',headers=admin,json={'name':'事实校验','sections':['混合检索']} ).json()['id']
@@ -123,6 +124,7 @@ def test_report_fact_judge_blocks_unsupported_before_events_storage_export(admin
 
 @pytest.mark.parametrize('fault',['forged_quote','missing_verdict','numbers','no_citation'])
 def test_report_judge_fail_closed(admin,monkeypatch,fault):
+    monkeypatch.setenv('RAG_QA_VERIFICATION_MODE','independent')
     async def model(messages,max_tokens=4096):
         data=json.loads(messages[-1]['content'])
         if 'verification_schema' not in data:
@@ -140,7 +142,7 @@ def test_report_judge_fail_closed(admin,monkeypatch,fault):
     assert '正式上线' not in section['content'] and '9999' not in section['content']
 
 def test_manual_verify_hash_invalidation_history_acl_and_regenerate(admin,monkeypatch):
-    report=generated_report(admin,monkeypatch);first,second=report['sections'];path=section_path(report,first)
+    report=generated_report(admin,monkeypatch);first=report['sections'][0];path=section_path(report,first)
     assert first['verification']['state']=='verified'
     edited='混合检索采用 BM25 和 RRF。[1]'
     assert client.patch(path,headers=admin,json={'expected_revision':0,'content':edited}).status_code==200
@@ -153,7 +155,6 @@ def test_manual_verify_hash_invalidation_history_acl_and_regenerate(admin,monkey
     row=client.get(f"/api/report-tasks/{report['id']}",headers=admin).json()
     checked=row['sections'][0]
     assert checked['content']==edited and checked['verification']['state']=='verified' and checked['revision']==2
-    assert row['sections'][1]==second
     history=client.get(path+'/history',headers=admin).json()
     assert history[-1]['verification']['state']=='verified' and history[0]['verification']['state']=='unverified_manual'
     cites=store.one('SELECT citations FROM report_sections WHERE id=?',(first['id'],))['citations']
@@ -165,6 +166,7 @@ def test_manual_verify_hash_invalidation_history_acl_and_regenerate(admin,monkey
     store.execute('UPDATE report_sections SET content=? WHERE id=?',('被篡改的正文',first['id']))
     assert client.get(f"/api/report-tasks/{report['id']}",headers=admin).json()['sections'][0]['verification']['state']=='unverified_manual'
     monkeypatch.setattr(rag,'llm_stream',mixed_judge)
+    monkeypatch.setenv('RAG_QA_VERIFICATION_MODE','independent')
     job=client.post(path+'/regenerate',headers=admin,json={'expected_revision':2}).json()
     assert wait_job(admin,job['job_id'])['status']=='needs_review'
     checked=client.get(f"/api/report-tasks/{report['id']}",headers=admin).json()['sections'][0]
@@ -175,7 +177,8 @@ def test_legacy_reports_not_retroactively_verified_and_no_evidence(admin,monkeyp
     store.execute("UPDATE report_sections SET verification='{}' WHERE id=?",(first['id'],))
     row=client.get(f"/api/report-tasks/{report['id']}",headers=admin).json()
     assert row['sections'][0]['verification']['state']=='legacy'
-    assert '历史章节未执行事实支撑核验' in client.get(f"/api/report-tasks/{report['id']}/export?format=md",headers=admin).text
+    exported=client.get(f"/api/reports/{report['id']}/export?format=md&mode=draft&diagnostics=true",headers=admin)
+    assert exported.status_code==200 and '历史章节未执行事实支撑核验' in exported.text
     empty=kb(admin)
     template=client.post('/api/templates',headers=admin,json={'name':'空证据','sections':['不存在的算法']}).json()['id']
     created=client.post('/api/report-tasks',headers=admin,json={'title':'无依据报告','template_id':template,'knowledge_base_id':empty}).json()

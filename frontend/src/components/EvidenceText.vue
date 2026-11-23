@@ -14,7 +14,7 @@ const blocks=computed(()=>props.content.split('\n').map(line=>{
     })
   })}
 }))
-const location=(c)=>({path:`/documents/${c.document_id}`,query:{chunk:c.chunk_id}})
+const location=(c)=>({path:`/documents/${c.document_id}`,query:{chunk:c.chunk_id,view:'original'}})
 const displayed=computed(()=>{
  const used=new Set([...props.content.matchAll(/\[(\d+)\]/g)].map(m=>Number(m[1])))
  return props.citations.map((c,i)=>({...c,number:i+1})).filter(c=>used.has(c.number))

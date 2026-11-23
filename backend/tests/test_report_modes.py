@@ -2,11 +2,48 @@
 import asyncio
 import json
 import pytest
-from test_api import client,admin,application_lifespan,wait_job,configured,create_member
+from test_api import client,admin,application_lifespan,wait_job,configured,create_member,fake_model
 from test_workflow_v07 import setup_report,create
-from app import rag,report_grounding as g,report_workflow as workflow
+from app import rag,report_grounding as g,report_workflow as workflow,report_layout
 
 EVIDENCE=[{'chunk_id':1,'document_id':1,'version':'v1','text':'混合检索使用BM25和RRF。'}]
+
+def test_fulltext_reference_remap_keeps_one_document():
+    text,order,invalid=workflow.remap_references('甲[2] 乙[2] 丙[1]',EVIDENCE*2)
+    assert text=='甲[1] 乙[1] 丙[2]' and order==[EVIDENCE[0],EVIDENCE[0]] and not invalid
+    _,_,invalid=workflow.remap_references('正文[9]',EVIDENCE)
+    assert invalid==[9]
+
+def test_fulltext_generation_uses_one_model_call_and_keeps_one_document(admin,monkeypatch):
+    params,_=setup_report(admin,monkeypatch)
+    calls=[]
+    async def model(messages,max_tokens=4096):
+        data=json.loads(messages[-1]['content'])
+        if 'verification_schema' in data:
+            async for token in fake_model(messages,max_tokens):yield token
+            return
+        if 'coverage_schema' in data:
+            yield json.dumps({'items':[{'requirement':'报告要求','status':'covered','references':[]}]},ensure_ascii=False)
+            return
+        calls.append(data)
+        assert '一次输出完整报告正文' in data['writing_requirements']
+        assert [section['title'] for section in data['sections']]==['混合检索方案','混合检索实施']
+        for token in ('## 1. 混合检索方案\n','检索证据表明，采用混合检索。[1]\n\n',
+                      '## 2. 混合检索实施\n','检索证据表明，采用混合检索。[1]'):
+            yield token
+    monkeypatch.setattr(rag,'llm_stream',model)
+    report=create(admin,params)
+    assert len(calls)==1
+    assert report['generation_policy']=='whole-document-v1'
+    assert report['status']=='completed'
+    assert len(report['sections'])==1 and report['sections'][0]['title']=='全文正文'
+    assert '## 1. 混合检索方案' in report['sections'][0]['content']
+    assert '## 2. 混合检索实施' in report['sections'][0]['content']
+    assert report['sections'][0]['verification']['state']=='verified'
+    assert report['sections'][0]['generation_status']=='completed'
+    preview=client.get(f"/api/reports/{report['id']}/preview",headers=admin).json()
+    rendered=report_layout.markdown(preview['nodes'])
+    assert '## 1. 混合检索方案' in rendered and '## 2. 混合检索实施' in rendered
 
 def test_synthesis_preserves_analysis_and_does_not_claim_verified(monkeypatch):
     async def model(messages,**kwargs):
@@ -62,7 +99,7 @@ def test_mode_preflight_snapshot_regeneration_review_and_export(admin,monkeypatc
     assert wait_job(admin,queued['job_id'])['status']=='needs_review'
     latest=client.get(f'/api/reports/{tid}',headers=admin).json()
     assert latest['candidates'][0]['verification']['state']=='synthesized'
-    assert latest['sections'][1]['content']==report['sections'][1]['content']
+    assert len(latest['sections'])==1 and latest['sections'][0]['content']==report['sections'][0]['content']
     # Human review remains the final publication decision, mode freezes into release.
     for section in latest['sections']:
         assert client.post(f"/api/reports/{tid}/sections/{section['id']}/review",headers=admin,json={'expected_revision':section['revision']}).status_code==200

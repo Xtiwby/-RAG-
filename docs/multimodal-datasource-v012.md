@@ -6,7 +6,7 @@
 
 1. **语音接入。** 支持 `.mp3`、`.m4a`、`.wav`、`.ogg`、`.flac`、`.aac`，`modality='audio'`。转写走 OpenAI 兼容 `POST {base_url}/audio/transcriptions`，请求 `response_format=verbose_json`，按返回的 `segments` 生成 `00:01:23 – 00:02:10` 形式的章节名，每个分段一个解析单元；没有 `segments` 时整段作为一个单元。WAV 时长用标准库 `wave` 读取，其余格式用 ffprobe 或 ffmpeg 探测。超过 `media.max_duration_seconds`（默认 7200 秒）直接失败并提示分段，不静默截断。
 2. **视频接入。** 支持 `.mp4`、`.mov`、`.mkv`、`.webm`、`.avi`，先用 ffmpeg 抽出 16 kHz 单声道 mp3 音轨，再走同一转写链路。`media.frame_ocr` 打开时按 `frame_interval_seconds` 抽样至多 `max_frames` 张画面，逐帧走 OCR 并以 `视频画面 00:03:00` 作章节名；单帧识别失败不丢弃整份转写。画面 OCR 默认关闭，因为每帧一次视觉调用。
-3. **触发方式。** 配置了 ASR 且 `media.auto_transcribe=true` 时上传后自动转写；否则状态为 `needs_extraction`，处理面板出现「开始语音转写」，对应 `POST /api/documents/{did}/transcribe`。未配置服务时该接口返回 `503` 并给出环境变量名。
+3. **触发方式。** 本地或云端 ASR 已就绪且 `media.auto_transcribe=true` 时上传后自动转写；否则状态为 `needs_extraction`，处理面板出现「开始语音转写」，对应 `POST /api/documents/{did}/transcribe`。提供方未就绪时返回 `503` 并给出模型准备或云端配置提示。
 4. **HTML 补齐。** 新增 `html_text.py`，用标准库 `HTMLParser` 替换原来的正则剥标签：`script`/`style`/`noscript`/`template`/`svg` 整棵丢弃，`h1..h6` 成为章节名，表格行按 ` | ` 拼接，列表项与段落各自成段，`img@alt` 保留，`title` 作为无正文时的兜底。编码按 `<meta charset>`、UTF-8、GB18030 依次回退，总字符数上限 200 万。`.htm` 与 `.html` 同等处理。
 5. **图片 OCR 补齐。** 新增 `ocr.py`：先按 EXIF 方向校正并统一转成 PNG（长边超过 4000 降采样，像素超过 4000 万返回 `413`），再交给 `vision`（Kimi 视觉，默认）或 `local`（`rapidocr-onnxruntime`，未安装返回 `503`）引擎。支持的图片格式在 PNG/JPEG/WebP 之外新增 BMP/TIFF/GIF。空结果仍按 `needs_extraction` 处理，不产生空索引的「已就绪」。
 6. **数据源接入。** 补齐 `data_sources.py` 的路由与导入：`GET /api/data-sources` 只返回 `{id,label,kind}`，`POST /api/data-sources/import` 下载快照、校验扩展名、计算 SHA-256、落对象存储、创建 `ingest` 任务并返回 `201`，与上传共用四个阶段和同名版本规则。新增 `url_env`/`dsn_env`/`auth_env` 三个字段，配置文件中只写环境变量名；`object` 类型支持 `s3://bucket/key` 直取；`web`/`api`/`drive` 走 HTTP，不跟随重定向（返回 `502` 而不是把凭据转给别的地址）。
@@ -17,8 +17,9 @@
 
 | 环境变量 | 作用 |
 | --- | --- |
-| `RAG_ASR_BASE_URL` / `RAG_ASR_MODEL` | 语音转写服务地址与模型；同时写入运行时配置 |
-| `RAG_ASR_API_KEY` | 转写密钥，只在 `.env`，界面不读取 |
+| `RAG_ASR_PROVIDER` | `local`（默认）、`api` 或 `disabled` |
+| `RAG_ASR_MODEL` / `RAG_ASR_DEVICE` | 本地 faster-whisper 模型与推理设备；默认 `small` / `auto` |
+| `RAG_ASR_BASE_URL` / `RAG_ASR_API_KEY` | 仅云端模式使用；密钥只在 `.env`，界面不读取 |
 | `RAG_MEDIA_AUTO_TRANSCRIBE` | `1` 上传后自动转写，`0` 保留手动入口 |
 | `RAG_VIDEO_FRAME_OCR` | `1` 打开视频抽帧 OCR，默认关 |
 | `RAG_OCR_PROVIDER` | `vision`（默认）或 `local` |

@@ -10,7 +10,7 @@ import httpx
 from fastapi import Depends,HTTPException,Query,Request
 from fastapi.responses import StreamingResponse
 from pydantic import Field,ValidationError
-from . import blueprints,jobs,rag,settings,store as s,telemetry,ingestion,report_grounding,template_docx,report_retrieval,object_storage
+from . import blueprints,jobs,rag,settings,store as s,telemetry,ingestion,report_grounding,template_docx,report_retrieval,object_storage,report_workflow
 from .audit_export import audit_filters,export_logs
 
 class SettingsUpdate(settings.Strict):
@@ -87,7 +87,8 @@ def install(app,auth,require,check_kb,document,ReportBody,source_lines):
         return {'blueprint':plan.model_dump()}
 
     def report_record(body,user,plan,job_id=None,connection=None,template_snapshot=None):
-        template_snapshot={**(template_snapshot or {}),'generation_mode':body.generation_mode}
+        template_snapshot={**(template_snapshot or {}),'generation_mode':body.generation_mode,
+                           'generation_policy':report_workflow.GENERATION_POLICY if body.workflow_version else 'per-section'}
         values=(body.title,body.template_id,body.knowledge_base_id,'queued',0,s.now(),user['id'],plan.model_dump_json(),job_id,body.requirements,body.workflow_version,json.dumps(template_snapshot or {},ensure_ascii=False),json.dumps(body.field_values,ensure_ascii=False),body.period_start,body.period_end)
         sql='''INSERT INTO report_tasks(title,template_id,knowledge_base_id,status,progress,created_at,user_id,blueprint,job_id,requirements,workflow_version,template_snapshot,field_values,period_start,period_end)
                VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'''
@@ -100,58 +101,80 @@ def install(app,auth,require,check_kb,document,ReportBody,source_lines):
         if row['attempts']>1:
             tid=report_record(body,user,plan,row['id'],template_snapshot=payload.get('template_snapshot'))
         s.execute('UPDATE jobs SET result=? WHERE id=?',(json.dumps({'report_id':tid}),row['id']))
-        s.execute("UPDATE report_tasks SET status='generating' WHERE id=?",(tid,))
-        jobs.emit(row['id'],'meta',task_id=tid,total=len(plan.sections),job_id=row['id'])
-        text='# '+body.title+'\n'
-        review=False
+        s.execute("UPDATE report_tasks SET status='generating',error='' WHERE id=?",(tid,))
+        if not body.workflow_version:
+            jobs.emit(row['id'],'meta',task_id=tid,total=len(plan.sections),job_id=row['id'],generation_policy='per-section')
+            review=False
+            for i,section in enumerate(plan.sections):
+                fresh_job_user(row)
+                evidence,_=await report_retrieval.retrieve_section(body.knowledge_base_id,section.model_dump(),mode=body.mode,purpose=plan.purpose,
+                    report_title=body.title,requirements=body.requirements,period_start=body.period_start,period_end=body.period_end,
+                    template_structure=(payload.get('template_snapshot') or {}).get('structure'))
+                sid=s.execute('INSERT INTO report_sections(task_id,ordinal,title,status,citations) VALUES(?,?,?,?,?)',
+                              (tid,i,section.title,'generating',json.dumps(evidence,ensure_ascii=False)))
+                jobs.emit(row['id'],'section',index=i,title=section.title,citations=evidence)
+                content='';verification={};hint=report_retrieval.template_section_hint((payload.get('template_snapshot') or {}).get('structure'),section.block_id)
+                instructions=f'仅撰写报告《{body.title}》中的“{section.title}”正文，不重复章节标题。本节定位：{hint}。本章要求：{section.instructions}。目标约 {section.target_words} 字。每个事实句末必须有本轮证据引用。'
+                if body.generation_mode=='synthesis':
+                    content,verification=await report_workflow.generate_section(instructions,evidence,lambda:fresh_job_user(row),section.kind,generation_mode='synthesis')
+                else:
+                    async for item in report_grounding.generate(instructions,evidence,lambda:fresh_job_user(row)):
+                        if item['type']=='token':content+=item['content'];jobs.emit(row['id'],'token',content=item['content'])
+                        elif item['type']=='verification':jobs.emit(row['id'],'verification',section_id=sid,checks=item['checks'])
+                        elif item['type']=='result':verification=item['verification']
+                insufficient=verification['state']!='verified';review=review or insufficient
+                s.execute("UPDATE report_sections SET content=?,status=?,verification=?,stage='待审阅',generation_status='completed',generation_error='' WHERE id=?",
+                          (content,'needs_review' if insufficient else 'completed',json.dumps(verification,ensure_ascii=False),sid))
+                progress=round((i+1)/len(plan.sections)*100);jobs.progress(row['id'],progress)
+            status='needs_review' if review else 'completed'
+            text=report_grounding.compose(s.one('SELECT * FROM report_tasks WHERE id=?',(tid,)),s.rows('SELECT * FROM report_sections WHERE task_id=? ORDER BY ordinal',(tid,)),source_lines)
+            s.execute('UPDATE report_tasks SET status=?,content=?,progress=100 WHERE id=?',(status,text,tid));jobs.progress(row['id'],100)
+            s.audit(user,'生成报告','报告',body.title,object_id=tid)
+            return {'report_id':tid,'task_id':tid,'status':status}
+        jobs.emit(row['id'],'meta',task_id=tid,total=1,job_id=row['id'],generation_policy=report_workflow.GENERATION_POLICY)
+        structure=(payload.get('template_snapshot') or {}).get('structure')
+        mode=body.mode or settings.get().retrieval.mode
+        evidence_by_section=[]
         for i,section in enumerate(plan.sections):
             fresh_job_user(row)
-            if body.workflow_version:
+            if section.kind in ('fixed','container'):
+                evidence=[]
+            elif body.workflow_version:
                 evidence=payload['preflight']['sections'][i]['evidence']
-            else:evidence,_=await report_retrieval.retrieve_section(body.knowledge_base_id,section.model_dump(),mode=body.mode,purpose=plan.purpose,
-                report_title=body.title,requirements=body.requirements,period_start=body.period_start,period_end=body.period_end,
-                 template_structure=(payload.get('template_snapshot') or {}).get('structure'))
-            sid=s.execute('INSERT INTO report_sections(task_id,ordinal,title,status,citations) VALUES(?,?,?,?,?)',
-                          (tid,i,section.title,'generating',json.dumps(evidence,ensure_ascii=False)))
-            jobs.emit(row['id'],'section',index=i,title=section.title,citations=evidence)
-            content='';verification={}
-            structure=(payload.get('template_snapshot') or {}).get('structure')
-            hint=report_retrieval.template_section_hint(structure,section.block_id)
-            scoped=report_retrieval.scoped_requirements(body.requirements,section.title,hint)
-            focus=f'{section.title}。{hint}。{section.instructions}'
-            instructions=f'仅撰写报告《{body.title}》中的“{section.title}”正文，不重复报告和章节标题。本节定位：{hint}。本章要求：{section.instructions}。目标约 {section.target_words} 字。通用写作要求：{scoped}。只写本节对应的题目，其他章节的重点要求不得写入本节。每个事实句末必须有本轮证据引用，不编造项目进展。'
-            if body.workflow_version or body.generation_mode=='synthesis':
-                from . import report_workflow
-                s.execute('UPDATE report_sections SET stage=? WHERE id=?',('基于证据综合生成' if body.generation_mode=='synthesis' else '生成与独立核验',sid))
-                if section.kind in ('fixed','container'):
-                    content=section.fixed_content if section.kind=='fixed' else '';verification=report_grounding.record(content,[],'structure',evidence=[])
-                else:
-                    instructions+=f'报告业务日期范围：{body.period_start} 至 {body.period_end}；只用来源明确支持的该期间事实，不将文档上传时间当作业务日期。业务字段：'+json.dumps(body.field_values,ensure_ascii=False)
-                    if body.generation_mode=='synthesis':
-                        instructions=f'报告《{body.title}》；本节：{section.title}；本节定位：{hint}；本章要求：{section.instructions}；目标约{section.target_words}字；通用要求：{scoped}；业务期间：{body.period_start} 至 {body.period_end}；业务字段：'+json.dumps(body.field_values,ensure_ascii=False)
-                    content,verification=await report_workflow.generate_section(instructions,evidence,lambda:fresh_job_user(row),section.kind,coverage_question=focus,generation_mode=body.generation_mode)
-                jobs.emit(row['id'],'verification',section_id=sid,checks=verification['checks'])
-                jobs.emit(row['id'],'token',content=content)
             else:
-                async for item in report_grounding.generate(instructions,evidence,lambda:fresh_job_user(row)):
-                    if item['type']=='token':
-                        content+=item['content'];jobs.emit(row['id'],'token',content=item['content'])
-                        s.execute('UPDATE report_sections SET content=? WHERE id=?',(content,sid))
-                    elif item['type']=='verification':jobs.emit(row['id'],'verification',section_id=sid,checks=item['checks'])
-                    elif item['type']=='result':verification=item['verification']
-            insufficient=verification['state']!='verified'
-            review=review or insufficient
-            s.execute("UPDATE report_sections SET content=?,status=?,verification=?,stage='待审阅' WHERE id=?",(content,'needs_review' if insufficient else 'completed',json.dumps(verification,ensure_ascii=False),sid))
-            text+=f'\n## {section.title}\n\n{content}\n'
-            if plan.format.include_sources:
-                text+='\n### 本章来源\n'+source_lines(evidence)+'\n'
-            progress=round((i+1)/len(plan.sections)*100)
-            s.execute('UPDATE report_tasks SET content=?,progress=? WHERE id=?',(text,progress,tid))
-            jobs.progress(row['id'],progress)
-            jobs.emit(row['id'],'progress',progress=progress)
+                evidence,parameters=await report_retrieval.retrieve_section(body.knowledge_base_id,section.model_dump(),mode=mode,purpose=plan.purpose,
+                    report_title=body.title,requirements=body.requirements,period_start=body.period_start,period_end=body.period_end,
+                    template_structure=structure)
+                jobs.emit(row['id'],'retrieval',section_index=i,parameters=parameters,chunk_ids=[item['chunk_id'] for item in evidence])
+            evidence_by_section.append(evidence)
+        jobs.progress(row['id'],12)
+        merged=report_workflow.merge_evidence(evidence_by_section)
+        sid=s.execute('INSERT INTO report_sections(task_id,ordinal,title,status,citations) VALUES(?,?,?,?,?)',
+                      (tid,0,'全文正文','generating',json.dumps(merged,ensure_ascii=False)))
+        jobs.emit(row['id'],'section',index=0,title='全文正文',citations=merged)
+        candidate=''
+        if merged and report_workflow.generated_section_indexes(plan):
+            async for token in rag.llm_stream(report_workflow.fulltext_messages(body,plan,merged,body.generation_mode,structure)):
+                fresh_job_user(row);candidate+=token
+                if len(candidate)>120000:raise ValueError('整份报告正文超过120000字符，请缩减章节目标字数后重试')
+        jobs.progress(row['id'],55)
+        if not candidate.strip():
+            content=report_workflow.PLACEHOLDER;local=[]
+            verification=report_grounding.record(content,[],'insufficient',evidence=[])
+        elif body.generation_mode=='synthesis':
+            content,local,verification=report_workflow.synthesized_section(candidate,merged)
+        else:
+            content,local,verification=await report_workflow.verify_whole_candidate(candidate,merged,lambda:fresh_job_user(row),
+                trusted_texts=[section.fixed_content for section in plan.sections if section.kind=='fixed'])
+        review=verification['state']!='verified'
+        s.execute("UPDATE report_sections SET content=?,status=?,verification=?,citations=?,stage='待审阅',generation_status='completed',generation_error='' WHERE id=?",
+                  (content,'needs_review' if review else 'completed',json.dumps(verification,ensure_ascii=False),json.dumps(local,ensure_ascii=False),sid))
+        jobs.emit(row['id'],'verification',section_id=sid,checks=verification.get('checks',[]))
+        jobs.emit(row['id'],'token',content=content)
         status='needs_review' if review else 'completed'
         text=report_grounding.compose(s.one('SELECT * FROM report_tasks WHERE id=?',(tid,)),s.rows('SELECT * FROM report_sections WHERE task_id=? ORDER BY ordinal',(tid,)),source_lines)
-        s.execute('UPDATE report_tasks SET status=?,content=? WHERE id=?',(status,text,tid))
+        s.execute('UPDATE report_tasks SET status=?,content=?,progress=100 WHERE id=?',(status,text,tid))
+        jobs.progress(row['id'],100)
         s.audit(user,'生成报告','报告',body.title,object_id=tid)
         return {'report_id':tid,'task_id':tid,'status':status}
 

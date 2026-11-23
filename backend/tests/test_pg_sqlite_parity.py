@@ -11,7 +11,7 @@ def test_insert_or_ignore_is_translated():
             self.last = sql
             class Cur:
                 rowcount = 0
-                def fetchone(self): return None
+                def fetchone(self): return {'id': 1}
                 def fetchall(self): return []
                 def __iter__(self): return iter(())
             return Cur()
@@ -20,6 +20,7 @@ def test_insert_or_ignore_is_translated():
     result = conn.execute('INSERT OR IGNORE INTO roles(id,name,permissions) VALUES(?,?,?)', (1, 'x', '[]'))
     assert result.lastrowid is None
     assert 'ON CONFLICT DO NOTHING' in inner.last
+    assert result.lastrowid==1
     assert '?' not in inner.last
 
 

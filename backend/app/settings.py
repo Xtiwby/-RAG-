@@ -88,12 +88,15 @@ class AnswerQualitySettings(Strict):
     context_neighbors: int = Field(default=0,ge=0,le=6)
 
 class AsrSettings(Strict):
-    # The API key stays in RAG_ASR_API_KEY; only address and model are stored here.
-    provider: Literal['api','local','disabled'] = 'api'
+    # Cloud credentials stay in RAG_ASR_API_KEY; local inference is keyless.
+    provider: Literal['local','api','disabled'] = 'local'
     base_url: str = ''
-    model: str = ''
+    model: str = 'small'
     language: str = Field(default='zh',max_length=20)
     timeout_seconds: int = Field(default=300,ge=30,le=1800)
+    device: Literal['auto','cpu','cuda'] = 'auto'
+    compute_type: Literal['auto','int8','float16','float32'] = 'auto'
+    beam_size: int = Field(default=5,ge=1,le=10)
 
     @field_validator('base_url')
     @classmethod
@@ -102,12 +105,10 @@ class AsrSettings(Strict):
 
     @model_validator(mode='after')
     def validate_api(self):
-        if self.provider=='local' and self.model not in ('','Systran/faster-whisper-tiny'):
-            raise ValueError('本地转写目前支持 Systran/faster-whisper-tiny')
-        if self.provider=='api' and self.base_url and not self.model.strip():
-            raise ValueError('语音转写服务地址必须同时配置模型名')
-        if self.provider=='api' and self.model.strip() and not self.base_url:
-            raise ValueError('语音转写模型必须同时配置服务地址')
+        if self.provider=='local' and self.model not in {'tiny','base','small','medium','large-v3','turbo','Systran/faster-whisper-tiny'}:
+            raise ValueError('本地语音转写模型可选 tiny、base、small、medium、large-v3 或 turbo')
+        if self.provider=='api' and (not self.base_url or not self.model.strip()):
+            raise ValueError('云端语音转写必须同时配置服务地址和模型名')
         return self
 
 class OcrSettings(Strict):
@@ -137,12 +138,16 @@ class RuntimeSettings(Strict):
 active: ContextVar[RuntimeSettings|None]=ContextVar('rag_configuration',default=None)
 
 def defaults():
-    asr_provider=os.getenv('RAG_ASR_PROVIDER','').lower() or ('api' if os.getenv('RAG_ASR_BASE_URL') and os.getenv('RAG_ASR_MODEL') else 'disabled')
+    asr_provider=os.getenv('RAG_ASR_PROVIDER','').strip().lower()
+    if asr_provider not in {'local','api','disabled'}:
+        asr_provider='api' if os.getenv('RAG_ASR_BASE_URL') and os.getenv('RAG_ASR_MODEL') else 'local'
+    asr_model=os.getenv('RAG_ASR_MODEL','').strip() or ('small' if asr_provider=='local' else '')
     return RuntimeSettings(chat=ChatSettings(base_url=os.getenv('KIMI_BASE_URL','https://api.moonshot.cn/v1'),model=os.getenv('KIMI_MODEL','kimi-k2.6')),
         embedding=EmbeddingSettings(provider='api' if os.getenv('EMBEDDING_BASE_URL') and os.getenv('EMBEDDING_MODEL') else 'tfidf',
           base_url=os.getenv('EMBEDDING_BASE_URL',''),model=os.getenv('EMBEDDING_MODEL','')),
-        asr=AsrSettings(provider=asr_provider,
-          base_url=os.getenv('RAG_ASR_BASE_URL',''),model=os.getenv('RAG_ASR_MODEL','Systran/faster-whisper-tiny' if asr_provider=='local' else '')),
+        asr=AsrSettings(provider=asr_provider,base_url=os.getenv('RAG_ASR_BASE_URL',''),model=asr_model,
+          device=os.getenv('RAG_ASR_DEVICE','auto'),compute_type=os.getenv('RAG_ASR_COMPUTE_TYPE','auto'),
+          beam_size=int(os.getenv('RAG_ASR_BEAM_SIZE','5'))),
         ocr=OcrSettings(provider='local' if os.getenv('RAG_OCR_PROVIDER','').lower()=='local' else 'vision'),
         media=MediaSettings(auto_transcribe=os.getenv('RAG_MEDIA_AUTO_TRANSCRIBE','1')!='0',
           frame_ocr=os.getenv('RAG_VIDEO_FRAME_OCR','').lower() in {'1','true','yes'}),

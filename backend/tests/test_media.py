@@ -4,10 +4,11 @@ import wave
 from pathlib import Path
 
 import pytest
+import httpx
 from fastapi import HTTPException
 
 from test_api import admin, application_lifespan, client, finish_upload, kb, wait_job
-from app import media, ocr, rag
+from app import asr, media, ocr, rag, settings
 
 
 def wav_bytes(seconds=2.0, rate=8000):
@@ -23,6 +24,32 @@ def wav_bytes(seconds=2.0, rate=8000):
 async def fake_transcribe(path):
     return '语音验收内容', [{'start': 0.0, 'end': 1.5, 'text': '语音验收内容'},
                             {'start': 1.5, 'end': 2.0, 'text': '第二段内容'}], 'test-asr'
+
+
+def test_asr_provider_selection_and_validation():
+    local = settings.AsrSettings(provider='local', model='small')
+    cloud = settings.AsrSettings(provider='api', base_url='https://speech.example/v1', model='gpt-transcribe')
+    assert isinstance(asr.provider(local), asr.FasterWhisperProvider)
+    assert isinstance(asr.provider(cloud), asr.OpenAICompatibleProvider)
+    with pytest.raises(ValueError, match='本地语音转写模型'):
+        settings.AsrSettings(provider='local', model='unknown')
+
+
+def test_local_provider_contract_without_network(monkeypatch, tmp_path):
+    source = tmp_path / 'speech.wav'
+    source.write_bytes(wav_bytes(.1))
+    expected = ('本地转写', [{'start': 0.0, 'end': .1, 'text': '本地转写'}], 'faster-whisper:small')
+    monkeypatch.setattr(asr, '_local_transcribe', lambda path, config: expected)
+    config = settings.AsrSettings(provider='local', model='small')
+    import asyncio
+    assert asyncio.run(asr.FasterWhisperProvider().transcribe(source, config)) == expected
+
+
+def test_cloud_provider_reports_quota_code():
+    request = httpx.Request('POST', 'https://speech.example/v1/audio/transcriptions')
+    response = httpx.Response(429, request=request,
+                              json={'error': {'code': 'credit_balance_exhausted', 'message': 'quota'}})
+    assert asr._api_error(response) == '语音转写服务余额不足'
 
 
 def submit(admin, kid, name, content, mime):

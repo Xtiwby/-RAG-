@@ -10,6 +10,7 @@ export const BookOpen = icon(['M12 5v16M3 4c4-1 6 0 9 2 3-2 5-3 9-2v15c-4-1-6 0-
 export const Bot = icon(['M8 3h8l5 5v8l-5 5H8l-5-5V8Z','M8 9h.01M16 9h.01M8 14h8M12 3v4'])
 export const ChevronLeft = icon(['m14 6-6 6 6 6'])
 export const ChevronDown = icon(['m6 9 6 6 6-6'])
+export const Info = icon(['M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0Z','M12 11v5m0-8h.01'])
 export const Database = icon(['M3 6c0-4 18-4 18 0s-18 4-18 0v12c0 4 18 4 18 0V6','M3 12c0 4 18 4 18 0'])
 export const FileSearch = icon(['M13 2H5v20h14V8Z','M13 2v6h6','M10 11a3 3 0 1 0 0 6 3 3 0 0 0 0-6m2 5 3 3'])
 export const FileText = icon(['M13 2H5v20h14V8Z','M13 2v6h6M8 12h8M8 16h6'])

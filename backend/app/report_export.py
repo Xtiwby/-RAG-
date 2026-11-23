@@ -5,10 +5,69 @@ import zipfile
 from xml.sax.saxutils import escape, quoteattr
 from .blueprints import ReportFormat
 
-def docx(text,format:ReportFormat,*,images=None):
+INLINE_MARKUP=re.compile(
+    r'(?P<escaped>\\[\\\x60*_{}\[\]()#+\-.!>|~])'
+    r'|(?P<code>\x60+)(?P<literal>[^\x60\n]+)(?P=code)(?!\x60)'
+    r'|(?P<link>!?\[(?P<caption>[^\]\n]*)\]\((?P<url>[^\s()]+)\))'
+    r'|(?<!\*)(?P<stars>\*{1,3})(?![\s*])(?P<star_text>[^*\n]*?[^\s*])(?P=stars)(?!\*)'
+    r'|(?<![\w_])(?P<underscores>_{1,3})(?![\s_])(?P<under_text>[^_\n]*?[^\s_])(?P=underscores)(?![\w_])'
+)
+HEADING=re.compile(r'^[ \t]{0,3}(#{1,6})[ \t]+(.+?)(?:[ \t]+#+)?$')
+LIST_ITEM=re.compile(r'^([ \t]*)([-+*]|\d{1,9}[.)])[ \t]+(.+)$')
+
+def word_runs(text):
+    def run(value,properties=''):
+        formatting=f'<w:rPr>{properties}</w:rPr>' if properties else ''
+        return f'<w:r>{formatting}<w:t xml:space="preserve">{escape(value)}</w:t></w:r>'
+
+    parts=[]
+    start=0
+    for token in INLINE_MARKUP.finditer(text):
+        if start<token.start():
+            parts.append(run(text[start:token.start()]))
+        if token['escaped']:
+            parts.append(run(token['escaped'][1:]))
+        elif token['code']:
+            parts.append(run(token['literal'],'<w:rFonts w:ascii="Consolas" w:hAnsi="Consolas"/>'))
+        elif token['link']:
+            caption,url=token['caption'],token['url']
+            parts.append(run(f'{caption} ({url})' if caption and caption!=url else url))
+        else:
+            marker=token['stars'] or token['underscores']
+            properties=('<w:b/>' if len(marker)>=2 else '')+('<w:i/>' if len(marker)%2 else '')
+            parts.append(run(token['star_text'] or token['under_text'],properties))
+        start=token.end()
+    if start<len(text) or not parts:
+        parts.append(run(text[start:]))
+    return ''.join(parts)
+
+def word_paragraph(line,level=0,align=None):
+    indent=''
+    if not level:
+        heading=HEADING.match(line)
+        item=LIST_ITEM.match(line)
+        if heading:
+            level=min(9,len(heading[1])+1)
+            line=heading[2]
+        elif item:
+            leading,marker,body=item.groups()
+            indent=f'<w:ind w:left="{360+120*min(len(leading.expandtabs(4)),12)}" w:hanging="240"/>'
+            line=f'{marker if marker[0].isdigit() else "•"} {body}'
+        elif re.match(r'^ {0,3}>(?:[ \t]|$)',line):
+            indent='<w:ind w:left="360"/>'
+            line=re.sub(r'^ {0,3}>[ \t]?','',line)
+    style='Title' if level==1 else 'Heading1' if level==2 else 'Heading2' if level else 'Normal'
+    outline=f'<w:outlineLvl w:val="{level-2}"/>' if level>1 else ''
+    alignment=f'<w:jc w:val="{align}"/>' if align else ''
+    return f'<w:p><w:pPr><w:pStyle w:val="{style}"/>{indent}{alignment}{outline}</w:pPr>{word_runs(line)}</w:p>'
+
+def docx(text,format:ReportFormat,*,images=None,report_markup=False):
     pictures={}
 
     def paragraph(line,style='Normal',align=None,keep_next=False):
+        if report_markup:
+            level={'Title':1,'Heading1':2,'Heading2':3}.get(style,0)
+            return word_paragraph(line,level=level,align=align)
         parts=[]
         for part in re.split(r'(\*\*[^*]+\*\*)',line):
             bold=part.startswith('**') and part.endswith('**')
@@ -37,7 +96,7 @@ def docx(text,format:ReportFormat,*,images=None):
                 </a:graphic>
               </wp:inline></w:drawing></w:r></w:p>''')
             continue
-        match=re.match(r'^(#{1,6})\s+(.+)',line)
+        match=HEADING.match(line) if report_markup else re.match(r'^(#{1,6})\s+(.+)',line)
         if match:
             level=len(match[1]);title=match[2]
             if level==1 and not title_seen:

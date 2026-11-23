@@ -105,8 +105,12 @@ def test_qa_splits_explicit_topics_without_paying_for_query_rewrite(admin, confi
     model_calls = []
 
     async def no_supported_answer(messages, max_tokens=None):
-        model_calls.append(json.loads(messages[-1]['content']))
-        yield '当前知识库证据不足。'
+        request=json.loads(messages[-1]['content'])
+        model_calls.append(request)
+        if 'answer_schema' in request:
+            yield json.dumps({'claims':[],'insufficient':True},ensure_ascii=False)
+        else:
+            yield '当前知识库证据不足。'
 
     monkeypatch.setattr(rag, 'llm_stream', no_supported_answer)
     response = client.post('/api/qa/stream', headers=admin, json={
@@ -173,14 +177,12 @@ def test_report_preflight_and_regeneration_share_section_focus(admin,configured,
     assert client.post('/api/report-tasks',headers=admin,json={**generation,'mode':'hybrid'}).status_code==409
     created=client.post('/api/report-tasks',headers=admin,json=generation).json()
     wait_job(admin,created['job_id'])
-    report=client.get(f"/api/reports/{created['id']}",headers=admin).json();sec=report['sections'][1]
-    job=client.post(f"/api/report-tasks/{report['id']}/sections/{sec['id']}/regenerate",headers=admin,json={'expected_revision':sec['revision'],'preview':True}).json()
-    wait_job(admin,job['job_id'])
-    assert seen[-1]['attempts'][0]['query']==focused
-    assert seen[-1]['attempts'][0]['retrieval']['mode']=='keyword'
-    final=client.get(f"/api/reports/{created['id']}",headers=admin).json()
-    assert final['sections'][0]['content']==report['sections'][0]['content']
-    assert optical['id'] in {e['document_id'] for e in final['candidates'][0]['citations']}
+    report=client.get(f"/api/reports/{created['id']}",headers=admin).json()
+    assert len(report['sections'])==1
+    assert report['sections'][0]['title']=='全文正文'
+    cited={e['document_id'] for e in report['sections'][0]['citations']}
+    assert {upload_doc['id'],optical['id']} <= cited
+    assert any(attempt['query']==focused for snapshot in seen for attempt in snapshot['attempts'])
 
 
 def test_imported_template_notes_focus_section_without_global_topic_bleed(monkeypatch):

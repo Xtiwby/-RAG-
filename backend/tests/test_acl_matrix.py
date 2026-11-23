@@ -2,6 +2,7 @@
 import json
 import uuid
 import pytest
+import uuid
 from pathlib import Path
 from test_api import client, admin, application_lifespan, kb, upload, create_member, login, fake_model
 from app import rag

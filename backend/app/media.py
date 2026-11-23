@@ -1,9 +1,4 @@
-"""Audio and video ingestion: ffmpeg probing, optional frame OCR and ASR.
-
-Only an OpenAI-compatible ``/audio/transcriptions`` endpoint is used. The
-service address and model live in runtime settings, the key stays in
-``RAG_ASR_API_KEY``.
-"""
+"""Audio/video ingestion with replaceable local or cloud speech recognition."""
 import asyncio
 import os
 import shutil
@@ -12,9 +7,7 @@ import tempfile
 import wave
 from pathlib import Path
 
-import httpx
-
-from . import settings
+from . import asr, settings
 
 AUDIO_TYPES = {'mp3', 'm4a', 'wav', 'ogg', 'flac', 'aac'}
 VIDEO_TYPES = {'mp4', 'mov', 'mkv', 'webm', 'avi'}
@@ -133,54 +126,22 @@ def stamp(seconds):
 
 
 def asr_configured():
+    return asr.configured()
+
+
+def asr_unavailable_message():
     config = settings.get().asr
-    if config.provider=='local':
-        from . import local_asr
-        return local_asr.available()
-    return bool(config.provider == 'api' and config.base_url and config.model
-                and os.getenv('RAG_ASR_API_KEY', '').strip())
-
-
-def _asr_error(status):
-    return {401: '语音转写密钥无效', 402: '语音转写余额不足', 403: '语音转写访问被拒绝',
-            429: '语音转写限流或额度不足'}.get(status, f'语音转写服务返回 HTTP {status}')
+    if config.provider == 'local':
+        return (f'本地语音转写尚未就绪，请安装 requirements-asr.txt 并运行 '
+                f'prepare_asr_model.py --model {config.model}')
+    if config.provider == 'api':
+        return '云端语音转写需要配置服务地址、模型和 RAG_ASR_API_KEY'
+    return '语音转写已关闭，请在系统配置中选择本地或云端转写'
 
 
 async def transcribe(path):
-    """Return ``(text, segments, model)`` from an OpenAI-compatible ASR service."""
-    config = settings.get().asr
-    if config.provider=='local':
-        from . import local_asr
-        return await local_asr.transcribe(path,config)
-    key = os.getenv('RAG_ASR_API_KEY', '').strip()
-    if not asr_configured():
-        raise RuntimeError('尚未配置语音转写服务，请在 backend/.env 设置 RAG_ASR_BASE_URL、RAG_ASR_MODEL 和 RAG_ASR_API_KEY')
-    data = {'model': config.model, 'response_format': 'verbose_json'}
-    if config.language:
-        data['language'] = config.language
-    try:
-        async with httpx.AsyncClient(timeout=config.timeout_seconds) as client:
-            with Path(path).open('rb') as stream:
-                response = await client.post(config.base_url + '/audio/transcriptions',
-                                             headers={'Authorization': f'Bearer {key}'},
-                                             files={'file': (Path(path).name, stream, 'application/octet-stream')},
-                                             data=data)
-            if response.status_code >= 400:
-                raise RuntimeError(_asr_error(response.status_code))
-            payload = response.json()
-    except httpx.TimeoutException:
-        raise RuntimeError('语音转写超时，请缩短音频或稍后重试') from None
-    except httpx.RequestError:
-        raise RuntimeError('无法连接语音转写服务，请检查网络与服务地址') from None
-    segments = []
-    for segment in payload.get('segments') or []:
-        text = str(segment.get('text') or '').strip()
-        if text:
-            segments.append({'start': float(segment.get('start') or 0), 'end': float(segment.get('end') or 0), 'text': text})
-    text = str(payload.get('text') or '').strip()
-    if not segments and text:
-        segments = [{'start': 0.0, 'end': 0.0, 'text': text}]
-    return text, segments, config.model
+    """Return ``(text, segments, provider_model)`` through the selected provider."""
+    return await asr.transcribe(path)
 
 
 def units_from_segments(segments):

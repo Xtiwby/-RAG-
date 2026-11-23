@@ -1,0 +1,19 @@
+[
+  {
+    "id": "health_api",
+    "label": "系统健康状态 API",
+    "knowledge_base_id": 2,
+    "kind": "api",
+    "filename": "system-health.json",
+    "url": "http://127.0.0.1:8000/api/health"
+  },
+  {
+    "id": "knowledge_database",
+    "label": "知识库信息数据库快照",
+    "knowledge_base_id": 2,
+    "kind": "database",
+    "filename": "knowledge-bases.csv",
+    "dsn_env": "RAG_DATABASE_URL",
+    "query": "SELECT id, name, status FROM knowledge_bases ORDER BY id"
+  }
+]
