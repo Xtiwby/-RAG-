@@ -5,6 +5,7 @@ import {api,download,can} from '../api'
 import {labelOf} from '../ui'
 import DocumentOriginal from '../components/DocumentOriginal.vue'
 import ProcessingPanel from '../components/ProcessingPanel.vue'
+import { isMediaDocument, mediaStartSeconds } from '../media-location.mjs'
 const PdfCitationPreview=defineAsyncComponent(()=>import('../components/PdfCitationPreview.vue'))
 const route=useRoute(),router=useRouter(),doc=ref(null),error=ref(''),busy=ref(false),pageOffset=ref(0)
 const activePane=ref('original')
@@ -14,10 +15,8 @@ let loadSequence=0
 const selected=(c)=>String(c.id)===String(route.query.chunk)
 const citation=computed(()=>doc.value?.chunks.find(selected))
 const originalPage=computed(()=>citation.value?.page||1)
-const mediaStart=computed(()=>{
-  const match=/^(\d{2}):(\d{2}):(\d{2})/.exec(citation.value?.section||'')
-  return match?(+match[1])*3600+(+match[2])*60+(+match[3]):0
-})
+const media=computed(()=>isMediaDocument(doc.value))
+const mediaStart=computed(()=>mediaStartSeconds(citation.value?.section)??0)
 const imageTypes=['png','jpg','jpeg','webp','bmp','tif','tiff','gif']
 const presentation=computed(()=>['ppt','pptx'].includes(doc.value?.file_type))
 const pageCitation=computed(()=>doc.value?.has_original&&citation.value?.page>0&&(doc.value.file_type==='pdf'||presentation.value))
@@ -31,6 +30,7 @@ async function load(centerCitation=true){
     const result=await api(`/api/documents/${id}?${params}`)
     if(sequence!==loadSequence)return
     doc.value=result;pageOffset.value=result.chunk_offset
+    if(centerCitation&&chunkId>0&&media.value&&result.has_original)activePane.value='citation'
     if(!result.has_original&&activePane.value!=='citation')activePane.value='chunks'
     if(centerCitation&&chunkId>0&&activePane.value==='chunks')await scrollToCitation()
     if(centerCitation&&activePane.value==='citation')await scrollToOriginalMark()
@@ -82,7 +82,13 @@ async function vision(){busy.value=true;error.value='';try{const result=await ap
     <button type="button" class="secondary-button" :aria-pressed="activePane==='chunks'" @click="showChunks">检索片段</button>
   </div>
   <section v-if="activePane==='citation'&&citation" class="card document-context" aria-label="引用原文">
-    <PdfCitationPreview v-if="pageCitation" :key="`${doc.id}:${citation.id}`" :document-id="doc.id" :citation="citation" :presentation="presentation"/>
+    <template v-if="media">
+      <h3>{{citation.section||'引用时间未知'}}</h3>
+      <p v-if="mediaStartSeconds(citation.section)!==null" class="muted">定位至 {{mediaStart}} 秒</p>
+      <DocumentOriginal v-if="doc.has_original" :key="doc.id" :document-id="doc.id" :file-type="doc.file_type" :start-seconds="mediaStart"/>
+      <p v-else class="error-banner">原始音视频不可用，无法播放此引用。</p>
+    </template>
+    <PdfCitationPreview v-else-if="pageCitation" :key="`${doc.id}:${citation.id}`" :document-id="doc.id" :citation="citation" :presentation="presentation"/>
     <template v-else>
       <h3>{{citation.section||'原文上下文'}}</h3>
       <p class="muted">以下显示提取的原文，黄色标出引用文字。</p>

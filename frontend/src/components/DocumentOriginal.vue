@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { originalFile, presentationPreviewFile } from '../api'
 
 const props = defineProps({
@@ -27,6 +27,7 @@ const error = ref('')
 const url = ref('')
 const text = ref('')
 const web = ref('')
+const mediaElement = ref(null)
 let controller
 
 onMounted(() => { if (supported) load() })
@@ -69,12 +70,13 @@ async function load() {
   }
 }
 
-function seek(event) {
-  // Citations carry a timestamp section such as 00:01:23 – 00:02:10.
-  if (props.startSeconds > 0 && event.target.duration) {
-    event.target.currentTime = Math.min(props.startSeconds, Math.max(0, event.target.duration - 1))
-  }
+function seek() {
+  const element = mediaElement.value
+  if (!element || element.readyState < 1 || !Number.isFinite(props.startSeconds)) return
+  const end = Number.isFinite(element.duration) ? Math.max(0, element.duration - 0.01) : Infinity
+  element.currentTime = Math.min(Math.max(0, props.startSeconds), end)
 }
+watch(() => props.startSeconds, seek)
 
 function decodeText(bytes) {
   try {
@@ -118,8 +120,8 @@ function isolatedPage(html, markdown) {
       <div class="preview-actions">
         <a :href="isImage||isMedia ? url : url+'#page='+page" target="_blank" rel="noopener noreferrer" class="secondary-button">在新标签页打开</a>
       </div>
-      <video v-if="isVideo" :src="url" controls preload="metadata" @loadedmetadata="seek"/>
-      <audio v-else-if="isAudio" :src="url" controls preload="metadata" @loadedmetadata="seek"/>
+      <video v-if="isVideo" ref="mediaElement" :src="url" controls preload="metadata" playsinline @loadedmetadata="seek" @error="error='浏览器无法播放此视频编码，请下载原文件或转换为兼容的 MP4 后上传。'"/>
+      <audio v-else-if="isAudio" ref="mediaElement" :src="url" controls preload="metadata" @loadedmetadata="seek" @error="error='浏览器无法播放此音频，请下载原文件查看。'"/>
       <img v-else-if="isImage" :src="url" alt="文档原图" @error="error='无法显示原图，请下载原文件查看。'"/>
       <iframe v-else :src="url+'#page='+page" :title="isPresentation ? '幻灯片预览' : 'PDF 原文件'"/>
     </template>

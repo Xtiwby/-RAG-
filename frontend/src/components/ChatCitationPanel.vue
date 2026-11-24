@@ -1,6 +1,8 @@
 <script setup>
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { api } from '../api'
+import DocumentOriginal from './DocumentOriginal.vue'
+import { isMediaDocument, mediaStartSeconds } from '../media-location.mjs'
 
 const PdfCitationPreview = defineAsyncComponent(() => import('./PdfCitationPreview.vue'))
 const props = defineProps({
@@ -15,6 +17,8 @@ const loading = ref(false)
 const error = ref('')
 const closeButton = ref(null)
 const presentation = computed(() => ['ppt', 'pptx'].includes(doc.value?.file_type))
+const media = computed(() => isMediaDocument(doc.value))
+const mediaStart = computed(() => mediaStartSeconds(fragment.value?.section))
 const pdfPage = computed(() => (doc.value?.file_type === 'pdf' || presentation.value) && doc.value.has_original &&
   Number.isInteger(fragment.value?.page) && fragment.value.page > 0)
 
@@ -65,11 +69,16 @@ watch([() => source.value?.document_id, () => source.value?.chunk_id], async ([d
     <div class="citation-body">
       <template v-if="source">
         <p class="citation-name">[{{ source.number }}] {{ doc?.name || source.name }}</p>
-        <p v-if="loading" class="muted" role="status">正在查找引用页…</p>
+        <p v-if="loading" class="muted" role="status">正在查找引用位置…</p>
         <p v-else-if="error" class="error-banner" role="alert">{{ error }}</p>
         <template v-else-if="fragment">
           <router-link class="text-button" :to="{path:`/documents/${doc.id}`,query:{chunk:fragment.id,view:'original'}}">打开原文页面</router-link>
-          <PdfCitationPreview v-if="pdfPage" :key="`${doc.id}:${fragment.id}`" :document-id="doc.id" :citation="fragment" :presentation="presentation"/>
+          <template v-if="media">
+            <p class="muted">{{ fragment.section || '引用时间未知' }}<template v-if="mediaStart !== null"> · 定位至 {{ mediaStart }} 秒</template></p>
+            <DocumentOriginal v-if="doc.has_original" :key="doc.id" :document-id="doc.id" :file-type="doc.file_type" :start-seconds="mediaStart ?? 0"/>
+            <p v-else class="error-banner">原始音视频不可用，无法播放此引用。</p>
+          </template>
+          <PdfCitationPreview v-else-if="pdfPage" :key="`${doc.id}:${fragment.id}`" :document-id="doc.id" :citation="fragment" :presentation="presentation"/>
           <p v-else class="citation-quote"><span>{{doc.citation_context?.before}}</span><mark>{{fragment.text}}</mark><span>{{doc.citation_context?.after}}</span></p>
         </template>
       </template>
