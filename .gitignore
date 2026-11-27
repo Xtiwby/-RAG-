@@ -17,4 +17,5 @@ backend/.env
 backend/.env.*
 !backend/.env.example
 .runtime-logs/
+backend/test-results/
 

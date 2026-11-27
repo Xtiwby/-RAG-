@@ -527,7 +527,8 @@ async def retrieve(query,kb_ids,mode=None,top_k=None,rerank=None,expand_queries=
             ]
         elif mode != 'keyword' and embedding.provider == 'api':
             semantic = await semantic_vectors(variant['query'], items)
-        if semantic is not None:vectors=semantic;semantic_used=True
+        semantic_active=semantic is not None and embedding.provider in ('local','api')
+        if semantic_active:vectors=semantic;semantic_used=True
         scores = vectors if mode == 'vector' else bm25
         if mode == 'hybrid':
             scores = [0.0] * len(items)
@@ -539,27 +540,37 @@ async def retrieve(query,kb_ids,mode=None,top_k=None,rerank=None,expand_queries=
         eligible=[i for i in range(len(items)) if not topic or any(items[i]['document_id'] in anchor_docs[a] for a in topic)]
         for rank,i in enumerate(sorted(eligible,key=lambda i:scores[i],reverse=True)[:max(top_k*8,40)],1):
             coverage=len(q & body_terms[i])/max(1,len(q))
+            # Single Chinese characters create many accidental matches (for
+            # example, “量子纠缠通信协议如何配置” matched a vehicle manual
+            # only because it contained “配置” and common characters).  For a
+            # sufficiently specific lexical query, require several complete
+            # words/bigrams to agree before treating a passage as evidence.
+            informative={term for term in q if len(term)>1}
+            informative_coverage=len(informative & body_terms[i])/max(1,len(informative))
+            lexical_floor=max(config.min_coverage,.15) if len(informative)>=4 else config.min_coverage
             # A question explicitly naming a product/API must not be satisfied
             # by generic "state", "file", or "flow" matches in another manual.
             # Only anchors actually present in authorized documents constrain it.
             # Gate against each actual query variant, not the union of both
             # languages (the union penalizes monolingual source passages).
-            if semantic is None and (coverage<config.min_coverage or (mode=='keyword' and bm25[i]<=0)):continue
-            if semantic is not None:
+            if not semantic_active and (coverage<config.min_coverage or informative_coverage<lexical_floor
+                                        or (mode=='keyword' and bm25[i]<=0)):continue
+            if semantic_active:
                 if mode=='vector' and vectors[i]<config.min_similarity:continue
                 if mode=='hybrid' and vectors[i]<config.min_similarity and (coverage<config.min_coverage or bm25[i]<=0):continue
             # Keep the chosen retriever's order as the dominant signal. Old
             # .7*coverage+.3*tfidf completely replaced all three mode rankings.
             quality=.85/(1+rank/5)+.15*coverage if rerank and not model_rerank else -rank
-            candidates.append((i,quality,coverage,vectors[i],scores[i]))
+            candidates.append((i,quality,coverage,informative_coverage,vectors[i],scores[i]))
         candidates.sort(key=lambda v:v[1],reverse=True)
-        for rank,(i,quality,coverage,vector,raw) in enumerate(candidates,1):
-            confidence=1.0 if semantic is not None else .35+.65*min(1,coverage/.4)
+        for rank,(i,quality,coverage,informative_coverage,vector,raw) in enumerate(candidates,1):
+            confidence=1.0 if semantic_active else .35+.65*min(1,coverage/.4)
             contribution=route_weight*confidence/(60+rank)
             fused[i]+=contribution
             group_scores.setdefault(variant['group'],Counter())[i]+=contribution
             matches.setdefault(i,[]).append({'query':variant['query'],'group':variant['group'],'rank':rank,
-                'coverage':round(coverage,4),'raw_score':round(raw,6),'vector_score':round(max(0,vector),4)})
+                'coverage':round(coverage,4),'informative_coverage':round(informative_coverage,4),
+                'raw_score':round(raw,6),'vector_score':round(max(0,vector),4)})
     ranked=sorted(fused,key=lambda i:fused[i],reverse=True)
     part_candidates={}
     for group,values in group_scores.items():
@@ -653,6 +664,14 @@ async def retrieve(query,kb_ids,mode=None,top_k=None,rerank=None,expand_queries=
     out=[]
     for i in chosen[:top_k]:
         item=dict(items[i]);best=max(matches[i],key=lambda m:m['vector_score'])
+        # Final lexical safety gate.  Keeping this at the evidence boundary
+        # prevents later anchor/coverage selection from re-introducing a weak
+        # passage that only shared one generic token with the question.
+        direct_query=re.sub(r'[\s?？!！。；;，,]+','',query).casefold()
+        direct_text=re.sub(r'[\s?？!！。；;，,]+','',item['text']).casefold()
+        if (not semantic_used and max(match.get('informative_coverage',0) for match in matches[i]) < .15
+                and direct_query not in direct_text):
+            continue
         item.update(chunk_id=item['id'],snippet=item['text'],score=round(fused[i],6),
             relevance=round(neural_scores[i],4) if model_rerank else best['vector_score'],
             rerank_score=round(neural_scores[i],6) if model_rerank else round(fused[i],6),matched_queries=matches[i])

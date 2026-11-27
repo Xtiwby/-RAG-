@@ -125,6 +125,35 @@ def test_auth_acl_roles_and_revocation(admin):
     assert client.get('/api/auth/me',headers=headers).status_code==401
     assert client.post('/api/auth/login',json={'username':user['username'],'password':'test123456'}).status_code==401
 
+def test_login_failures_temporarily_lock_account_and_reset_unlocks(admin,monkeypatch):
+    monkeypatch.setenv('RAG_LOGIN_FAILURE_LIMIT','3')
+    monkeypatch.setenv('RAG_LOGIN_LOCK_MINUTES','1')
+    user,_=create_member(admin)
+    endpoint='/api/auth/login'
+    missing=client.post(endpoint,json={'username':'missing-'+uuid.uuid4().hex,'password':'wrong-password'})
+    wrong=[]
+    for _ in range(3):
+        wrong.append(client.post(endpoint,json={'username':user['username'],'password':'wrong-password'}))
+    assert all(response.status_code==401 for response in wrong)
+    assert missing.json()['detail']==wrong[-1].json()['detail']=='用户名或密码错误，或账户已停用'
+    state=store.one('SELECT failed_login_attempts,locked_until FROM users WHERE id=?',(user['id'],))
+    assert state['failed_login_attempts']==3 and state['locked_until']
+    assert client.post(endpoint,json={'username':user['username'],'password':'test123456'}).status_code==401
+
+    reset=client.post(f"/api/users/{user['id']}/reset-password",headers=admin,json={'password':'new-test-123456'})
+    assert reset.status_code==200,reset.text
+    state=store.one('SELECT failed_login_attempts,locked_until FROM users WHERE id=?',(user['id'],))
+    assert state=={'failed_login_attempts':0,'locked_until':None}
+    assert client.post(endpoint,json={'username':user['username'],'password':'new-test-123456'}).status_code==200
+
+    for _ in range(3):
+        assert client.post(endpoint,json={'username':user['username'],'password':'wrong-password'}).status_code==401
+    store.execute("UPDATE users SET locked_until='2000-01-01T00:00:00+00:00' WHERE id=?",(user['id'],))
+    recovered=client.post(endpoint,json={'username':user['username'],'password':'new-test-123456'})
+    assert recovered.status_code==200,recovered.text
+    assert store.one('SELECT failed_login_attempts,locked_until FROM users WHERE id=?',(user['id'],))=={
+        'failed_login_attempts':0,'locked_until':None}
+
 def test_public_library_is_readable_without_grants(admin):
     user,member=create_member(admin)
     body={'name':'公开资料','visibility':'public'}
@@ -280,11 +309,15 @@ def test_rag_stream_history_citations_export_feedback_and_refusal(admin,monkeypa
     assert more[-1]['type']=='done'
     assert retrieval_calls[-1]==(rag.preprocess(body['query'])+' '+rag.preprocess(follow_up['query']),[kid],'keyword',False)
     assert len(client.get(f'/api/conversations/{cid}',headers=admin).json()['messages'])==4
+    independent={'query':'量子纠缠通信协议如何配置？','conversation_id':cid}
+    separate=events(client.post('/api/qa/stream',headers=admin,json=independent))
+    assert separate[-1]['type']=='done'
+    assert retrieval_calls[-1]==(rag.preprocess(independent['query']),[kid],'keyword',False)
     exported=client.get(f'/api/conversations/{cid}/export',headers=admin)
     assert quote('新名字.docx') in exported.headers['content-disposition']
     with zipfile.ZipFile(io.BytesIO(exported.content)) as package:
         text=package.read('word/document.xml').decode()
-        assert '提问 02' in text and '回答 02' in text
+        assert '提问 03' in text and '回答 03' in text
         assert '此引用暂无可用的原文页面。' in text
         assert not any(name.startswith('word/media/') for name in package.namelist())
     empty=kb(admin,'空知识库')

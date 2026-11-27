@@ -16,7 +16,8 @@ UPLOADS.mkdir(parents=True, exist_ok=True)
 PERMISSIONS = {
     'users.manage': '管理用户', 'roles.manage': '配置角色和知识库授权',
     'kb.read': '读取授权知识库', 'kb.write': '维护授权知识库及文档',
-    'qa.use': '检索和知识问答', 'reports.generate': '生成及查看本人报告',
+    'qa.use': '检索和知识问答', 'faq.manage': '维护问答对知识库',
+    'reports.generate': '生成及查看本人报告',
     'templates.manage': '维护报告模板', 'audit.read': '查看审计日志',
     'settings.manage': '配置系统参数', 'ops.read': '查看运行状态', 'ops.manage': '管理任务队列',
 }
@@ -57,6 +58,8 @@ def password_hash(password):
     digest = hashlib.scrypt(password.encode(), salt=bytes.fromhex(salt), n=16384, r=8, p=1).hex()
     return salt + ':' + digest
 
+_DUMMY_PASSWORD_HASH = password_hash('invalid-login-placeholder')
+
 def verify_password(password, stored):
     try:
         salt, expected = stored.split(':')
@@ -64,6 +67,53 @@ def verify_password(password, stored):
         return hmac.compare_digest(actual, expected)
     except (ValueError, TypeError):
         return False
+
+def _positive_env(name, default):
+    try:
+        return max(1, int(os.getenv(name, str(default))))
+    except (TypeError, ValueError):
+        return default
+
+def login_failure_limit():
+    return _positive_env('RAG_LOGIN_FAILURE_LIMIT', 5)
+
+def login_lock_minutes():
+    return _positive_env('RAG_LOGIN_LOCK_MINUTES', 15)
+
+def _timestamp(value):
+    if not value:
+        return None
+    try:
+        parsed = datetime.fromisoformat(value)
+        return parsed.replace(tzinfo=timezone.utc) if parsed.tzinfo is None else parsed.astimezone(timezone.utc)
+    except (TypeError, ValueError):
+        return None
+
+def login_locked(user, at=None):
+    locked_until = _timestamp(user.get('locked_until'))
+    return bool(locked_until and locked_until > (at or datetime.now(timezone.utc)))
+
+def record_login_failure(user_id):
+    """Atomically register one failure and return whether the account is now locked."""
+    current_time = datetime.now(timezone.utc)
+    with connect() as c:
+        c.execute('BEGIN IMMEDIATE')
+        row = c.execute('SELECT failed_login_attempts,locked_until FROM users WHERE id=?',(user_id,)).fetchone()
+        if not row:
+            return False
+        locked_until = _timestamp(row['locked_until'])
+        if locked_until and locked_until > current_time:
+            return True
+        attempts = 0 if locked_until else int(row['failed_login_attempts'] or 0)
+        attempts += 1
+        new_lock = None
+        if attempts >= login_failure_limit():
+            new_lock = (current_time + timedelta(minutes=login_lock_minutes())).isoformat(timespec='seconds')
+        c.execute('UPDATE users SET failed_login_attempts=?,locked_until=? WHERE id=?',(attempts,new_lock,user_id))
+        return bool(new_lock)
+
+def clear_login_failures(user_id):
+    execute('UPDATE users SET failed_login_attempts=0,locked_until=NULL WHERE id=?',(user_id,))
 
 def digest(value):
     return hashlib.sha256(value.encode()).hexdigest()
@@ -96,7 +146,8 @@ def migrate():
           permissions TEXT NOT NULL, system_admin INTEGER NOT NULL DEFAULT 0);
         CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, username TEXT NOT NULL UNIQUE,
           name TEXT NOT NULL, password_hash TEXT NOT NULL, role_id INTEGER NOT NULL REFERENCES roles(id),
-          status TEXT NOT NULL DEFAULT 'active', last_login TEXT, created_at TEXT NOT NULL);
+          status TEXT NOT NULL DEFAULT 'active', last_login TEXT, failed_login_attempts INTEGER NOT NULL DEFAULT 0,
+          locked_until TEXT, created_at TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS sessions(token_hash TEXT PRIMARY KEY,user_id INTEGER NOT NULL REFERENCES users(id),expires_at TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS knowledge_bases(id INTEGER PRIMARY KEY,name TEXT NOT NULL,description TEXT NOT NULL DEFAULT '',
           visibility TEXT NOT NULL DEFAULT 'private',status TEXT NOT NULL DEFAULT 'active',created_at TEXT NOT NULL);
@@ -114,6 +165,17 @@ def migrate():
         CREATE TABLE IF NOT EXISTS messages(id INTEGER PRIMARY KEY,conversation_id INTEGER NOT NULL REFERENCES conversations(id) ON DELETE CASCADE,
           role TEXT NOT NULL,content TEXT NOT NULL,citations TEXT NOT NULL DEFAULT '[]',status TEXT NOT NULL DEFAULT 'complete',
           feedback TEXT,created_at TEXT NOT NULL);
+        CREATE TABLE IF NOT EXISTS faq_items(id INTEGER PRIMARY KEY,family_id INTEGER,parent_id INTEGER,
+          knowledge_base_id INTEGER NOT NULL REFERENCES knowledge_bases(id),standard_question TEXT NOT NULL,
+          standard_answer TEXT NOT NULL,keywords TEXT NOT NULL DEFAULT '[]',category TEXT NOT NULL DEFAULT '',
+          evidence_refs TEXT NOT NULL DEFAULT '[]',status TEXT NOT NULL DEFAULT 'draft',version INTEGER NOT NULL DEFAULT 1,
+          created_by INTEGER NOT NULL REFERENCES users(id),created_at TEXT NOT NULL,updated_at TEXT NOT NULL);
+        CREATE TABLE IF NOT EXISTS faq_variants(id INTEGER PRIMARY KEY,faq_id INTEGER NOT NULL REFERENCES faq_items(id) ON DELETE CASCADE,
+          question TEXT NOT NULL,created_at TEXT NOT NULL,UNIQUE(faq_id,question));
+        CREATE TABLE IF NOT EXISTS faq_feedback(id INTEGER PRIMARY KEY,faq_id INTEGER NOT NULL REFERENCES faq_items(id),
+          faq_version INTEGER NOT NULL,user_id INTEGER NOT NULL REFERENCES users(id),query TEXT NOT NULL,
+          retrieval_mode TEXT NOT NULL,score REAL NOT NULL DEFAULT 0,helpful INTEGER,reason TEXT NOT NULL DEFAULT '',
+          latency_ms INTEGER NOT NULL DEFAULT 0,created_at TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS report_templates(id INTEGER PRIMARY KEY,name TEXT NOT NULL,description TEXT NOT NULL DEFAULT '',
           sections TEXT NOT NULL,version TEXT NOT NULL DEFAULT 'v1.0',created_at TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS report_tasks(id INTEGER PRIMARY KEY,title TEXT NOT NULL,template_id INTEGER NOT NULL REFERENCES report_templates(id),
@@ -148,6 +210,7 @@ def migrate():
           version INTEGER NOT NULL,snapshot TEXT NOT NULL,created_at TEXT NOT NULL,user_id INTEGER NOT NULL,UNIQUE(report_id,version));
         ''')
         for table, additions in {
+            'users': {'failed_login_attempts':'INTEGER NOT NULL DEFAULT 0','locked_until':'TEXT'},
             'report_templates': {'blueprint': "TEXT NOT NULL DEFAULT '{}'",'import_id':'INTEGER','parent_id':'INTEGER','structure':"TEXT NOT NULL DEFAULT '{}'",'field_mappings':"TEXT NOT NULL DEFAULT '[]'",'knowledge_base_ids':"TEXT NOT NULL DEFAULT '[]'",'lifecycle':"TEXT NOT NULL DEFAULT 'published'",'family_id':'INTEGER'},
             'report_tasks': {'user_id': 'INTEGER', 'content': "TEXT NOT NULL DEFAULT ''", 'error': "TEXT NOT NULL DEFAULT ''", 'blueprint': "TEXT NOT NULL DEFAULT '{}'", 'job_id':'INTEGER', 'requirements':"TEXT NOT NULL DEFAULT ''", 'revision':'INTEGER NOT NULL DEFAULT 0','updated_at':"TEXT NOT NULL DEFAULT ''"},
             'report_sections': {'revision':'INTEGER NOT NULL DEFAULT 0','edited':'INTEGER NOT NULL DEFAULT 0','confirmed':'INTEGER NOT NULL DEFAULT 0','job_id':'INTEGER','generation_status':"TEXT NOT NULL DEFAULT ''",'generation_error':"TEXT NOT NULL DEFAULT ''",'updated_at':"TEXT NOT NULL DEFAULT ''",'verification':"TEXT NOT NULL DEFAULT '{}'"},
@@ -191,6 +254,15 @@ def migrate():
                 c.execute('INSERT INTO users(username,name,password_hash,role_id,status,created_at) VALUES(?,?,?,?,?,?)',
                           (username,name,password_hash(os.getenv('INITIAL_ADMIN_PASSWORD','admin123') if username=='admin' else 'admin123'),role,'active',now()))
         c.execute('UPDATE roles SET permissions=? WHERE system_admin=1',(json.dumps(list(PERMISSIONS)),))
+        # Existing knowledge-base maintainers may manage FAQ entries without a manual role migration.
+        for role in c.execute('SELECT id,permissions,system_admin FROM roles').fetchall():
+            permissions=json.loads(role['permissions'])
+            if not role['system_admin'] and 'kb.write' in permissions and 'faq.manage' not in permissions:
+                permissions.append('faq.manage')
+                c.execute('UPDATE roles SET permissions=? WHERE id=?',(json.dumps(permissions),role['id']))
+        c.execute('CREATE INDEX IF NOT EXISTS faq_items_kb_status_idx ON faq_items(knowledge_base_id,status)')
+        c.execute('CREATE INDEX IF NOT EXISTS faq_items_family_version_idx ON faq_items(family_id,version)')
+        c.execute('CREATE INDEX IF NOT EXISTS faq_feedback_faq_idx ON faq_feedback(faq_id,created_at)')
         if not c.execute('SELECT 1 FROM knowledge_bases').fetchone():
             c.execute('INSERT INTO knowledge_bases(name,description,visibility,status,created_at) VALUES(?,?,?,?,?)',
                       ('课程项目知识库','请上传真实项目文档后使用检索与问答','team','active',now()))

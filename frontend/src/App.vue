@@ -3,7 +3,7 @@ import {computed,onMounted,onUnmounted,ref,watch} from 'vue'
 import {useRoute,useRouter} from 'vue-router'
 import {ConfigProvider,Drawer,Dropdown,Menu as AMenu,MenuItem} from 'ant-design-vue'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
-import {Activity,BookOpen,Bot,Database,FileSearch,FileText,LayoutDashboard,LayoutTemplate,Menu,Settings,ShieldCheck,Users,ChevronDown,User,LogOut} from './icons'
+import {Activity,BookOpen,Bot,Database,FileSearch,FileText,LayoutDashboard,LayoutTemplate,Menu,Settings,ShieldCheck,Users,ChevronDown,User,LogOut,MessageCircle} from './icons'
 import SideNavigation from './components/SideNavigation.vue'
 import {api,clearSession,sessionUser,updateUser,can,getToken} from './api'
 import {uiTheme,confirmAction} from './ui'
@@ -13,7 +13,7 @@ const oldBackend=computed(()=>backendInfo.value&&Number((backendInfo.value.versi
 const isLogin=computed(()=>route.path==='/login')
 const groups=computed(()=>[
  {label:'工作空间',items:[{path:'/',label:'工作台',icon:LayoutDashboard},{path:'/knowledge',label:'知识库',icon:Database,point:'kb.read'},{path:'/documents',label:'文档管理',icon:FileText,point:'kb.read'},{path:'/data-sources',label:'数据源',icon:Database,point:'kb.read'}]},
- {label:'智能应用',items:[{path:'/chat',label:'知识问答',icon:Bot,point:'qa.use'},{path:'/reports',label:'报告中心',icon:BookOpen,point:'reports.generate'},{path:'/report-templates',label:'模板库',icon:LayoutTemplate,point:'reports.generate'}]},
+ {label:'智能应用',items:[{path:'/chat',label:'知识问答',icon:Bot,point:'qa.use'},{path:'/faqs',label:'问答对知识库',icon:MessageCircle,point:'qa.use'},{path:'/reports',label:'报告中心',icon:BookOpen,point:'reports.generate'},{path:'/report-templates',label:'模板库',icon:LayoutTemplate,point:'reports.generate'}]},
  {label:'调试与运维',items:[{path:'/search',label:'检索测试',icon:FileSearch,point:'qa.use'},{path:'/operations',label:'任务与运行',icon:Activity,point:'ops.read'}]},
  {label:'系统管理',items:[{path:'/users',label:'用户与权限',icon:Users,visible:can('users.manage')||can('roles.manage')},{path:'/audit',label:'审计日志',icon:ShieldCheck,point:'audit.read'},{path:'/settings',label:'系统配置',icon:Settings,point:'settings.manage'}]},
 ].map(g=>({...g,items:g.items.filter(i=>i.visible!==false&&(!i.point||can(i.point)))})).filter(g=>g.items.length))

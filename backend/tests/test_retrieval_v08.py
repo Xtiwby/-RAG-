@@ -55,6 +55,26 @@ def test_chinese_question_retrieves_english_fact_without_answer_leak(admin,confi
     assert client.post('/api/search',headers=admin,json=body).json()['pipeline']['query_expansion']['cache']=='hit'
     assert len(calls)==1
 
+
+def test_bilingual_numeric_maintenance_question_keeps_its_own_candidate_coverage(admin,configured,monkeypatch):
+    enable(admin);kid=kb(admin)
+    wanted=upload(admin,kid,name='maintenance.txt',text=(
+        'If the engine oil life is less than 15%, the maintenance reminder appears on the driver interface.'))
+    upload(admin,kid,name='unrelated.txt',text='Vehicle navigation settings depend on the installed equipment configuration.')
+    async def translator(messages,max_tokens=None):
+        yield json.dumps({'chinese':'发动机机油寿命低于多少时显示保养提醒？',
+            'english':'At what engine oil life percentage will the maintenance reminder be displayed?',
+            'subquestions':[]})
+    monkeypatch.setattr(rag,'llm_stream',translator)
+    response=client.post('/api/search',headers=admin,json={
+        'query':'发动机机油寿命低于多少时显示保养提醒？','mode':'hybrid','knowledge_base_ids':[kid],
+    })
+    assert response.status_code==200,response.text
+    result=response.json()
+    assert result['results'][0]['document_id']==wanted['id']
+    assert result['results'][0]['matched_queries'][0]['informative_coverage']>=.5
+    assert '15%' in result['results'][0]['text']
+
 def test_rewrite_cache_scope_and_failure_are_explicit(admin,configured,monkeypatch):
     enable(admin);kid=kb(admin);other=kb(admin)
     text='The Orion controller uses passive cooling through an external heat sink. The product engineering manual describes an installation with unobstructed ventilation and heat dissipation.'

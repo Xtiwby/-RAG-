@@ -36,4 +36,5 @@ export const RefreshCw = icon(['M20 7V2m0 5h-5M4 17v5m0-5h5','M20 7a9 9 0 0 0-16
 export const Settings = icon(['M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8','m9 2-1 3-3 1-3 3 2 3-2 3 3 3 3 1 1 3h6l1-3 3-1 3-3-2-3 2-3-3-3-3-1-1-3Z'])
 export const ArrowRight = icon(['M4 12h16m-6-6 6 6-6 6'])
 export const MoreHorizontal = icon(['M5 12h.01M12 12h.01M19 12h.01'])
+export const MessageCircle = icon(['M21 12a8 8 0 0 1-8 8H5l-3 2 1-5a9 9 0 1 1 18-5Z','M8 12h.01M12 12h.01M16 12h.01'])
 

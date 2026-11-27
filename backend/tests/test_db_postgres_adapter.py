@@ -48,6 +48,14 @@ def test_insert_id_parameters_and_boolean_conversion():
     assert inner.calls[-1]==('INSERT INTO users(username,status) VALUES(%s,%s) RETURNING id',('demo',1))
 
 
+def test_faq_tables_return_generated_ids():
+    inner=FakeConnection()
+    conn=db_postgres.Connection(inner)
+    for table in ('faq_items','faq_variants','faq_feedback'):
+        assert conn.execute(f'INSERT INTO {table}(created_at) VALUES(?)',('now',)).lastrowid==37
+        assert inner.calls[-1][0].endswith('RETURNING id')
+
+
 def test_sqlite_upserts_are_explicit_postgres_conflicts():
     inner=FakeConnection()
     conn=db_postgres.Connection(inner)

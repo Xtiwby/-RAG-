@@ -26,7 +26,7 @@ load_dotenv(Path(__file__).resolve().parents[1] / '.env')
 from . import store as s
 from . import db_postgres
 from . import rag
-from . import settings,jobs,telemetry,blueprints,report_export,ingestion,grounding,template_docx,report_grounding,object_storage,presentation_preview,chat_export,media
+from . import settings,jobs,telemetry,blueprints,report_export,ingestion,grounding,template_docx,report_grounding,object_storage,presentation_preview,chat_export,media,faq
 
 @asynccontextmanager
 async def lifespan(app):
@@ -37,7 +37,7 @@ async def lifespan(app):
         await jobs.stop()
         db_postgres.close_pools()
 
-app = FastAPI(title='知源 RAG API', version='0.12.0',lifespan=lifespan)
+app = FastAPI(title='知源 RAG API', version='0.13.0',lifespan=lifespan)
 app.add_middleware(CORSMiddleware,allow_origins=['http://localhost:5173','http://127.0.0.1:5173','http://localhost:4173','http://127.0.0.1:4173','http://127.0.0.1:4174'],allow_credentials=True,allow_methods=['*'],allow_headers=['*'])
 if os.getenv('RAG_WORKER_PROCESS')!='1':
     rag.backfill_legacy()
@@ -67,7 +67,7 @@ async def audit_requests(request,call_next):
     finally:
         if request.url.path.startswith('/api/') and (request.method not in ('GET','HEAD','OPTIONS') or code>=400):
             segments=request.url.path.split('/')[2:]
-            resource={'users':'用户','roles':'角色','knowledge-bases':'知识库','documents':'文档','auth':'账户','templates':'报告模板',
+            resource={'users':'用户','roles':'角色','knowledge-bases':'知识库','documents':'文档','auth':'账户','templates':'报告模板','faqs':'问答对',
                       'report-tasks':'报告','tasks':'任务','settings':'系统配置','operations':'运行状态','search':'检索','qa':'问答'}.get(segments[0] if segments else '','系统')
             action={'POST':'执行','PUT':'修改','PATCH':'修改','DELETE':'删除','GET':'读取'}.get(request.method,request.method)
             object_id=next((part for part in segments[1:] if part.isdigit()),'')
@@ -225,6 +225,23 @@ class TitleBody(BaseModel):
 class FeedbackBody(BaseModel):
     feedback: Literal['helpful','unhelpful','none']
 
+class FaqBody(BaseModel):
+    knowledge_base_id: int
+    standard_question: str = Field(min_length=2,max_length=1000)
+    standard_answer: str = Field(min_length=1,max_length=20000)
+    variants: list[str] = Field(default_factory=list,max_length=50)
+    keywords: list[str] = Field(default_factory=list,max_length=50)
+    category: str = Field(default='',max_length=100)
+    evidence_chunk_ids: list[int] = Field(default_factory=list,max_length=30)
+    expected_updated_at: str | None = None
+
+class FaqLifecycleBody(BaseModel):
+    status: Literal['published','inactive']
+
+class FaqFeedbackBody(BaseModel):
+    helpful: bool
+    reason: str = Field(default='',max_length=500)
+
 class TemplateBody(BaseModel):
     name: str = Field(min_length=1,max_length=100)
     description: str = ''
@@ -266,10 +283,14 @@ def model_status(user=Depends(current_user)):
 @app.post('/api/auth/login')
 def login(body:Login):
     row=s.one('SELECT * FROM users WHERE username=?',(body.username,))
-    if not row or row['status']!='active' or not s.verify_password(body.password,row['password_hash']):
+    password_ok=s.verify_password(body.password,row['password_hash'] if row else s._DUMMY_PASSWORD_HASH)
+    locked=bool(row and row['status']=='active' and s.login_locked(row))
+    if not row or row['status']!='active' or locked or not password_ok:
+        if row and row['status']=='active' and not locked and not password_ok:
+            s.record_login_failure(row['id'])
         s.audit({'name':'未登录用户','username':body.username},'登录','账户','账号、密码或状态校验失败',result='failure',status_code=401)
         raise HTTPException(401,'用户名或密码错误，或账户已停用')
-    s.execute('UPDATE users SET last_login=? WHERE id=?',(s.now(),row['id']))
+    s.execute('UPDATE users SET last_login=?,failed_login_attempts=0,locked_until=NULL WHERE id=?',(s.now(),row['id']))
     row=s.one('SELECT * FROM users WHERE id=?',(row['id'],))
     user=s.public_user(row)
     s.audit(user,'登录','账户')
@@ -295,7 +316,7 @@ def change_password(body:PasswordChange,user=Depends(current_user)):
     row=s.one('SELECT * FROM users WHERE id=?',(user['id'],))
     if not s.verify_password(body.current_password,row['password_hash']):
         raise HTTPException(400,'当前密码不正确')
-    s.execute('UPDATE users SET password_hash=? WHERE id=?',(s.password_hash(body.new_password),user['id']))
+    s.execute('UPDATE users SET password_hash=?,failed_login_attempts=0,locked_until=NULL WHERE id=?',(s.password_hash(body.new_password),user['id']))
     s.revoke(user['id'])
     s.audit(user,'修改密码','本人账户')
     return {'ok':True,'message':'密码已修改，所有登录会话已失效，请重新登录'}
@@ -354,7 +375,7 @@ def reset_password(uid:int,body:ResetPassword,user=Depends(current_user)):
         raise HTTPException(404,'用户不存在')
     assignable_role(user,target['role_id'])
     password=body.password or secrets.token_urlsafe(12)
-    s.execute('UPDATE users SET password_hash=? WHERE id=?',(s.password_hash(password),uid))
+    s.execute('UPDATE users SET password_hash=?,failed_login_attempts=0,locked_until=NULL WHERE id=?',(s.password_hash(password),uid))
     s.revoke(uid)
     s.audit(user,'重置密码','账户',target['username'])
     return {'temporary_password':password,'message':'密码已重置，原会话已失效；请将临时密码交给用户并提醒其修改'}
@@ -766,6 +787,90 @@ async def search(body:SearchBody,request:Request,user=Depends(current_user)):
     s.audit(user,'检索','知识库',mode)
     return {'mode':mode,'query':query,'total':len(results),'results':results,'elapsed_ms':round((time.perf_counter()-start)*1000),'pipeline':meta}
 
+def faq_payload(body:FaqBody):
+    return {**body.model_dump(exclude={'evidence_chunk_ids'}),
+            'evidence_refs':faq.evidence_from_chunk_ids(body.evidence_chunk_ids,body.knowledge_base_id)}
+
+@app.get('/api/faqs')
+def faqs(knowledge_base_id:int|None=None,status:str|None=None,query:str='',include_all:bool=False,user=Depends(current_user)):
+    require(user,'qa.use')
+    manager=user['system_admin'] or 'faq.manage' in user['permissions']
+    if include_all and not manager:
+        raise HTTPException(403,'缺少权限：维护问答对知识库')
+    ids=historical_ids(user) if include_all else accessible_ids(user)
+    if knowledge_base_id is not None:
+        check_kb(user,knowledge_base_id,allow_inactive=include_all)
+        ids=[knowledge_base_id]
+    return faq.list_items(ids,include_all=include_all and manager,status=status,query=query)
+
+@app.post('/api/faqs/search')
+async def search_faqs(body:SearchBody,user=Depends(current_user)):
+    require(user,'qa.use')
+    ids=selected_ids(user,body.knowledge_base_ids,body.knowledge_base_id)
+    mode=body.mode or settings.get().retrieval.mode
+    result=await faq.search(body.query,ids,mode,body.top_k or 5,True if body.rerank is None else body.rerank)
+    s.audit(user,'检索','问答对',f'{mode}:{result["route"]}')
+    return result
+
+@app.post('/api/faqs',status_code=201)
+def create_faq(body:FaqBody,user=Depends(current_user)):
+    require(user,'faq.manage')
+    check_kb(user,body.knowledge_base_id,True)
+    result=faq.create(faq_payload(body),user['id'])
+    s.audit(user,'创建','问答对',body.standard_question,object_id=result['id'])
+    return result
+
+@app.get('/api/faqs/{fid}')
+def get_faq(fid:int,user=Depends(current_user)):
+    require(user,'qa.use')
+    row=faq.get(fid)
+    check_kb(user,row['knowledge_base_id'],allow_inactive=True)
+    if row['status']!='published':
+        require(user,'faq.manage')
+    return faq.serialize(row,include_metrics=True)
+
+@app.patch('/api/faqs/{fid}')
+def update_faq(fid:int,body:FaqBody,user=Depends(current_user)):
+    require(user,'faq.manage')
+    row=faq.get(fid)
+    check_kb(user,row['knowledge_base_id'],True,allow_inactive=True)
+    check_kb(user,body.knowledge_base_id,True,allow_inactive=True)
+    result=faq.update(fid,faq_payload(body))
+    s.audit(user,'修改','问答对',body.standard_question,object_id=fid)
+    return result
+
+@app.post('/api/faqs/{fid}/versions',status_code=201)
+def create_faq_version(fid:int,user=Depends(current_user)):
+    require(user,'faq.manage')
+    row=faq.get(fid)
+    check_kb(user,row['knowledge_base_id'],True,allow_inactive=True)
+    result=faq.new_version(fid,user['id'])
+    s.audit(user,'创建版本','问答对',f'v{result["version"]}',object_id=result['id'])
+    return result
+
+@app.post('/api/faqs/{fid}/lifecycle')
+def faq_lifecycle(fid:int,body:FaqLifecycleBody,user=Depends(current_user)):
+    require(user,'faq.manage')
+    row=faq.get(fid)
+    check_kb(user,row['knowledge_base_id'],True,allow_inactive=True)
+    result=faq.change_status(fid,body.status)
+    s.audit(user,'变更状态','问答对',body.status,object_id=fid)
+    return result
+
+@app.delete('/api/faqs/{fid}')
+def delete_faq(fid:int,user=Depends(current_user)):
+    require(user,'faq.manage')
+    row=faq.get(fid)
+    check_kb(user,row['knowledge_base_id'],True,allow_inactive=True)
+    result=faq.delete_family(fid)
+    s.audit(user,'删除','问答对',row['standard_question'],object_id=fid)
+    return result
+
+@app.post('/api/faqs/feedback/{feedback_id}')
+def faq_feedback(feedback_id:int,body:FaqFeedbackBody,user=Depends(current_user)):
+    require(user,'qa.use')
+    return faq.update_feedback(feedback_id,user['id'],body.helpful,body.reason)
+
 @app.get('/api/conversations')
 def conversations(user=Depends(current_user)):
     require(user,'qa.use')
@@ -814,6 +919,9 @@ def feedback(mid:int,body:FeedbackBody,user=Depends(current_user)):
         raise HTTPException(404,'回答不存在')
     conversation(user,message['conversation_id'])
     s.execute('UPDATE messages SET feedback=? WHERE id=?',(body.feedback,mid))
+    retrieval=json.loads(message.get('retrieval') or '{}')
+    if retrieval.get('faq_feedback_id') and body.feedback!='none':
+        faq.update_feedback(retrieval['faq_feedback_id'],user['id'],body.feedback=='helpful')
     return {'ok':True}
 
 def download_text(text,name,kind='md',format_options=None):
@@ -848,6 +956,24 @@ def question_retrieval_settings(retrieval,mode=None,rerank=None):
             'rerank':retrieval.get('rerank_enabled',defaults.rerank if rerank is None else rerank)}
 
 
+_FOLLOW_UP_QUERY = re.compile(
+    r'(?:^|[，。；、\s])(?:它|它们|这个|这些|那个|那些|上述|前面|刚才|继续|'
+    r'再(?:说|介绍|说明|展开|详细说明)|其(?:中|他|余)|该(?:内容|方法|功能|方案))'
+    r'|(?:为什么|怎么做|怎么办|还有吗|还有什么|具体呢|然后呢|作用呢)[？?]?$'
+    r'|\b(?:it|this|that|these|those|above|previous|continue|more details)\b',
+    re.IGNORECASE,
+)
+
+
+def needs_history_context(query):
+    """Only inherit the previous question when the new turn visibly refers to it.
+
+    Query length is deliberately not used: a short, self-contained question is
+    still a new information need and must never inherit an unrelated topic.
+    """
+    return bool(_FOLLOW_UP_QUERY.search(query))
+
+
 async def prepare_question(body,user):
     require(user,'qa.use')
     query=rag.preprocess(body.query)
@@ -870,24 +996,39 @@ async def prepare_question(body,user):
     else:
         ids=selected_ids(user,body.knowledge_base_ids,body.knowledge_base_id,True)
     retrieval_query=query
-    if history and (len(query)<15 or re.search('它|这个|上述|继续|那|其',query)):
+    if history and needs_history_context(query):
         prev=next((m['content'] for m in reversed(history) if m['role']=='user'),'')
         retrieval_query=(prev+' '+query)[-4000:]
     retrieval=question_retrieval_settings(last_retrieval,body.mode,body.rerank)
+    faq_result=None
+    try:
+        faq_result=await faq.search(query,ids,retrieval['mode'],min(body.top_k or 5,10),retrieval['rerank'])
+    except HTTPException as error:
+        faq_result={'query':query,'mode':retrieval['mode'],'route':'unavailable','results':[],
+                    'elapsed_ms':0,'error':error.detail,'pipeline':{'embedding':'error','rerank':'none'}}
+    if faq_result['route']=='high':
+        match=faq_result['results'][0]
+        meta={'mode':retrieval['mode'],'rerank_enabled':retrieval['rerank'],'retrieval_ms':faq_result['elapsed_ms'],
+              'source':'faq','faq':{'route':'high','id':match['id'],'version':match['version'],'score':match['score'],
+                                    'pipeline':faq_result['pipeline']}}
+        return ids,query,history,match['citations'],meta,faq_result
     from .retrieval_planner import explicit_parts
     started = time.perf_counter()
     evidence,meta=await rag.retrieve(retrieval_query,ids,retrieval['mode'],body.top_k,retrieval['rerank'],
                                      split_question=bool(explicit_parts(query)))
     meta={**meta,'mode':retrieval['mode'],'rerank_enabled':retrieval['rerank'],
+          'source':'document-rag','faq':{'route':faq_result['route'],'results':[
+              {'id':item['id'],'version':item['version'],'score':item['score']} for item in faq_result.get('results',[])[:3]],
+              **({'error':faq_result['error']} if faq_result.get('error') else {})},
           'retrieval_ms':round((time.perf_counter()-started)*1000)}
     if evidence:
         rag.llm_config()
-    return ids,query,history,evidence,meta
+    return ids,query,history,evidence,meta,faq_result
 
 @app.post('/api/qa/stream')
 async def qa_stream(body:QuestionBody,request:Request,user=Depends(current_user)):
     started = time.perf_counter()
-    ids,query,history,evidence,meta=await prepare_question(body,user)
+    ids,query,history,evidence,meta,faq_result=await prepare_question(body,user)
     def authorize():
         fresh = current_user(request.headers.get('authorization'))
         for kid in ids:
@@ -909,9 +1050,22 @@ async def qa_stream(body:QuestionBody,request:Request,user=Depends(current_user)
         first_token_ms=None
         try:
             s.execute('INSERT INTO messages(conversation_id,role,content,created_at) VALUES(?,?,?,?)',(cid,'user',query,s.now()))
+            faq_match=faq_result['results'][0] if faq_result.get('route')=='high' and faq_result.get('results') else None
+            if faq_match:
+                meta['faq_feedback_id']=faq.record_use(faq_match,user['id'],query,meta['mode'],faq_result['elapsed_ms'])
             mid=s.execute("INSERT INTO messages(conversation_id,role,content,citations,status,created_at,retrieval) VALUES(?,?,?,?,?,?,?)",(cid,'assistant','',json.dumps(evidence,ensure_ascii=False),'streaming',s.now(),json.dumps(meta,ensure_ascii=False)))
             yield rag.event('meta',conversation_id=cid,message_id=mid,citations=evidence,pipeline=meta)
-            if not evidence:
+            if faq_match:
+                text=faq_match['standard_answer'].strip()
+                if evidence and not re.search(r'\[\d+\]',text):
+                    text+=' '+''.join(f'[{index}]' for index in range(1,len(evidence)+1))
+                first_token_ms=round((time.perf_counter()-started)*1000)
+                s.execute('UPDATE messages SET content=?,verification=?,coverage=? WHERE id=?',(
+                    text,json.dumps([{'claim':text,'supported':True,'source':'published-faq'}],ensure_ascii=False),
+                    json.dumps({'status':'covered','source':'published-faq'},ensure_ascii=False),mid))
+                yield rag.event('stage',stage='faq',message='已命中已发布标准问答')
+                yield rag.event('token',content=text)
+            elif not evidence:
                 text='当前知识库证据不足，无法可靠回答。请补充相关文档、完成文档解析，或缩小问题范围。'
                 first_token_ms=round((time.perf_counter()-started)*1000)
                 yield rag.event('token',content=text)

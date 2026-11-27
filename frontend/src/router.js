@@ -9,6 +9,7 @@ const DocumentsView=()=>import('./views/DocumentsView.vue')
 const DataSourcesView=()=>import('./views/DataSourcesView.vue')
 const SearchView=()=>import('./views/SearchView.vue')
 const ChatView=()=>import('./views/ChatView.vue')
+const FaqView=()=>import('./views/FaqView.vue')
 const ReportsView=()=>import('./views/ReportsHome.vue')
 const UsersView=()=>import('./views/UsersView.vue')
 const AuditView=()=>import('./views/AuditView.vue')
@@ -27,6 +28,7 @@ const router = createRouter({
     { path: '/profile', component: ProfileView, meta: { title: '个人账户' } },
     { path: '/search', component: SearchView, meta: { title: '检索测试' } },
     { path: '/chat', component: ChatView, meta: { title: '知识问答' } },
+    { path: '/faqs', component: FaqView, meta: { title: '问答对知识库' } },
     { path: '/reports', component: ReportsView, meta: { title: '报告中心' } },
     { path: '/reports/new', component: ReportsView, meta: { title: '新建报告' } },
     { path: '/reports/:id', component: ReportsView, meta: { title: '报告编辑器' } },

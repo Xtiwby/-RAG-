@@ -5,8 +5,8 @@ from test_api import client, admin, application_lifespan, kb, upload, events, re
 from app import rag, grounding, retrieval_planner, store
 
 
-def test_citations_only_tamper_marks_legacy_for_unedited_model_text(admin, monkeypatch):
-    """模型正文的 citations 被篡改但 content 不变 → 记录降级为 legacy，而非继续显示已核验。"""
+def test_citations_only_tamper_marks_unverified_for_unedited_model_text(admin, monkeypatch):
+    """模型正文的 citations 被篡改但 content 不变，记录降级为未核验人工草稿。"""
     from test_api import generated_report
     monkeypatch.setattr(rag, 'llm_stream', fake_model)
     report = generated_report(admin, monkeypatch)
@@ -16,7 +16,7 @@ def test_citations_only_tamper_marks_legacy_for_unedited_model_text(admin, monke
     wrong[0]['version'] = 'tampered-version'
     store.execute('UPDATE report_sections SET citations=? WHERE id=?', (json.dumps(wrong), section['id']))
     row = client.get(f"/api/report-tasks/{report['id']}", headers=admin).json()
-    assert row['sections'][0]['verification']['state'] == 'legacy'
+    assert row['sections'][0]['verification']['state'] == 'unverified_manual'
     # 恢复后仍为 verified（内容未变，evidence_sha256 重新匹配）
     store.execute('UPDATE report_sections SET citations=? WHERE id=?', (cites, section['id']))
     row = client.get(f"/api/report-tasks/{report['id']}", headers=admin).json()
@@ -47,13 +47,16 @@ def test_judge_unavailable_does_not_trigger_repair(admin, configured, monkeypatc
     assert response_text(stream) == grounding.REFUSAL
 
 
-def test_cross_language_planner_skips_irrelevant_query_without_relaxing_gates(admin, configured, monkeypatch):
-    """无可复用跨语言锚点时不调用模型，检索仍不得返回无关证据。"""
+def test_cross_language_planner_failure_degrades_without_relaxing_gates(admin, configured, monkeypatch):
+    """跨语言改写失败时退回原问题，检索仍不得返回无关证据。"""
     retrieval_planner._cache.clear()
     save_config(admin, lambda cfg: cfg['retrieval'].update(cross_language=True))
 
+    rewrite_calls = []
+
     async def blocked(messages, max_tokens=None):
-        raise AssertionError('无跨语言锚点时不应调用改写模型')
+        rewrite_calls.append(messages)
+        raise RuntimeError('模拟双语查询改写服务不可用')
         yield '{}'
 
     kid = kb(admin)
@@ -61,6 +64,8 @@ def test_cross_language_planner_skips_irrelevant_query_without_relaxing_gates(ad
     monkeypatch.setattr(rag, 'llm_stream', blocked)
     resp = client.post('/api/search', headers=admin,
                        json={'query': '不存在的中文量子水稻', 'knowledge_base_ids': [kid]}).json()
-    assert resp['pipeline']['query_expansion']['status'] == 'not_needed'
+    assert resp['pipeline']['query_expansion']['status'] == 'degraded'
+    assert resp['pipeline']['query_expansion']['warnings']
+    assert len(rewrite_calls) == 1
     assert resp['results'] == []
     retrieval_planner._cache.clear()

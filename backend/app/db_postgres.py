@@ -19,7 +19,7 @@ except ImportError:
 ID_TABLES = {'roles','users','knowledge_bases','documents','chunks','conversations','messages',
              'report_templates','report_tasks','report_sections','audit_logs','jobs','job_events',
              'model_calls','document_events','report_section_history','template_imports',
-             'report_candidates','report_releases'}
+              'report_candidates','report_releases','faq_items','faq_variants','faq_feedback'}
 
 _pools={}
 _pool_lock=threading.Lock()
